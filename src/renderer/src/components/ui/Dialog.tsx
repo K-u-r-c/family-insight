@@ -45,7 +45,17 @@ export function Dialog({
     const trigger = document.activeElement as HTMLElement | null
     const dialog = ref.current
     if (dialog && !dialog.open) dialog.showModal()
-    initialFocus?.current?.focus()
+    if (initialFocus?.current) initialFocus.current.focus()
+    else {
+      // Prefer the first field or the primary action over the close button.
+      const target =
+        dialog?.querySelector<HTMLElement>('[data-autofocus], [autofocus]') ??
+        dialog?.querySelector<HTMLElement>(
+          '[data-dialog-body] :is(input, select, textarea, [role="radio"][aria-checked="true"], button)'
+        ) ??
+        dialog?.querySelector<HTMLElement>('[data-dialog-footer] button:last-child')
+      target?.focus()
+    }
     return () => {
       if (trigger?.isConnected) trigger.focus()
     }
@@ -81,8 +91,16 @@ export function Dialog({
         </div>
         <IconButton icon={X} label={t('common.close')} size="sm" onClick={onClose} />
       </div>
-      {children && <div className={styles.body}>{children}</div>}
-      {footer && <div className={styles.footer}>{footer}</div>}
+      {children && (
+        <div className={styles.body} data-dialog-body>
+          {children}
+        </div>
+      )}
+      {footer && (
+        <div className={styles.footer} data-dialog-footer>
+          {footer}
+        </div>
+      )}
     </dialog>
   )
 }

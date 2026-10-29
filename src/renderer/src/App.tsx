@@ -8,6 +8,8 @@ import { newTree, openTree, saveTree, saveTreeAs } from './services/documentFile
 import { WelcomeScreen } from './features/welcome/WelcomeScreen'
 import { Workspace } from './features/workspace/Workspace'
 import { useDocument } from './store/document'
+import { useWorkspaceUi } from './store/workspaceUi'
+import { ExportCsvDialog } from './features/csv/ExportCsvDialog'
 
 const Gallery = lazy(() =>
   import('./features/gallery/Gallery').then((m) => ({ default: m.Gallery }))
@@ -32,13 +34,18 @@ export function App(): React.JSX.Element {
       'file:new': () => void newTree(),
       'file:open': () => void openTree(),
       'file:save': () => void saveTree(),
-      'file:save-as': () => void saveTreeAs()
+      'file:save-as': () => void saveTreeAs(),
+      'file:export-csv': () => {
+        if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-csv')
+      }
     }),
     []
   )
   useMenuIntegration(menuHandlers)
   const hash = useHash()
   const hasDocument = useDocument((s) => s.tree !== null)
+  const dialog = useWorkspaceUi((s) => s.dialog)
+  const openDialog = useWorkspaceUi((s) => s.openDialog)
   return (
     <>
       {hash === '#gallery' ? (
@@ -49,6 +56,9 @@ export function App(): React.JSX.Element {
         <Workspace />
       ) : (
         <WelcomeScreen />
+      )}
+      {dialog === 'export-csv' && hasDocument && (
+        <ExportCsvDialog open onClose={() => openDialog(null)} />
       )}
       <ConfirmHost />
       <ChoiceHost />

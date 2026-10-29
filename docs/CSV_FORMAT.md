@@ -46,6 +46,14 @@ Headers are case-insensitive and may be given in English **or Polish**.
 whichever slot is free (father first). Only biological parent links are written; adoptive,
 step and foster links, partnership dates and photos exist only in `.finsight` files.
 
+## Export details
+
+- Rows are ordered by date of birth (unknown last), then surname and given name.
+- People get short, readable ids `p1`, `p2`, … (internal ids are not exported).
+- With Polish column names, values are written in Polish too: `sex` as `kobieta`,
+  `mężczyzna`, `inna`, `nieznana` and `living` as `tak` / `nie`. Import accepts both languages.
+- Partners are listed on both sides, ordered by the start of the partnership.
+
 ## Dates
 
 Dates may be partial and carry a qualifier prefix.

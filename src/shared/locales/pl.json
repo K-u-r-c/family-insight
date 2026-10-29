@@ -243,7 +243,8 @@
       "not-a-family-tree": "To nie jest plik drzewa Family Insight.",
       "newer-version": "To drzewo zapisano w nowszej wersji Family Insight. Zaktualizuj aplikację, aby je otworzyć.",
       "invalid-data": "Plik zawiera nieprawidłowe dane i nie można go bezpiecznie otworzyć."
-    }
+    },
+    "csvFilter": "Arkusz CSV"
   },
   "issues": {
     "death-before-birth": "Data śmierci jest wcześniejsza niż data urodzenia.",
@@ -342,5 +343,20 @@
       "death": "Owdowienie:",
       "other": "Koniec związku z:"
     }
+  },
+  "csv": {
+    "exportTitle": "Eksport do CSV",
+    "exportDescription": "Tworzy arkusz, który otworzysz w Excelu, LibreOffice lub Arkuszach Google. Zdjęcia, daty związków i adopcje zostają tylko w plikach .finsight.",
+    "exportButton": "Eksportuj…",
+    "delimiter": "Separator kolumn",
+    "comma": "Przecinek ( , )",
+    "semicolon": "Średnik ( ; )",
+    "delimiterHint": "Excel z polskimi ustawieniami regionalnymi oczekuje średnika.",
+    "headerLanguage": "Nazwy kolumn",
+    "exported_one": "Wyeksportowano {{count}} osobę",
+    "exported_few": "Wyeksportowano {{count}} osoby",
+    "exported_many": "Wyeksportowano {{count}} osób",
+    "exported_other": "Wyeksportowano {{count}} osoby",
+    "showInFolder": "Pokaż w folderze"
   }
 }

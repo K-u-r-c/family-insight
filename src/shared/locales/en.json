@@ -229,7 +229,8 @@
       "not-a-family-tree": "This isn't a Family Insight tree file.",
       "newer-version": "This tree was saved by a newer version of Family Insight. Please update the app to open it.",
       "invalid-data": "The file contains invalid data and can't be opened safely."
-    }
+    },
+    "csvFilter": "CSV spreadsheet"
   },
   "issues": {
     "death-before-birth": "The date of death is before the date of birth.",
@@ -328,5 +329,18 @@
       "death": "Widowed:",
       "other": "Ended with"
     }
+  },
+  "csv": {
+    "exportTitle": "Export to CSV",
+    "exportDescription": "Creates a spreadsheet file you can open in Excel, LibreOffice or Google Sheets. Photos, partnership dates and adoptive links are kept only in .finsight files.",
+    "exportButton": "Export…",
+    "delimiter": "Column separator",
+    "comma": "Comma ( , )",
+    "semicolon": "Semicolon ( ; )",
+    "delimiterHint": "Excel with Polish regional settings expects a semicolon.",
+    "headerLanguage": "Column names",
+    "exported_one": "Exported {{count}} person",
+    "exported_other": "Exported {{count}} people",
+    "showInFolder": "Show in folder"
   }
 }

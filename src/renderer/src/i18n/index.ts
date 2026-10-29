@@ -25,7 +25,8 @@ export async function initI18n(language: string): Promise<void> {
 /** Switches the UI language; main persists it and re-localises the native menu. */
 export async function changeLanguage(language: Language): Promise<void> {
   await i18next.changeLanguage(language)
-  await useSettings.getState().update({ language })
+  // Sensible CSV default for the language (Polish Excel expects semicolons).
+  await useSettings.getState().update({ language, csvDelimiter: language === 'pl' ? ';' : ',' })
 }
 
 export default i18next
