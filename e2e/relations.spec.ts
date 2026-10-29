@@ -19,23 +19,23 @@ test('build a three-generation family from one person', async () => {
   await expect(page.getByRole('heading', { name: 'Józef' })).toBeVisible()
 
   // Back to Jan via the Children list, then add the mother.
-  await page.getByRole('button', { name: 'Jan', exact: true }).click()
+  await page.getByTitle('Go to Jan').click()
   await page.getByRole('button', { name: 'Mother' }).click()
   await page.getByLabel('Given names').fill('Maria')
   await page.getByLabel('Given names').press('Enter')
   // The mother was partnered with the father automatically.
-  await expect(page.getByRole('button', { name: 'Józef', exact: true }).first()).toBeVisible()
+  await expect(page.getByTitle('Go to Józef').first()).toBeVisible()
 
-  await page.getByRole('button', { name: 'Jan', exact: true }).first().click()
+  await page.getByTitle('Go to Jan').first().click()
   await page.getByRole('button', { name: 'Child', exact: true }).click()
   await page.getByLabel('Given names').fill('Ola')
   await page.getByLabel('Given names').press('Enter')
 
   await expect(page.getByText('4 people')).toBeVisible()
-  await page.getByRole('button', { name: 'Jan', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Józef', exact: true })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Maria', exact: true })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Ola', exact: true })).toBeVisible()
+  await page.getByTitle('Go to Jan').click()
+  await expect(page.getByTitle('Go to Józef')).toBeVisible()
+  await expect(page.getByTitle('Go to Maria')).toBeVisible()
+  await expect(page.getByTitle('Go to Ola')).toBeVisible()
 
   // Self-link is rejected with a friendly message (cycle): link Ola as Jan's parent.
   await page.getByRole('button', { name: 'Link an existing person' }).first().click()

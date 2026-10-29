@@ -5,6 +5,7 @@
 
 export type ThemePreference = 'system' | 'light' | 'dark'
 export type CsvDelimiter = ',' | ';'
+export type CardDensity = 'comfortable' | 'compact'
 
 export interface RecentFile {
   path: string
@@ -33,6 +34,8 @@ export interface Settings {
   recentFiles: RecentFile[]
   windowBounds?: WindowBounds
   csvDelimiter: CsvDelimiter
+  density: CardDensity
+  showMinimap: boolean
   autosave: boolean
   backups: boolean
   panels: PanelSettings
@@ -47,6 +50,8 @@ export function defaultSettings(language: string): Settings {
     theme: 'system',
     recentFiles: [],
     csvDelimiter: language === 'pl' ? ';' : ',',
+    density: 'comfortable',
+    showMinimap: true,
     autosave: true,
     backups: true,
     panels: { sidebarOpen: true, sidebarWidth: 280, detailsWidth: 380 }
@@ -72,6 +77,8 @@ export function sanitizeSettings(
   if (isLanguage(src.language)) out.language = src.language as string
   if (src.theme === 'system' || src.theme === 'light' || src.theme === 'dark') out.theme = src.theme
   if (src.csvDelimiter === ',' || src.csvDelimiter === ';') out.csvDelimiter = src.csvDelimiter
+  if (src.density === 'comfortable' || src.density === 'compact') out.density = src.density
+  if (typeof src.showMinimap === 'boolean') out.showMinimap = src.showMinimap
   if (typeof src.autosave === 'boolean') out.autosave = src.autosave
   if (typeof src.backups === 'boolean') out.backups = src.backups
   if (Array.isArray(src.recentFiles)) {

@@ -1,15 +1,237 @@
-import { Sprout, UserPlus } from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Home, Pencil, Sprout, Trash2, UserPlus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Button, EmptyState } from '@renderer/components/ui'
+import { layoutFamily, type Layout } from '@core/layout/layout'
+import { searchPersons } from '@core/search'
+import { Button, EmptyState, Menu, type MenuAnchor, type MenuEntry } from '@renderer/components/ui'
+import { deletePersonWithConfirm } from '@renderer/features/person/deletePerson'
+import { addNewRelative, runCommand } from '@renderer/features/person/relationActions'
+import { setRootCommand } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
+import { useSettings } from '@renderer/store/settings'
+import { centerViewport, fitViewport, useTreeView, zoomViewport } from '@renderer/store/treeView'
+import { useWorkspaceUi } from '@renderer/store/workspaceUi'
+import { EdgesLayer } from './EdgesLayer'
+import { PersonCard } from './PersonCard'
 import styles from './TreeCanvas.module.css'
+
+const SIZES = {
+  comfortable: {
+    nodeWidth: 220,
+    nodeHeight: 64,
+    partnerGap: 28,
+    siblingGap: 32,
+    generationGap: 76
+  },
+  compact: { nodeWidth: 172, nodeHeight: 48, partnerGap: 20, siblingGap: 22, generationGap: 56 }
+}
+
+/** Focuses the given-names field of the person editor once it is rendered. */
+export function focusEditor(): void {
+  requestAnimationFrame(() => document.getElementById('person-given-names')?.focus())
+}
+
+export function useLayout(): Layout | null {
+  const tree = useDocument((s) => s.tree)
+  const density = useSettings((s) => s.settings.density)
+  const mode = useTreeView((s) => s.mode)
+  const depth = useTreeView((s) => s.depth)
+  const collapsed = useTreeView((s) => s.collapsed)
+  const selected = useDocument((s) => s.selectedPersonId)
+  const focusId = tree?.meta.rootPersonId ?? selected ?? undefined
+  return useMemo(
+    () =>
+      tree
+        ? layoutFamily(tree, {
+            ...SIZES[density],
+            mode,
+            depth,
+            collapsed,
+            focusId: mode === 'family' ? tree.meta.rootPersonId : (focusId ?? undefined)
+          })
+        : null,
+    [tree, density, mode, depth, collapsed, focusId]
+  )
+}
 
 export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.JSX.Element {
   const { t } = useTranslation()
-  const count = useDocument((s) => (s.tree ? Object.keys(s.tree.persons).length : 0))
-  return (
-    <div className={styles.canvas}>
-      {count === 0 && (
+  const tree = useDocument((s) => s.tree)!
+  const selectedId = useDocument((s) => s.selectedPersonId)
+  const select = useDocument((s) => s.select)
+  const density = useSettings((s) => s.settings.density)
+  const query = useWorkspaceUi((s) => s.query)
+  const viewport = useTreeView((s) => s.viewport)
+  const animate = useTreeView((s) => s.animate)
+  const size = useTreeView((s) => s.size)
+  const collapsed = useTreeView((s) => s.collapsed)
+  const { setViewport, setSize, toggleCollapsed } = useTreeView.getState()
+  const layout = useLayout()
+  const ref = useRef<HTMLDivElement>(null)
+  const [menu, setMenu] = useState<{ anchor: MenuAnchor; entries: MenuEntry[] } | null>(null)
+  const [panning, setPanning] = useState(false)
+
+  const count = Object.keys(tree.persons).length
+  const positions = useMemo(() => new Map(layout?.nodes.map((n) => [n.id, n]) ?? []), [layout])
+  const matches = useMemo(
+    () => (query.trim() ? new Set(searchPersons(tree, query).map((p) => p.id)) : null),
+    [tree, query]
+  )
+
+  // Track the canvas size.
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setSize(entry.contentRect.width, entry.contentRect.height)
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [setSize])
+
+  // Fit the whole tree when a document is opened (or the canvas first gets a size).
+  const fittedFor = useRef<object | null>(null)
+  const history = useDocument((s) => s.history)
+  useEffect(() => {
+    if (!layout || !size.width || !layout.nodes.length) return
+    const docKey = history?.past[0]?.state ?? history?.present ?? null
+    if (fittedFor.current === docKey) return
+    fittedFor.current = docKey
+    setViewport(fitViewport({ x: 0, y: 0, width: layout.width, height: layout.height }, size))
+  }, [layout, size, history, setViewport])
+
+  // Bring the selected person into view when the selection changes.
+  const lastSelected = useRef<string | null>(null)
+  useEffect(() => {
+    if (!selectedId || selectedId === lastSelected.current) return
+    lastSelected.current = selectedId
+    const node = positions.get(selectedId)
+    if (!node || !size.width) return
+    const { viewport: vp } = useTreeView.getState()
+    const left = node.x * vp.k + vp.x
+    const top = node.y * vp.k + vp.y
+    const inView =
+      left > 40 &&
+      top > 40 &&
+      left + node.width * vp.k < size.width - 40 &&
+      top + node.height * vp.k < size.height - 40
+    if (!inView)
+      setViewport(
+        centerViewport({ x: node.x + node.width / 2, y: node.y + node.height / 2 }, vp, size),
+        true
+      )
+  }, [selectedId, positions, size, setViewport])
+
+  // Wheel zoom around the cursor (non-passive so the page does not scroll).
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const onWheel = (e: WheelEvent): void => {
+      e.preventDefault()
+      const rect = el.getBoundingClientRect()
+      const factor = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0015))
+      const { viewport: vp } = useTreeView.getState()
+      setViewport(zoomViewport(vp, factor, { x: e.clientX - rect.left, y: e.clientY - rect.top }))
+    }
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [setViewport])
+
+  const drag = useRef<{ x: number; y: number; vx: number; vy: number; moved: boolean } | null>(null)
+  const onPointerDown = (e: React.PointerEvent): void => {
+    if (e.button !== 0 && e.button !== 1) return
+    e.currentTarget.setPointerCapture(e.pointerId)
+    drag.current = { x: e.clientX, y: e.clientY, vx: viewport.x, vy: viewport.y, moved: false }
+  }
+  const onPointerMove = (e: React.PointerEvent): void => {
+    const d = drag.current
+    if (!d) return
+    const dx = e.clientX - d.x
+    const dy = e.clientY - d.y
+    if (!d.moved && Math.hypot(dx, dy) < 3) return
+    if (!d.moved) setPanning(true)
+    d.moved = true
+    setViewport({ ...useTreeView.getState().viewport, x: d.vx + dx, y: d.vy + dy })
+  }
+  const onPointerUp = (): void => {
+    const d = drag.current
+    drag.current = null
+    setPanning(false)
+    if (d && !d.moved) select(null)
+  }
+
+  const onEdit = useCallback(
+    (id: string) => {
+      select(id)
+      focusEditor()
+    },
+    [select]
+  )
+
+  const onContextMenu = useCallback(
+    (id: string, x: number, y: number) => {
+      select(id)
+      const person = useDocument.getState().tree?.persons[id]
+      if (!person) return
+      const isRoot = useDocument.getState().tree?.meta.rootPersonId === id
+      setMenu({
+        anchor: { x, y },
+        entries: [
+          { label: t('common.edit'), icon: Pencil, shortcut: 'Enter', onSelect: () => onEdit(id) },
+          { type: 'separator' },
+          { type: 'heading', label: t('tree.addRelative') },
+          ...(['father', 'mother', 'partner', 'child', 'sibling'] as const).map((role) => ({
+            label: t(`relations.add.${role}`),
+            icon: UserPlus,
+            onSelect: () => void addNewRelative(person, role).then(focusEditor)
+          })),
+          { type: 'separator' },
+          {
+            label: isRoot ? t('tree.unsetRoot') : t('tree.setRoot'),
+            icon: Home,
+            onSelect: () => void runCommand(setRootCommand(isRoot ? undefined : id))
+          },
+          {
+            label: t('person.delete'),
+            icon: Trash2,
+            danger: true,
+            shortcut: 'Del',
+            onSelect: () => void deletePersonWithConfirm(id)
+          }
+        ]
+      })
+    },
+    [select, t, onEdit]
+  )
+
+  // Only render cards inside (or near) the visible area.
+  const visible = useMemo(() => {
+    if (!layout) return []
+    if (!size.width) return layout.nodes
+    const margin = 300
+    const x0 = (-viewport.x - margin) / viewport.k
+    const y0 = (-viewport.y - margin) / viewport.k
+    const x1 = (size.width - viewport.x + margin) / viewport.k
+    const y1 = (size.height - viewport.y + margin) / viewport.k
+    return layout.nodes.filter(
+      (n) => n.x + n.width > x0 && n.x < x1 && n.y + n.height > y0 && n.y < y1
+    )
+  }, [layout, viewport, size])
+
+  const bounds = useMemo(() => {
+    if (!layout || !layout.nodes.length) return { minX: 0, minY: 0, width: 1, height: 1 }
+    const pad = 40
+    return {
+      minX: -pad,
+      minY: -pad,
+      width: layout.width + pad * 2,
+      height: layout.height + pad * 2
+    }
+  }, [layout])
+
+  if (count === 0) {
+    return (
+      <div className={styles.canvas}>
         <EmptyState
           icon={Sprout}
           title={t('tree.emptyTitle')}
@@ -20,7 +242,65 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
             </Button>
           }
         />
-      )}
+      </div>
+    )
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={styles.canvas}
+      data-panning={panning || undefined}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      role="application"
+      aria-label={t('tree.canvasLabel')}
+      style={{
+        backgroundPosition: `${viewport.x}px ${viewport.y}px`,
+        backgroundSize: `${22 * viewport.k}px ${22 * viewport.k}px`
+      }}
+    >
+      <div
+        className={styles.world}
+        data-animate={animate || undefined}
+        style={{ transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.k})` }}
+      >
+        {layout && (
+          <EdgesLayer
+            edges={layout.edges}
+            bounds={bounds}
+            highlight={selectedId}
+            dimmed={matches !== null}
+          />
+        )}
+        {visible.map((node) => {
+          const person = tree.persons[node.id]!
+          return (
+            <PersonCard
+              key={node.id}
+              person={person}
+              node={node}
+              compact={density === 'compact'}
+              selected={node.id === selectedId}
+              root={node.id === tree.meta.rootPersonId}
+              match={matches?.has(node.id) ?? false}
+              dimmed={matches !== null && !matches.has(node.id)}
+              collapsed={collapsed.has(node.id)}
+              onSelect={select}
+              onEdit={onEdit}
+              onContextMenu={onContextMenu}
+              onToggleCollapse={toggleCollapsed}
+            />
+          )
+        })}
+      </div>
+      <Menu
+        anchor={menu?.anchor ?? null}
+        entries={menu?.entries ?? []}
+        onClose={() => setMenu(null)}
+      />
     </div>
   )
 }

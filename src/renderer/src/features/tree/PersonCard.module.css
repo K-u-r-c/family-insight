@@ -1,0 +1,186 @@
+.wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition:
+    transform var(--duration-slow) var(--easing),
+    opacity var(--duration-base) var(--easing);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--space-3) 0 calc(var(--space-3) + 2px);
+  overflow: hidden;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--duration-fast) var(--easing),
+    border-color var(--duration-fast) var(--easing),
+    transform var(--duration-fast) var(--easing);
+}
+
+/* Sex accent: a slim strip on the left edge. */
+.card::before {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 0;
+  width: 3px;
+  content: '';
+  background: var(--accent);
+  border-radius: 0 3px 3px 0;
+}
+
+.female {
+  --accent: var(--color-female);
+}
+
+.male {
+  --accent: var(--color-male);
+}
+
+.other {
+  --accent: var(--color-other);
+}
+
+.unknown {
+  --accent: var(--color-border-strong);
+}
+
+.card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.selected,
+.selected:hover {
+  border-color: var(--color-accent);
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    var(--shadow-md);
+}
+
+.match {
+  box-shadow:
+    0 0 0 3px var(--color-highlight),
+    var(--shadow-md);
+}
+
+.selected.match {
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    0 0 0 5px var(--color-highlight);
+}
+
+.dimmed {
+  opacity: 0.32;
+}
+
+.deceased .name {
+  color: var(--color-text-muted);
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  overflow: hidden;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.born {
+  color: var(--color-text-subtle);
+}
+
+.cross {
+  color: var(--color-text-subtle);
+}
+
+.compact {
+  gap: var(--space-2);
+  padding: 0 var(--space-2) 0 calc(var(--space-2) + 2px);
+  border-radius: var(--radius-md);
+}
+
+.compact .name {
+  font-size: var(--text-md);
+}
+
+.compact .meta {
+  font-size: var(--text-xs);
+}
+
+.rootBadge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  color: var(--color-accent-text);
+  background: var(--color-accent-soft);
+  border-radius: 50%;
+}
+
+.toggle {
+  position: absolute;
+  bottom: -11px;
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  transform: translateX(-50%);
+}
+
+.toggle:hover {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap {
+    transition: none;
+  }
+}

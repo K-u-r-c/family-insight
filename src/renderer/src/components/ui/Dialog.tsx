@@ -64,6 +64,8 @@ export function Dialog({
       onMouseDown={(e) => {
         if (e.target === ref.current) onClose()
       }}
+      onPointerDown={(e) => e.stopPropagation()}
+      onPointerUp={(e) => e.stopPropagation()}
     >
       <div className={styles.header}>
         {icon && (

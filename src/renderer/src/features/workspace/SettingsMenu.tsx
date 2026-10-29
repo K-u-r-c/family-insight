@@ -37,6 +37,13 @@ export function SettingsMenu(): React.JSX.Element {
       onSelect: () => void changeLanguage(lang)
     })),
     { type: 'separator' },
+    { type: 'heading', label: t('settings.density') },
+    ...(['comfortable', 'compact'] as const).map((density) => ({
+      label: t(`settings.densityOption.${density}`),
+      checked: settings.density === density,
+      onSelect: () => void update({ density })
+    })),
+    { type: 'separator' },
     {
       label: t('settings.autosave'),
       checked: settings.autosave,

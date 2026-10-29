@@ -66,6 +66,7 @@ export function PersonEditor({ person }: { person: Person }): React.JSX.Element 
       <fieldset className={styles.group}>
         <legend className={styles.legend}>{t('person.name')}</legend>
         <CommitTextField
+          id="person-given-names"
           label={t('person.givenNames')}
           value={person.givenNames}
           onCommit={(givenNames) => update({ givenNames: givenNames.trim() })}

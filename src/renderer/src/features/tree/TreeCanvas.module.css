@@ -2,7 +2,63 @@
   position: absolute;
   inset: 0;
   display: flex;
+  overflow: hidden;
+  cursor: grab;
   background-color: var(--color-canvas);
   background-image: radial-gradient(var(--color-canvas-dot) 1px, transparent 1px);
   background-size: 22px 22px;
+  outline: none;
+  touch-action: none;
+}
+
+.canvas[data-panning] {
+  cursor: grabbing;
+}
+
+.world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+}
+
+.world[data-animate] {
+  transition: transform var(--duration-slow) var(--easing);
+}
+
+.edges {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--easing);
+}
+
+.edgesDimmed {
+  opacity: 0.4;
+}
+
+.edge {
+  fill: none;
+  stroke: var(--color-edge);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.partnerEdge {
+  stroke-width: 2.2;
+}
+
+.dashed {
+  stroke-dasharray: 5 5;
+}
+
+.activeEdge {
+  stroke: var(--color-accent);
+  stroke-width: 2.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world[data-animate] {
+    transition: none;
+  }
 }

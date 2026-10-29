@@ -1,0 +1,515 @@
+{
+  "format": "family-insight",
+  "schemaVersion": 1,
+  "meta": {
+    "name": "Kowalscy",
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z",
+    "rootPersonId": "jan"
+  },
+  "persons": {
+    "jozef": {
+      "id": "jozef",
+      "givenNames": "Józef",
+      "surname": "Kowalski",
+      "sex": "male",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1898",
+          "qualifier": "about"
+        },
+        "place": "Kraków"
+      },
+      "death": {
+        "date": {
+          "value": "1971-03-02",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      }
+    },
+    "maria": {
+      "id": "maria",
+      "givenNames": "Maria",
+      "surname": "Kowalska",
+      "sex": "female",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1902-08-15",
+          "qualifier": "exact"
+        },
+        "place": "Wieliczka"
+      },
+      "death": {
+        "date": {
+          "value": "1988",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "birthSurname": "Nowak"
+    },
+    "stefan": {
+      "id": "stefan",
+      "givenNames": "Stefan",
+      "surname": "Wiśniewski",
+      "sex": "male",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1900",
+          "qualifier": "exact"
+        },
+        "place": "Poznań"
+      },
+      "death": {
+        "date": {
+          "value": "1944",
+          "qualifier": "exact"
+        },
+        "place": "Warszawa"
+      }
+    },
+    "helena": {
+      "id": "helena",
+      "givenNames": "Helena",
+      "surname": "Wiśniewska",
+      "sex": "female",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1905-01-20",
+          "qualifier": "exact"
+        },
+        "place": "Poznań"
+      },
+      "death": {
+        "date": {
+          "value": "1990-11-11",
+          "qualifier": "exact"
+        },
+        "place": "Poznań"
+      },
+      "birthSurname": "Zielińska"
+    },
+    "jan": {
+      "id": "jan",
+      "givenNames": "Jan",
+      "surname": "Kowalski",
+      "sex": "male",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1925-11-04",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "death": {
+        "date": {
+          "value": "2001-06-30",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "notes": "Inżynier, budował mosty na Wiśle.\nKochał wędkowanie."
+    },
+    "anna": {
+      "id": "anna",
+      "givenNames": "Anna",
+      "surname": "Kowalska",
+      "sex": "female",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1928-04-12",
+          "qualifier": "exact"
+        },
+        "place": "Poznań"
+      },
+      "death": {
+        "date": {
+          "value": "2015",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "birthSurname": "Wiśniewska"
+    },
+    "zofia": {
+      "id": "zofia",
+      "givenNames": "Zofia",
+      "surname": "Kowalska",
+      "sex": "female",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1930-02-01",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "death": {
+        "date": {
+          "value": "1931",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      }
+    },
+    "ewa": {
+      "id": "ewa",
+      "givenNames": "Ewa",
+      "surname": "Lis",
+      "sex": "female",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1952-07-21",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "birthSurname": "Kowalska",
+      "living": true
+    },
+    "tomasz": {
+      "id": "tomasz",
+      "givenNames": "Tomasz",
+      "surname": "Lis",
+      "sex": "male",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1950-03-03",
+          "qualifier": "exact"
+        },
+        "place": "Gdańsk"
+      },
+      "living": true
+    },
+    "piotr": {
+      "id": "piotr",
+      "givenNames": "Piotr",
+      "surname": "Kowalski",
+      "sex": "male",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1955-09-09",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "living": true
+    },
+    "kasia": {
+      "id": "kasia",
+      "givenNames": "Katarzyna",
+      "surname": "Kowalska",
+      "sex": "female",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1958-12-24",
+          "qualifier": "exact"
+        },
+        "place": "Kraków"
+      },
+      "birthSurname": "Mazur",
+      "living": true
+    },
+    "ola": {
+      "id": "ola",
+      "givenNames": "Aleksandra",
+      "surname": "Lis",
+      "sex": "female",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1980-05-05",
+          "qualifier": "exact"
+        },
+        "place": "Gdańsk"
+      },
+      "living": true
+    },
+    "marek": {
+      "id": "marek",
+      "givenNames": "Marek",
+      "surname": "Lis",
+      "sex": "male",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1983-10-10",
+          "qualifier": "exact"
+        },
+        "place": "Gdańsk"
+      },
+      "living": true
+    },
+    "kuba": {
+      "id": "kuba",
+      "givenNames": "Jakub",
+      "surname": "Kowalski",
+      "sex": "male",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1990-01-15",
+          "qualifier": "exact"
+        },
+        "place": "Kraków"
+      },
+      "living": true
+    },
+    "magda": {
+      "id": "magda",
+      "givenNames": "Magdalena",
+      "surname": "Nowicka",
+      "sex": "female",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z",
+      "birth": {
+        "date": {
+          "value": "1961",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "living": true
+    }
+  },
+  "relationships": {
+    "r1": {
+      "id": "r1",
+      "type": "partnership",
+      "partnerIds": [
+        "jozef",
+        "maria"
+      ],
+      "kind": "marriage",
+      "start": {
+        "date": {
+          "value": "1923",
+          "qualifier": "exact"
+        },
+        "place": "Kraków"
+      }
+    },
+    "r2": {
+      "id": "r2",
+      "type": "partnership",
+      "partnerIds": [
+        "stefan",
+        "helena"
+      ],
+      "kind": "marriage",
+      "start": {
+        "date": {
+          "value": "1926",
+          "qualifier": "exact"
+        }
+      }
+    },
+    "r3": {
+      "id": "r3",
+      "type": "parent-child",
+      "parentId": "jozef",
+      "childId": "jan",
+      "kind": "biological"
+    },
+    "r4": {
+      "id": "r4",
+      "type": "parent-child",
+      "parentId": "maria",
+      "childId": "jan",
+      "kind": "biological"
+    },
+    "r5": {
+      "id": "r5",
+      "type": "parent-child",
+      "parentId": "jozef",
+      "childId": "zofia",
+      "kind": "biological"
+    },
+    "r6": {
+      "id": "r6",
+      "type": "parent-child",
+      "parentId": "maria",
+      "childId": "zofia",
+      "kind": "biological"
+    },
+    "r7": {
+      "id": "r7",
+      "type": "parent-child",
+      "parentId": "stefan",
+      "childId": "anna",
+      "kind": "biological"
+    },
+    "r8": {
+      "id": "r8",
+      "type": "parent-child",
+      "parentId": "helena",
+      "childId": "anna",
+      "kind": "biological"
+    },
+    "r9": {
+      "id": "r9",
+      "type": "partnership",
+      "partnerIds": [
+        "jan",
+        "anna"
+      ],
+      "kind": "marriage",
+      "start": {
+        "date": {
+          "value": "1950-06-17",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      }
+    },
+    "r10": {
+      "id": "r10",
+      "type": "parent-child",
+      "parentId": "jan",
+      "childId": "ewa",
+      "kind": "biological"
+    },
+    "r11": {
+      "id": "r11",
+      "type": "parent-child",
+      "parentId": "anna",
+      "childId": "ewa",
+      "kind": "biological"
+    },
+    "r12": {
+      "id": "r12",
+      "type": "parent-child",
+      "parentId": "jan",
+      "childId": "piotr",
+      "kind": "biological"
+    },
+    "r13": {
+      "id": "r13",
+      "type": "parent-child",
+      "parentId": "anna",
+      "childId": "piotr",
+      "kind": "biological"
+    },
+    "r14": {
+      "id": "r14",
+      "type": "partnership",
+      "partnerIds": [
+        "tomasz",
+        "ewa"
+      ],
+      "kind": "marriage",
+      "start": {
+        "date": {
+          "value": "1978",
+          "qualifier": "exact"
+        }
+      }
+    },
+    "r15": {
+      "id": "r15",
+      "type": "parent-child",
+      "parentId": "tomasz",
+      "childId": "ola",
+      "kind": "biological"
+    },
+    "r16": {
+      "id": "r16",
+      "type": "parent-child",
+      "parentId": "ewa",
+      "childId": "ola",
+      "kind": "biological"
+    },
+    "r17": {
+      "id": "r17",
+      "type": "parent-child",
+      "parentId": "tomasz",
+      "childId": "marek",
+      "kind": "biological"
+    },
+    "r18": {
+      "id": "r18",
+      "type": "parent-child",
+      "parentId": "ewa",
+      "childId": "marek",
+      "kind": "biological"
+    },
+    "r19": {
+      "id": "r19",
+      "type": "partnership",
+      "partnerIds": [
+        "piotr",
+        "magda"
+      ],
+      "kind": "marriage",
+      "start": {
+        "date": {
+          "value": "1982",
+          "qualifier": "exact"
+        },
+        "place": "Łódź"
+      },
+      "end": {
+        "date": {
+          "value": "1987",
+          "qualifier": "exact"
+        },
+        "reason": "divorce"
+      }
+    },
+    "r20": {
+      "id": "r20",
+      "type": "partnership",
+      "partnerIds": [
+        "piotr",
+        "kasia"
+      ],
+      "kind": "marriage",
+      "start": {
+        "date": {
+          "value": "1988",
+          "qualifier": "exact"
+        },
+        "place": "Kraków"
+      }
+    },
+    "r21": {
+      "id": "r21",
+      "type": "parent-child",
+      "parentId": "piotr",
+      "childId": "kuba",
+      "kind": "biological"
+    },
+    "r22": {
+      "id": "r22",
+      "type": "parent-child",
+      "parentId": "kasia",
+      "childId": "kuba",
+      "kind": "biological"
+    }
+  }
+}

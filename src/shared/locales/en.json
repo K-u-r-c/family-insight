@@ -15,7 +15,12 @@
     "language": "Language",
     "theme": "Theme",
     "title": "Settings",
-    "autosave": "Save automatically"
+    "autosave": "Save automatically",
+    "density": "Cards",
+    "densityOption": {
+      "comfortable": "Comfortable",
+      "compact": "Compact"
+    }
   },
   "language": {
     "en": "English",
@@ -158,7 +163,15 @@
     "untitled": "My family",
     "emptyTitle": "Your tree is empty",
     "emptyText": "Start with yourself or the oldest ancestor you know, then add their family.",
-    "addFirst": "Add the first person"
+    "addFirst": "Add the first person",
+    "born": "née {{surname}}",
+    "rootPerson": "Root person",
+    "expand": "Show descendants of {{name}}",
+    "collapse": "Hide descendants of {{name}}",
+    "addRelative": "Add relative",
+    "setRoot": "Set as root person",
+    "unsetRoot": "Unset root person",
+    "canvasLabel": "Family tree"
   },
   "history": {
     "renameTree": "Rename tree",

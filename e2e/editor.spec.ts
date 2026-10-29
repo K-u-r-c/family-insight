@@ -40,7 +40,7 @@ test('delete a person with confirmation, then undo', async () => {
   await page.getByRole('button', { name: 'Ojciec' }).click()
   await page.getByLabel('Imiona').fill('Jan')
   await page.getByLabel('Imiona').press('Enter')
-  await page.getByRole('button', { name: 'Anna', exact: true }).click()
+  await page.getByTitle('Przejdź do: Anna').click()
   await expect(page.getByText('2 osoby')).toBeVisible()
 
   // Delete key on the selection (focus outside text fields).

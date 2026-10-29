@@ -99,6 +99,10 @@ export function Menu({ anchor, entries, onClose, label }: MenuProps): React.JSX.
       style={pos ?? { left: anchor.x, top: anchor.y, visibility: 'hidden' }}
       onKeyDown={onKeyDown}
       onContextMenu={(e) => e.preventDefault()}
+      // Portal events still bubble through the React tree; keep them away from e.g. the canvas.
+      onPointerDown={(e) => e.stopPropagation()}
+      onPointerUp={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
     >
       {entries.map((entry, i) => {
         if (entry.type === 'separator')

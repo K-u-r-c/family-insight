@@ -15,7 +15,12 @@
     "language": "Język",
     "theme": "Motyw",
     "title": "Ustawienia",
-    "autosave": "Zapisuj automatycznie"
+    "autosave": "Zapisuj automatycznie",
+    "density": "Karty",
+    "densityOption": {
+      "comfortable": "Wygodne",
+      "compact": "Kompaktowe"
+    }
   },
   "language": {
     "en": "English",
@@ -162,7 +167,15 @@
     "untitled": "Moja rodzina",
     "emptyTitle": "Twoje drzewo jest puste",
     "emptyText": "Zacznij od siebie albo od najstarszego znanego przodka, a potem dodaj jego rodzinę.",
-    "addFirst": "Dodaj pierwszą osobę"
+    "addFirst": "Dodaj pierwszą osobę",
+    "born": "z d. {{surname}}",
+    "rootPerson": "Osoba główna",
+    "expand": "Pokaż potomków: {{name}}",
+    "collapse": "Ukryj potomków: {{name}}",
+    "addRelative": "Dodaj krewnego",
+    "setRoot": "Ustaw jako osobę główną",
+    "unsetRoot": "Usuń oznaczenie osoby głównej",
+    "canvasLabel": "Drzewo genealogiczne"
   },
   "history": {
     "renameTree": "Zmiana nazwy drzewa",
