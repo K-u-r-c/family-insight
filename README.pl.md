@@ -60,6 +60,7 @@ Wydania dla wszystkich trzech systemów buduje GitHub Actions po wypchnięciu ta
 - [Architektura](docs/ARCHITECTURE.md) (EN)
 - [Format CSV](docs/CSV_FORMAT.md) (EN)
 - [Format pliku `.finsight`](docs/FILE_FORMAT.md) (EN)
+- [Tłumaczenia](docs/I18N.md) (EN)
 - [Jak współtworzyć](CONTRIBUTING.md) (EN)
 
 ## Licencja

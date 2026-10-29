@@ -181,7 +181,9 @@ export function Gallery(): React.JSX.Element {
         </section>
 
         <section className={styles.card}>
-          <h2 className={styles.cardTitle}>{t('gallery.people')}</h2>
+          <h2 className={styles.cardTitle}>
+            {t('gallery.people')} · {t('people.count', { count: 6 })}
+          </h2>
           <div className={styles.row}>
             <Avatar givenNames="Anna" surname="Kowalska" sex="female" size={48} />
             <Avatar givenNames="Jan" surname="Nowak" sex="male" size={48} />

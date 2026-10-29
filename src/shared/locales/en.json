@@ -66,15 +66,9 @@
     "delete": "Delete",
     "edit": "Edit",
     "add": "Add",
-    "remove": "Remove",
     "undo": "Undo",
     "redo": "Redo",
-    "yes": "Yes",
-    "no": "No",
-    "unknown": "Unknown",
     "search": "Search",
-    "more": "More",
-    "back": "Back",
     "done": "Done",
     "notifications": "Notifications",
     "loading": "Loading…"
@@ -101,5 +95,9 @@
   },
   "person": {
     "sex": "Sex"
+  },
+  "people": {
+    "count_one": "{{count}} person",
+    "count_other": "{{count}} people"
   }
 }

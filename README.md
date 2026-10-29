@@ -68,6 +68,7 @@ Releases are built by GitHub Actions for all three platforms when a `v*` tag is 
 - [Architecture](docs/ARCHITECTURE.md)
 - [CSV format](docs/CSV_FORMAT.md)
 - [`.finsight` file format](docs/FILE_FORMAT.md)
+- [Translations](docs/I18N.md)
 - [Contributing](CONTRIBUTING.md)
 
 ## Tech stack

@@ -66,15 +66,9 @@
     "delete": "Usuń",
     "edit": "Edytuj",
     "add": "Dodaj",
-    "remove": "Usuń",
     "undo": "Cofnij",
     "redo": "Ponów",
-    "yes": "Tak",
-    "no": "Nie",
-    "unknown": "Nieznane",
     "search": "Szukaj",
-    "more": "Więcej",
-    "back": "Wstecz",
     "done": "Gotowe",
     "notifications": "Powiadomienia",
     "loading": "Wczytywanie…"
@@ -101,5 +95,11 @@
   },
   "person": {
     "sex": "Płeć"
+  },
+  "people": {
+    "count_one": "{{count}} osoba",
+    "count_few": "{{count}} osoby",
+    "count_many": "{{count}} osób",
+    "count_other": "{{count}} osoby"
   }
 }
