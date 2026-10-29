@@ -77,7 +77,7 @@ export async function loadTreeFile(result: FileReadResult): Promise<boolean> {
 
 export async function openTree(): Promise<void> {
   if (!(await guardUnsaved())) return
-  const result = await api().openFileDialog('tree')
+  const result = await api().openFileDialog('finsight')
   if (result) await loadTreeFile(result)
 }
 
@@ -103,7 +103,7 @@ async function writeTo(path: string): Promise<boolean> {
 export async function saveTreeAs(): Promise<boolean> {
   const tree = useDocument.getState().tree
   if (!tree) return false
-  const path = await api().saveFileDialog('tree', tree.meta.name)
+  const path = await api().saveFileDialog('finsight', tree.meta.name)
   if (!path) return false
   const ok = await writeTo(path)
   if (ok) toast({ message: t('files.savedTo', { path }), tone: 'success' })

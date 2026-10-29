@@ -1,6 +1,7 @@
 import { join } from 'node:path'
 import { app, BrowserWindow, shell } from 'electron'
 import { resolveLanguage } from '@shared/i18n'
+import { registerBuiltInFormats } from '@core/io/formats'
 import { guardWindowClose, pathFromArgv, registerFileHandlers, requestOpen } from './files'
 import { initMainI18n, setMainLanguage } from './i18n'
 import { registerIpcHandlers } from './ipc'
@@ -89,6 +90,7 @@ if (!hasLock) {
       }
     })
     registerIpcHandlers()
+    registerBuiltInFormats()
     registerFileHandlers()
     buildMenu()
     createWindow()

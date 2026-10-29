@@ -3,10 +3,10 @@ import { extname, resolve } from 'node:path'
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
 import { decodeText } from '@core/file/encoding'
 import { FILE_EXTENSION } from '@core/file/format'
+import { getFormat, listFormats, type FormatAdapter } from '@core/io/registry'
 import {
   IpcChannel,
   type FileErrorCode,
-  type FileKind,
   type FileReadResult,
   type FileWriteResult,
   type UnsavedChoice
@@ -15,19 +15,26 @@ import { writeFileAtomic } from './fsUtils'
 import { t } from './i18n'
 
 const MAX_FILE_BYTES = 200 * 1024 * 1024
-const READABLE = new Set([`.${FILE_EXTENSION}`, '.csv', '.txt', '.tsv'])
 
 /** Paths the user picked in a save dialog or opened this session: the only writable ones. */
 const writable = new Set<string>()
 let pendingPath: string | null = null
 
-function filters(kind: FileKind): Electron.FileFilter[] {
-  return kind === 'tree'
-    ? [{ name: t('files.treeFilter'), extensions: [FILE_EXTENSION] }]
-    : [
-        { name: t('files.csvFilter'), extensions: ['csv', 'txt', 'tsv'] },
-        { name: t('files.allFiles'), extensions: ['*'] }
-      ]
+function readable(path: string): boolean {
+  const ext = extname(path).toLowerCase().slice(1)
+  return listFormats().some((f) => f.extensions.includes(ext))
+}
+
+function formatOrNative(id: unknown): FormatAdapter {
+  return (typeof id === 'string' && getFormat(id)) || getFormat('finsight')!
+}
+
+function filters(format: FormatAdapter): Electron.FileFilter[] {
+  const own = {
+    name: t(format.labelKey as never) as unknown as string,
+    extensions: format.extensions
+  }
+  return format.kind === 'native' ? [own] : [own, { name: t('files.allFiles'), extensions: ['*'] }]
 }
 
 function errorCode(error: unknown): FileErrorCode {
@@ -39,8 +46,7 @@ function errorCode(error: unknown): FileErrorCode {
 
 export async function readFile(path: string): Promise<FileReadResult> {
   const full = resolve(path)
-  if (!READABLE.has(extname(full).toLowerCase()))
-    return { ok: false, path: full, error: 'unsupported' }
+  if (!readable(full)) return { ok: false, path: full, error: 'unsupported' }
   try {
     const stat = await fs.stat(full)
     if (stat.size > MAX_FILE_BYTES) return { ok: false, path: full, error: 'too-large' }
@@ -77,12 +83,12 @@ export function requestOpen(path: string): void {
 export function registerFileHandlers(): void {
   ipcMain.handle(
     IpcChannel.FileOpenDialog,
-    async (event, kind: unknown): Promise<FileReadResult | null> => {
-      const fileKind: FileKind = kind === 'csv' ? 'csv' : 'tree'
+    async (event, id: unknown): Promise<FileReadResult | null> => {
+      const format = formatOrNative(id)
       const window = BrowserWindow.fromWebContents(event.sender)
       const options: Electron.OpenDialogOptions = {
         properties: ['openFile'],
-        filters: filters(fileKind)
+        filters: filters(format)
       }
       const result = window
         ? await dialog.showOpenDialog(window, options)
@@ -97,16 +103,16 @@ export function registerFileHandlers(): void {
     typeof path === 'string' && path.length > 0 ? readFile(path) : { ok: false, error: 'not-found' }
   )
 
-  ipcMain.handle(IpcChannel.FileSaveDialog, async (event, kind: unknown, suggested: unknown) => {
-    const fileKind: FileKind = kind === 'csv' ? 'csv' : 'tree'
-    const ext = fileKind === 'tree' ? FILE_EXTENSION : 'csv'
+  ipcMain.handle(IpcChannel.FileSaveDialog, async (event, id: unknown, suggested: unknown) => {
+    const format = formatOrNative(id)
+    const ext = format.extensions[0]!
     const base = (typeof suggested === 'string' && suggested.trim() ? suggested.trim() : 'family')
       .replace(/[\\/:*?"<>|]+/g, '-')
       .slice(0, 100)
     const window = BrowserWindow.fromWebContents(event.sender)
     const options: Electron.SaveDialogOptions = {
       defaultPath: resolve(app.getPath('documents'), `${base}.${ext}`),
-      filters: [filters(fileKind)[0]!]
+      filters: [filters(format)[0]!]
     }
     const result = window
       ? await dialog.showSaveDialog(window, options)

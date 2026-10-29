@@ -6,7 +6,7 @@ src/
 │   ├── model/   Types (Person, Relationship, FamilyTree) and graph queries/operations
 │   ├── date/    FuzzyDate parsing, formatting, plausibility
 │   ├── file/    .finsight serialisation, schema, migrations, text decoding
-│   ├── io/      Import/export format registry, CSV          (planned)
+│   ├── io/      Import/export format registry and adapters (CSV, …)
 │   └── layout/  Family graph layout engine
 ├── shared/      Code shared by main + renderer: IPC contract, i18n resources/locales
 ├── main/        Electron main process: windows, native menu, dialogs, file system, settings
@@ -64,3 +64,19 @@ Algorithm:
    line (or the parent's bottom), run to a bus halfway between rows and drop to the child.
 
 Disconnected groups are laid out side by side; output is deterministic.
+
+## How to add a file format
+
+Formats are pluggable through `src/core/io/registry.ts`:
+
+1. Implement a `FormatAdapter` in `src/core/io/<format>/` (pure TypeScript):
+   - `id` (used over IPC), `extensions` (first one is used when saving), `labelKey` (i18n key
+     of the file-dialog label) and `kind` (`native` keeps everything, `interchange` may lose
+     information);
+   - `import(content, options)` returning `{ tree, errors, warnings }` with i18n issue codes,
+     and/or `export(tree, options)` returning the file text.
+2. Register it in `registerBuiltInFormats()` (`src/core/io/formats.ts`). The main process
+   then accepts the extension, and `openFileDialog(id)` / `saveFileDialog(id, name)` build the
+   right filters automatically.
+3. Add the label and any issue messages to both locale files, a menu entry if needed, and
+   unit tests including a round trip.

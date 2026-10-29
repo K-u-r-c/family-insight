@@ -210,7 +210,6 @@
   },
   "files": {
     "treeFilter": "Family Insight tree",
-    "csvFilter": "CSV spreadsheet",
     "allFiles": "All files",
     "unsavedTitle": "Do you want to save the changes to “{{name}}”?",
     "unsavedDetail": "Your changes will be lost if you don't save them.",

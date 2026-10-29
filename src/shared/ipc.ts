@@ -28,7 +28,8 @@ export interface AppInfo {
   locale: string
 }
 
-export type FileKind = 'tree' | 'csv'
+/** Id of a registered format (see `src/core/io/registry.ts`), e.g. `finsight` or `csv`. */
+export type FormatId = string
 
 export type FileErrorCode = 'not-found' | 'permission' | 'too-large' | 'unsupported' | 'io'
 
@@ -69,10 +70,10 @@ export interface FamilyInsightApi {
   /** Marks the window as having unsaved changes (macOS close-button dot). */
   setDocumentEdited(edited: boolean): Promise<void>
   /** Shows an open dialog; resolves to `null` when cancelled. */
-  openFileDialog(kind: FileKind): Promise<FileReadResult | null>
+  openFileDialog(format: FormatId): Promise<FileReadResult | null>
   readFile(path: string): Promise<FileReadResult>
   /** Shows a save dialog; the returned path becomes writable for this session. */
-  saveFileDialog(kind: FileKind, suggestedName: string): Promise<string | null>
+  saveFileDialog(format: FormatId, suggestedName: string): Promise<string | null>
   writeFile(path: string, content: string): Promise<FileWriteResult>
   showInFolder(path: string): Promise<void>
   /** A file the OS asked us to open before the UI was ready (double-click, argv). */

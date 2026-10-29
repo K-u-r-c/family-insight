@@ -224,7 +224,6 @@
   },
   "files": {
     "treeFilter": "Drzewo Family Insight",
-    "csvFilter": "Arkusz CSV",
     "allFiles": "Wszystkie pliki",
     "unsavedTitle": "Czy zapisać zmiany w „{{name}}”?",
     "unsavedDetail": "Jeśli ich nie zapiszesz, zmiany zostaną utracone.",
