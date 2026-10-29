@@ -59,6 +59,9 @@ export const useTreeView = create<TreeViewState>((set) => ({
   reset: () => set({ ...initial, collapsed: new Set() })
 }))
 
+/** Last viewport per file during this session (restored when a file is reopened). */
+export const savedViewports = new Map<string, Viewport>()
+
 /** Viewport that shows `rect` (world coordinates) centred, with padding. */
 export function fitViewport(
   rect: { x: number; y: number; width: number; height: number },

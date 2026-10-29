@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Home, Pencil, Sprout, Trash2, UserPlus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { layoutFamily, type Layout } from '@core/layout/layout'
@@ -9,9 +9,18 @@ import { addNewRelative, runCommand } from '@renderer/features/person/relationAc
 import { setRootCommand } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
-import { centerViewport, fitViewport, useTreeView, zoomViewport } from '@renderer/store/treeView'
+import { navigate, type Direction } from '@core/layout/navigation'
+import {
+  centerViewport,
+  fitViewport,
+  savedViewports,
+  useTreeView,
+  zoomViewport
+} from '@renderer/store/treeView'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
+import { CanvasControls, fitAll, resetZoom, zoomBy } from './CanvasControls'
 import { EdgesLayer } from './EdgesLayer'
+import { Minimap } from './Minimap'
 import { PersonCard } from './PersonCard'
 import styles from './TreeCanvas.module.css'
 
@@ -65,6 +74,7 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
   const animate = useTreeView((s) => s.animate)
   const size = useTreeView((s) => s.size)
   const collapsed = useTreeView((s) => s.collapsed)
+  const showMinimap = useSettings((s) => s.settings.showMinimap)
   const { setViewport, setSize, toggleCollapsed } = useTreeView.getState()
   const layout = useLayout()
   const ref = useRef<HTMLDivElement>(null)
@@ -78,27 +88,38 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
     [tree, query]
   )
 
-  // Track the canvas size.
-  useEffect(() => {
+  // Track the canvas size (measured immediately, then observed).
+  const hasPeople = count > 0
+  useLayoutEffect(() => {
     const el = ref.current
     if (!el) return
+    const rect = el.getBoundingClientRect()
+    setSize(rect.width, rect.height)
     const observer = new ResizeObserver(([entry]) => {
       if (entry) setSize(entry.contentRect.width, entry.contentRect.height)
     })
     observer.observe(el)
     return () => observer.disconnect()
-  }, [setSize])
+  }, [setSize, hasPeople])
 
   // Fit the whole tree when a document is opened (or the canvas first gets a size).
-  const fittedFor = useRef<object | null>(null)
-  const history = useDocument((s) => s.history)
+  const fittedFor = useRef<number | null>(null)
+  const filePath = useDocument((s) => s.filePath)
+  const docKey = useDocument((s) => s.documentId)
   useEffect(() => {
     if (!layout || !size.width || !layout.nodes.length) return
-    const docKey = history?.past[0]?.state ?? history?.present ?? null
     if (fittedFor.current === docKey) return
     fittedFor.current = docKey
-    setViewport(fitViewport({ x: 0, y: 0, width: layout.width, height: layout.height }, size))
-  }, [layout, size, history, setViewport])
+    const saved = filePath ? savedViewports.get(filePath) : undefined
+    setViewport(
+      saved ?? fitViewport({ x: 0, y: 0, width: layout.width, height: layout.height }, size)
+    )
+  }, [layout, size, docKey, setViewport, filePath])
+
+  // Remember where the user was looking in this file (only once it has been fitted).
+  useEffect(() => {
+    if (filePath && fittedFor.current === docKey) savedViewports.set(filePath, viewport)
+  }, [filePath, viewport, docKey])
 
   // Bring the selected person into view when the selection changes.
   const lastSelected = useRef<string | null>(null)
@@ -204,6 +225,53 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
     [select, t, onEdit]
   )
 
+  const ARROWS: Record<string, Direction> = {
+    ArrowUp: 'up',
+    ArrowDown: 'down',
+    ArrowLeft: 'left',
+    ArrowRight: 'right'
+  }
+  const onKeyDown = (e: React.KeyboardEvent): void => {
+    if (e.target !== e.currentTarget && !(e.target as HTMLElement).closest('[data-person-id]'))
+      return
+    if (e.ctrlKey || e.metaKey || e.altKey) return
+    const direction = ARROWS[e.key]
+    if (direction && layout) {
+      e.preventDefault()
+      const current = useDocument.getState().selectedPersonId
+      const next = current
+        ? navigate(tree, layout, current, direction)
+        : (tree.meta.rootPersonId ?? layout.nodes[0]?.id ?? null)
+      if (next) {
+        select(next)
+        requestAnimationFrame(() =>
+          ref.current
+            ?.querySelector<HTMLElement>(`[data-person-id="${CSS.escape(next)}"] button`)
+            ?.focus()
+        )
+      }
+      return
+    }
+    if (e.key === 'Enter' && selectedId) {
+      e.preventDefault()
+      focusEditor()
+    } else if (e.key === 'f' || e.key === 'F') {
+      e.preventDefault()
+      fitAll(layout)
+    } else if (e.key === '+' || e.key === '=') {
+      e.preventDefault()
+      zoomBy(1.25)
+    } else if (e.key === '-' || e.key === '_') {
+      e.preventDefault()
+      zoomBy(1 / 1.25)
+    } else if (e.key === '0') {
+      e.preventDefault()
+      resetZoom()
+    } else if (e.key === 'Escape') {
+      select(null)
+    }
+  }
+
   // Only render cards inside (or near) the visible area.
   const visible = useMemo(() => {
     if (!layout) return []
@@ -257,6 +325,9 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
       onPointerCancel={onPointerUp}
       role="application"
       aria-label={t('tree.canvasLabel')}
+      aria-roledescription={t('tree.canvasRole')}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
       style={{
         backgroundPosition: `${viewport.x}px ${viewport.y}px`,
         backgroundSize: `${22 * viewport.k}px ${22 * viewport.k}px`
@@ -296,6 +367,8 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
           )
         })}
       </div>
+      {showMinimap && layout && layout.nodes.length > 1 && <Minimap layout={layout} />}
+      <CanvasControls layout={layout} />
       <Menu
         anchor={menu?.anchor ?? null}
         entries={menu?.entries ?? []}

@@ -175,7 +175,15 @@
     "addRelative": "Dodaj krewnego",
     "setRoot": "Ustaw jako osobę główną",
     "unsetRoot": "Usuń oznaczenie osoby głównej",
-    "canvasLabel": "Drzewo genealogiczne"
+    "canvasLabel": "Drzewo genealogiczne",
+    "zoomControls": "Powiększenie",
+    "zoomIn": "Powiększ",
+    "zoomOut": "Pomniejsz",
+    "resetZoom": "Przywróć 100%",
+    "fit": "Dopasuj do ekranu",
+    "centerSelected": "Wyśrodkuj na wybranej osobie",
+    "minimap": "Mapa przeglądowa",
+    "canvasRole": "drzewo genealogiczne. Strzałkami przechodzisz między krewnymi, Enter otwiera edycję"
   },
   "history": {
     "renameTree": "Zmiana nazwy drzewa",

@@ -20,6 +20,8 @@ interface DocumentState {
   /** Snapshot at the last save; the document is dirty when `tree !== savedTree`. */
   savedTree: FamilyTree | null
   selectedPersonId: PersonId | null
+  /** Increments whenever a different document is opened (views reset on change). */
+  documentId: number
 
   newDocument: (name: string) => void
   /** Opens a tree (from a file or an import) with a fresh history. */
@@ -40,6 +42,7 @@ export const useDocument = create<DocumentState>((set, get) => ({
   filePath: null,
   savedTree: null,
   selectedPersonId: null,
+  documentId: 0,
 
   newDocument: (name) => get().loadDocument(createEmptyTree(name), null),
 
@@ -49,7 +52,8 @@ export const useDocument = create<DocumentState>((set, get) => ({
       history: createHistory(tree),
       filePath,
       savedTree: options?.dirty ? null : tree,
-      selectedPersonId: null
+      selectedPersonId: null,
+      documentId: get().documentId + 1
     }),
 
   closeDocument: () =>

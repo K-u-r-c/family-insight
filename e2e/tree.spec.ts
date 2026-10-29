@@ -33,3 +33,37 @@ test('tree canvas: select, context menu and root person', async () => {
   await expect(page.getByRole('heading', { name: 'Marek Lis' })).toBeHidden()
   await app.close()
 })
+
+test('canvas navigation: keyboard, zoom controls and minimap', async () => {
+  const { app, page } = await launch({ args: [sample()] })
+  const canvas = page.getByRole('application', { name: 'Family tree' })
+  await expect(canvas.getByRole('button', { name: /^Jan Kowalski/ })).toBeVisible()
+  await expect(page.getByRole('img', { name: 'Overview map' })).toBeVisible()
+
+  // Arrow keys: first press selects the root person (Jan), ↑ goes to a parent, ↓ back to a child.
+  await canvas.focus()
+  await page.keyboard.press('ArrowDown')
+  await expect(page.getByRole('heading', { name: 'Jan Kowalski' })).toBeVisible()
+  await page.keyboard.press('ArrowUp')
+  await expect(page.getByRole('heading', { name: /Maria Kowalska|Józef Kowalski/ })).toBeVisible()
+  await page.keyboard.press('ArrowDown')
+  await expect(page.getByRole('heading', { name: /Jan Kowalski|Zofia Kowalska/ })).toBeVisible()
+  await page.keyboard.press('Enter')
+  await expect(page.getByLabel('Given names')).toBeFocused()
+
+  // Zoom controls and keyboard shortcuts.
+  const zoomLabel = page.getByTitle('Reset to 100%')
+  await page.getByRole('button', { name: 'Zoom in' }).click()
+  const zoomed = Number((await zoomLabel.innerText()).replace('%', ''))
+  await zoomLabel.click()
+  await expect(zoomLabel).toHaveText('100%')
+  expect(zoomed).toBeGreaterThan(0)
+  await canvas.focus()
+  await page.keyboard.press('-')
+  await expect(zoomLabel).toHaveText('80%')
+  await page.keyboard.press('0')
+  await expect(zoomLabel).toHaveText('100%')
+  await page.getByRole('button', { name: 'Overview map' }).click()
+  await expect(page.getByRole('img', { name: 'Overview map' })).toBeHidden()
+  await app.close()
+})

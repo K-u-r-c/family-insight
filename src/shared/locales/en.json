@@ -171,7 +171,15 @@
     "addRelative": "Add relative",
     "setRoot": "Set as root person",
     "unsetRoot": "Unset root person",
-    "canvasLabel": "Family tree"
+    "canvasLabel": "Family tree",
+    "zoomControls": "Zoom",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset to 100%",
+    "fit": "Fit to screen",
+    "centerSelected": "Center on selected person",
+    "minimap": "Overview map",
+    "canvasRole": "family tree. Use arrow keys to move between relatives, Enter to edit"
   },
   "history": {
     "renameTree": "Rename tree",
