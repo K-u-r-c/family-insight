@@ -132,5 +132,29 @@
     "editRelationship": "Edit relationship",
     "removeRelationship": "Remove relationship",
     "setRoot": "Set root person"
+  },
+  "files": {
+    "treeFilter": "Family Insight tree",
+    "csvFilter": "CSV spreadsheet",
+    "allFiles": "All files",
+    "unsavedTitle": "Do you want to save the changes to “{{name}}”?",
+    "unsavedDetail": "Your changes will be lost if you don't save them.",
+    "save": "Save",
+    "dontSave": "Don't save",
+    "cancel": "Cancel",
+    "savedTo": "Saved to {{path}}",
+    "error": {
+      "title": "Couldn't open the file",
+      "saveTitle": "Couldn't save the file",
+      "not-found": "The file doesn't exist any more. It may have been moved or deleted.",
+      "permission": "You don't have permission to access this file.",
+      "too-large": "The file is too large to open.",
+      "unsupported": "This type of file isn't supported.",
+      "io": "Something went wrong while reading or writing the file.",
+      "invalid-json": "The file is damaged or isn't a Family Insight tree.",
+      "not-a-family-tree": "This isn't a Family Insight tree file.",
+      "newer-version": "This tree was saved by a newer version of Family Insight. Please update the app to open it.",
+      "invalid-data": "The file contains invalid data and can't be opened safely."
+    }
   }
 }

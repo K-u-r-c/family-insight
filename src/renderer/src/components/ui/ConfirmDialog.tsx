@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { AlertTriangle, HelpCircle } from 'lucide-react'
+import { AlertTriangle, HelpCircle, Info } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { create } from 'zustand'
 import { Button } from './Button'
@@ -11,6 +11,8 @@ export interface ConfirmOptions {
   confirmLabel?: string
   cancelLabel?: string
   danger?: boolean
+  /** Only an OK button (information or error message). */
+  alert?: boolean
 }
 
 interface ConfirmState {
@@ -25,6 +27,11 @@ export function confirm(options: ConfirmOptions): Promise<boolean> {
     useConfirmStore.getState().request?.resolve(false)
     useConfirmStore.setState({ request: { ...options, resolve } })
   })
+}
+
+/** Shows an informational/error message with a single OK button. */
+export function alertDialog(options: Omit<ConfirmOptions, 'alert' | 'cancelLabel'>): Promise<void> {
+  return confirm({ ...options, alert: true }).then(() => undefined)
 }
 
 /** Mount once near the root of the app. */
@@ -43,12 +50,14 @@ export function ConfirmHost(): React.JSX.Element | null {
       onClose={() => done(false)}
       title={request.title}
       description={request.message}
-      icon={request.danger ? AlertTriangle : HelpCircle}
+      icon={request.danger ? AlertTriangle : request.alert ? Info : HelpCircle}
       tone={request.danger ? 'danger' : 'info'}
       initialFocus={confirmRef}
       footer={
         <>
-          <Button onClick={() => done(false)}>{request.cancelLabel ?? t('common.cancel')}</Button>
+          {!request.alert && (
+            <Button onClick={() => done(false)}>{request.cancelLabel ?? t('common.cancel')}</Button>
+          )}
           <Button
             ref={confirmRef}
             variant={request.danger ? 'danger' : 'primary'}

@@ -134,5 +134,29 @@
     "editRelationship": "Edycja relacji",
     "removeRelationship": "Usunięcie relacji",
     "setRoot": "Ustawienie osoby głównej"
+  },
+  "files": {
+    "treeFilter": "Drzewo Family Insight",
+    "csvFilter": "Arkusz CSV",
+    "allFiles": "Wszystkie pliki",
+    "unsavedTitle": "Czy zapisać zmiany w „{{name}}”?",
+    "unsavedDetail": "Jeśli ich nie zapiszesz, zmiany zostaną utracone.",
+    "save": "Zapisz",
+    "dontSave": "Nie zapisuj",
+    "cancel": "Anuluj",
+    "savedTo": "Zapisano w {{path}}",
+    "error": {
+      "title": "Nie udało się otworzyć pliku",
+      "saveTitle": "Nie udało się zapisać pliku",
+      "not-found": "Plik już nie istnieje. Mógł zostać przeniesiony lub usunięty.",
+      "permission": "Nie masz uprawnień do tego pliku.",
+      "too-large": "Plik jest zbyt duży, aby go otworzyć.",
+      "unsupported": "Ten typ pliku nie jest obsługiwany.",
+      "io": "Wystąpił błąd podczas odczytu lub zapisu pliku.",
+      "invalid-json": "Plik jest uszkodzony albo nie jest drzewem Family Insight.",
+      "not-a-family-tree": "To nie jest plik drzewa Family Insight.",
+      "newer-version": "To drzewo zapisano w nowszej wersji Family Insight. Zaktualizuj aplikację, aby je otworzyć.",
+      "invalid-data": "Plik zawiera nieprawidłowe dane i nie można go bezpiecznie otworzyć."
+    }
   }
 }
