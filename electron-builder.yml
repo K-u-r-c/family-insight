@@ -1,5 +1,5 @@
-appId: io.github.kurc.oharatree
-productName: Ohara Tree
+appId: io.github.kurc.familyinsight
+productName: Family Insight
 copyright: Copyright © 2026 Jakub Kurc
 directories:
   output: dist
@@ -10,15 +10,15 @@ files:
   - '!**/*.map'
 artifactName: ${name}-${version}-${os}-${arch}.${ext}
 fileAssociations:
-  - ext: ohara
-    name: Ohara Tree Family Tree
-    description: Ohara Tree family tree
-    mimeType: application/x-ohara-tree
+  - ext: finsight
+    name: Family Insight Tree
+    description: Family Insight family tree
+    mimeType: application/x-family-insight
     role: Editor
 publish:
   provider: github
   owner: K-u-r-c
-  repo: ohara-tree
+  repo: family-insight
 win:
   target:
     - target: nsis
@@ -29,7 +29,7 @@ nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
-  shortcutName: Ohara Tree
+  shortcutName: Family Insight
   artifactName: ${name}-${version}-setup.${ext}
 portable:
   artifactName: ${name}-${version}-portable.${ext}

@@ -1,10 +1,10 @@
 # CSV format
 
-Ohara Tree imports and exports family trees as CSV so they can be edited in Excel,
+Family Insight imports and exports family trees as CSV so they can be edited in Excel,
 LibreOffice Calc or Google Sheets. **One row = one person.** Relationships are expressed
 through ID columns.
 
-> The CSV format is for interchange. The native `.ohara` format (see
+> The CSV format is for interchange. The native `.finsight` format (see
 > [FILE_FORMAT.md](FILE_FORMAT.md)) keeps everything; CSV keeps the fields listed below.
 
 ## Encoding and delimiters
@@ -44,7 +44,7 @@ Headers are case-insensitive and may be given in English **or Polish**.
 **Parents note:** `father_id`/`mother_id` cover the common case. On export, a parent with sex
 `male` goes to `father_id`, `female` to `mother_id`; parents with `other`/`unknown` sex fill
 whichever slot is free (father first). Only biological parent links are written; adoptive,
-step and foster links, partnership dates and photos exist only in `.ohara` files.
+step and foster links, partnership dates and photos exist only in `.finsight` files.
 
 ## Dates
 

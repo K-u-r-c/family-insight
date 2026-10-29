@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌳 Ohara Tree
+# 🌳 Family Insight
 
 **Piękny i prosty program do tworzenia drzewa genealogicznego na Windows, macOS i Linux.**
 
@@ -8,13 +8,13 @@
 
 </div>
 
-Ohara Tree pomaga zbudować drzewo rodzinne, wygodnie je przeglądać i aktualizować.
-Dane zostają na Twoim komputerze w jednym pliku `.ohara`. Import i eksport CSV pozwala pracować
+Family Insight pomaga zbudować drzewo rodzinne, wygodnie je przeglądać i aktualizować.
+Dane zostają na Twoim komputerze w jednym pliku `.finsight`. Import i eksport CSV pozwala pracować
 z Excelem, LibreOffice lub Arkuszami Google.
 
 > 🚧 **Status:** wczesna faza rozwoju. Postęp prac:
-> [Issues](https://github.com/K-u-r-c/ohara-tree/issues) i
-> [Milestones](https://github.com/K-u-r-c/ohara-tree/milestones).
+> [Issues](https://github.com/K-u-r-c/family-insight/issues) i
+> [Milestones](https://github.com/K-u-r-c/family-insight/milestones).
 
 ## Funkcje (planowane w 1.0)
 
@@ -28,19 +28,19 @@ z Excelem, LibreOffice lub Arkuszami Google.
 
 ## Pobieranie
 
-Najnowszy instalator znajdziesz w [Releases](https://github.com/K-u-r-c/ohara-tree/releases/latest):
+Najnowszy instalator znajdziesz w [Releases](https://github.com/K-u-r-c/family-insight/releases/latest):
 
-| System  | Plik                                                                         |
-| ------- | ---------------------------------------------------------------------------- |
-| Windows | `ohara-tree-<wersja>-setup.exe` lub `-portable.exe`                          |
-| macOS   | `ohara-tree-<wersja>-mac-arm64.dmg` (Apple Silicon) / `-mac-x64.dmg` (Intel) |
-| Linux   | `.AppImage` lub `.deb`                                                       |
+| System  | Plik                                                                             |
+| ------- | -------------------------------------------------------------------------------- |
+| Windows | `family-insight-<wersja>-setup.exe` lub `-portable.exe`                          |
+| macOS   | `family-insight-<wersja>-mac-arm64.dmg` (Apple Silicon) / `-mac-x64.dmg` (Intel) |
+| Linux   | `.AppImage` lub `.deb`                                                           |
 
 Wersje nie są jeszcze podpisane cyfrowo:
 
 - **Windows:** jeśli pojawi się SmartScreen, kliknij _Więcej informacji → Uruchom mimo to_.
-- **macOS:** kliknij aplikację prawym przyciskiem → _Otwórz_ lub uruchom `xattr -cr "/Applications/Ohara Tree.app"`.
-- **Linux (AppImage):** `chmod +x ohara-tree-*.AppImage` i uruchom.
+- **macOS:** kliknij aplikację prawym przyciskiem → _Otwórz_ lub uruchom `xattr -cr "/Applications/Family Insight.app"`.
+- **Linux (AppImage):** `chmod +x family-insight-*.AppImage` i uruchom.
 
 ## Rozwój
 
@@ -59,7 +59,7 @@ Wydania dla wszystkich trzech systemów buduje GitHub Actions po wypchnięciu ta
 
 - [Architektura](docs/ARCHITECTURE.md) (EN)
 - [Format CSV](docs/CSV_FORMAT.md) (EN)
-- [Format pliku `.ohara`](docs/FILE_FORMAT.md) (EN)
+- [Format pliku `.finsight`](docs/FILE_FORMAT.md) (EN)
 - [Jak współtworzyć](CONTRIBUTING.md) (EN)
 
 ## Licencja

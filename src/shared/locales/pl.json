@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "Ohara Tree",
+    "name": "Family Insight",
     "tagline": "Historia Twojej rodziny, pięknie uporządkowana."
   },
   "welcome": {
-    "title": "Witaj w Ohara Tree",
+    "title": "Witaj w Family Insight",
     "subtitle": "Stwórz drzewo genealogiczne, poznawaj krewnych i trzymaj historię rodziny w jednym miejscu.",
     "newTree": "Nowe drzewo rodzinne",
     "openTree": "Otwórz drzewo…",
@@ -48,7 +48,7 @@
     "zoomOut": "Pomniejsz",
     "toggleFullscreen": "Pełny ekran",
     "help": "Pomoc",
-    "about": "O programie Ohara Tree",
+    "about": "O programie Family Insight",
     "website": "Strona projektu"
   },
   "sex": {

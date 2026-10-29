@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 export type ThemePreference = 'system' | 'light' | 'dark'
 
-const STORAGE_KEY = 'ohara.theme'
+const STORAGE_KEY = 'familyInsight.theme'
 
 interface PreferencesState {
   theme: ThemePreference

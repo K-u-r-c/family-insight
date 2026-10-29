@@ -1,8 +1,8 @@
-import type { OharaApi } from '../shared/ipc'
+import type { FamilyInsightApi } from '../shared/ipc'
 
 declare global {
   interface Window {
-    ohara: OharaApi
+    familyInsight: FamilyInsightApi
   }
 }
 

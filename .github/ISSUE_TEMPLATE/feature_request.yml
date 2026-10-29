@@ -1,5 +1,5 @@
 name: Feature request / Propozycja funkcji
-description: Suggest an idea for Ohara Tree.
+description: Suggest an idea for Family Insight.
 labels: ['type/feature']
 body:
   - type: textarea

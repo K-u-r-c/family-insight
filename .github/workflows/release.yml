@@ -60,6 +60,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "${GITHUB_REF_NAME}" artifacts/* \
-            --title "Ohara Tree ${GITHUB_REF_NAME}" \
+            --title "Family Insight ${GITHUB_REF_NAME}" \
             --notes-file .github/release-notes.md \
             --verify-tag

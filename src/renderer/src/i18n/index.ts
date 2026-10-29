@@ -2,7 +2,7 @@ import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { DEFAULT_LANGUAGE, resources, resolveLanguage, type Language } from '@shared/i18n'
 
-const STORAGE_KEY = 'ohara.language'
+const STORAGE_KEY = 'familyInsight.language'
 
 // TODO(settings issue): move persistence to the main-process settings store.
 function initialLanguage(): Language {
@@ -24,7 +24,7 @@ document.documentElement.lang = i18next.language
 export async function changeLanguage(language: Language): Promise<void> {
   localStorage.setItem(STORAGE_KEY, language)
   await i18next.changeLanguage(language)
-  await window.ohara.setLanguage(language)
+  await window.familyInsight.setLanguage(language)
 }
 
 export default i18next

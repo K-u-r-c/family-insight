@@ -16,8 +16,8 @@ export function WelcomeScreen(): React.JSX.Element {
   const [notice, setNotice] = useState(false)
 
   useEffect(() => {
-    void window.ohara.getAppInfo().then((info) => setVersion(info.version))
-    return window.ohara.onMenuAction(() => setNotice(true))
+    void window.familyInsight.getAppInfo().then((info) => setVersion(info.version))
+    return window.familyInsight.onMenuAction(() => setNotice(true))
   }, [])
 
   const comingSoon = (): void => setNotice(true)

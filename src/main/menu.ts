@@ -2,7 +2,7 @@ import { app, BrowserWindow, Menu, shell, type MenuItemConstructorOptions } from
 import { IpcChannel, type MenuAction } from '@shared/ipc'
 import { t } from './i18n'
 
-const PROJECT_URL = 'https://github.com/K-u-r-c/ohara-tree'
+const PROJECT_URL = 'https://github.com/K-u-r-c/family-insight'
 
 function send(action: MenuAction): void {
   BrowserWindow.getFocusedWindow()?.webContents.send(IpcChannel.MenuAction, action)

@@ -1,10 +1,10 @@
 {
   "app": {
-    "name": "Ohara Tree",
+    "name": "Family Insight",
     "tagline": "Your family story, beautifully organised."
   },
   "welcome": {
-    "title": "Welcome to Ohara Tree",
+    "title": "Welcome to Family Insight",
     "subtitle": "Create a family tree, explore your relatives and keep your history in one place.",
     "newTree": "New family tree",
     "openTree": "Open tree…",
@@ -48,7 +48,7 @@
     "zoomOut": "Zoom Out",
     "toggleFullscreen": "Toggle Full Screen",
     "help": "Help",
-    "about": "About Ohara Tree",
+    "about": "About Family Insight",
     "website": "Project Website"
   },
   "sex": {

@@ -26,8 +26,8 @@ export type MenuAction =
   | 'edit:redo'
   | 'help:about'
 
-/** The API exposed to the renderer as `window.ohara` by the preload script. */
-export interface OharaApi {
+/** The API exposed to the renderer as `window.familyInsight` by the preload script. */
+export interface FamilyInsightApi {
   getAppInfo(): Promise<AppInfo>
   setLanguage(language: Language): Promise<void>
   onMenuAction(listener: (action: MenuAction) => void): () => void

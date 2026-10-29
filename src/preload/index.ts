@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron'
-import { IpcChannel, type MenuAction, type OharaApi } from '@shared/ipc'
+import { IpcChannel, type MenuAction, type FamilyInsightApi } from '@shared/ipc'
 
-const api: OharaApi = {
+const api: FamilyInsightApi = {
   getAppInfo: () => ipcRenderer.invoke(IpcChannel.AppGetInfo),
   setLanguage: (language) => ipcRenderer.invoke(IpcChannel.AppSetLanguage, language),
   onMenuAction: (listener) => {
@@ -11,4 +11,4 @@ const api: OharaApi = {
   }
 }
 
-contextBridge.exposeInMainWorld('ohara', api)
+contextBridge.exposeInMainWorld('familyInsight', api)

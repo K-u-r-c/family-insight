@@ -1,6 +1,6 @@
 {
-  "name": "ohara-tree",
-  "productName": "Ohara Tree",
+  "name": "family-insight",
+  "productName": "Family Insight",
   "version": "0.1.0",
   "description": "A beautiful, simple family tree editor and viewer (English / Polski).",
   "main": "./out/main/index.js",
@@ -9,10 +9,10 @@
     "email": "jak.kurc@gmail.com"
   },
   "license": "MIT",
-  "homepage": "https://github.com/K-u-r-c/ohara-tree",
+  "homepage": "https://github.com/K-u-r-c/family-insight",
   "repository": {
     "type": "git",
-    "url": "https://github.com/K-u-r-c/ohara-tree.git"
+    "url": "https://github.com/K-u-r-c/family-insight.git"
   },
   "scripts": {
     "dev": "electron-vite dev",

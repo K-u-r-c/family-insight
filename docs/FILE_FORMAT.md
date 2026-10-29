@@ -1,6 +1,6 @@
-# `.ohara` file format
+# `.finsight` file format
 
-The native file is UTF-8 JSON with the extension `.ohara`. Its TypeScript shape is
+The native file is UTF-8 JSON with the extension `.finsight`. Its TypeScript shape is
 `FamilyTree` in [`src/core/model/types.ts`](../src/core/model/types.ts).
 
 ```jsonc

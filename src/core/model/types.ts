@@ -1,5 +1,5 @@
 /**
- * Ohara Tree domain model.
+ * Family Insight domain model.
  *
  * A family is modelled as a graph, not a strict tree: people are nodes and
  * relationships are edges. This supports remarriage, half-siblings, adoption
@@ -81,7 +81,7 @@ export interface TreeMeta {
   rootPersonId?: PersonId
 }
 
-/** The whole family tree document, as stored in a `.ohara` file. */
+/** The whole family tree document, as stored in a `.finsight` file. */
 export interface FamilyTree {
   schemaVersion: number
   meta: TreeMeta

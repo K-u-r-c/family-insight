@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping with Ohara Tree!
+Thanks for helping with Family Insight!
 
 1. Fork and clone, then `npm install`.
 2. Create a branch: `git checkout -b feat/short-description`.

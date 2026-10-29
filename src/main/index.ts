@@ -11,7 +11,7 @@ function createWindow(): BrowserWindow {
     minWidth: 900,
     minHeight: 600,
     show: false,
-    title: 'Ohara Tree',
+    title: 'Family Insight',
     backgroundColor: '#f7f5f2',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),

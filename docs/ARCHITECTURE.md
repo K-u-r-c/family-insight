@@ -5,12 +5,12 @@ src/
 ├── core/        Pure TypeScript domain logic. No Electron, no React, no DOM.
 │   ├── model/   Types (Person, Relationship, FamilyTree) and graph queries/operations
 │   ├── date/    FuzzyDate parsing/formatting               (planned)
-│   ├── io/      Import/export format registry, CSV, .ohara  (planned)
+│   ├── io/      Import/export format registry, CSV, .finsight  (planned)
 │   └── layout/  Tree layout engine                          (planned)
 ├── shared/      Code shared by main + renderer: IPC contract, i18n resources/locales
 ├── main/        Electron main process: windows, native menu, dialogs, file system, settings
-├── preload/     The only bridge: exposes a typed `window.ohara` API via contextBridge
-└── renderer/    React UI (Vite). Talks to the OS only through `window.ohara`.
+├── preload/     The only bridge: exposes a typed `window.familyInsight` API via contextBridge
+└── renderer/    React UI (Vite). Talks to the OS only through `window.familyInsight`.
 ```
 
 ## Principles
@@ -20,7 +20,7 @@ src/
    module in `core/io`, not a rewrite).
 2. **Security:** `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true`, strict
    CSP. The renderer never touches the file system; main validates every IPC payload.
-3. **IPC contract** is declared once in `src/shared/ipc.ts` (channel names + `OharaApi` type)
+3. **IPC contract** is declared once in `src/shared/ipc.ts` (channel names + `FamilyInsightApi` type)
    and implemented in `src/main/ipc.ts` and `src/preload/index.ts`.
 4. **i18n:** every user-visible string goes through i18next. Locales live in
    `src/shared/locales/{en,pl}.json` and are used by both renderer and the native menu.

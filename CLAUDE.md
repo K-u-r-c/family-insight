@@ -1,4 +1,4 @@
-# Ohara Tree – notes for AI assistants
+# Family Insight – notes for AI assistants
 
 Electron + React + TypeScript family tree app (EN/PL). Read `docs/ARCHITECTURE.md` first.
 
