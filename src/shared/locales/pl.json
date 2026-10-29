@@ -124,5 +124,15 @@
     "emptyTitle": "Twoje drzewo jest puste",
     "emptyText": "Zacznij od siebie albo od najstarszego znanego przodka, a potem dodaj jego rodzinę.",
     "addFirst": "Dodaj pierwszą osobę"
+  },
+  "history": {
+    "renameTree": "Zmiana nazwy drzewa",
+    "addPerson": "Dodanie osoby",
+    "editPerson": "Edycja osoby",
+    "deletePerson": "Usunięcie osoby",
+    "addRelationship": "Dodanie relacji",
+    "editRelationship": "Edycja relacji",
+    "removeRelationship": "Usunięcie relacji",
+    "setRoot": "Ustawienie osoby głównej"
   }
 }

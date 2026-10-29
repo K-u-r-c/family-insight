@@ -14,7 +14,6 @@ export function WelcomeScreen(): React.JSX.Element {
 
   useEffect(() => {
     void window.familyInsight.getAppInfo().then((info) => setVersion(info.version))
-    return window.familyInsight.onMenuAction(() => setNotice(true))
   }, [])
 
   const newDocument = useDocument((s) => s.newDocument)

@@ -1,8 +1,30 @@
 import { app, BrowserWindow, Menu, shell, type MenuItemConstructorOptions } from 'electron'
-import { IpcChannel, type MenuAction } from '@shared/ipc'
+import { IpcChannel, type MenuAction, type MenuState } from '@shared/ipc'
 import { t } from './i18n'
 
 const PROJECT_URL = 'https://github.com/K-u-r-c/family-insight'
+
+let state: MenuState = { hasDocument: false, canUndo: false, canRedo: false }
+
+/** Items enabled only when a document is open. */
+const DOCUMENT_ITEMS = ['save', 'save-as', 'export-csv']
+
+function applyState(menu: Menu | null): void {
+  if (!menu) return
+  for (const id of DOCUMENT_ITEMS) {
+    const item = menu.getMenuItemById(id)
+    if (item) item.enabled = state.hasDocument
+  }
+  const undo = menu.getMenuItemById('undo')
+  if (undo) undo.enabled = state.canUndo
+  const redo = menu.getMenuItemById('redo')
+  if (redo) redo.enabled = state.canRedo
+}
+
+export function setMenuState(next: MenuState): void {
+  state = next
+  applyState(Menu.getApplicationMenu())
+}
 
 function send(action: MenuAction): void {
   BrowserWindow.getFocusedWindow()?.webContents.send(IpcChannel.MenuAction, action)
@@ -20,15 +42,21 @@ export function buildMenu(): void {
         { label: t('menu.newTree'), accelerator: 'CmdOrCtrl+N', click: () => send('file:new') },
         { label: t('menu.open'), accelerator: 'CmdOrCtrl+O', click: () => send('file:open') },
         { type: 'separator' },
-        { label: t('menu.save'), accelerator: 'CmdOrCtrl+S', click: () => send('file:save') },
         {
+          id: 'save',
+          label: t('menu.save'),
+          accelerator: 'CmdOrCtrl+S',
+          click: () => send('file:save')
+        },
+        {
+          id: 'save-as',
           label: t('menu.saveAs'),
           accelerator: 'CmdOrCtrl+Shift+S',
           click: () => send('file:save-as')
         },
         { type: 'separator' },
         { label: t('menu.importCsv'), click: () => send('file:import-csv') },
-        { label: t('menu.exportCsv'), click: () => send('file:export-csv') },
+        { id: 'export-csv', label: t('menu.exportCsv'), click: () => send('file:export-csv') },
         ...(isMac
           ? []
           : [{ type: 'separator' as const }, { label: t('menu.quit'), role: 'quit' as const }])
@@ -37,8 +65,14 @@ export function buildMenu(): void {
     {
       label: t('menu.edit'),
       submenu: [
-        { label: t('menu.undo'), accelerator: 'CmdOrCtrl+Z', click: () => send('edit:undo') },
         {
+          id: 'undo',
+          label: t('menu.undo'),
+          accelerator: 'CmdOrCtrl+Z',
+          click: () => send('edit:undo')
+        },
+        {
+          id: 'redo',
           label: t('menu.redo'),
           accelerator: isMac ? 'Cmd+Shift+Z' : 'Ctrl+Y',
           click: () => send('edit:redo')
@@ -76,5 +110,7 @@ export function buildMenu(): void {
     }
   ]
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+  const menu = Menu.buildFromTemplate(template)
+  applyState(menu)
+  Menu.setApplicationMenu(menu)
 }

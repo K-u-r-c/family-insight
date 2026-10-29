@@ -122,5 +122,15 @@
     "emptyTitle": "Your tree is empty",
     "emptyText": "Start with yourself or the oldest ancestor you know, then add their family.",
     "addFirst": "Add the first person"
+  },
+  "history": {
+    "renameTree": "Rename tree",
+    "addPerson": "Add person",
+    "editPerson": "Edit person",
+    "deletePerson": "Delete person",
+    "addRelationship": "Add relationship",
+    "editRelationship": "Edit relationship",
+    "removeRelationship": "Remove relationship",
+    "setRoot": "Set root person"
   }
 }

@@ -7,6 +7,7 @@ export const IpcChannel = {
   SettingsUpdate: 'settings:update',
   SettingsChanged: 'settings:changed',
   WindowSetDocumentEdited: 'window:set-document-edited',
+  MenuSetState: 'menu:set-state',
   MenuAction: 'menu:action'
 } as const
 
@@ -15,6 +16,13 @@ export interface AppInfo {
   version: string
   platform: string
   locale: string
+}
+
+/** Enabled-state of document-dependent menu items, reported by the renderer. */
+export interface MenuState {
+  hasDocument: boolean
+  canUndo: boolean
+  canRedo: boolean
 }
 
 /** Actions triggered from the native menu and forwarded to the renderer. */
@@ -38,5 +46,6 @@ export interface FamilyInsightApi {
   onSettingsChanged(listener: (settings: Settings) => void): () => void
   /** Marks the window as having unsaved changes (macOS close-button dot). */
   setDocumentEdited(edited: boolean): Promise<void>
+  setMenuState(state: MenuState): Promise<void>
   onMenuAction(listener: (action: MenuAction) => void): () => void
 }

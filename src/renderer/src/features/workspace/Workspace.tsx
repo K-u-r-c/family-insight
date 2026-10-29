@@ -7,7 +7,7 @@ import { PeopleSidebar } from '@renderer/features/people/PeopleSidebar'
 import { TreeCanvas } from '@renderer/features/tree/TreeCanvas'
 import { useWindowWidth } from '@renderer/hooks/useWindowWidth'
 import { cx } from '@renderer/lib/cx'
-import { useDocument } from '@renderer/store/document'
+import { selectCanRedo, selectCanUndo, useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
 import { Panel } from './Panel'
 import { StatusBar } from './StatusBar'
@@ -25,6 +25,10 @@ export function Workspace(): React.JSX.Element {
   const updateSettings = useSettings((s) => s.update)
   const selectedId = useDocument((s) => s.selectedPersonId)
   const select = useDocument((s) => s.select)
+  const canUndo = useDocument(selectCanUndo)
+  const canRedo = useDocument(selectCanRedo)
+  const undo = useDocument((s) => s.undo)
+  const redo = useDocument((s) => s.redo)
 
   const [sidebarWidth, setSidebarWidth] = useState(panels.sidebarWidth)
   const [detailsWidth, setDetailsWidth] = useState(panels.detailsWidth)
@@ -41,10 +45,10 @@ export function Workspace(): React.JSX.Element {
     <div className={styles.root}>
       <Toolbar
         onAddPerson={addPerson}
-        canUndo={false}
-        canRedo={false}
-        onUndo={() => undefined}
-        onRedo={() => undefined}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        onUndo={undo}
+        onRedo={redo}
       />
       <div className={styles.body}>
         {sidebarOpen && (

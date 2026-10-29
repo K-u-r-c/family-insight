@@ -1,7 +1,8 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { ConfirmHost, Toaster } from './components/ui'
 import { useApplyTheme } from './hooks/useApplyTheme'
 import { useGlobalShortcuts } from './hooks/useGlobalShortcuts'
+import { useMenuIntegration } from './hooks/useMenuIntegration'
 import { WelcomeScreen } from './features/welcome/WelcomeScreen'
 import { Workspace } from './features/workspace/Workspace'
 import { useDocument } from './store/document'
@@ -23,6 +24,8 @@ function useHash(): string {
 export function App(): React.JSX.Element {
   useApplyTheme()
   useGlobalShortcuts()
+  const menuHandlers = useMemo(() => ({}), [])
+  useMenuIntegration(menuHandlers)
   const hash = useHash()
   const hasDocument = useDocument((s) => s.tree !== null)
   return (
