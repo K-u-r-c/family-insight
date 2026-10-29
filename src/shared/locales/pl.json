@@ -56,5 +56,50 @@
     "male": "Mężczyzna",
     "other": "Inna",
     "unknown": "Nieznana"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "dismiss": "Odrzuć",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "add": "Dodaj",
+    "remove": "Usuń",
+    "undo": "Cofnij",
+    "redo": "Ponów",
+    "yes": "Tak",
+    "no": "Nie",
+    "unknown": "Nieznane",
+    "search": "Szukaj",
+    "more": "Więcej",
+    "back": "Wstecz",
+    "done": "Gotowe",
+    "notifications": "Powiadomienia",
+    "loading": "Wczytywanie…"
+  },
+  "gallery": {
+    "title": "Galeria interfejsu",
+    "buttons": "Przyciski",
+    "fields": "Pola",
+    "controls": "Kontrolki",
+    "feedback": "Komunikaty",
+    "people": "Awatary",
+    "sample": "Przykładowy tekst",
+    "placeholder": "Wpisz coś…",
+    "error": "To pole zawiera błąd",
+    "hint": "Pomocna wskazówka",
+    "openDialog": "Otwórz okno",
+    "openConfirm": "Poproś o potwierdzenie",
+    "showToast": "Pokaż powiadomienie",
+    "openMenu": "Otwórz menu",
+    "toastMessage": "Zapisano pomyślnie",
+    "dialogText": "Okna dialogowe trzymają fokus i zamykają się klawiszem Esc.",
+    "emptyTitle": "Jeszcze nic tu nie ma",
+    "emptyText": "Puste stany podpowiadają, co zrobić dalej."
+  },
+  "person": {
+    "sex": "Płeć"
   }
 }

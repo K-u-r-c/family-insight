@@ -1,7 +1,36 @@
+import { lazy, Suspense, useEffect, useState } from 'react'
+import { ConfirmHost, Toaster } from './components/ui'
 import { useApplyTheme } from './hooks/useApplyTheme'
-import { WelcomeScreen } from './components/WelcomeScreen'
+import { WelcomeScreen } from './features/welcome/WelcomeScreen'
+
+const Gallery = lazy(() =>
+  import('./features/gallery/Gallery').then((m) => ({ default: m.Gallery }))
+)
+
+function useHash(): string {
+  const [hash, setHash] = useState(location.hash)
+  useEffect(() => {
+    const onChange = (): void => setHash(location.hash)
+    window.addEventListener('hashchange', onChange)
+    return () => window.removeEventListener('hashchange', onChange)
+  }, [])
+  return hash
+}
 
 export function App(): React.JSX.Element {
   useApplyTheme()
-  return <WelcomeScreen />
+  const hash = useHash()
+  return (
+    <>
+      {hash === '#gallery' ? (
+        <Suspense fallback={null}>
+          <Gallery />
+        </Suspense>
+      ) : (
+        <WelcomeScreen />
+      )}
+      <ConfirmHost />
+      <Toaster />
+    </>
+  )
 }

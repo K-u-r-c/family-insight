@@ -56,5 +56,50 @@
     "male": "Male",
     "other": "Other",
     "unknown": "Unknown"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "close": "Close",
+    "dismiss": "Dismiss",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "undo": "Undo",
+    "redo": "Redo",
+    "yes": "Yes",
+    "no": "No",
+    "unknown": "Unknown",
+    "search": "Search",
+    "more": "More",
+    "back": "Back",
+    "done": "Done",
+    "notifications": "Notifications",
+    "loading": "Loading…"
+  },
+  "gallery": {
+    "title": "UI gallery",
+    "buttons": "Buttons",
+    "fields": "Fields",
+    "controls": "Controls",
+    "feedback": "Feedback",
+    "people": "Avatars",
+    "sample": "Sample text",
+    "placeholder": "Type something…",
+    "error": "This field has an error",
+    "hint": "A helpful hint",
+    "openDialog": "Open dialog",
+    "openConfirm": "Ask for confirmation",
+    "showToast": "Show toast",
+    "openMenu": "Open menu",
+    "toastMessage": "Saved successfully",
+    "dialogText": "Dialogs trap focus and close with Esc.",
+    "emptyTitle": "Nothing here yet",
+    "emptyText": "Empty states explain what to do next."
+  },
+  "person": {
+    "sex": "Sex"
   }
 }

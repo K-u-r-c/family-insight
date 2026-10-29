@@ -1,0 +1,107 @@
+.button {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: center;
+  height: var(--control-md);
+  padding: 0 var(--space-4);
+  font-size: var(--text-base);
+  font-weight: 550;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--duration-fast) var(--easing),
+    border-color var(--duration-fast) var(--easing),
+    color var(--duration-fast) var(--easing),
+    transform var(--duration-fast) var(--easing),
+    box-shadow var(--duration-fast) var(--easing);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.sm {
+  height: var(--control-sm);
+  padding: 0 var(--space-3);
+  font-size: var(--text-md);
+  border-radius: var(--radius-sm);
+}
+
+.lg {
+  height: var(--control-lg);
+  padding: 0 var(--space-5);
+  font-size: var(--text-lg);
+}
+
+.block {
+  width: 100%;
+}
+
+.primary {
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.secondary {
+  color: var(--color-text);
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-strong);
+}
+
+.ghost {
+  color: var(--color-text-muted);
+  background: transparent;
+}
+
+.ghost:hover:not(:disabled) {
+  color: var(--color-text);
+  background: var(--color-surface-muted);
+}
+
+.ghost[aria-pressed='true'],
+.ghost[aria-expanded='true'] {
+  color: var(--color-text);
+  background: var(--color-surface-muted);
+}
+
+.danger {
+  color: #fff;
+  background: var(--color-danger);
+}
+
+.danger:hover:not(:disabled) {
+  background: var(--color-danger-hover);
+}
+
+.iconOnly {
+  width: var(--control-md);
+  padding: 0;
+}
+
+.iconOnly.sm {
+  width: var(--control-sm);
+}
+
+.iconOnly.lg {
+  width: var(--control-lg);
+}

@@ -1,0 +1,40 @@
+.avatar {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  overflow: hidden;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  border-radius: 50%;
+  user-select: none;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.female {
+  color: var(--color-female);
+  background: var(--color-female-soft);
+}
+
+.male {
+  color: var(--color-male);
+  background: var(--color-male-soft);
+}
+
+.other {
+  color: var(--color-other);
+  background: var(--color-other-soft);
+}
+
+.unknown {
+  color: var(--color-unknown);
+  background: var(--color-unknown-soft);
+}
+
+.deceased {
+  filter: saturate(0.6);
+}

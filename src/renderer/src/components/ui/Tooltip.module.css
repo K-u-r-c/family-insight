@@ -1,0 +1,31 @@
+.tooltip {
+  position: fixed;
+  z-index: var(--z-tooltip);
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  max-width: 280px;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-bg);
+  pointer-events: none;
+  background: var(--color-text);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  animation: fade var(--duration-fast) var(--easing);
+}
+
+.shortcut {
+  opacity: 0.65;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.anchor {
+  display: inline-flex;
+}
