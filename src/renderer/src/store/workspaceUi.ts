@@ -6,13 +6,18 @@ export type PeopleSort = 'surname' | 'givenNames' | 'birth'
 interface WorkspaceUiState {
   query: string
   sort: PeopleSort
+  /** Person whose panel is in edit mode (others show the read-only details). */
+  editingId: string | null
   setQuery: (query: string) => void
   setSort: (sort: PeopleSort) => void
+  setEditing: (id: string | null) => void
 }
 
 export const useWorkspaceUi = create<WorkspaceUiState>((set) => ({
   query: '',
   sort: 'surname',
+  editingId: null,
   setQuery: (query) => set({ query }),
-  setSort: (sort) => set({ sort })
+  setSort: (sort) => set({ sort }),
+  setEditing: (editingId) => set({ editingId })
 }))

@@ -139,7 +139,15 @@
     "deleteMessageNone": "{{name}} will be removed from the tree.",
     "deleteMessage_one": "{{name}} will be removed together with {{count}} relationship.",
     "deleteMessage_other": "{{name}} will be removed together with {{count}} relationships.",
-    "deleted": "{{name}} deleted"
+    "deleted": "{{name}} deleted",
+    "age_one": "{{count}} year old",
+    "age_other": "{{count}} years old",
+    "ageApprox_one": "about {{count}} year old",
+    "ageApprox_other": "about {{count}} years old",
+    "ageAtDeath_one": "died aged {{count}}",
+    "ageAtDeath_other": "died aged {{count}}",
+    "ageAtDeathApprox_one": "died aged about {{count}}",
+    "ageAtDeathApprox_other": "died aged about {{count}}"
   },
   "people": {
     "count_one": "{{count}} person",
@@ -300,6 +308,26 @@
       "duplicate-id": "A person with this ID already exists.",
       "ancestry-cycle": "That would make someone their own ancestor.",
       "too-many-biological-parents": "A person can have at most two biological parents. Mark one as adoptive, step or foster instead."
+    }
+  },
+  "timeline": {
+    "title": "Life",
+    "birth": "Born",
+    "death": "Died",
+    "child": "Child born:",
+    "unknownDate": "Date unknown",
+    "empty": "No dates yet. Edit this person to add birth, death and family events.",
+    "partnership": {
+      "marriage": "Married",
+      "partnership": "Partnered with",
+      "engagement": "Engaged to",
+      "other": "Together with"
+    },
+    "end": {
+      "divorce": "Divorced",
+      "separation": "Separated from",
+      "death": "Widowed:",
+      "other": "Ended with"
     }
   }
 }

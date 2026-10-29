@@ -141,7 +141,23 @@
     "deleteMessage_few": "Osoba {{name}} zostanie usunięta razem z {{count}} relacjami.",
     "deleteMessage_many": "Osoba {{name}} zostanie usunięta razem z {{count}} relacjami.",
     "deleteMessage_other": "Osoba {{name}} zostanie usunięta razem z {{count}} relacji.",
-    "deleted": "Usunięto: {{name}}"
+    "deleted": "Usunięto: {{name}}",
+    "age_one": "{{count}} rok",
+    "age_few": "{{count}} lata",
+    "age_many": "{{count}} lat",
+    "age_other": "{{count}} roku",
+    "ageApprox_one": "ok. {{count}} roku",
+    "ageApprox_few": "ok. {{count}} lat",
+    "ageApprox_many": "ok. {{count}} lat",
+    "ageApprox_other": "ok. {{count}} roku",
+    "ageAtDeath_one": "zm. w wieku {{count}} roku",
+    "ageAtDeath_few": "zm. w wieku {{count}} lat",
+    "ageAtDeath_many": "zm. w wieku {{count}} lat",
+    "ageAtDeath_other": "zm. w wieku {{count}} roku",
+    "ageAtDeathApprox_one": "zm. w wieku ok. {{count}} roku",
+    "ageAtDeathApprox_few": "zm. w wieku ok. {{count}} lat",
+    "ageAtDeathApprox_many": "zm. w wieku ok. {{count}} lat",
+    "ageAtDeathApprox_other": "zm. w wieku ok. {{count}} roku"
   },
   "people": {
     "count_one": "{{count}} osoba",
@@ -306,6 +322,26 @@
       "duplicate-id": "Osoba o tym identyfikatorze już istnieje.",
       "ancestry-cycle": "Wtedy ktoś byłby swoim własnym przodkiem.",
       "too-many-biological-parents": "Osoba może mieć najwyżej dwoje rodziców biologicznych. Oznacz jednego jako adopcyjnego, przybranego lub zastępczego."
+    }
+  },
+  "timeline": {
+    "title": "Życie",
+    "birth": "Urodzenie",
+    "death": "Śmierć",
+    "child": "Narodziny dziecka:",
+    "unknownDate": "Data nieznana",
+    "empty": "Brak dat. Edytuj tę osobę, aby dodać urodzenie, śmierć i wydarzenia rodzinne.",
+    "partnership": {
+      "marriage": "Ślub z:",
+      "partnership": "Związek z:",
+      "engagement": "Zaręczyny z:",
+      "other": "Razem z:"
+    },
+    "end": {
+      "divorce": "Rozwód z:",
+      "separation": "Separacja z:",
+      "death": "Owdowienie:",
+      "other": "Koniec związku z:"
     }
   }
 }

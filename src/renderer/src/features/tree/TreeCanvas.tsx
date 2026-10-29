@@ -35,9 +35,13 @@ const SIZES = {
   compact: { nodeWidth: 172, nodeHeight: 48, partnerGap: 20, siblingGap: 22, generationGap: 56 }
 }
 
-/** Focuses the given-names field of the person editor once it is rendered. */
+/** Switches the selected person's panel to edit mode and focuses the first field. */
 export function focusEditor(): void {
-  requestAnimationFrame(() => document.getElementById('person-given-names')?.focus())
+  const id = useDocument.getState().selectedPersonId
+  if (id) useWorkspaceUi.getState().setEditing(id)
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => document.getElementById('person-given-names')?.focus())
+  )
 }
 
 export function useLayout(): Layout | null {
@@ -127,21 +131,26 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
     if (!selectedId || selectedId === lastSelected.current) return
     lastSelected.current = selectedId
     const node = positions.get(selectedId)
-    if (!node || !size.width) return
-    const { viewport: vp } = useTreeView.getState()
-    const left = node.x * vp.k + vp.x
-    const top = node.y * vp.k + vp.y
-    const inView =
-      left > 40 &&
-      top > 40 &&
-      left + node.width * vp.k < size.width - 40 &&
-      top + node.height * vp.k < size.height - 40
-    if (!inView)
-      setViewport(
-        centerViewport({ x: node.x + node.width / 2, y: node.y + node.height / 2 }, vp, size),
-        true
-      )
-  }, [selectedId, positions, size, setViewport])
+    if (!node) return
+    // Wait for the details panel to open and the canvas to resize before checking.
+    const timer = window.setTimeout(() => {
+      const { viewport: vp, size: sz } = useTreeView.getState()
+      if (!sz.width) return
+      const left = node.x * vp.k + vp.x
+      const top = node.y * vp.k + vp.y
+      const inView =
+        left > 40 &&
+        top > 40 &&
+        left + node.width * vp.k < sz.width - 40 &&
+        top + node.height * vp.k < sz.height - 40
+      if (!inView)
+        setViewport(
+          centerViewport({ x: node.x + node.width / 2, y: node.y + node.height / 2 }, vp, sz),
+          true
+        )
+    }, 80)
+    return () => window.clearTimeout(timer)
+  }, [selectedId, positions, setViewport])
 
   // Wheel zoom around the cursor (non-passive so the page does not scroll).
   useEffect(() => {

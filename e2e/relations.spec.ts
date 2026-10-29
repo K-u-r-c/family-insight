@@ -39,7 +39,7 @@ test('build a three-generation family from one person', async () => {
 
   // Self-link is rejected with a friendly message (cycle): link Ola as Jan's parent.
   await page.getByRole('button', { name: 'Link an existing person' }).first().click()
-  await page.getByRole('option', { name: /Ola/ }).click()
+  await page.getByRole('dialog').getByRole('option', { name: /Ola/ }).click()
   await expect(page.getByText('That would make someone their own ancestor.')).toBeVisible()
   await app.close()
 })

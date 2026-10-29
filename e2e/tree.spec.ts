@@ -90,3 +90,26 @@ test('people list: diacritics-insensitive search, keyboard and selection', async
   await expect(list.getByRole('option')).toHaveCount(15)
   await app.close()
 })
+
+test('person details: age, timeline and edit mode', async () => {
+  const { app, page } = await launch({ args: [sample()], language: 'pl' })
+  await page
+    .getByRole('application')
+    .getByRole('button', { name: /^Jan Kowalski/ })
+    .click()
+  await expect(page.getByText('1925 – 2001 · zm. w wieku 75 lat')).toBeVisible()
+  await expect(page.getByText('Ślub z:')).toBeVisible()
+  await expect(page.getByText('Narodziny dziecka:').first()).toBeVisible()
+  await expect(page.getByText('Inżynier, budował mosty na Wiśle.', { exact: false })).toBeVisible()
+  await expect(page.getByLabel('Imiona')).toBeHidden()
+
+  await page.getByRole('button', { name: 'Edytuj', exact: true }).click()
+  await expect(page.getByLabel('Imiona')).toHaveValue('Jan')
+  await page.getByRole('button', { name: 'Gotowe' }).click()
+  await expect(page.getByLabel('Imiona')).toBeHidden()
+
+  // Clicking a person in the timeline navigates there.
+  await page.getByRole('button', { name: 'Anna Kowalska', exact: true }).first().click()
+  await expect(page.getByRole('heading', { name: 'Anna Kowalska' })).toBeVisible()
+  await app.close()
+})
