@@ -149,7 +149,18 @@
     "count_many": "{{count}} osób",
     "count_other": "{{count}} osoby",
     "title": "Osoby",
-    "empty": "Nie ma jeszcze żadnych osób."
+    "empty": "Nie ma jeszcze żadnych osób.",
+    "results_one": "{{count}} z {{total}}",
+    "results_few": "{{count}} z {{total}}",
+    "results_many": "{{count}} z {{total}}",
+    "results_other": "{{count}} z {{total}}",
+    "sort": "Sortowanie",
+    "sortBy": {
+      "surname": "Według nazwiska",
+      "givenNames": "Według imienia",
+      "birth": "Według daty urodzenia"
+    },
+    "noResults": "Nikt nie pasuje do „{{query}}”."
   },
   "workspace": {
     "addPerson": "Dodaj osobę",

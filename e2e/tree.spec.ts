@@ -67,3 +67,26 @@ test('canvas navigation: keyboard, zoom controls and minimap', async () => {
   await expect(page.getByRole('img', { name: 'Overview map' })).toBeHidden()
   await app.close()
 })
+
+test('people list: diacritics-insensitive search, keyboard and selection', async () => {
+  const { app, page } = await launch({ args: [sample()], language: 'pl' })
+  const list = page.getByRole('listbox', { name: 'Osoby' })
+  await expect(list.getByRole('option')).toHaveCount(15)
+
+  await page.keyboard.press('Control+f')
+  await expect(page.getByLabel('Szukaj')).toBeFocused()
+  await page.keyboard.type('wisniewsk')
+  await expect(list.getByRole('option')).toHaveCount(3)
+  await expect(page.getByText('3 z 15')).toBeVisible()
+
+  await page.keyboard.press('ArrowDown')
+  await expect(page.getByRole('heading', { name: 'Anna Kowalska' })).toBeVisible()
+  await page.keyboard.press('ArrowDown')
+  await expect(page.getByRole('heading', { name: 'Helena Wiśniewska' })).toBeVisible()
+
+  await page.getByLabel('Szukaj').fill('xyz')
+  await expect(page.getByText('Nikt nie pasuje do „xyz”.')).toBeVisible()
+  await page.getByLabel('Szukaj').press('Escape')
+  await expect(list.getByRole('option')).toHaveCount(15)
+  await app.close()
+})

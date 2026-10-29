@@ -72,6 +72,13 @@ export function Toolbar({
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === 'Escape') setQuery('')
+          if (e.key === 'ArrowDown' || e.key === 'Enter') {
+            const first = document.querySelector<HTMLElement>('#people-list [data-index="0"]')
+            if (first) {
+              e.preventDefault()
+              first.focus()
+            }
+          }
         }}
       />
       <SettingsMenu />

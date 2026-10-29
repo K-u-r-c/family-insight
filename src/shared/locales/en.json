@@ -145,7 +145,16 @@
     "count_one": "{{count}} person",
     "count_other": "{{count}} people",
     "title": "People",
-    "empty": "No people yet."
+    "empty": "No people yet.",
+    "results_one": "{{count}} of {{total}}",
+    "results_other": "{{count}} of {{total}}",
+    "sort": "Sort",
+    "sortBy": {
+      "surname": "By surname",
+      "givenNames": "By given name",
+      "birth": "By date of birth"
+    },
+    "noResults": "Nobody matches “{{query}}”."
   },
   "workspace": {
     "addPerson": "Add person",
