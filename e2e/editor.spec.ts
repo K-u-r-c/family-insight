@@ -4,7 +4,7 @@ import { closeApp, launch } from './app'
 test('add and edit a person, then undo', async () => {
   const { app, page } = await launch()
   await page.getByRole('button', { name: 'New family tree' }).click()
-  await page.getByRole('button', { name: 'Add the first person' }).click()
+  await page.getByRole('button', { name: 'Create' }).click()
 
   const given = page.getByLabel('Given names')
   await expect(given).toBeFocused()
@@ -34,7 +34,7 @@ test('add and edit a person, then undo', async () => {
 test('delete a person with confirmation, then undo', async () => {
   const { app, page } = await launch({ language: 'pl' })
   await page.getByRole('button', { name: 'Nowe drzewo rodzinne' }).click()
-  await page.getByRole('button', { name: 'Dodaj pierwszą osobę' }).click()
+  await page.getByRole('button', { name: 'Utwórz' }).click()
   await page.getByLabel('Imiona').fill('Anna')
   await page.getByLabel('Imiona').press('Enter')
   await page.getByRole('button', { name: 'Ojciec' }).click()

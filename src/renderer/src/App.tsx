@@ -4,13 +4,14 @@ import { useApplyTheme } from './hooks/useApplyTheme'
 import { useGlobalShortcuts } from './hooks/useGlobalShortcuts'
 import { useFileIntegration } from './hooks/useFileIntegration'
 import { useMenuIntegration } from './hooks/useMenuIntegration'
-import { newTree, openTree, saveTree, saveTreeAs } from './services/documentFiles'
+import { createTree, newTree, openTree, saveTree, saveTreeAs } from './services/documentFiles'
 import { WelcomeScreen } from './features/welcome/WelcomeScreen'
 import { Workspace } from './features/workspace/Workspace'
 import { useDocument } from './store/document'
 import { useWorkspaceUi } from './store/workspaceUi'
 import { ExportCsvDialog } from './features/csv/ExportCsvDialog'
 import { ImportCsvDialog } from './features/csv/ImportCsvDialog'
+import { NewTreeDialog } from './features/welcome/NewTreeDialog'
 import { startCsvImport } from './features/csv/importFlow'
 import { openCsvFormatDocs, saveCsvTemplate } from './features/csv/csvHelp'
 
@@ -67,6 +68,15 @@ export function App(): React.JSX.Element {
         <ExportCsvDialog open onClose={() => openDialog(null)} />
       )}
       {dialog === 'import-csv' && <ImportCsvDialog onClose={() => openDialog(null)} />}
+      {dialog === 'new-tree' && (
+        <NewTreeDialog
+          onClose={() => openDialog(null)}
+          onCreate={(name) => {
+            openDialog(null)
+            createTree(name)
+          }}
+        />
+      )}
       <ConfirmHost />
       <ChoiceHost />
       <Toaster />

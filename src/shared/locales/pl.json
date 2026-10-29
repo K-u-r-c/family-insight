@@ -8,7 +8,18 @@
     "subtitle": "Stwórz drzewo genealogiczne, poznawaj krewnych i trzymaj historię rodziny w jednym miejscu.",
     "newTree": "Nowe drzewo rodzinne",
     "openTree": "Otwórz drzewo…",
-    "importCsv": "Importuj z CSV…"
+    "importCsv": "Importuj z CSV…",
+    "newTreeTitle": "Nazwij swoje drzewo",
+    "newTreeText": "Możesz ją zmienić w każdej chwili. Za moment dodasz pierwszą osobę.",
+    "create": "Utwórz",
+    "trySample": "Wypróbuj przykładową rodzinę",
+    "sampleName": "Przykładowa rodzina",
+    "hintNew": "nowe drzewo",
+    "hintOpen": "otwórz",
+    "hintDrop": "lub upuść tu plik .finsight albo .csv",
+    "recent": "Ostatnie",
+    "missing": "Nie znaleziono pliku",
+    "removeRecent": "Usuń {{name}} z ostatnich plików"
   },
   "settings": {
     "language": "Język",

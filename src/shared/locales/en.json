@@ -8,7 +8,18 @@
     "subtitle": "Create a family tree, explore your relatives and keep your history in one place.",
     "newTree": "New family tree",
     "openTree": "Open tree…",
-    "importCsv": "Import from CSV…"
+    "importCsv": "Import from CSV…",
+    "newTreeTitle": "Name your family tree",
+    "newTreeText": "You can change it any time. Next, you'll add the first person.",
+    "create": "Create",
+    "trySample": "Try a sample family",
+    "sampleName": "Sample family",
+    "hintNew": "new tree",
+    "hintOpen": "open",
+    "hintDrop": "or drop a .finsight or .csv file here",
+    "recent": "Recent",
+    "missing": "File not found",
+    "removeRecent": "Remove {{name}} from recent files"
   },
   "settings": {
     "language": "Language",

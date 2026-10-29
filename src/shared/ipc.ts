@@ -14,6 +14,7 @@ export const IpcChannel = {
   FileTakePending: 'file:take-pending',
   FileOpenRequest: 'file:open-request',
   FileShowInFolder: 'file:show-in-folder',
+  FileExists: 'file:exists',
   DialogUnsaved: 'dialog:unsaved',
   WindowCloseRequest: 'window:close-request',
   WindowClose: 'window:close',
@@ -78,6 +79,8 @@ export interface FamilyInsightApi {
   saveFileDialog(format: FormatId, suggestedName: string): Promise<string | null>
   writeFile(path: string, content: string): Promise<FileWriteResult>
   showInFolder(path: string): Promise<void>
+  /** Which of the given paths still exist (for the recent files list). */
+  filesExist(paths: string[]): Promise<boolean[]>
   /** A file the OS asked us to open before the UI was ready (double-click, argv). */
   takePendingFile(): Promise<string | null>
   onOpenFileRequest(listener: (path: string) => void): () => void

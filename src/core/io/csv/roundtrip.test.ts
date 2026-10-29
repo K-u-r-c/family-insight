@@ -72,10 +72,12 @@ describe('sample files', () => {
     }
   )
 
-  it('English and Polish samples describe the same family', () => {
+  it('English and Polish samples describe the same family (notes are translated)', () => {
+    const withoutNotes = (tree: FamilyTree): string[] =>
+      canonical(tree).map((row) => JSON.stringify({ ...JSON.parse(row), notes: undefined }))
     const en = importCsv(sample('example-en.csv'), { now: NOW }).tree
     const pl = importCsv(sample('example-pl.csv'), { now: NOW }).tree
-    expect(canonical(pl)).toEqual(canonical(en))
+    expect(withoutNotes(pl)).toEqual(withoutNotes(en))
   })
 })
 

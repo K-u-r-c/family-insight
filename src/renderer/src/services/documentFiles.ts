@@ -6,6 +6,8 @@ import { alertDialog, toast } from '@renderer/components/ui'
 import i18n from '@renderer/i18n'
 import { selectIsDirty, useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
+import { addPersonCommand } from '@renderer/store/commands'
+import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 
 const api = (): typeof window.familyInsight => window.familyInsight
 const t = (key: string, options?: Record<string, unknown>): string =>
@@ -51,9 +53,23 @@ export async function guardUnsaved(): Promise<boolean> {
   return saveTree()
 }
 
+/** Starts a new tree: asks to save the current one, then asks for the new tree's name. */
 export async function newTree(): Promise<void> {
   if (!(await guardUnsaved())) return
-  useDocument.getState().newDocument(t('tree.untitled'))
+  useWorkspaceUi.getState().openDialog('new-tree')
+}
+
+/** Creates the tree and its first person, opening the editor straight away. */
+export function createTree(name: string): void {
+  const doc = useDocument.getState()
+  doc.newDocument(name)
+  const person = useDocument
+    .getState()
+    .dispatch(addPersonCommand({ givenNames: '', surname: '', sex: 'unknown' }))
+  useWorkspaceUi.getState().setEditing(person.id)
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => document.getElementById('person-given-names')?.focus())
+  )
 }
 
 /** Loads the result of reading a `.finsight` file into the editor. */

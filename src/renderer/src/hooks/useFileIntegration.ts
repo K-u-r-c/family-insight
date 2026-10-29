@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { FILE_EXTENSION } from '@core/file/format'
+import { startCsvImport } from '@renderer/features/csv/importFlow'
 import { handleCloseRequest, openTreeAt } from '@renderer/services/documentFiles'
 
 /** OS-level file integration: double-click/argv opens, close guard, drag-and-drop. */
@@ -23,7 +24,9 @@ export function useFileIntegration(): void {
       if (!file) return
       e.preventDefault()
       const path = api.getPathForFile(file)
-      if (path.toLowerCase().endsWith(`.${FILE_EXTENSION}`)) void openTreeAt(path)
+      const lower = path.toLowerCase()
+      if (lower.endsWith(`.${FILE_EXTENSION}`)) void openTreeAt(path)
+      else if (/\.(csv|tsv|txt)$/.test(lower)) void startCsvImport(path)
     }
     window.addEventListener('dragover', onDragOver)
     window.addEventListener('drop', onDrop)

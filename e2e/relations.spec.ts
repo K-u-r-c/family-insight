@@ -4,7 +4,7 @@ import { closeApp, launch } from './app'
 test('build a three-generation family from one person', async () => {
   const { app, page } = await launch()
   await page.getByRole('button', { name: 'New family tree' }).click()
-  await page.getByRole('button', { name: 'Add the first person' }).click()
+  await page.getByRole('button', { name: 'Create' }).click()
   const given = page.getByLabel('Given names')
 
   await given.fill('Jan')

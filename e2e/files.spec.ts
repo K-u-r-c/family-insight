@@ -31,7 +31,8 @@ test('new tree, save as, reopen from argv', async () => {
   await mockDialogs(app, { save: target })
 
   await page.getByRole('button', { name: 'New family tree' }).click()
-  await expect(page.getByText('Your tree is empty')).toBeVisible()
+  await page.getByRole('button', { name: 'Create' }).click()
+  await expect(page.getByLabel('Given names')).toBeFocused()
   await app.evaluate(({ BrowserWindow }) => {
     BrowserWindow.getAllWindows()[0]!.webContents.send('menu:action', 'file:save-as')
   })
@@ -68,6 +69,7 @@ test('friendly error for a damaged file', async () => {
 test('closing with unsaved changes asks first', async () => {
   const { app, page } = await launch()
   await page.getByRole('button', { name: 'New family tree' }).click()
+  await page.getByRole('button', { name: 'Create' }).click()
   await page.getByRole('button', { name: /Tree name/ }).click()
   await page.keyboard.type('Renamed')
   await page.keyboard.press('Enter')

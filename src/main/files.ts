@@ -143,6 +143,20 @@ export function registerFileHandlers(): void {
     if (typeof path === 'string') shell.showItemInFolder(resolve(path))
   })
 
+  ipcMain.handle(IpcChannel.FileExists, async (_event, paths: unknown) => {
+    if (!Array.isArray(paths)) return []
+    return Promise.all(
+      paths.slice(0, 50).map((p) =>
+        typeof p === 'string'
+          ? fs.access(resolve(p)).then(
+              () => true,
+              () => false
+            )
+          : false
+      )
+    )
+  })
+
   ipcMain.handle(IpcChannel.FileTakePending, () => {
     const path = pendingPath
     pendingPath = null
