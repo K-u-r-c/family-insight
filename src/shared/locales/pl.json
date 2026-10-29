@@ -241,7 +241,7 @@
       "engagement": "Zaręczyny",
       "other": "Razem"
     },
-    "ended": "(zakończony)",
+    "ended": "koniec",
     "editPartnership": "Edytuj związek",
     "partnershipKind": "Rodzaj",
     "startDate": "Data rozpoczęcia",
@@ -254,7 +254,8 @@
       "separation": "Separacja",
       "death": "Śmierć partnera",
       "other": "Inaczej"
-    }
+    },
+    "until": "do {{date}}"
   },
   "errors": {
     "model": {

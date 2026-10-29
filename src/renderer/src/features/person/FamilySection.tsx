@@ -188,13 +188,19 @@ export function FamilySection({ person }: { person: Person }): React.JSX.Element
     const partners: Row[] = getPartnerships(tree, person.id)
       .map((link) => {
         const start = link.start?.date ? format.date(link.start.date) : ''
+        const end = link.end?.date
+          ? t('relations.until', { date: format.date(link.end.date) })
+          : link.end?.reason
+            ? t(`relations.reason.${link.end.reason}`).toLocaleLowerCase()
+            : link.end
+              ? t('relations.ended')
+              : ''
         const detail = [
-          t(`relations.partnership.${link.kind}`),
-          start,
-          link.end ? t('relations.ended') : ''
+          [t(`relations.partnership.${link.kind}`), start].filter(Boolean).join(' '),
+          end
         ]
           .filter(Boolean)
-          .join(' ')
+          .join(', ')
         return { person: tree.persons[otherPartner(link, person.id)]!, link, detail }
       })
       .sort((a, b) =>

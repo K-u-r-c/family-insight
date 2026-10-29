@@ -239,7 +239,7 @@
       "engagement": "Engaged",
       "other": "Together"
     },
-    "ended": "(ended)",
+    "ended": "ended",
     "editPartnership": "Edit partnership",
     "partnershipKind": "Type",
     "startDate": "Start date",
@@ -252,7 +252,8 @@
       "separation": "Separation",
       "death": "Death of a partner",
       "other": "Other"
-    }
+    },
+    "until": "until {{date}}"
   },
   "errors": {
     "model": {
