@@ -55,7 +55,9 @@
     "toggleFullscreen": "Toggle Full Screen",
     "help": "Help",
     "about": "About Family Insight",
-    "website": "Project Website"
+    "website": "Project Website",
+    "csvFormat": "CSV Format",
+    "csvTemplate": "Download CSV Template…"
   },
   "sex": {
     "female": "Female",
@@ -402,6 +404,10 @@
       "comma": "comma ( , )",
       "semicolon": "semicolon ( ; )",
       "tab": "tab"
-    }
+    },
+    "formatHelp": "What format is supported?",
+    "downloadTemplate": "Download an empty template",
+    "templateFileName": "family-template",
+    "templateSaved": "Template saved"
   }
 }

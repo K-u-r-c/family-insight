@@ -9,6 +9,7 @@ import { useIssueText } from '@renderer/i18n/issues'
 import { guardUnsaved } from '@renderer/services/documentFiles'
 import { mergeTreeCommand } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
+import { openCsvFormatDocs, saveCsvTemplate } from './csvHelp'
 import { useImportSource } from './importFlow'
 import styles from './CsvDialogs.module.css'
 
@@ -87,6 +88,18 @@ export function ImportCsvDialog({ onClose }: { onClose: () => void }): React.JSX
       })}
       footer={
         <>
+          <span className={styles.footerLinks}>
+            <button type="button" className={styles.linkButton} onClick={openCsvFormatDocs}>
+              {t('csv.formatHelp')}
+            </button>
+            <button
+              type="button"
+              className={styles.linkButton}
+              onClick={() => void saveCsvTemplate()}
+            >
+              {t('csv.downloadTemplate')}
+            </button>
+          </span>
           <span className={styles.summary} role="status">
             {t('csv.summary', {
               people: result.stats.people,

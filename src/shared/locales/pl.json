@@ -55,7 +55,9 @@
     "toggleFullscreen": "Pełny ekran",
     "help": "Pomoc",
     "about": "O programie Family Insight",
-    "website": "Strona projektu"
+    "website": "Strona projektu",
+    "csvFormat": "Format CSV",
+    "csvTemplate": "Pobierz szablon CSV…"
   },
   "sex": {
     "female": "Kobieta",
@@ -428,6 +430,10 @@
       "comma": "przecinek ( , )",
       "semicolon": "średnik ( ; )",
       "tab": "tabulator"
-    }
+    },
+    "formatHelp": "Jaki format jest obsługiwany?",
+    "downloadTemplate": "Pobierz pusty szablon",
+    "templateFileName": "szablon-rodziny",
+    "templateSaved": "Zapisano szablon"
   }
 }

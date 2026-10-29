@@ -104,6 +104,9 @@ export function buildMenu(): void {
     {
       label: t('menu.help'),
       submenu: [
+        { label: t('menu.csvFormat'), click: () => send('help:csv-format') },
+        { label: t('menu.csvTemplate'), click: () => send('help:csv-template') },
+        { type: 'separator' },
         { label: t('menu.about'), click: () => send('help:about') },
         { label: t('menu.website'), click: () => void shell.openExternal(PROJECT_URL) }
       ]

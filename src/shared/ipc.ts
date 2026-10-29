@@ -59,6 +59,8 @@ export type MenuAction =
   | 'edit:undo'
   | 'edit:redo'
   | 'help:about'
+  | 'help:csv-format'
+  | 'help:csv-template'
 
 /** The API exposed to the renderer as `window.familyInsight` by the preload script. */
 export interface FamilyInsightApi {

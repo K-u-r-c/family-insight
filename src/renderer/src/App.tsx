@@ -12,6 +12,7 @@ import { useWorkspaceUi } from './store/workspaceUi'
 import { ExportCsvDialog } from './features/csv/ExportCsvDialog'
 import { ImportCsvDialog } from './features/csv/ImportCsvDialog'
 import { startCsvImport } from './features/csv/importFlow'
+import { openCsvFormatDocs, saveCsvTemplate } from './features/csv/csvHelp'
 
 const Gallery = lazy(() =>
   import('./features/gallery/Gallery').then((m) => ({ default: m.Gallery }))
@@ -38,6 +39,8 @@ export function App(): React.JSX.Element {
       'file:save': () => void saveTree(),
       'file:save-as': () => void saveTreeAs(),
       'file:import-csv': () => void startCsvImport(),
+      'help:csv-format': openCsvFormatDocs,
+      'help:csv-template': () => void saveCsvTemplate(),
       'file:export-csv': () => {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-csv')
       }

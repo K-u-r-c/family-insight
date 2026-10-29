@@ -73,3 +73,21 @@ test('import CSV: preview, blocking errors, then a valid Polish file', async () 
   await expect(page.getByRole('application').locator('[data-person-id]')).toHaveCount(3)
   await closeApp(app)
 })
+
+test('bundled Polish sample imports cleanly and a template can be downloaded', async () => {
+  const template = join(tempDir(), 'szablon.csv')
+  const { app, page } = await launch({ language: 'pl' })
+  await mockDialogs(app, {
+    open: join(__dirname, '..', 'resources', 'samples', 'example-pl.csv'),
+    save: template
+  })
+  await page.getByRole('button', { name: 'Importuj z CSV…' }).click()
+  await expect(page.getByText('Osoby: 25, relacje: 39')).toBeVisible()
+  await expect(page.getByText(/ostrzeż/)).toBeHidden()
+  await page.getByRole('button', { name: 'Pobierz pusty szablon' }).click()
+  await expect.poll(() => existsSync(template)).toBe(true)
+  expect(readFileSync(template, 'utf8')).toContain('id;imiona;nazwisko')
+  await page.getByRole('button', { name: 'Importuj', exact: true }).click()
+  await expect(page.getByRole('application').locator('[data-person-id]')).toHaveCount(25)
+  await closeApp(app)
+})
