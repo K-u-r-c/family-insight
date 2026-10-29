@@ -2,3 +2,5 @@
 *.png binary
 *.ico binary
 *.icns binary
+resources/samples/*.csv -text
+e2e/fixtures/* -text
