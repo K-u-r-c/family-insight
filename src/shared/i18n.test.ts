@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import en from './locales/en.json'
 import pl from './locales/pl.json'
 import { resolveLanguage } from './i18n'
+import { MODEL_ERROR_CODES } from '../core/model/errors'
 
 type Dict = Record<string, unknown>
 
@@ -83,6 +84,15 @@ describe('translations', () => {
       )
       expect(unused).toEqual([])
     })
+  })
+})
+
+describe('error messages', () => {
+  it('every model error code has an EN and PL message', () => {
+    for (const code of MODEL_ERROR_CODES) {
+      expect((en.errors.model as Record<string, string>)[code], `en ${code}`).toBeTruthy()
+      expect((pl.errors.model as Record<string, string>)[code], `pl ${code}`).toBeTruthy()
+    }
   })
 })
 

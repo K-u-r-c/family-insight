@@ -3,6 +3,7 @@ import { displayName } from '@core/model/tree'
 import { Avatar } from '@renderer/components/ui'
 import { Panel } from '@renderer/features/workspace/Panel'
 import { useDocument } from '@renderer/store/document'
+import { FamilySection } from './FamilySection'
 import { PersonEditor } from './PersonEditor'
 import styles from './PersonPanel.module.css'
 
@@ -32,6 +33,7 @@ export function PersonPanel(): React.JSX.Element | null {
           )}
         </div>
       </div>
+      <FamilySection person={person} />
       <PersonEditor key={person.id} person={person} />
     </Panel>
   )

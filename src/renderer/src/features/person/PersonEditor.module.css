@@ -137,3 +137,9 @@
   background: var(--color-warning-soft);
   border-radius: var(--radius-md);
 }
+
+.dialogForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}

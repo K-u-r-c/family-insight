@@ -192,5 +192,77 @@
     "death-before-birth": "The date of death is before the date of birth.",
     "unrealistic-age": "That would make {{name}} {{years}} years old. Is the date right?",
     "parent-younger-than-child": "{{parent}} was born after {{child}}, but is listed as a parent."
+  },
+  "relations": {
+    "parents": "Parents",
+    "partners": "Partners",
+    "children": "Children",
+    "siblings": "Siblings",
+    "add": {
+      "father": "Father",
+      "mother": "Mother",
+      "parent": "Parent",
+      "partner": "Partner",
+      "child": "Child",
+      "sibling": "Sibling"
+    },
+    "linkAs": {
+      "parent": "Choose a parent",
+      "partner": "Choose a partner",
+      "child": "Choose a child",
+      "sibling": "Choose a sibling",
+      "father": "Choose the father",
+      "mother": "Choose the mother"
+    },
+    "linkExisting": "Link an existing person",
+    "linked": "{{name}} linked",
+    "removed": "Relationship removed",
+    "removeLink": "Remove relationship",
+    "options": "Options for {{name}}",
+    "goTo": "Go to {{name}}",
+    "noMatches": "No matching people.",
+    "whichParent": "Who is the other parent?",
+    "whichParentText": "{{name}} has more than one partner. Choose the child's other parent.",
+    "noOtherParent": "Unknown / nobody",
+    "halfSibling": "half-sibling",
+    "siblingNeedsParent": "Add a parent first to add siblings.",
+    "kindLabel": "Relationship",
+    "kind": {
+      "biological": "Biological",
+      "adoptive": "Adoptive",
+      "step": "Step",
+      "foster": "Foster"
+    },
+    "partnership": {
+      "marriage": "Married",
+      "partnership": "Partners",
+      "engagement": "Engaged",
+      "other": "Together"
+    },
+    "ended": "(ended)",
+    "editPartnership": "Edit partnership",
+    "partnershipKind": "Type",
+    "startDate": "Start date",
+    "startPlace": "Place",
+    "endDate": "End date",
+    "endReason": "How it ended",
+    "reason": {
+      "none": "Not ended",
+      "divorce": "Divorce",
+      "separation": "Separation",
+      "death": "Death of a partner",
+      "other": "Other"
+    }
+  },
+  "errors": {
+    "model": {
+      "person-not-found": "This person no longer exists.",
+      "relationship-not-found": "This relationship no longer exists.",
+      "self-relationship": "A person can't be related to themselves.",
+      "duplicate-relationship": "These people are already related this way.",
+      "duplicate-id": "A person with this ID already exists.",
+      "ancestry-cycle": "That would make someone their own ancestor.",
+      "too-many-biological-parents": "A person can have at most two biological parents. Mark one as adoptive, step or foster instead."
+    }
   }
 }

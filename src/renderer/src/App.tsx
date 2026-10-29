@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
-import { ConfirmHost, Toaster } from './components/ui'
+import { ChoiceHost, ConfirmHost, Toaster } from './components/ui'
 import { useApplyTheme } from './hooks/useApplyTheme'
 import { useGlobalShortcuts } from './hooks/useGlobalShortcuts'
 import { useFileIntegration } from './hooks/useFileIntegration'
@@ -51,6 +51,7 @@ export function App(): React.JSX.Element {
         <WelcomeScreen />
       )}
       <ConfirmHost />
+      <ChoiceHost />
       <Toaster />
     </>
   )

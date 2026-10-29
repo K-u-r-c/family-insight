@@ -114,12 +114,12 @@ function assertParentChildAllowed(
   if (existing.some((r) => r.parentId === rel.parentId)) {
     throw new ModelError('duplicate-relationship')
   }
-  if (rel.kind === 'biological' && existing.filter((r) => r.kind === 'biological').length >= 2) {
-    throw new ModelError('too-many-biological-parents')
-  }
   // The child must not already be an ancestor of the parent.
   if (getAncestors(tree, rel.parentId).some((p) => p.id === rel.childId)) {
     throw new ModelError('ancestry-cycle')
+  }
+  if (rel.kind === 'biological' && existing.filter((r) => r.kind === 'biological').length >= 2) {
+    throw new ModelError('too-many-biological-parents')
   }
 }
 

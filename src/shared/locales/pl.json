@@ -194,5 +194,77 @@
     "death-before-birth": "Data śmierci jest wcześniejsza niż data urodzenia.",
     "unrealistic-age": "Oznaczałoby to, że {{name}} ma {{years}} lat. Czy data jest poprawna?",
     "parent-younger-than-child": "{{parent}} urodził(a) się po {{child}}, a jest wpisany(-a) jako rodzic."
+  },
+  "relations": {
+    "parents": "Rodzice",
+    "partners": "Partnerzy",
+    "children": "Dzieci",
+    "siblings": "Rodzeństwo",
+    "add": {
+      "father": "Ojciec",
+      "mother": "Matka",
+      "parent": "Rodzic",
+      "partner": "Partner",
+      "child": "Dziecko",
+      "sibling": "Rodzeństwo"
+    },
+    "linkAs": {
+      "parent": "Wybierz rodzica",
+      "partner": "Wybierz partnera",
+      "child": "Wybierz dziecko",
+      "sibling": "Wybierz rodzeństwo",
+      "father": "Wybierz ojca",
+      "mother": "Wybierz matkę"
+    },
+    "linkExisting": "Połącz z istniejącą osobą",
+    "linked": "Połączono: {{name}}",
+    "removed": "Usunięto relację",
+    "removeLink": "Usuń relację",
+    "options": "Opcje: {{name}}",
+    "goTo": "Przejdź do: {{name}}",
+    "noMatches": "Brak pasujących osób.",
+    "whichParent": "Kto jest drugim rodzicem?",
+    "whichParentText": "{{name}} ma więcej niż jednego partnera. Wybierz drugiego rodzica dziecka.",
+    "noOtherParent": "Nieznany / nikt",
+    "halfSibling": "rodzeństwo przyrodnie",
+    "siblingNeedsParent": "Aby dodać rodzeństwo, najpierw dodaj rodzica.",
+    "kindLabel": "Rodzaj relacji",
+    "kind": {
+      "biological": "Biologiczny",
+      "adoptive": "Adopcyjny",
+      "step": "Przybrany",
+      "foster": "Zastępczy"
+    },
+    "partnership": {
+      "marriage": "Małżeństwo",
+      "partnership": "Związek",
+      "engagement": "Zaręczyny",
+      "other": "Razem"
+    },
+    "ended": "(zakończony)",
+    "editPartnership": "Edytuj związek",
+    "partnershipKind": "Rodzaj",
+    "startDate": "Data rozpoczęcia",
+    "startPlace": "Miejsce",
+    "endDate": "Data zakończenia",
+    "endReason": "Jak się zakończył",
+    "reason": {
+      "none": "Trwa",
+      "divorce": "Rozwód",
+      "separation": "Separacja",
+      "death": "Śmierć partnera",
+      "other": "Inaczej"
+    }
+  },
+  "errors": {
+    "model": {
+      "person-not-found": "Ta osoba już nie istnieje.",
+      "relationship-not-found": "Ta relacja już nie istnieje.",
+      "self-relationship": "Osoba nie może być spokrewniona sama ze sobą.",
+      "duplicate-relationship": "Te osoby są już tak powiązane.",
+      "duplicate-id": "Osoba o tym identyfikatorze już istnieje.",
+      "ancestry-cycle": "Wtedy ktoś byłby swoim własnym przodkiem.",
+      "too-many-biological-parents": "Osoba może mieć najwyżej dwoje rodziców biologicznych. Oznacz jednego jako adopcyjnego, przybranego lub zastępczego."
+    }
   }
 }
