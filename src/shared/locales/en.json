@@ -97,7 +97,38 @@
   },
   "person": {
     "sex": "Sex",
-    "details": "Details"
+    "details": "Details",
+    "editTitle": "Edit person",
+    "unnamed": "Unnamed person",
+    "born": "née {{surname}}",
+    "name": "Name",
+    "givenNames": "Given names",
+    "surname": "Surname",
+    "birthSurname": "Birth surname",
+    "birthSurnameHint": "Surname at birth (maiden name)",
+    "addBirthSurname": "Add birth surname",
+    "birth": "Birth",
+    "birthDate": "Date of birth",
+    "birthPlace": "Place of birth",
+    "lifeStatus": "Life",
+    "living": "Living",
+    "livingYes": "Living",
+    "livingNo": "Deceased",
+    "livingUnknown": "Unknown",
+    "deathDate": "Date of death",
+    "deathPlace": "Place of death",
+    "notes": "Notes",
+    "notesPlaceholder": "Stories, occupation, anything worth remembering…",
+    "dateInvalid": "This doesn't look like a date. Try 1890, 05.1890 or 12.05.1890.",
+    "dateHint": "e.g. 1890, 05.1890, 12.05.1890 or ~1890",
+    "datePlaceholder": "Year or full date",
+    "dateQualifier": "Date precision",
+    "qualifier": {
+      "exact": "Exactly",
+      "about": "About",
+      "before": "Before",
+      "after": "After"
+    }
   },
   "people": {
     "count_one": "{{count}} person",
@@ -156,5 +187,10 @@
       "newer-version": "This tree was saved by a newer version of Family Insight. Please update the app to open it.",
       "invalid-data": "The file contains invalid data and can't be opened safely."
     }
+  },
+  "issues": {
+    "death-before-birth": "The date of death is before the date of birth.",
+    "unrealistic-age": "That would make {{name}} {{years}} years old. Is the date right?",
+    "parent-younger-than-child": "{{parent}} was born after {{child}}, but is listed as a parent."
   }
 }

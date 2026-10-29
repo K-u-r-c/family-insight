@@ -97,7 +97,38 @@
   },
   "person": {
     "sex": "Płeć",
-    "details": "Szczegóły"
+    "details": "Szczegóły",
+    "editTitle": "Edycja osoby",
+    "unnamed": "Osoba bez imienia",
+    "born": "z domu {{surname}}",
+    "name": "Imię i nazwisko",
+    "givenNames": "Imiona",
+    "surname": "Nazwisko",
+    "birthSurname": "Nazwisko rodowe",
+    "birthSurnameHint": "Nazwisko przy urodzeniu (panieńskie)",
+    "addBirthSurname": "Dodaj nazwisko rodowe",
+    "birth": "Urodzenie",
+    "birthDate": "Data urodzenia",
+    "birthPlace": "Miejsce urodzenia",
+    "lifeStatus": "Życie",
+    "living": "Żyje",
+    "livingYes": "Żyje",
+    "livingNo": "Nie żyje",
+    "livingUnknown": "Nie wiadomo",
+    "deathDate": "Data śmierci",
+    "deathPlace": "Miejsce śmierci",
+    "notes": "Notatki",
+    "notesPlaceholder": "Historie, zawód, wszystko, co warto zapamiętać…",
+    "dateInvalid": "To nie wygląda na datę. Spróbuj 1890, 05.1890 lub 12.05.1890.",
+    "dateHint": "np. 1890, 05.1890, 12.05.1890 lub ~1890",
+    "datePlaceholder": "Rok lub pełna data",
+    "dateQualifier": "Dokładność daty",
+    "qualifier": {
+      "exact": "Dokładnie",
+      "about": "Około",
+      "before": "Przed",
+      "after": "Po"
+    }
   },
   "people": {
     "count_one": "{{count}} osoba",
@@ -158,5 +189,10 @@
       "newer-version": "To drzewo zapisano w nowszej wersji Family Insight. Zaktualizuj aplikację, aby je otworzyć.",
       "invalid-data": "Plik zawiera nieprawidłowe dane i nie można go bezpiecznie otworzyć."
     }
+  },
+  "issues": {
+    "death-before-birth": "Data śmierci jest wcześniejsza niż data urodzenia.",
+    "unrealistic-age": "Oznaczałoby to, że {{name}} ma {{years}} lat. Czy data jest poprawna?",
+    "parent-younger-than-child": "{{parent}} urodził(a) się po {{child}}, a jest wpisany(-a) jako rodzic."
   }
 }

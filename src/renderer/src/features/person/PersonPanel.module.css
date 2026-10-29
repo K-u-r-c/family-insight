@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-4) var(--space-4) var(--space-2);
+}
+
+.headerText {
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  text-overflow: ellipsis;
+}
+
+.sub {
+  font-size: var(--text-md);
+  color: var(--color-text-muted);
+}

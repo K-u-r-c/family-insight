@@ -16,7 +16,7 @@ export function StatusBar(): React.JSX.Element {
       <span className={styles.spacer} />
       {filePath && (
         <span className={styles.path} title={filePath}>
-          {filePath}
+          <bdi>{filePath}</bdi>
         </span>
       )}
       <span className={dirty ? styles.unsaved : styles.saved} role="status">
