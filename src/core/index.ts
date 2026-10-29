@@ -1,2 +1,7 @@
+export * from './issues'
 export * from './model/types'
+export * from './model/errors'
+export * from './model/ids'
 export * from './model/tree'
+export * from './model/operations'
+export * from './model/validate'

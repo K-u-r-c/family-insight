@@ -1,62 +1,97 @@
 import { describe, expect, it } from 'vitest'
-import { createEmptyTree, getChildren, getParents, getPartners, getSiblings } from './tree'
-import { SCHEMA_VERSION, type FamilyTree, type Person, type Relationship } from './types'
-
-const NOW = '2026-01-01T00:00:00.000Z'
-
-function person(id: string, givenNames: string, sex: Person['sex']): Person {
-  return { id, givenNames, surname: 'Kowalski', sex, createdAt: NOW, updatedAt: NOW }
-}
-
-function fixture(): FamilyTree {
-  const tree = createEmptyTree('Test', new Date(NOW))
-  for (const p of [
-    person('jan', 'Jan', 'male'),
-    person('anna', 'Anna', 'female'),
-    person('ewa', 'Ewa', 'female'),
-    person('piotr', 'Piotr', 'male'),
-    person('ola', 'Ola', 'female')
-  ]) {
-    tree.persons[p.id] = p
-  }
-  const rels: Relationship[] = [
-    { id: 'm1', type: 'partnership', partnerIds: ['jan', 'anna'], kind: 'marriage' },
-    { id: 'm2', type: 'partnership', partnerIds: ['jan', 'ewa'], kind: 'marriage' },
-    { id: 'r1', type: 'parent-child', parentId: 'jan', childId: 'piotr', kind: 'biological' },
-    { id: 'r2', type: 'parent-child', parentId: 'anna', childId: 'piotr', kind: 'biological' },
-    { id: 'r3', type: 'parent-child', parentId: 'jan', childId: 'ola', kind: 'biological' },
-    { id: 'r4', type: 'parent-child', parentId: 'ewa', childId: 'ola', kind: 'biological' }
-  ]
-  for (const r of rels) tree.relationships[r.id] = r
-  return tree
-}
+import {
+  createEmptyTree,
+  displayName,
+  getAncestors,
+  getChildren,
+  getDescendants,
+  getParents,
+  getPartners,
+  getPartnershipBetween,
+  getSiblingGroups,
+  getSiblings,
+  isLiving
+} from './tree'
+import { SCHEMA_VERSION, type Person } from './types'
+import { NOW, remarriageFixture, TreeBuilder } from '../test/fixtures'
 
 const ids = (people: Person[]): string[] => people.map((p) => p.id).sort()
 
 describe('createEmptyTree', () => {
   it('creates a versioned, empty document', () => {
-    const tree = createEmptyTree('Rodzina', new Date(NOW))
+    const tree = createEmptyTree('Rodzina', NOW)
     expect(tree.schemaVersion).toBe(SCHEMA_VERSION)
-    expect(tree.meta).toEqual({ name: 'Rodzina', createdAt: NOW, updatedAt: NOW })
+    expect(tree.meta).toEqual({
+      name: 'Rodzina',
+      createdAt: NOW.toISOString(),
+      updatedAt: NOW.toISOString()
+    })
     expect(tree.persons).toEqual({})
     expect(tree.relationships).toEqual({})
   })
 })
 
 describe('relationship queries', () => {
-  const tree = fixture()
+  const tree = remarriageFixture()
 
-  it('finds parents and children', () => {
+  it('finds parents and children (incl. adoption)', () => {
     expect(ids(getParents(tree, 'piotr'))).toEqual(['anna', 'jan'])
     expect(ids(getChildren(tree, 'jan'))).toEqual(['ola', 'piotr'])
+    expect(ids(getParents(tree, 'kuba'))).toEqual(['ola'])
   })
 
   it('finds every partner, including remarriages', () => {
     expect(ids(getPartners(tree, 'jan'))).toEqual(['anna', 'ewa'])
     expect(ids(getPartners(tree, 'ewa'))).toEqual(['jan'])
+    expect(getPartnershipBetween(tree, 'ewa', 'jan')?.id).toBe('r2')
+    expect(getPartnershipBetween(tree, 'ewa', 'anna')).toBeUndefined()
   })
 
-  it('treats half-siblings as siblings', () => {
+  it('distinguishes full and half siblings', () => {
     expect(ids(getSiblings(tree, 'piotr'))).toEqual(['ola'])
+    const t2 = new TreeBuilder()
+      .person('m', 'M')
+      .person('f', 'F')
+      .person('x', 'X')
+      .person('y', 'Y')
+      .person('z', 'Z')
+      .child('m', 'x')
+      .child('f', 'x')
+      .child('m', 'y')
+      .child('f', 'y')
+      .child('m', 'z')
+      .build()
+    const groups = getSiblingGroups(t2, 'x')
+    expect(ids(groups.full)).toEqual(['y'])
+    expect(ids(groups.half)).toEqual(['z'])
+  })
+
+  it('walks ancestors and descendants with depth limits', () => {
+    expect(ids(getAncestors(tree, 'kuba'))).toEqual(['ewa', 'jan', 'ola'])
+    expect(ids(getAncestors(tree, 'kuba', 1))).toEqual(['ola'])
+    expect(ids(getDescendants(tree, 'jan'))).toEqual(['kuba', 'ola', 'piotr'])
+    expect(ids(getDescendants(tree, 'jan', 1))).toEqual(['ola', 'piotr'])
+  })
+})
+
+describe('person helpers', () => {
+  const base = {
+    id: 'p',
+    givenNames: ' Jan ',
+    surname: 'Kowalski',
+    sex: 'male',
+    createdAt: '',
+    updatedAt: ''
+  } as const
+
+  it('builds display names', () => {
+    expect(displayName(base)).toBe('Jan Kowalski')
+    expect(displayName({ givenNames: '', surname: 'Nowak' })).toBe('Nowak')
+  })
+
+  it('infers living status', () => {
+    expect(isLiving(base)).toBeUndefined()
+    expect(isLiving({ ...base, living: true })).toBe(true)
+    expect(isLiving({ ...base, death: { place: 'Łódź' } })).toBe(false)
   })
 })
