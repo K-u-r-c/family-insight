@@ -1,8 +1,6 @@
 import { app, ipcMain } from 'electron'
-import { isLanguage } from '@shared/i18n'
 import { IpcChannel, type AppInfo } from '@shared/ipc'
-import { setMainLanguage } from './i18n'
-import { buildMenu } from './menu'
+import { getSettings, updateSettings } from './settings'
 
 export function registerIpcHandlers(): void {
   ipcMain.handle(IpcChannel.AppGetInfo, (): AppInfo => ({
@@ -12,10 +10,7 @@ export function registerIpcHandlers(): void {
     locale: app.getLocale()
   }))
 
-  ipcMain.handle(IpcChannel.AppSetLanguage, async (_event, language: unknown) => {
-    // Never trust renderer input: validate everything crossing the IPC boundary.
-    if (!isLanguage(language)) throw new Error(`Unsupported language: ${String(language)}`)
-    await setMainLanguage(language)
-    buildMenu()
-  })
+  ipcMain.handle(IpcChannel.SettingsGet, () => getSettings())
+  // The patch is untrusted: updateSettings sanitises every field.
+  ipcMain.handle(IpcChannel.SettingsUpdate, (_event, patch: unknown) => updateSettings(patch))
 }

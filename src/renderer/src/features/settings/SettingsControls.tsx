@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { SUPPORTED_LANGUAGES, type Language } from '@shared/i18n'
 import { SegmentedControl } from '@renderer/components/ui'
 import { changeLanguage } from '@renderer/i18n'
-import { usePreferences, type ThemePreference } from '@renderer/store/preferences'
+import type { ThemePreference } from '@core/settings'
+import { useSettings } from '@renderer/store/settings'
 import styles from './SettingsControls.module.css'
 
 const THEME_ICONS = { system: Monitor, light: Sun, dark: Moon }
@@ -11,7 +12,9 @@ const THEME_ICONS = { system: Monitor, light: Sun, dark: Moon }
 /** Theme + language switches, used on the welcome screen and in the settings menu. */
 export function SettingsControls(): React.JSX.Element {
   const { t, i18n } = useTranslation()
-  const { theme, setTheme } = usePreferences()
+  const theme = useSettings((s) => s.settings.theme)
+  const update = useSettings((s) => s.update)
+  const setTheme = (value: ThemePreference): void => void update({ theme: value })
   return (
     <div className={styles.row}>
       <SegmentedControl

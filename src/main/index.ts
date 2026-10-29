@@ -1,18 +1,20 @@
 import { join } from 'node:path'
 import { app, BrowserWindow, shell } from 'electron'
-import { initMainI18n } from './i18n'
+import { resolveLanguage } from '@shared/i18n'
+import { initMainI18n, setMainLanguage } from './i18n'
 import { registerIpcHandlers } from './ipc'
 import { buildMenu } from './menu'
+import { flushSettings, loadSettings, onSettingsChanged } from './settings'
+import { restoredBounds, trackWindowState, wasMaximized } from './windowState'
 
 function createWindow(): BrowserWindow {
   const window = new BrowserWindow({
-    width: 1280,
-    height: 820,
+    ...restoredBounds(),
     minWidth: 900,
     minHeight: 600,
     show: false,
     title: 'Family Insight',
-    backgroundColor: '#f7f5f2',
+    backgroundColor: '#f6f4f0',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
@@ -21,7 +23,11 @@ function createWindow(): BrowserWindow {
     }
   })
 
-  window.once('ready-to-show', () => window.show())
+  window.once('ready-to-show', () => {
+    if (wasMaximized()) window.maximize()
+    window.show()
+  })
+  trackWindowState(window)
 
   // Open external links in the default browser, never inside the app.
   window.webContents.setWindowOpenHandler(({ url }) => {
@@ -54,7 +60,13 @@ if (!hasLock) {
   })
 
   void app.whenReady().then(async () => {
-    await initMainI18n()
+    const settings = await loadSettings()
+    await initMainI18n(resolveLanguage(settings.language))
+    onSettingsChanged((next, previous) => {
+      if (next.language !== previous.language) {
+        void setMainLanguage(resolveLanguage(next.language)).then(buildMenu)
+      }
+    })
     registerIpcHandlers()
     buildMenu()
     createWindow()
@@ -66,5 +78,10 @@ if (!hasLock) {
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
+  })
+
+  app.on('will-quit', (event) => {
+    event.preventDefault()
+    void flushSettings().finally(() => app.exit())
   })
 }
