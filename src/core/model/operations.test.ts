@@ -4,6 +4,7 @@ import {
   addParentChild,
   addPartnership,
   addPerson,
+  relationshipCount,
   removePerson,
   removeRelationship,
   renameTree,
@@ -114,8 +115,12 @@ describe('removal', () => {
       false
     )
     expect(getParents(next, 'piotr').map((p) => p.id)).toEqual(['anna'])
-    expect(next.meta.rootPersonId).toBeUndefined()
+    // The first partner becomes the new root.
+    expect(next.meta.rootPersonId).toBe('anna')
     expect(tree.persons.jan).toBeDefined()
+    expect(relationshipCount(tree, 'jan')).toBe(4)
+    const lonely = removePerson(setRootPerson(new TreeBuilder().person('x', 'X').build(), 'x'), 'x')
+    expect(lonely.meta.rootPersonId).toBeUndefined()
   })
 
   it('removes a single relationship', () => {

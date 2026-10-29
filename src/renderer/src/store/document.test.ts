@@ -2,8 +2,10 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { isModelError } from '@core/model/errors'
 import {
   addParentChildCommand,
+  addPartnershipCommand,
   addPersonCommand,
   composeCommands,
+  removePersonCommand,
   updatePersonCommand
 } from './commands'
 import { selectCanRedo, selectCanUndo, selectIsDirty, useDocument } from './document'
@@ -70,6 +72,23 @@ describe('document store', () => {
       error = e
     }
     expect(isModelError(error)).toBe(true)
+    expect(useDocument.getState().tree).toBe(before)
+  })
+
+  it('deleting a person is one step and undo restores everything exactly', () => {
+    const s = useDocument.getState()
+    const a = s.dispatch(addPersonCommand(person('Anna')))
+    const b = useDocument.getState().dispatch(addPersonCommand(person('Jan')))
+    const c = useDocument.getState().dispatch(addPersonCommand(person('Ola')))
+    useDocument.getState().dispatch(addPartnershipCommand(a.id, b.id))
+    useDocument.getState().dispatch(addParentChildCommand(a.id, c.id))
+    const before = useDocument.getState().tree
+    useDocument.getState().dispatch(removePersonCommand(a.id))
+    const after = useDocument.getState().tree!
+    expect(after.persons[a.id]).toBeUndefined()
+    expect(Object.keys(after.relationships)).toHaveLength(0)
+    expect(useDocument.getState().selectedPersonId).toBeNull()
+    useDocument.getState().undo()
     expect(useDocument.getState().tree).toBe(before)
   })
 

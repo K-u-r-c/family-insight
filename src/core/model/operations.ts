@@ -1,6 +1,6 @@
 import { ModelError } from './errors'
 import { newId } from './ids'
-import { getAncestors, getParentLinks } from './tree'
+import { getAncestors, getChildren, getParentLinks, getParents, getPartners } from './tree'
 import type {
   FamilyTree,
   ParentChildKind,
@@ -82,18 +82,38 @@ export function updatePerson(
   return { ...tree, meta: touch(tree, timestamp), persons: { ...tree.persons, [id]: updated } }
 }
 
-/** Removes a person together with every relationship that references them. */
+/**
+ * Removes a person together with every relationship that references them. If they were the
+ * root person, the closest relative (partner, child, parent) or any remaining person becomes root.
+ */
 export function removePerson(tree: FamilyTree, id: PersonId, options: OpOptions = {}): FamilyTree {
   requirePerson(tree, id)
   const timestamp = (options.now ?? new Date()).toISOString()
+  const successor =
+    tree.meta.rootPersonId === id
+      ? [
+          ...getPartners(tree, id),
+          ...getChildren(tree, id),
+          ...getParents(tree, id),
+          ...Object.values(tree.persons).filter((p) => p.id !== id)
+        ][0]?.id
+      : undefined
   const persons = { ...tree.persons }
   delete persons[id]
   const relationships = Object.fromEntries(
     Object.entries(tree.relationships).filter(([, r]) => !involves(r, id))
   )
   const meta = touch(tree, timestamp)
-  if (meta.rootPersonId === id) delete meta.rootPersonId
+  if (meta.rootPersonId === id) {
+    if (successor) meta.rootPersonId = successor
+    else delete meta.rootPersonId
+  }
   return { ...tree, meta, persons, relationships }
+}
+
+/** Number of relationships that reference a person. */
+export function relationshipCount(tree: FamilyTree, id: PersonId): number {
+  return Object.values(tree.relationships).filter((r) => involves(r, id)).length
 }
 
 export function involves(rel: Relationship, personId: PersonId): boolean {

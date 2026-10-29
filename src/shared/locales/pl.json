@@ -128,7 +128,15 @@
       "about": "Około",
       "before": "Przed",
       "after": "Po"
-    }
+    },
+    "delete": "Usuń osobę",
+    "deleteTitle": "Usunąć osobę {{name}}?",
+    "deleteMessageNone": "Osoba {{name}} zostanie usunięta z drzewa.",
+    "deleteMessage_one": "Osoba {{name}} zostanie usunięta razem z {{count}} relacją.",
+    "deleteMessage_few": "Osoba {{name}} zostanie usunięta razem z {{count}} relacjami.",
+    "deleteMessage_many": "Osoba {{name}} zostanie usunięta razem z {{count}} relacjami.",
+    "deleteMessage_other": "Osoba {{name}} zostanie usunięta razem z {{count}} relacji.",
+    "deleted": "Usunięto: {{name}}"
   },
   "people": {
     "count_one": "{{count}} osoba",

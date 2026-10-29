@@ -128,7 +128,13 @@
       "about": "About",
       "before": "Before",
       "after": "After"
-    }
+    },
+    "delete": "Delete person",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteMessageNone": "{{name}} will be removed from the tree.",
+    "deleteMessage_one": "{{name}} will be removed together with {{count}} relationship.",
+    "deleteMessage_other": "{{name}} will be removed together with {{count}} relationships.",
+    "deleted": "{{name}} deleted"
   },
   "people": {
     "count_one": "{{count}} person",

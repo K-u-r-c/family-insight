@@ -1,8 +1,10 @@
+import { Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { displayName } from '@core/model/tree'
-import { Avatar } from '@renderer/components/ui'
+import { Avatar, IconButton } from '@renderer/components/ui'
 import { Panel } from '@renderer/features/workspace/Panel'
 import { useDocument } from '@renderer/store/document'
+import { deletePersonWithConfirm } from './deletePerson'
 import { FamilySection } from './FamilySection'
 import { PersonEditor } from './PersonEditor'
 import styles from './PersonPanel.module.css'
@@ -17,7 +19,20 @@ export function PersonPanel(): React.JSX.Element | null {
   if (!person) return null
   const name = displayName(person) || t('person.unnamed')
   return (
-    <Panel label={name} title={t('person.details')} onClose={() => select(null)}>
+    <Panel
+      label={name}
+      title={t('person.details')}
+      onClose={() => select(null)}
+      actions={
+        <IconButton
+          icon={Trash2}
+          size="sm"
+          label={t('person.delete')}
+          shortcut="Del"
+          onClick={() => void deletePersonWithConfirm(person.id)}
+        />
+      }
+    >
       <div className={styles.header}>
         <Avatar
           givenNames={person.givenNames}

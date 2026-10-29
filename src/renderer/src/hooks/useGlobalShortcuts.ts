@@ -1,10 +1,29 @@
 import { useEffect } from 'react'
+import { deletePersonWithConfirm } from '@renderer/features/person/deletePerson'
+import { useDocument } from '@renderer/store/document'
+import { isTextInput } from './useMenuIntegration'
+
+/** True while a modal dialog or menu has focus (shortcuts must not fire then). */
+function overlayOpen(): boolean {
+  return !!document.querySelector('dialog[open], [role="menu"]')
+}
 
 /** App-wide keyboard shortcuts that are not native menu accelerators. */
 export function useGlobalShortcuts(): void {
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent): void => {
       const mod = e.ctrlKey || e.metaKey
+      const selected = useDocument.getState().selectedPersonId
+      if (
+        (e.key === 'Delete' || (e.key === 'Backspace' && e.metaKey)) &&
+        selected &&
+        !isTextInput(document.activeElement) &&
+        !overlayOpen()
+      ) {
+        e.preventDefault()
+        void deletePersonWithConfirm(selected)
+        return
+      }
       if (mod && !e.shiftKey && e.key.toLowerCase() === 'f') {
         const search = document.getElementById('workspace-search') as HTMLInputElement | null
         if (search) {

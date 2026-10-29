@@ -30,3 +30,33 @@ test('add and edit a person, then undo', async () => {
   await expect(page.getByText('The date of death is before the date of birth.')).toBeHidden()
   await app.close()
 })
+
+test('delete a person with confirmation, then undo', async () => {
+  const { app, page } = await launch({ language: 'pl' })
+  await page.getByRole('button', { name: 'Nowe drzewo rodzinne' }).click()
+  await page.getByRole('button', { name: 'Dodaj pierwszą osobę' }).click()
+  await page.getByLabel('Imiona').fill('Anna')
+  await page.getByLabel('Imiona').press('Enter')
+  await page.getByRole('button', { name: 'Ojciec' }).click()
+  await page.getByLabel('Imiona').fill('Jan')
+  await page.getByLabel('Imiona').press('Enter')
+  await page.getByRole('button', { name: 'Anna', exact: true }).click()
+  await expect(page.getByText('2 osoby')).toBeVisible()
+
+  // Delete key on the selection (focus outside text fields).
+  await page.getByRole('heading', { name: 'Anna' }).click()
+  await page.keyboard.press('Delete')
+  await expect(page.getByText('Osoba Anna zostanie usunięta razem z 1 relacją.')).toBeVisible()
+  await page.getByRole('button', { name: 'Anuluj' }).click()
+  await expect(page.getByText('2 osoby')).toBeVisible()
+
+  await page.getByRole('button', { name: 'Usuń osobę' }).click()
+  await page.getByRole('dialog').getByRole('button', { name: 'Usuń' }).click()
+  await expect(page.getByText('1 osoba')).toBeVisible()
+  await page
+    .getByRole('region', { name: 'Powiadomienia' })
+    .getByRole('button', { name: 'Cofnij' })
+    .click()
+  await expect(page.getByText('2 osoby')).toBeVisible()
+  await app.close()
+})
