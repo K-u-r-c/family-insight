@@ -1,0 +1,22 @@
+.handle {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  width: 1px;
+  cursor: col-resize;
+  background: var(--color-border);
+  outline: none;
+}
+
+.handle::before {
+  position: absolute;
+  inset: 0 -4px;
+  content: '';
+}
+
+.handle:hover,
+.handle:focus-visible,
+.handle:active {
+  background: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}

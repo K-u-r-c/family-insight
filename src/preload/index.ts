@@ -13,6 +13,7 @@ const api: FamilyInsightApi = {
   getSettings: () => ipcRenderer.invoke(IpcChannel.SettingsGet),
   updateSettings: (patch) => ipcRenderer.invoke(IpcChannel.SettingsUpdate, patch),
   onSettingsChanged: (listener) => subscribe<Settings>(IpcChannel.SettingsChanged, listener),
+  setDocumentEdited: (edited) => ipcRenderer.invoke(IpcChannel.WindowSetDocumentEdited, edited),
   onMenuAction: (listener) => subscribe<MenuAction>(IpcChannel.MenuAction, listener)
 }
 

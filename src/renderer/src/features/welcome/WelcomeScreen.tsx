@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { TreeLogo } from '@renderer/components/TreeLogo'
 import { Button } from '@renderer/components/ui'
 import { SettingsControls } from '@renderer/features/settings/SettingsControls'
+import { useDocument } from '@renderer/store/document'
 import styles from './WelcomeScreen.module.css'
 
 export function WelcomeScreen(): React.JSX.Element {
@@ -16,6 +17,7 @@ export function WelcomeScreen(): React.JSX.Element {
     return window.familyInsight.onMenuAction(() => setNotice(true))
   }, [])
 
+  const newDocument = useDocument((s) => s.newDocument)
   const comingSoon = (): void => setNotice(true)
 
   return (
@@ -29,7 +31,13 @@ export function WelcomeScreen(): React.JSX.Element {
         <h1 className={styles.title}>{t('welcome.title')}</h1>
         <p className={styles.subtitle}>{t('welcome.subtitle')}</p>
         <div className={styles.actions}>
-          <Button variant="primary" size="lg" icon={Plus} block onClick={comingSoon}>
+          <Button
+            variant="primary"
+            size="lg"
+            icon={Plus}
+            block
+            onClick={() => newDocument(t('tree.untitled'))}
+          >
             {t('welcome.newTree')}
           </Button>
           <Button size="lg" icon={FolderOpen} block onClick={comingSoon}>

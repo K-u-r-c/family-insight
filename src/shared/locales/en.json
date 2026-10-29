@@ -13,7 +13,9 @@
   },
   "settings": {
     "language": "Language",
-    "theme": "Theme"
+    "theme": "Theme",
+    "title": "Settings",
+    "autosave": "Save automatically"
   },
   "language": {
     "en": "English",
@@ -94,10 +96,31 @@
     "emptyText": "Empty states explain what to do next."
   },
   "person": {
-    "sex": "Sex"
+    "sex": "Sex",
+    "details": "Details"
   },
   "people": {
     "count_one": "{{count}} person",
-    "count_other": "{{count}} people"
+    "count_other": "{{count}} people",
+    "title": "People",
+    "empty": "No people yet."
+  },
+  "workspace": {
+    "addPerson": "Add person",
+    "treeName": "Tree name",
+    "renameTree": "Click to rename",
+    "searchPlaceholder": "Search people",
+    "saved": "All changes saved",
+    "unsaved": "Unsaved changes",
+    "hideSidebar": "Hide people list",
+    "showSidebar": "Show people list",
+    "resizeSidebar": "Resize people list",
+    "resizeDetails": "Resize details panel"
+  },
+  "tree": {
+    "untitled": "My family",
+    "emptyTitle": "Your tree is empty",
+    "emptyText": "Start with yourself or the oldest ancestor you know, then add their family.",
+    "addFirst": "Add the first person"
   }
 }

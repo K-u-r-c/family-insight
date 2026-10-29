@@ -2,10 +2,14 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { initI18n } from './i18n'
 import { applyTheme } from './hooks/useApplyTheme'
-import { initSettings } from './store/settings'
+import { useDocument } from './store/document'
+import { initSettings, useSettings } from './store/settings'
 import './styles/tokens.css'
 import './styles/global.css'
 import { App } from './App'
+
+// Store handles for end-to-end tests and screenshot automation (renderer state only).
+Object.assign(window, { __familyInsight: { useDocument, useSettings } })
 
 async function bootstrap(): Promise<void> {
   const settings = await initSettings()

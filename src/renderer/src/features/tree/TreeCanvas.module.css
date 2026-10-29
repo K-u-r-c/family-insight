@@ -1,0 +1,8 @@
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  background-color: var(--color-canvas);
+  background-image: radial-gradient(var(--color-canvas-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+}

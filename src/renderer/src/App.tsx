@@ -1,7 +1,10 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { ConfirmHost, Toaster } from './components/ui'
 import { useApplyTheme } from './hooks/useApplyTheme'
+import { useGlobalShortcuts } from './hooks/useGlobalShortcuts'
 import { WelcomeScreen } from './features/welcome/WelcomeScreen'
+import { Workspace } from './features/workspace/Workspace'
+import { useDocument } from './store/document'
 
 const Gallery = lazy(() =>
   import('./features/gallery/Gallery').then((m) => ({ default: m.Gallery }))
@@ -19,13 +22,17 @@ function useHash(): string {
 
 export function App(): React.JSX.Element {
   useApplyTheme()
+  useGlobalShortcuts()
   const hash = useHash()
+  const hasDocument = useDocument((s) => s.tree !== null)
   return (
     <>
       {hash === '#gallery' ? (
         <Suspense fallback={null}>
           <Gallery />
         </Suspense>
+      ) : hasDocument ? (
+        <Workspace />
       ) : (
         <WelcomeScreen />
       )}

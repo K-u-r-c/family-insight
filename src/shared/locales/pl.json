@@ -13,7 +13,9 @@
   },
   "settings": {
     "language": "Język",
-    "theme": "Motyw"
+    "theme": "Motyw",
+    "title": "Ustawienia",
+    "autosave": "Zapisuj automatycznie"
   },
   "language": {
     "en": "English",
@@ -94,12 +96,33 @@
     "emptyText": "Puste stany podpowiadają, co zrobić dalej."
   },
   "person": {
-    "sex": "Płeć"
+    "sex": "Płeć",
+    "details": "Szczegóły"
   },
   "people": {
     "count_one": "{{count}} osoba",
     "count_few": "{{count}} osoby",
     "count_many": "{{count}} osób",
-    "count_other": "{{count}} osoby"
+    "count_other": "{{count}} osoby",
+    "title": "Osoby",
+    "empty": "Nie ma jeszcze żadnych osób."
+  },
+  "workspace": {
+    "addPerson": "Dodaj osobę",
+    "treeName": "Nazwa drzewa",
+    "renameTree": "Kliknij, aby zmienić nazwę",
+    "searchPlaceholder": "Szukaj osób",
+    "saved": "Wszystkie zmiany zapisane",
+    "unsaved": "Niezapisane zmiany",
+    "hideSidebar": "Ukryj listę osób",
+    "showSidebar": "Pokaż listę osób",
+    "resizeSidebar": "Zmień szerokość listy osób",
+    "resizeDetails": "Zmień szerokość panelu szczegółów"
+  },
+  "tree": {
+    "untitled": "Moja rodzina",
+    "emptyTitle": "Twoje drzewo jest puste",
+    "emptyText": "Zacznij od siebie albo od najstarszego znanego przodka, a potem dodaj jego rodzinę.",
+    "addFirst": "Dodaj pierwszą osobę"
   }
 }

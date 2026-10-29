@@ -1,0 +1,39 @@
+.bar {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  height: 28px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.path {
+  max-width: 40vw;
+  overflow: hidden;
+  color: var(--color-text-subtle);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+}
+
+.saved,
+.unsaved {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.saved {
+  color: var(--color-success);
+}
+
+.unsaved {
+  color: var(--color-warning);
+}

@@ -6,6 +6,7 @@ export const IpcChannel = {
   SettingsGet: 'settings:get',
   SettingsUpdate: 'settings:update',
   SettingsChanged: 'settings:changed',
+  WindowSetDocumentEdited: 'window:set-document-edited',
   MenuAction: 'menu:action'
 } as const
 
@@ -35,5 +36,7 @@ export interface FamilyInsightApi {
   /** Merges a partial update; main validates it and broadcasts the result. */
   updateSettings(patch: Partial<Settings>): Promise<Settings>
   onSettingsChanged(listener: (settings: Settings) => void): () => void
+  /** Marks the window as having unsaved changes (macOS close-button dot). */
+  setDocumentEdited(edited: boolean): Promise<void>
   onMenuAction(listener: (action: MenuAction) => void): () => void
 }

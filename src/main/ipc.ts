@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { IpcChannel, type AppInfo } from '@shared/ipc'
 import { getSettings, updateSettings } from './settings'
 
@@ -13,4 +13,8 @@ export function registerIpcHandlers(): void {
   ipcMain.handle(IpcChannel.SettingsGet, () => getSettings())
   // The patch is untrusted: updateSettings sanitises every field.
   ipcMain.handle(IpcChannel.SettingsUpdate, (_event, patch: unknown) => updateSettings(patch))
+
+  ipcMain.handle(IpcChannel.WindowSetDocumentEdited, (event, edited: unknown) => {
+    BrowserWindow.fromWebContents(event.sender)?.setDocumentEdited(edited === true)
+  })
 }
