@@ -4,19 +4,17 @@ import { useTranslation } from 'react-i18next'
 import { TreeLogo } from '@renderer/components/TreeLogo'
 import { Button } from '@renderer/components/ui'
 import { SettingsControls } from '@renderer/features/settings/SettingsControls'
+import { startCsvImport } from '@renderer/features/csv/importFlow'
 import { newTree, openTree } from '@renderer/services/documentFiles'
 import styles from './WelcomeScreen.module.css'
 
 export function WelcomeScreen(): React.JSX.Element {
   const { t } = useTranslation()
   const [version, setVersion] = useState('')
-  const [notice, setNotice] = useState(false)
 
   useEffect(() => {
     void window.familyInsight.getAppInfo().then((info) => setVersion(info.version))
   }, [])
-
-  const comingSoon = (): void => setNotice(true)
 
   return (
     <main className={styles.screen}>
@@ -35,13 +33,10 @@ export function WelcomeScreen(): React.JSX.Element {
           <Button size="lg" icon={FolderOpen} block onClick={() => void openTree()}>
             {t('welcome.openTree')}
           </Button>
-          <Button size="lg" icon={FileUp} block onClick={comingSoon}>
+          <Button size="lg" icon={FileUp} block onClick={() => void startCsvImport()}>
             {t('welcome.importCsv')}
           </Button>
         </div>
-        <p className={styles.notice} role="status">
-          {notice ? t('welcome.comingSoon') : ''}
-        </p>
       </section>
 
       <footer className={styles.footer}>

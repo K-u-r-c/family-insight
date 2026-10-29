@@ -259,6 +259,24 @@ export function setRootPerson(tree: FamilyTree, id: PersonId | undefined): Famil
   return { ...tree, meta }
 }
 
+/** Adds every person and relationship of `other` (ids must not clash) to `tree`. */
+export function mergeTrees(
+  tree: FamilyTree,
+  other: FamilyTree,
+  options: OpOptions = {}
+): FamilyTree {
+  const timestamp = (options.now ?? new Date()).toISOString()
+  for (const id of [...Object.keys(other.persons), ...Object.keys(other.relationships)]) {
+    if (tree.persons[id] || tree.relationships[id]) throw new ModelError('duplicate-id', { id })
+  }
+  return {
+    ...tree,
+    meta: touch(tree, timestamp),
+    persons: { ...tree.persons, ...other.persons },
+    relationships: { ...tree.relationships, ...other.relationships }
+  }
+}
+
 export function renameTree(tree: FamilyTree, name: string, options: OpOptions = {}): FamilyTree {
   const timestamp = (options.now ?? new Date()).toISOString()
   return { ...tree, meta: { ...touch(tree, timestamp), name } }

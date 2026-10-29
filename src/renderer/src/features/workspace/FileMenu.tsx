@@ -10,6 +10,7 @@ import {
 } from '@renderer/components/ui'
 import { formatShortcut } from '@renderer/lib/platform'
 import { newTree, openTree, saveTree, saveTreeAs } from '@renderer/services/documentFiles'
+import { startCsvImport } from '@renderer/features/csv/importFlow'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 
 /** In-app file menu (mirrors the native menu, discoverable on every platform). */
@@ -44,7 +45,7 @@ export function FileMenu(): React.JSX.Element {
       onSelect: () => void saveTreeAs()
     },
     { type: 'separator' },
-    { label: t('menu.importCsv'), icon: FileUp, onSelect: () => openDialog('import-csv') },
+    { label: t('menu.importCsv'), icon: FileUp, onSelect: () => void startCsvImport() },
     { label: t('menu.exportCsv'), icon: FileDown, onSelect: () => openDialog('export-csv') }
   ]
   return (

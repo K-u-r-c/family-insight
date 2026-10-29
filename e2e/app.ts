@@ -54,3 +54,9 @@ export async function mockDialogs(
 export function tempDir(): string {
   return mkdtempSync(join(tmpdir(), 'fi-files-'))
 }
+
+/** Closes the app, answering "Don't save" if it asks about unsaved changes. */
+export async function closeApp(app: ElectronApplication): Promise<void> {
+  await mockDialogs(app, { message: 1 })
+  await app.close()
+}

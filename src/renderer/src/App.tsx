@@ -10,6 +10,8 @@ import { Workspace } from './features/workspace/Workspace'
 import { useDocument } from './store/document'
 import { useWorkspaceUi } from './store/workspaceUi'
 import { ExportCsvDialog } from './features/csv/ExportCsvDialog'
+import { ImportCsvDialog } from './features/csv/ImportCsvDialog'
+import { startCsvImport } from './features/csv/importFlow'
 
 const Gallery = lazy(() =>
   import('./features/gallery/Gallery').then((m) => ({ default: m.Gallery }))
@@ -35,6 +37,7 @@ export function App(): React.JSX.Element {
       'file:open': () => void openTree(),
       'file:save': () => void saveTree(),
       'file:save-as': () => void saveTreeAs(),
+      'file:import-csv': () => void startCsvImport(),
       'file:export-csv': () => {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-csv')
       }
@@ -60,6 +63,7 @@ export function App(): React.JSX.Element {
       {dialog === 'export-csv' && hasDocument && (
         <ExportCsvDialog open onClose={() => openDialog(null)} />
       )}
+      {dialog === 'import-csv' && <ImportCsvDialog onClose={() => openDialog(null)} />}
       <ConfirmHost />
       <ChoiceHost />
       <Toaster />

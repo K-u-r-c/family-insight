@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { launch } from './app'
+import { closeApp, launch } from './app'
 
 test('add and edit a person, then undo', async () => {
   const { app, page } = await launch()
@@ -28,7 +28,7 @@ test('add and edit a person, then undo', async () => {
   await expect(page.getByText('1 person')).toBeVisible()
   await page.getByRole('button', { name: 'Undo' }).click()
   await expect(page.getByText('The date of death is before the date of birth.')).toBeHidden()
-  await app.close()
+  await closeApp(app)
 })
 
 test('delete a person with confirmation, then undo', async () => {
@@ -58,5 +58,5 @@ test('delete a person with confirmation, then undo', async () => {
     .getByRole('button', { name: 'Cofnij' })
     .click()
   await expect(page.getByText('2 osoby')).toBeVisible()
-  await app.close()
+  await closeApp(app)
 })

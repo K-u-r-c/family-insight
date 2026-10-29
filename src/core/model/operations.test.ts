@@ -4,6 +4,7 @@ import {
   addParentChild,
   addPartnership,
   addPerson,
+  mergeTrees,
   relationshipCount,
   removePerson,
   removeRelationship,
@@ -127,6 +128,17 @@ describe('removal', () => {
     const tree = remarriageFixture()
     const next = removeRelationship(tree, 'r3')
     expect(getChildren(next, 'jan').map((p) => p.id)).toEqual(['ola'])
+  })
+})
+
+describe('mergeTrees', () => {
+  it('adds people and relationships, rejecting clashing ids', () => {
+    const a = new TreeBuilder().person('a', 'A').build()
+    const b = new TreeBuilder().person('b', 'B').person('c', 'C').couple('b', 'c').build()
+    const merged = mergeTrees(a, b)
+    expect(Object.keys(merged.persons).sort()).toEqual(['a', 'b', 'c'])
+    expect(Object.keys(merged.relationships)).toHaveLength(1)
+    expect(() => mergeTrees(merged, b)).toThrow(ModelError)
   })
 })
 

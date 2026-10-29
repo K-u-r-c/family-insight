@@ -1,7 +1,7 @@
 import { copyFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { expect, test } from '@playwright/test'
-import { launch, tempDir } from './app'
+import { closeApp, launch, tempDir } from './app'
 
 function sample(): string {
   const path = join(tempDir(), 'kowalscy.finsight')
@@ -31,7 +31,7 @@ test('tree canvas: select, context menu and root person', async () => {
   // Clicking the background clears the selection.
   await canvas.click({ position: { x: 20, y: 20 } })
   await expect(page.getByRole('heading', { name: 'Marek Lis' })).toBeHidden()
-  await app.close()
+  await closeApp(app)
 })
 
 test('canvas navigation: keyboard, zoom controls and minimap', async () => {
@@ -65,7 +65,7 @@ test('canvas navigation: keyboard, zoom controls and minimap', async () => {
   await expect(zoomLabel).toHaveText('100%')
   await page.getByRole('button', { name: 'Overview map' }).click()
   await expect(page.getByRole('img', { name: 'Overview map' })).toBeHidden()
-  await app.close()
+  await closeApp(app)
 })
 
 test('people list: diacritics-insensitive search, keyboard and selection', async () => {
@@ -88,7 +88,7 @@ test('people list: diacritics-insensitive search, keyboard and selection', async
   await expect(page.getByText('Nikt nie pasuje do „xyz”.')).toBeVisible()
   await page.getByLabel('Szukaj').press('Escape')
   await expect(list.getByRole('option')).toHaveCount(15)
-  await app.close()
+  await closeApp(app)
 })
 
 test('person details: age, timeline and edit mode', async () => {
@@ -111,5 +111,5 @@ test('person details: age, timeline and edit mode', async () => {
   // Clicking a person in the timeline navigates there.
   await page.getByRole('button', { name: 'Anna Kowalska', exact: true }).first().click()
   await expect(page.getByRole('heading', { name: 'Anna Kowalska' })).toBeVisible()
-  await app.close()
+  await closeApp(app)
 })

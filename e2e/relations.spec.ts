@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { launch } from './app'
+import { closeApp, launch } from './app'
 
 test('build a three-generation family from one person', async () => {
   const { app, page } = await launch()
@@ -41,5 +41,5 @@ test('build a three-generation family from one person', async () => {
   await page.getByRole('button', { name: 'Link an existing person' }).first().click()
   await page.getByRole('dialog').getByRole('option', { name: /Ola/ }).click()
   await expect(page.getByText('That would make someone their own ancestor.')).toBeVisible()
-  await app.close()
+  await closeApp(app)
 })

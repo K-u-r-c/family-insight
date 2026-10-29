@@ -8,8 +8,7 @@
     "subtitle": "Stwórz drzewo genealogiczne, poznawaj krewnych i trzymaj historię rodziny w jednym miejscu.",
     "newTree": "Nowe drzewo rodzinne",
     "openTree": "Otwórz drzewo…",
-    "importCsv": "Importuj z CSV…",
-    "comingSoon": "Ta funkcja pojawi się wkrótce."
+    "importCsv": "Importuj z CSV…"
   },
   "settings": {
     "language": "Język",
@@ -220,7 +219,8 @@
     "addRelationship": "Dodanie relacji",
     "editRelationship": "Edycja relacji",
     "removeRelationship": "Usunięcie relacji",
-    "setRoot": "Ustawienie osoby głównej"
+    "setRoot": "Ustawienie osoby głównej",
+    "importCsv": "Import CSV"
   },
   "files": {
     "treeFilter": "Drzewo Family Insight",
@@ -249,7 +249,21 @@
   "issues": {
     "death-before-birth": "Data śmierci jest wcześniejsza niż data urodzenia.",
     "unrealistic-age": "Oznaczałoby to, że {{name}} ma {{years}} lat. Czy data jest poprawna?",
-    "parent-younger-than-child": "{{parent}} urodził(a) się po {{child}}, a jest wpisany(-a) jako rodzic."
+    "parent-younger-than-child": "{{parent}} urodził(a) się po {{child}}, a jest wpisany(-a) jako rodzic.",
+    "empty-file": "Plik jest pusty.",
+    "missing-id-column": "W pliku brakuje kolumny „id”. Każda osoba potrzebuje identyfikatora, aby krewni mogli się do niej odwołać.",
+    "missing-name-column": "W pliku brakuje kolumn z imieniem lub nazwiskiem („imiona”, „nazwisko”).",
+    "missing-id": "W tym wierszu brakuje id.",
+    "duplicate-id": "Identyfikator „{{id}}” występuje więcej niż raz.",
+    "row-without-name": "Osoba „{{id}}” nie ma ani imion, ani nazwiska.",
+    "unknown-reference": "Odwołanie do „{{id}}”, ale nie ma wiersza z takim id.",
+    "self-reference": "Osoba odwołuje się do samej siebie („{{id}}”).",
+    "same-parents": "Ojciec i matka to ta sama osoba („{{id}}”).",
+    "ancestry-cycle": "{{name}} byłby swoim własnym przodkiem.",
+    "unknown-column": "Kolumna „{{column}}” nie została rozpoznana i zostanie pominięta.",
+    "invalid-date": "„{{value}}” to nie jest rozpoznawalna data; dodano ją do notatek.",
+    "invalid-sex": "„{{value}}” to nie jest znana płeć; zaimportowano jako nieznaną.",
+    "invalid-living": "„{{value}}” to nie jest tak/nie; status życia pozostaje nieznany."
   },
   "relations": {
     "parents": "Rodzice",
@@ -357,6 +371,63 @@
     "exported_few": "Wyeksportowano {{count}} osoby",
     "exported_many": "Wyeksportowano {{count}} osób",
     "exported_other": "Wyeksportowano {{count}} osoby",
-    "showInFolder": "Pokaż w folderze"
+    "showInFolder": "Pokaż w folderze",
+    "importTitle": "Import „{{name}}”",
+    "detected": "Wykryto: separator {{delimiter}}, kodowanie {{encoding}}.",
+    "importButton": "Importuj",
+    "row": "Wiersz {{row}}:",
+    "more_one": "…i jeszcze {{count}}",
+    "more_few": "…i jeszcze {{count}}",
+    "more_many": "…i jeszcze {{count}}",
+    "more_other": "…i jeszcze {{count}}",
+    "summary": "Osoby: {{people}}, relacje: {{relationships}}",
+    "target": "Importuj do",
+    "targetNew": "Nowego drzewa",
+    "targetMerge": "Bieżącego drzewa",
+    "errorsTitle_one": "{{count}} problem do poprawienia",
+    "errorsTitle_few": "{{count}} problemy do poprawienia",
+    "errorsTitle_many": "{{count}} problemów do poprawienia",
+    "errorsTitle_other": "{{count}} problemu do poprawienia",
+    "errorsHint": "Popraw je w arkuszu (albo zmień przypisanie kolumn poniżej) i zaimportuj ponownie.",
+    "warningsTitle_one": "{{count}} ostrzeżenie",
+    "warningsTitle_few": "{{count}} ostrzeżenia",
+    "warningsTitle_many": "{{count}} ostrzeżeń",
+    "warningsTitle_other": "{{count}} ostrzeżenia",
+    "warningsHint": "Możesz mimo to zaimportować – wartości zostaną potraktowane jak opisano.",
+    "columnsTitle": "Kolumny",
+    "fileColumn": "Kolumna w pliku",
+    "mappedTo": "Importuj jako",
+    "sample": "Pierwszy wiersz",
+    "mappingFor": "Importuj kolumnę „{{column}}” jako",
+    "ignore": "Nie importuj",
+    "previewTitle_one": "Podgląd (pierwszy wiersz)",
+    "previewTitle_few": "Podgląd (pierwsze {{count}} wiersze)",
+    "previewTitle_many": "Podgląd (pierwszych {{count}} wierszy)",
+    "previewTitle_other": "Podgląd (pierwsze {{count}} wiersza)",
+    "imported_one": "Zaimportowano {{count}} osobę",
+    "imported_few": "Zaimportowano {{count}} osoby",
+    "imported_many": "Zaimportowano {{count}} osób",
+    "imported_other": "Zaimportowano {{count}} osoby",
+    "column": {
+      "id": "ID",
+      "given_names": "Imiona",
+      "surname": "Nazwisko",
+      "birth_surname": "Nazwisko rodowe",
+      "sex": "Płeć",
+      "birth_date": "Data urodzenia",
+      "birth_place": "Miejsce urodzenia",
+      "death_date": "Data śmierci",
+      "death_place": "Miejsce śmierci",
+      "living": "Żyje",
+      "father_id": "ID ojca",
+      "mother_id": "ID matki",
+      "partner_ids": "ID partnerów",
+      "notes": "Notatki"
+    },
+    "delimiterName": {
+      "comma": "przecinek ( , )",
+      "semicolon": "średnik ( ; )",
+      "tab": "tabulator"
+    }
   }
 }

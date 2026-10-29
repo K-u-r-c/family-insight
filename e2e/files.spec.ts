@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { expect, test } from '@playwright/test'
-import { launch, mockDialogs, tempDir } from './app'
+import { closeApp, launch, mockDialogs, tempDir } from './app'
 
 const SAMPLE = {
   format: 'family-insight',
@@ -43,13 +43,13 @@ test('new tree, save as, reopen from argv', async () => {
     meta: { name: 'My family' }
   })
   await expect(page.getByText('All changes saved')).toBeVisible()
-  await app.close()
+  await closeApp(app)
 
   writeFileSync(target, JSON.stringify(SAMPLE))
   const second = await launch({ args: [target] })
   await expect(second.page.getByRole('button', { name: /Tree name: Kowalscy/ })).toBeVisible()
   await expect(second.page.getByText('1 person')).toBeVisible()
-  await second.app.close()
+  await closeApp(second.app)
 })
 
 test('friendly error for a damaged file', async () => {
@@ -62,7 +62,7 @@ test('friendly error for a damaged file', async () => {
   await expect(
     page.getByText('Plik jest uszkodzony albo nie jest drzewem Family Insight.')
   ).toBeVisible()
-  await app.close()
+  await closeApp(app)
 })
 
 test('closing with unsaved changes asks first', async () => {

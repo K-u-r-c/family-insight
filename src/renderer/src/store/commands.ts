@@ -2,6 +2,7 @@ import {
   addParentChild,
   addPartnership,
   addPerson,
+  mergeTrees,
   removePerson,
   removeRelationship,
   renameTree,
@@ -94,6 +95,11 @@ export const updateRelationshipCommand = (
 export const removeRelationshipCommand = (id: RelationshipId): Command => ({
   label: 'history.removeRelationship',
   run: (tree) => ({ tree: removeRelationship(tree, id), result: undefined })
+})
+
+export const mergeTreeCommand = (other: FamilyTree): Command => ({
+  label: 'history.importCsv',
+  run: (tree) => ({ tree: mergeTrees(tree, other), result: undefined })
 })
 
 export const setRootCommand = (id: PersonId | undefined): Command => ({

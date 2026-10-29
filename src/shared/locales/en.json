@@ -8,8 +8,7 @@
     "subtitle": "Create a family tree, explore your relatives and keep your history in one place.",
     "newTree": "New family tree",
     "openTree": "Open tree…",
-    "importCsv": "Import from CSV…",
-    "comingSoon": "This feature is coming soon."
+    "importCsv": "Import from CSV…"
   },
   "settings": {
     "language": "Language",
@@ -206,7 +205,8 @@
     "addRelationship": "Add relationship",
     "editRelationship": "Edit relationship",
     "removeRelationship": "Remove relationship",
-    "setRoot": "Set root person"
+    "setRoot": "Set root person",
+    "importCsv": "Import CSV"
   },
   "files": {
     "treeFilter": "Family Insight tree",
@@ -235,7 +235,21 @@
   "issues": {
     "death-before-birth": "The date of death is before the date of birth.",
     "unrealistic-age": "That would make {{name}} {{years}} years old. Is the date right?",
-    "parent-younger-than-child": "{{parent}} was born after {{child}}, but is listed as a parent."
+    "parent-younger-than-child": "{{parent}} was born after {{child}}, but is listed as a parent.",
+    "empty-file": "The file is empty.",
+    "missing-id-column": "The file has no “id” column. Every person needs an id so relatives can refer to them.",
+    "missing-name-column": "The file has no name columns (“given_names” or “surname”).",
+    "missing-id": "This row has no id.",
+    "duplicate-id": "The id “{{id}}” is used more than once.",
+    "row-without-name": "The person “{{id}}” has neither given names nor a surname.",
+    "unknown-reference": "Refers to “{{id}}”, but there is no row with that id.",
+    "self-reference": "The person refers to themselves (“{{id}}”).",
+    "same-parents": "Father and mother are the same person (“{{id}}”).",
+    "ancestry-cycle": "{{name}} would be their own ancestor.",
+    "unknown-column": "The column “{{column}}” isn't recognised and will be ignored.",
+    "invalid-date": "“{{value}}” isn't a date we understand; it was added to the notes.",
+    "invalid-sex": "“{{value}}” isn't a known sex; imported as unknown.",
+    "invalid-living": "“{{value}}” isn't yes/no; the living status is left unknown."
   },
   "relations": {
     "parents": "Parents",
@@ -341,6 +355,53 @@
     "headerLanguage": "Column names",
     "exported_one": "Exported {{count}} person",
     "exported_other": "Exported {{count}} people",
-    "showInFolder": "Show in folder"
+    "showInFolder": "Show in folder",
+    "importTitle": "Import “{{name}}”",
+    "detected": "Detected: {{delimiter}} separator, {{encoding}} encoding.",
+    "importButton": "Import",
+    "row": "Row {{row}}:",
+    "more_one": "…and {{count}} more",
+    "more_other": "…and {{count}} more",
+    "summary": "{{people}} people, {{relationships}} relationships",
+    "target": "Import into",
+    "targetNew": "A new tree",
+    "targetMerge": "The current tree",
+    "errorsTitle_one": "{{count}} problem must be fixed",
+    "errorsTitle_other": "{{count}} problems must be fixed",
+    "errorsHint": "Fix these in your spreadsheet (or change the column mapping below) and import again.",
+    "warningsTitle_one": "{{count}} warning",
+    "warningsTitle_other": "{{count}} warnings",
+    "warningsHint": "You can import anyway – these values will be imported as described.",
+    "columnsTitle": "Columns",
+    "fileColumn": "Column in the file",
+    "mappedTo": "Imported as",
+    "sample": "First row",
+    "mappingFor": "Import column “{{column}}” as",
+    "ignore": "Don't import",
+    "previewTitle_one": "Preview (first row)",
+    "previewTitle_other": "Preview (first {{count}} rows)",
+    "imported_one": "Imported {{count}} person",
+    "imported_other": "Imported {{count}} people",
+    "column": {
+      "id": "ID",
+      "given_names": "Given names",
+      "surname": "Surname",
+      "birth_surname": "Birth surname",
+      "sex": "Sex",
+      "birth_date": "Date of birth",
+      "birth_place": "Place of birth",
+      "death_date": "Date of death",
+      "death_place": "Place of death",
+      "living": "Living",
+      "father_id": "Father ID",
+      "mother_id": "Mother ID",
+      "partner_ids": "Partner IDs",
+      "notes": "Notes"
+    },
+    "delimiterName": {
+      "comma": "comma ( , )",
+      "semicolon": "semicolon ( ; )",
+      "tab": "tab"
+    }
   }
 }
