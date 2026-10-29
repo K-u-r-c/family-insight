@@ -1,0 +1,60 @@
+{
+  "app": {
+    "name": "Ohara Tree",
+    "tagline": "Your family story, beautifully organised."
+  },
+  "welcome": {
+    "title": "Welcome to Ohara Tree",
+    "subtitle": "Create a family tree, explore your relatives and keep your history in one place.",
+    "newTree": "New family tree",
+    "openTree": "Open tree…",
+    "importCsv": "Import from CSV…",
+    "comingSoon": "This feature is coming soon."
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme"
+  },
+  "language": {
+    "en": "English",
+    "pl": "Polski"
+  },
+  "theme": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "menu": {
+    "file": "File",
+    "newTree": "New Tree",
+    "open": "Open…",
+    "save": "Save",
+    "saveAs": "Save As…",
+    "importCsv": "Import CSV…",
+    "exportCsv": "Export CSV…",
+    "quit": "Quit",
+    "edit": "Edit",
+    "undo": "Undo",
+    "redo": "Redo",
+    "cut": "Cut",
+    "copy": "Copy",
+    "paste": "Paste",
+    "selectAll": "Select All",
+    "view": "View",
+    "reload": "Reload",
+    "toggleDevTools": "Toggle Developer Tools",
+    "resetZoom": "Actual Size",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "toggleFullscreen": "Toggle Full Screen",
+    "help": "Help",
+    "about": "About Ohara Tree",
+    "website": "Project Website"
+  },
+  "sex": {
+    "female": "Female",
+    "male": "Male",
+    "other": "Other",
+    "unknown": "Unknown"
+  }
+}

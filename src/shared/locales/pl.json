@@ -1,0 +1,60 @@
+{
+  "app": {
+    "name": "Ohara Tree",
+    "tagline": "Historia Twojej rodziny, pięknie uporządkowana."
+  },
+  "welcome": {
+    "title": "Witaj w Ohara Tree",
+    "subtitle": "Stwórz drzewo genealogiczne, poznawaj krewnych i trzymaj historię rodziny w jednym miejscu.",
+    "newTree": "Nowe drzewo rodzinne",
+    "openTree": "Otwórz drzewo…",
+    "importCsv": "Importuj z CSV…",
+    "comingSoon": "Ta funkcja pojawi się wkrótce."
+  },
+  "settings": {
+    "language": "Język",
+    "theme": "Motyw"
+  },
+  "language": {
+    "en": "English",
+    "pl": "Polski"
+  },
+  "theme": {
+    "system": "Systemowy",
+    "light": "Jasny",
+    "dark": "Ciemny"
+  },
+  "menu": {
+    "file": "Plik",
+    "newTree": "Nowe drzewo",
+    "open": "Otwórz…",
+    "save": "Zapisz",
+    "saveAs": "Zapisz jako…",
+    "importCsv": "Importuj CSV…",
+    "exportCsv": "Eksportuj CSV…",
+    "quit": "Zakończ",
+    "edit": "Edycja",
+    "undo": "Cofnij",
+    "redo": "Ponów",
+    "cut": "Wytnij",
+    "copy": "Kopiuj",
+    "paste": "Wklej",
+    "selectAll": "Zaznacz wszystko",
+    "view": "Widok",
+    "reload": "Odśwież",
+    "toggleDevTools": "Narzędzia deweloperskie",
+    "resetZoom": "Rzeczywisty rozmiar",
+    "zoomIn": "Powiększ",
+    "zoomOut": "Pomniejsz",
+    "toggleFullscreen": "Pełny ekran",
+    "help": "Pomoc",
+    "about": "O programie Ohara Tree",
+    "website": "Strona projektu"
+  },
+  "sex": {
+    "female": "Kobieta",
+    "male": "Mężczyzna",
+    "other": "Inna",
+    "unknown": "Nieznana"
+  }
+}

@@ -1,0 +1,53 @@
+appId: io.github.kurc.oharatree
+productName: Ohara Tree
+copyright: Copyright © 2026 Jakub Kurc
+directories:
+  output: dist
+  buildResources: build
+files:
+  - out/**/*
+  - package.json
+  - '!**/*.map'
+artifactName: ${name}-${version}-${os}-${arch}.${ext}
+fileAssociations:
+  - ext: ohara
+    name: Ohara Tree Family Tree
+    description: Ohara Tree family tree
+    mimeType: application/x-ohara-tree
+    role: Editor
+publish:
+  provider: github
+  owner: K-u-r-c
+  repo: ohara-tree
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: portable
+      arch: [x64]
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  shortcutName: Ohara Tree
+  artifactName: ${name}-${version}-setup.${ext}
+portable:
+  artifactName: ${name}-${version}-portable.${ext}
+mac:
+  category: public.app-category.lifestyle
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+  hardenedRuntime: false
+  identity: null
+dmg:
+  artifactName: ${name}-${version}-mac-${arch}.${ext}
+linux:
+  category: Office
+  synopsis: Family tree editor
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+  maintainer: Jakub Kurc <jak.kurc@gmail.com>
