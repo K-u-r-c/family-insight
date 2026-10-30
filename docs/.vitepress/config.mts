@@ -1,4 +1,5 @@
-import { defineConfig, type DefaultTheme } from 'vitepress'
+import { readFileSync } from 'node:fs'
+import { defineConfig, type DefaultTheme, type MarkdownRenderer } from 'vitepress'
 import { developerSidebar } from './developer.mjs'
 
 const REPO = 'https://github.com/K-u-r-c/family-insight'
@@ -6,6 +7,27 @@ const DOWNLOAD = `${REPO}/releases/latest`
 export const SITE_URL = 'https://k-u-r-c.github.io/family-insight/'
 
 type Locale = 'en' | 'pl'
+
+const SCREENSHOTS = new Set(
+  Object.keys(JSON.parse(readFileSync(new URL('./screenshots.json', import.meta.url), 'utf8')))
+)
+
+/** Fails the build when a page uses a <Screenshot> that `npm run docs:screenshots` doesn't make. */
+function checkScreenshots(md: MarkdownRenderer): void {
+  md.core.ruler.push('fi-screenshots', (state) => {
+    const texts = state.tokens.flatMap((t) => [
+      t.content,
+      ...(t.children ?? []).map((c) => c.content)
+    ])
+    for (const text of texts) {
+      for (const [, name] of text.matchAll(/<Screenshot\s[^>]*name="([^"]+)"/g)) {
+        if (name && !SCREENSHOTS.has(name)) {
+          throw new Error(`Unknown screenshot "${name}" in ${state.env.relativePath ?? 'a page'}`)
+        }
+      }
+    }
+  })
+}
 
 /** User guide sidebar. Page slugs are the same in both languages so the switcher keeps the page. */
 function guideSidebar(locale: Locale): DefaultTheme.SidebarItem[] {
@@ -71,6 +93,7 @@ export default defineConfig({
   // The legacy files only redirect users of v1.0.0, whose Help menu links to them on GitHub.
   srcExclude: ['user-guide.*.md', 'CSV_FORMAT.md', '.screenshots/**'],
   sitemap: { hostname: SITE_URL },
+  markdown: { config: checkScreenshots },
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/family-insight/logo.svg' }],
     ['meta', { name: 'theme-color', content: '#2f7350' }]
