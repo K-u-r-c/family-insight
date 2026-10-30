@@ -1,0 +1,27 @@
+﻿id,given_names,surname,birth_surname,sex,birth_date,birth_place,death_date,death_place,living,father_id,mother_id,partner_ids,notes
+p1,Józef,Kowalski,,male,~1898,Kraków,1971-03-02,Łódź,false,,,p2,
+p2,Maria,Kowalska,Nowak,female,1902-08-15,Wieliczka,1988,Łódź,false,,,p1,
+p3,Stefan,Wiśniewski,,male,1900,Poznań,1944,Warszawa,false,,,p4,Died in the Warsaw Uprising.
+p4,Helena,Wiśniewska,Zielińska,female,1905-01-20,Poznań,1990-11-11,Poznań,false,,,p3,
+p5,Jan,Kowalski,,male,1925-11-04,Łódź,2001-06-30,Łódź,false,p1,p2,p6,"Engineer who built bridges.
+Loved fishing."
+p6,Anna,Kowalska,Wiśniewska,female,1928-04-12,Poznań,2015,Łódź,false,p3,p4,p5,
+p7,Zofia,Kowalska,,female,1930-02-01,Łódź,1931,Łódź,false,p1,p2,,
+p8,Tadeusz,Wiśniewski,,male,1932-07-07,Poznań,2010-05-05,Poznań,false,p3,p4,p9,
+p9,Irena,Wiśniewska,Lewandowska,female,1935,Gniezno,,,,,,p8,
+p10,Ewa,Lis,Kowalska,female,1952-07-21,Łódź,,,true,p5,p6,p11,
+p11,Tomasz,Lis,,male,1950-03-03,Gdańsk,,,true,,,p10,
+p12,Piotr,Kowalski,,male,1955-09-09,Łódź,,,true,p5,p6,p13|p14,Married twice.
+p13,Magdalena,Nowicka,,female,1961,Łódź,,,true,,,p12,
+p14,Katarzyna,Kowalska,Mazur,female,1958-12-24,Kraków,,,true,,,p12,
+p15,Barbara,Wiśniewska,,female,1960-10-10,Poznań,,,true,p8,p9,,
+p16,Aleksandra,Lis,,female,1980-05-05,Gdańsk,,,true,p11,p10,p21,
+p17,Marek,Lis,,male,1983-10-10,Gdańsk,,,true,p11,p10,,
+p18,Michał,Kowalski,,male,1984-02-14,Łódź,,,true,p12,p13,,Son from the first marriage.
+p19,Jakub,Kowalski,,male,1990-01-15,Kraków,,,true,p12,p14,p22,
+p20,Natalia,Kowalska,,female,1993-06-30,Kraków,,,true,p12,p14,,
+p21,Paweł,Zając,,male,1979-09-01,Sopot,,,true,,,p16,
+p22,Julia,Kowalska,Kamińska,female,1992-03-08,Wrocław,,,true,,,p19,
+p23,Zuzanna,Zając,,female,2010-04-04,Gdańsk,,,true,p21,p16,,
+p24,Antoni,Zając,,male,2013-11-11,Gdańsk,,,true,p21,p16,,
+p25,Lena,Kowalska,,female,2021-07-01,Kraków,,,true,p19,p22,,

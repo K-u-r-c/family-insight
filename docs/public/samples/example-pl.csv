@@ -1,0 +1,27 @@
+﻿id;imiona;nazwisko;nazwisko_rodowe;plec;data_urodzenia;miejsce_urodzenia;data_smierci;miejsce_smierci;zyje;ojciec_id;matka_id;partnerzy_id;notatki
+p1;Józef;Kowalski;;mężczyzna;ok. 1898;Kraków;02.03.1971;Łódź;nie;;;p2;
+p2;Maria;Kowalska;Nowak;kobieta;15.08.1902;Wieliczka;1988;Łódź;nie;;;p1;
+p3;Stefan;Wiśniewski;;mężczyzna;1900;Poznań;1944;Warszawa;nie;;;p4;Zginął w powstaniu warszawskim.
+p4;Helena;Wiśniewska;Zielińska;kobieta;20.01.1905;Poznań;11.11.1990;Poznań;nie;;;p3;
+p5;Jan;Kowalski;;mężczyzna;04.11.1925;Łódź;30.06.2001;Łódź;nie;p1;p2;p6;"Inżynier, budował mosty.
+Kochał wędkowanie."
+p6;Anna;Kowalska;Wiśniewska;kobieta;12.04.1928;Poznań;2015;Łódź;nie;p3;p4;p5;
+p7;Zofia;Kowalska;;kobieta;01.02.1930;Łódź;1931;Łódź;nie;p1;p2;;
+p8;Tadeusz;Wiśniewski;;mężczyzna;07.07.1932;Poznań;05.05.2010;Poznań;nie;p3;p4;p9;
+p9;Irena;Wiśniewska;Lewandowska;kobieta;1935;Gniezno;;;;;;p8;
+p10;Ewa;Lis;Kowalska;kobieta;21.07.1952;Łódź;;;tak;p5;p6;p11;
+p11;Tomasz;Lis;;mężczyzna;03.03.1950;Gdańsk;;;tak;;;p10;
+p12;Piotr;Kowalski;;mężczyzna;09.09.1955;Łódź;;;tak;p5;p6;p13|p14;Dwa małżeństwa.
+p13;Magdalena;Nowicka;;kobieta;1961;Łódź;;;tak;;;p12;
+p14;Katarzyna;Kowalska;Mazur;kobieta;24.12.1958;Kraków;;;tak;;;p12;
+p15;Barbara;Wiśniewska;;kobieta;10.10.1960;Poznań;;;tak;p8;p9;;
+p16;Aleksandra;Lis;;kobieta;05.05.1980;Gdańsk;;;tak;p11;p10;p21;
+p17;Marek;Lis;;mężczyzna;10.10.1983;Gdańsk;;;tak;p11;p10;;
+p18;Michał;Kowalski;;mężczyzna;14.02.1984;Łódź;;;tak;p12;p13;;Syn z pierwszego małżeństwa.
+p19;Jakub;Kowalski;;mężczyzna;15.01.1990;Kraków;;;tak;p12;p14;p22;
+p20;Natalia;Kowalska;;kobieta;30.06.1993;Kraków;;;tak;p12;p14;;
+p21;Paweł;Zając;;mężczyzna;01.09.1979;Sopot;;;tak;;;p16;
+p22;Julia;Kowalska;Kamińska;kobieta;08.03.1992;Wrocław;;;tak;;;p19;
+p23;Zuzanna;Zając;;kobieta;04.04.2010;Gdańsk;;;tak;p21;p16;;
+p24;Antoni;Zając;;mężczyzna;11.11.2013;Gdańsk;;;tak;p21;p16;;
+p25;Lena;Kowalska;;kobieta;01.07.2021;Kraków;;;tak;p19;p22;;
