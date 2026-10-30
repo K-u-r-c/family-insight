@@ -2,6 +2,7 @@
  * Application settings shared by main and renderer. Pure helpers so the schema,
  * defaults and sanitising are unit-testable; persistence lives in `src/main/settings.ts`.
  */
+import { csvDelimiterOf, headerLanguage } from './io/csv/columns'
 import { isValidVersion } from './updates'
 
 export type ThemePreference = 'system' | 'light' | 'dark'
@@ -75,7 +76,7 @@ export function defaultSettings(language: string): Settings {
     language,
     theme: 'system',
     recentFiles: [],
-    csvDelimiter: language === 'pl' ? ';' : ',',
+    csvDelimiter: csvDelimiterOf(headerLanguage(language)),
     density: 'comfortable',
     showMinimap: true,
     autosave: true,

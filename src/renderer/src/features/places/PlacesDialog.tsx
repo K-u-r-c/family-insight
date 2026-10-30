@@ -3,7 +3,7 @@ import { Globe, MapPin, MapPinOff, Merge, Search } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { isLatitude, isLongitude, listPlaces, type PlaceSummary } from '@core/model/places'
 import { displayName } from '@core/model/tree'
-import { foldText } from '@core/text'
+import { matchesQuery } from '@core/text'
 import type { PlaceLookupResult } from '@shared/ipc'
 import { Button, confirm, Dialog, EmptyState, Select, TextField } from '@renderer/components/ui'
 import { useFormat } from '@renderer/i18n/format'
@@ -47,8 +47,7 @@ export function PlacesDialog({ onClose }: { onClose: () => void }): React.JSX.El
   )
   const places = useMemo(() => (tree ? listPlaces(tree) : []), [tree])
   if (!tree) return null
-  const q = foldText(query.trim())
-  const shown = places.filter((p) => !q || p.spellings.some((s) => foldText(s).includes(q)))
+  const shown = places.filter((p) => p.spellings.some((s) => matchesQuery(s, query)))
   const selected = places.find((p) => p.key === selectedKey)
   const located = places.filter((p) => p.place).length
 

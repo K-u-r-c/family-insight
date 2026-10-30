@@ -1,6 +1,7 @@
 import type { MediaMime } from '@core/model/types'
 import type { Settings } from '@core/settings'
 import type { UpdateSupport } from '@core/updates'
+import type { TextEncodingName } from '@core/file/encoding'
 
 /** IPC channel names. Every channel used between main and renderer is declared here. */
 export const IpcChannel = {
@@ -78,10 +79,13 @@ export type FileReadResult =
       ok: true
       path: string
       content: string
-      encoding: 'utf-8' | 'windows-1250'
+      encoding: TextEncodingName
       /** Media library holding the file's photos and documents (`.finsight` files only). */
       library?: string
-      /** Raw bytes for formats that decode themselves (GEDCOM: ANSEL, UTF-16, GEDZIP). */
+      /**
+       * Raw bytes for formats that decode themselves (GEDCOM: ANSEL, UTF-16, GEDZIP) and for
+       * CSV, whose code page the user can change in the import preview.
+       */
       bytes?: Uint8Array
     }
   | { ok: false; path?: string; error: FileErrorCode }

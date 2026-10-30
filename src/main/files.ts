@@ -100,8 +100,8 @@ export async function readFile(path: string): Promise<FileReadResult> {
     if (BINARY_IMPORT.has(extname(full).toLowerCase().slice(1))) {
       return { ok: true, path: full, content: '', encoding: 'utf-8', bytes: buffer }
     }
-    const { text, encoding } = decodeText(buffer)
-    return { ok: true, path: full, content: text, encoding }
+    const { text, encoding } = decodeText(buffer, { language: getSettings().language })
+    return { ok: true, path: full, content: text, encoding, bytes: buffer }
   } catch (error) {
     if (error instanceof ContainerError) return { ok: false, path: full, error: error.code }
     return { ok: false, path: full, error: errorCode(error) }

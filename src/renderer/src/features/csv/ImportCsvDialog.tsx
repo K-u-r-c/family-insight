@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react'
 import { AlertTriangle, FileUp, XCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { decodeText, TEXT_ENCODINGS, type TextEncodingName } from '@core/file/encoding'
 import { CSV_COLUMNS, type CsvColumn } from '@core/io/csv/columns'
 import { importCsv } from '@core/io/csv/import'
 import type { Issue } from '@core/issues'
-import { Button, Dialog, Icon, SegmentedControl, toast } from '@renderer/components/ui'
+import { Button, Dialog, Icon, SegmentedControl, Select, toast } from '@renderer/components/ui'
 import { useIssueText } from '@renderer/i18n/issues'
 import { guardUnsaved } from '@renderer/services/documentFiles'
 import { mergeTreeCommand } from '@renderer/store/commands'
@@ -14,6 +15,13 @@ import { useImportSource } from './importFlow'
 import styles from './CsvDialogs.module.css'
 
 const MAX_LISTED = 50
+
+const ENCODING_LABEL: Record<TextEncodingName, string> = {
+  'utf-8': 'UTF-8',
+  'windows-1250': 'Windows-1250',
+  'windows-1251': 'Windows-1251',
+  'windows-1252': 'Windows-1252'
+}
 const PREVIEW_ROWS = 5
 
 function IssueList({
@@ -45,17 +53,27 @@ function IssueList({
 
 /** Preview of a CSV import: detected format, column mapping, sample rows, errors and warnings. */
 export function ImportCsvDialog({ onClose }: { onClose: () => void }): React.JSX.Element | null {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const source = useImportSource((s) => s.source)
   const hasDocument = useDocument((s) => s.tree !== null)
   const [mapping, setMapping] = useState<(CsvColumn | null)[] | undefined>(undefined)
   const [target, setTarget] = useState<'new' | 'merge'>('new')
+  const [encoding, setEncoding] = useState<TextEncodingName | undefined>(undefined)
 
-  const result = useMemo(
-    () => (source ? importCsv(source.content, { mapping, name: source.name }) : null),
-    [source, mapping]
+  // The file is decoded again when the user picks another code page.
+  const decoded = useMemo(() => {
+    if (!source?.bytes) return source ? { text: source.content, encoding: source.encoding } : null
+    return decodeText(source.bytes, { language: i18n.language, encoding })
+  }, [source, encoding, i18n.language])
+  const detected = useMemo(
+    () => (source?.bytes ? decodeText(source.bytes, { language: i18n.language }).encoding : null),
+    [source, i18n.language]
   )
-  if (!source || !result) return null
+  const result = useMemo(
+    () => (source && decoded ? importCsv(decoded.text, { mapping, name: source.name }) : null),
+    [source, decoded, mapping]
+  )
+  if (!source || !result || !decoded) return null
 
   const blocked = result.errors.length > 0 || result.stats.people === 0
   const effectiveMapping = mapping ?? result.mapping
@@ -84,7 +102,7 @@ export function ImportCsvDialog({ onClose }: { onClose: () => void }): React.JSX
       title={t('csv.importTitle', { name: source.name })}
       description={t('csv.detected', {
         delimiter: delimiterLabel,
-        encoding: source.encoding === 'utf-8' ? 'UTF-8' : 'Windows-1250'
+        encoding: ENCODING_LABEL[decoded.encoding]
       })}
       footer={
         <>
@@ -127,6 +145,26 @@ export function ImportCsvDialog({ onClose }: { onClose: () => void }): React.JSX
               ]}
             />
           </div>
+        )}
+
+        {detected && (
+          <Select
+            label={t('csv.encoding')}
+            hint={t('csv.encodingHint')}
+            value={decoded.encoding}
+            options={TEXT_ENCODINGS.map((e) => ({
+              value: e,
+              label:
+                e === detected
+                  ? t('csv.detectedEncoding', { name: ENCODING_LABEL[e] })
+                  : ENCODING_LABEL[e]
+            }))}
+            onChange={(v) => {
+              setEncoding(v as TextEncodingName)
+              // Headers read differently in another code page: map them afresh.
+              setMapping(undefined)
+            }}
+          />
         )}
 
         {result.errors.length > 0 && (

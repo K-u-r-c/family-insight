@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import type { TextEncodingName } from '@core/file/encoding'
 import { alertDialog } from '@renderer/components/ui'
 import i18n from '@renderer/i18n'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
@@ -7,7 +8,9 @@ export interface ImportSource {
   path: string
   name: string
   content: string
-  encoding: 'utf-8' | 'windows-1250'
+  encoding: TextEncodingName
+  /** The file's bytes, decoded again when the user picks another code page. */
+  bytes?: Uint8Array
 }
 
 /** The CSV file being previewed in the import dialog. */
@@ -38,7 +41,8 @@ export async function startCsvImport(path?: string): Promise<void> {
       path: result.path,
       name: baseName(result.path),
       content: result.content,
-      encoding: result.encoding
+      encoding: result.encoding,
+      bytes: result.bytes
     }
   })
   useWorkspaceUi.getState().openDialog('import-csv')

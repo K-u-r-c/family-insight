@@ -6,7 +6,14 @@ import { createEmptyTree } from '../../model/tree'
 import { validateTree } from '../../model/validate'
 import type { FamilyTree, FuzzyDate, Person, PersonId, Relationship, Sex } from '../../model/types'
 import { foldText } from '../../text'
-import { CSV_COLUMNS, HEADER_ALIASES, MULTI_SEPARATOR, type CsvColumn } from './columns'
+import {
+  CSV_COLUMNS,
+  HEADER_ALIASES,
+  livingWords,
+  MULTI_SEPARATOR,
+  sexWords,
+  type CsvColumn
+} from './columns'
 
 export type CsvDelimiter = ',' | ';' | '\t'
 
@@ -96,39 +103,13 @@ export function mapHeaders(headers: string[]): (CsvColumn | null)[] {
   })
 }
 
-const SEX_WORDS: Record<string, Sex> = {
-  female: 'female',
-  f: 'female',
-  k: 'female',
-  kobieta: 'female',
-  woman: 'female',
-  male: 'male',
-  m: 'male',
-  mezczyzna: 'male',
-  man: 'male',
-  other: 'other',
-  inna: 'other',
-  inny: 'other',
-  unknown: 'unknown',
-  nieznana: 'unknown',
-  nieznany: 'unknown',
-  '?': 'unknown',
-  '': 'unknown'
-}
+const SEX_WORDS: Record<string, Sex> = Object.fromEntries(
+  sexWords().map(([word, sex]) => [foldText(word), sex])
+)
 
-const LIVING_WORDS: Record<string, boolean> = {
-  true: true,
-  yes: true,
-  y: true,
-  tak: true,
-  t: true,
-  '1': true,
-  false: false,
-  no: false,
-  n: false,
-  nie: false,
-  '0': false
-}
+const LIVING_WORDS: Record<string, boolean> = Object.fromEntries(
+  livingWords().map(([word, living]) => [foldText(word), living])
+)
 
 export interface CsvImportOptions {
   delimiter?: CsvDelimiter

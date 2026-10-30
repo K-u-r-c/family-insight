@@ -6,7 +6,18 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- CSV import reads column names and values in German, French, Spanish, Italian, Portuguese and
+  Russian, recognises Cyrillic (Windows-1251) and Western European (Windows-1252) files from older
+  Excel versions, and lets you pick another character set in the preview.
+- Search finds German spellings both ways (`mueller` → Müller, `strasse` → Straße) and Cyrillic
+  names typed in Latin letters (`ivanov` → Иванов).
+
 ### Changed
+
+- Surname particles (von, van, de, da, dos, di …) no longer count for sorting: "van der Berg" is
+  listed under B.
 
 - The language is chosen from a list that shows every language in its own name – ready for more
   languages.

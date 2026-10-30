@@ -21,6 +21,16 @@ Każde pole zapisuje się, gdy je opuścisz (<kbd>Tab</kbd> albo kliknięcie gdz
 - **Płeć** – kobieta, mężczyzna, inna lub nieznana. Ustala kolor karty i pomaga przy dodawaniu
   krewnych.
 
+::: tip Imiona i nazwiska z innych krajów {#name-conventions}
+
+- **Rosyjskie, ukraińskie, białoruskie**: imię odojcowskie wpisz razem z imionami – imiona
+  `Иван Петрович`, nazwisko `Иванов`.
+- **Hiszpańskie i portugalskie**: oba nazwiska wpisz w pole nazwiska – `García Márquez`,
+  `Santos Silva`.
+- **Przedrostki** takie jak von, van, de, da, dos czy di są częścią nazwiska (`van der Berg`);
+  przy sortowaniu lista je pomija.
+  :::
+
 ## Daty {#dates}
 
 Stare zapisy rzadko są dokładne, dlatego daty mogą być niepełne lub przybliżone. Wpisz datę

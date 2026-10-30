@@ -42,16 +42,16 @@
     "pl-dark": [547, 405]
   },
   "csv-import": {
-    "en-light": [893, 737],
-    "en-dark": [893, 737],
-    "pl-light": [893, 737],
-    "pl-dark": [893, 737]
+    "en-light": [893, 755],
+    "en-dark": [893, 755],
+    "pl-light": [893, 755],
+    "pl-dark": [893, 755]
   },
   "csv-import-columns": {
-    "en-light": [829, 636],
-    "en-dark": [829, 636],
-    "pl-light": [862, 662],
-    "pl-dark": [829, 636]
+    "en-light": [852, 587],
+    "en-dark": [852, 587],
+    "pl-light": [852, 587],
+    "pl-dark": [852, 587]
   },
   "csv-import-errors": {
     "en-light": [893, 755],

@@ -26,6 +26,11 @@ lub angielskimi):
 | `partnerzy_id`                         | `partner_ids`                | **id** partnerów rozdzielone `\|` – np. `p2\|p5`                     |
 | `notatki`                              | `notes`                      | wszystko inne                                                        |
 
+Działają też nazwy kolumn i wartości po **niemiecku, francusku, hiszpańsku, włosku, portugalsku
+i rosyjsku** (np. `vornamen`, `nom`, `fecha_de_nacimiento`, `фамилия`; `männlich`, `oui`, `да`) –
+wszystkie są w [opisie formatu CSV](/developer/reference/csv-format#columns). Imiona odojcowskie
+i podwójne nazwiska opisuje część [imiona i nazwiska z innych krajów](./editing#name-conventions).
+
 Każda osoba potrzebuje **id** i co najmniej imienia lub nazwiska; pozostałe kolumny są
 opcjonalne. Krewni są łączeni przez id – np. `p3` z `ojciec_id` `p1` i `matka_id` `p2` to dziecko
 `p1` i `p2`. Związek wystarczy wpisać po jednej stronie.
@@ -45,8 +50,9 @@ Pobierz przykład z 25 osobami – [z polskimi nazwami kolumn](/samples/example-
 | LibreOffice Calc | **Plik → Zapisz jako**, typ **Tekst CSV (.csv)**, zestaw znaków **Unicode (UTF-8)** |
 | Arkusze Google   | **Plik → Pobierz → Wartości rozdzielone przecinkami (.csv)**                        |
 
-Działają separatory: przecinek, średnik i tabulator, a także pliki ze starszych polskich wersji
-Excela (kodowanie Windows-1250) – Family Insight sam to rozpozna.
+Działają separatory: przecinek, średnik i tabulator. Działają też pliki zapisane inaczej niż
+w UTF-8 (zwykły typ **CSV** starszych wersji Excela): Family Insight rozpoznaje po literach tekst
+środkowoeuropejski (Windows-1250), cyrylicę (Windows-1251) i zachodnioeuropejski (Windows-1252).
 
 ## 3. Importuj
 

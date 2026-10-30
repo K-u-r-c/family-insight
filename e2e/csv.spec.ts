@@ -31,6 +31,38 @@ test('export CSV with semicolons and Polish headers', async () => {
   await closeApp(app)
 })
 
+test('import CSV: a legacy Russian file is detected and the code page can be changed', async () => {
+  const path = join(tempDir(), 'semya.csv')
+  const text =
+    'id;имя;фамилия;пол;жив\r\np1;Иван Петрович;Иванов;мужчина;нет\r\np2;Алёна;Иванова;женщина;да\r\n'
+  // Windows-1251 bytes of the text (Russian Excel's "CSV" format).
+  const decoder = new TextDecoder('windows-1251')
+  const byteOf = new Map<string, number>()
+  for (let b = 0; b < 256; b++) byteOf.set(decoder.decode(new Uint8Array([b])), b)
+  writeFileSync(path, new Uint8Array([...text].map((c) => byteOf.get(c)!)))
+  const { app, page } = await launch({ language: 'en' })
+  await mockDialogs(app, { open: path })
+  await page.getByRole('button', { name: 'Import from CSV…' }).click()
+  const dialog = page.getByRole('dialog')
+  await expect(
+    dialog.getByText('Detected: semicolon ( ; ) separator, Windows-1251 encoding.')
+  ).toBeVisible()
+  await expect(dialog.getByText('Иван Петрович').first()).toBeVisible()
+  await expect(dialog.getByText('2 people, 0 relationships')).toBeVisible()
+  const charset = dialog.getByLabel('Character set')
+  await expect(charset).toHaveValue('windows-1251')
+  await charset.selectOption('windows-1252')
+  await expect(
+    dialog.getByText('Detected: semicolon ( ; ) separator, Windows-1252 encoding.')
+  ).toBeVisible()
+  await expect(dialog.getByText('Иван Петрович').first()).toHaveCount(0)
+  await charset.selectOption('windows-1251')
+  await expect(dialog.getByText('Иван Петрович').first()).toBeVisible()
+  // Russian headers are recognised again after switching back.
+  await expect(dialog.getByLabel('Import column “фамилия” as')).toHaveValue('surname')
+  await closeApp(app)
+})
+
 test('import CSV: preview, blocking errors, then a valid Polish file', async () => {
   const dir = tempDir()
   const bad = join(dir, 'bad.csv')

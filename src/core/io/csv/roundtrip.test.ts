@@ -7,7 +7,7 @@ import type { FamilyTree, Person } from '../../model/types'
 import { exportCsv, type Delimiter } from './export'
 import { importCsv } from './import'
 import { csvTemplate } from './template'
-import type { HeaderLanguage } from './columns'
+import { HEADER_LANGUAGES } from './columns'
 
 const NOW = new Date('2026-01-01T00:00:00Z')
 const SAMPLES = join(__dirname, '../../../../resources/samples')
@@ -42,7 +42,7 @@ describe('CSV round trip', () => {
   const base = importCsv(sample('example-en.csv'), { now: NOW }).tree
 
   for (const delimiter of [',', ';'] as Delimiter[]) {
-    for (const headerLanguage of ['en', 'pl'] as HeaderLanguage[]) {
+    for (const headerLanguage of HEADER_LANGUAGES) {
       it(`import(export(tree)) keeps every CSV field (${delimiter} / ${headerLanguage})`, () => {
         const csv = exportCsv(base, { delimiter, headerLanguage })
         const back = importCsv(csv, { now: NOW })

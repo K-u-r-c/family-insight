@@ -8,9 +8,11 @@ Wybierz **☰ → Eksportuj CSV…** (albo **Plik → Eksportuj → CSV…** w p
 
 <Screenshot name="csv-export" alt="Okno Eksport do CSV z separatorem kolumn (przecinek lub średnik) i nazwami kolumn (English lub Polski)" />
 
-1. **Separator kolumn** – **Średnik** dla Excela z polskimi ustawieniami regionalnymi (inaczej
-   wszystko trafi do jednej kolumny); **Przecinek** dla większości innych programów. Family
-   Insight zapamięta wybór.
+1. **Separator kolumn** – **Średnik** dla Excela z ustawieniami regionalnymi, w których przecinek
+   jest separatorem dziesiętnym (polskimi, niemieckimi, francuskimi, hiszpańskimi, włoskimi,
+   portugalskimi, rosyjskimi …) – inaczej wszystko trafi do jednej kolumny; **Przecinek** dla
+   większości innych programów. Domyślny wybór zależy od języka programu, a Family Insight
+   zapamięta Twój wybór.
 2. **Nazwy kolumn** – polskie (`imiona`, `nazwisko` …) albo angielskie (`given_names`, `surname`
    …). Przy polskich nazwach także wartości są po polsku (`kobieta`, `tak` / `nie`).
 3. Kliknij **Eksportuj…** i wskaż miejsce zapisu. Po zakończeniu pojawi się komunikat z przyciskiem

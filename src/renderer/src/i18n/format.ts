@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { dateLanguage, formatFuzzyDate, type DateLanguage } from '@core/date/fuzzyDate'
 import { lifespanLabel } from '@core/date/lifespan'
 import type { FuzzyDate, Person } from '@core/model/types'
-import { compareText, formatFileSize, formatList, formatNumber } from '@core/text'
+import { compareSurnames, compareText, formatFileSize, formatList, formatNumber } from '@core/text'
 import { intlLanguage, resolveLanguage } from '@shared/i18n'
 
 export interface Formatters {
@@ -17,6 +17,8 @@ export interface Formatters {
   number: (value: number) => string
   fileSize: (bytes: number) => string
   compare: (a: string, b: string) => number
+  /** Surnames, ignoring particles such as von, van, de ("van der Berg" under B). */
+  compareSurnames: (a: string, b: string) => number
 }
 
 /** Locale-aware formatters bound to the current UI language. */
@@ -33,7 +35,8 @@ export function useFormat(): Formatters {
       list: (items) => formatList(items, language),
       number: (value) => formatNumber(value, language),
       fileSize: (bytes) => formatFileSize(bytes, language),
-      compare: (a, b) => compareText(a, b, language)
+      compare: (a, b) => compareText(a, b, language),
+      compareSurnames: (a, b) => compareSurnames(a, b, language)
     }
   }, [language])
 }

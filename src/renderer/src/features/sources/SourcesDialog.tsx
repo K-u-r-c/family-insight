@@ -3,7 +3,7 @@ import { BookOpen, Library, Plus, Search, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { getCitationsForSource } from '@core/model/sources'
 import type { Source } from '@core/model/types'
-import { compareText, foldText } from '@core/text'
+import { compareText, matchesQuery } from '@core/text'
 import {
   Button,
   confirm,
@@ -40,9 +40,8 @@ export function SourcesDialog({ onClose }: { onClose: () => void }): React.JSX.E
 
   const sources = useMemo(() => {
     if (!tree) return []
-    const q = foldText(query.trim())
     return Object.values(tree.sources)
-      .filter((s) => !q || foldText(`${s.title} ${s.author ?? ''}`).includes(q))
+      .filter((s) => matchesQuery(`${s.title} ${s.author ?? ''}`, query))
       .sort((a, b) => compareText(a.title, b.title, format.language))
   }, [tree, query, format.language])
   if (!tree) return null

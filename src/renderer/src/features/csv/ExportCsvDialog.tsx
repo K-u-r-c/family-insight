@@ -3,8 +3,15 @@ import { FileDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { exportCsv, type Delimiter } from '@core/io/csv/export'
 import { headerLanguage as headerLanguageFor, type HeaderLanguage } from '@core/io/csv/columns'
-import { LOCALES, resolveLanguage } from '@shared/i18n'
-import { alertDialog, Button, Dialog, SegmentedControl, toast } from '@renderer/components/ui'
+import { LOCALES, resolveLanguage, SUPPORTED_LANGUAGES } from '@shared/i18n'
+import {
+  alertDialog,
+  Button,
+  Dialog,
+  SegmentedControl,
+  Select,
+  toast
+} from '@renderer/components/ui'
 import { useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
 import styles from './CsvDialogs.module.css'
@@ -25,6 +32,11 @@ export function ExportCsvDialog({
     headerLanguageFor(resolveLanguage(i18n.language))
   )
   const [busy, setBusy] = useState(false)
+  // Column names in each language the app speaks.
+  const headerOptions = SUPPORTED_LANGUAGES.map((code) => ({
+    value: headerLanguageFor(code),
+    label: LOCALES[code].nativeName
+  }))
 
   const run = async (): Promise<void> => {
     const tree = useDocument.getState().tree
@@ -93,16 +105,23 @@ export function ExportCsvDialog({
         </div>
         <div className={styles.option}>
           <span className={styles.label}>{t('csv.headerLanguage')}</span>
-          <SegmentedControl
-            block
-            label={t('csv.headerLanguage')}
-            value={headerLanguage}
-            onChange={setHeaderLanguage}
-            options={(['en', 'pl'] as const).map((value) => ({
-              value,
-              label: LOCALES[value].nativeName
-            }))}
-          />
+          {headerOptions.length <= 3 ? (
+            <SegmentedControl
+              block
+              label={t('csv.headerLanguage')}
+              value={headerLanguage}
+              onChange={setHeaderLanguage}
+              options={headerOptions}
+            />
+          ) : (
+            <Select
+              label={t('csv.headerLanguage')}
+              hideLabel
+              value={headerLanguage}
+              onChange={(v) => setHeaderLanguage(v as HeaderLanguage)}
+              options={headerOptions}
+            />
+          )}
         </div>
       </div>
     </Dialog>

@@ -360,3 +360,21 @@ Details:
 - **Fonts in exported SVG/PDF**: the export embeds the subsets of Inter and Source Serif 4 that
   cover the tree's text (Latin, Latin Extended, Cyrillic), so the file looks the same without the
   fonts installed.
+
+## Locale-aware CSV, search and sorting (2026-10, issue #69)
+
+- **Code page by letters, UI language as tie-breaker**: a non-UTF-8 CSV is decoded as Windows-1250,
+  1251 or 1252, whichever explains its accented letters with one language and leaves the fewest
+  broken words. Decoding moved to the renderer (main sends the bytes), so the preview can switch
+  the character set without reading the file again.
+- **Eight header languages, all accepted on import**: export writes one language's column names and
+  `sex` / `living` values; import maps any of them (and common spellings) after folding. Latin
+  names are ASCII, Russian ones Cyrillic. A unit test keeps `csv-format.md` listing every name.
+  The export dialog offers the header languages of the UI languages (a select once there are more
+  than three).
+- **Search variants instead of a stronger fold**: `foldText` stays as it is (place keys and header
+  matching depend on it). Search compares the query with extra forms of the text – umlauts written
+  out (`ü` → `ue`) and Cyrillic transliterated to Latin – instead of folding `ae`/`ue` on both sides,
+  which would make "Michael" find "Michał". Highlighting uses the plain fold only.
+- **Surname particles** (von, van, der, de, la, du, da, dos, di, del …) are skipped for sorting
+  while a word follows, so "Le" alone stays under L; equal keys fall back to the full surname.

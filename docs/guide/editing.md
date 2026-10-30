@@ -21,6 +21,16 @@ undoes what you typed in the current field. Click **Done** to go back to the det
 - **Sex** – female, male, other or unknown. It sets the colour of the card and helps when adding
   relatives.
 
+::: tip Names from other countries {#name-conventions}
+
+- **Russian, Ukrainian, Belarusian**: write the patronymic with the given names – given names
+  `Иван Петрович`, surname `Иванов`.
+- **Spanish and Portuguese**: both surnames go into the surname field – `García Márquez`,
+  `Santos Silva`.
+- **Particles** such as von, van, de, da, dos or di belong to the surname (`van der Berg`); for
+  sorting, the list skips them.
+  :::
+
 ## Dates {#dates}
 
 Old records are rarely precise, so dates can be partial or approximate. Type the date in the field;

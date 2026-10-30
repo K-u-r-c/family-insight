@@ -1,7 +1,7 @@
 import { yearOf } from './date/fuzzyDate'
 import { sourcesOfPerson } from './model/sources'
 import type { FamilyTree, Person } from './model/types'
-import { foldText } from './text'
+import { foldText, matchesQuery } from './text'
 
 /**
  * Text a person can be found by: names, birth surname, places, years, life events and – with the
@@ -11,35 +11,30 @@ export function searchableText(person: Person, tree?: FamilyTree): string {
   const sources = tree
     ? [...sourcesOfPerson(tree, person.id)].map((id) => tree.sources[id]?.title)
     : []
-  return foldText(
-    [
-      person.givenNames,
-      person.surname,
-      person.birthSurname,
-      person.birth?.place,
-      person.death?.place,
-      yearOf(person.birth?.date),
-      yearOf(person.death?.date),
-      ...person.events.flatMap((e) => [e.place, e.description, e.customType]),
-      ...sources
-    ]
-      .filter((v) => v !== undefined && v !== '')
-      .join(' ')
-  )
+  return [
+    person.givenNames,
+    person.surname,
+    person.birthSurname,
+    person.birth?.place,
+    person.death?.place,
+    yearOf(person.birth?.date),
+    yearOf(person.death?.date),
+    ...person.events.flatMap((e) => [e.place, e.description, e.customType]),
+    ...sources
+  ]
+    .filter((v) => v !== undefined && v !== '')
+    .join(' ')
 }
 
 /**
- * Finds people matching every word of the query, ignoring case and diacritics
- * (`lodz` finds `Łódź`). Results keep tree order; an empty query matches everyone.
+ * Finds people matching every word of the query, ignoring case and diacritics (`lodz` finds
+ * `Łódź`), with German spellings (`Mueller`, `Strasse`) and Cyrillic in Latin letters (`Ivanov`).
+ * Results keep tree order; an empty query matches everyone.
  */
 export function searchPersons(tree: FamilyTree, query: string): Person[] {
-  const words = foldText(query).split(/\s+/).filter(Boolean)
   const people = Object.values(tree.persons)
-  if (!words.length) return people
-  return people.filter((p) => {
-    const text = searchableText(p, tree)
-    return words.every((w) => text.includes(w))
-  })
+  if (!query.trim()) return people
+  return people.filter((p) => matchesQuery(searchableText(p, tree), query))
 }
 
 /** Character ranges in `text` matching the query words (for highlighting). */

@@ -25,6 +25,11 @@ Use **one row per person** and these columns (in any order, with English or Poli
 | `partner_ids`                | `partnerzy_id`                         | the **ids** of partners, separated by `\|` – for example `p2\|p5`     |
 | `notes`                      | `notatki`                              | anything else                                                         |
 
+Column names and values in **German, French, Spanish, Italian, Portuguese and Russian** work too
+(for example `vornamen`, `nom`, `fecha_de_nacimiento`, `фамилия`; `männlich`, `oui`, `да`) – all
+names are listed in the [CSV format reference](/developer/reference/csv-format#columns). For
+patronymics and double surnames, see [names from other countries](./editing#name-conventions).
+
 Every person needs an **id** and at least a given name or a surname; all other columns are
 optional. Relatives are connected through the ids – for example `p3` with `father_id` `p1` and
 `mother_id` `p2` is the child of `p1` and `p2`. A partnership needs to be listed on one side only.
@@ -44,8 +49,9 @@ Download a sample with 25 people – [English column names](/samples/example-en.
 | LibreOffice Calc | **File → Save As**, type **Text CSV (.csv)**, character set **Unicode (UTF-8)** |
 | Google Sheets    | **File → Download → Comma-separated values (.csv)**                             |
 
-Commas, semicolons and tabs as separators all work, and so do files from older Polish Excel
-versions (Windows-1250 encoding) – Family Insight detects this itself.
+Commas, semicolons and tabs as separators all work. Files that are not saved as UTF-8 (the plain
+**CSV** type of older Excel versions) work too: Family Insight recognises Central European
+(Windows-1250), Cyrillic (Windows-1251) and Western European (Windows-1252) text by its letters.
 
 ## 3. Import
 
@@ -55,6 +61,8 @@ You can also drag the `.csv` file onto the window. Before anything changes, you 
 <Screenshot name="csv-import" alt="The import preview: detected separator and encoding, the columns with how each is imported, a preview of the first rows and the Import button" />
 
 - At the top: the **separator and text encoding** that were detected.
+- **Character set** – if letters such as ą, ö, é or ж look wrong in the preview, choose another
+  one here (shown for files read from disk; the detected one is marked).
 - **Columns** – how each column of your file will be used. If a column wasn't recognised (for
   example because it's called “First name”), choose the right meaning in the list, or
   **Don't import** to skip it.

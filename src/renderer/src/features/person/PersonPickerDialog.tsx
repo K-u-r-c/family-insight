@@ -37,7 +37,8 @@ export function PersonPickerDialog({
     return searchPersons(tree, query)
       .filter((p) => !exclude.has(p.id))
       .sort(
-        (a, b) => format.compare(a.surname, b.surname) || format.compare(a.givenNames, b.givenNames)
+        (a, b) =>
+          format.compareSurnames(a.surname, b.surname) || format.compare(a.givenNames, b.givenNames)
       )
       .slice(0, 200)
   }, [tree, query, exclude, format])

@@ -1,10 +1,12 @@
 import { compareFuzzyDates, serializeFuzzyDate } from '../../date/fuzzyDate'
-import { compareText } from '../../text'
-import type { FamilyTree, ParentChildRelationship, Person, PersonId, Sex } from '../../model/types'
+import { compareSurnames, compareText } from '../../text'
+import type { FamilyTree, ParentChildRelationship, Person, PersonId } from '../../model/types'
 import {
   CSV_COLUMNS,
+  HEADERS,
+  LIVING_VALUES,
   MULTI_SEPARATOR,
-  POLISH_HEADERS,
+  SEX_VALUES,
   type CsvColumn,
   type HeaderLanguage
 } from './columns'
@@ -17,13 +19,6 @@ export type Delimiter = ',' | ';'
 export interface CsvExportOptions {
   delimiter?: Delimiter
   headerLanguage?: HeaderLanguage
-}
-
-const SEX_PL: Record<Sex, string> = {
-  female: 'kobieta',
-  male: 'mężczyzna',
-  other: 'inna',
-  unknown: 'nieznana'
 }
 
 /** RFC 4180 field quoting. */
@@ -56,14 +51,13 @@ export function parentSlots(parents: Person[]): { father?: PersonId; mother?: Pe
 export function exportCsv(tree: FamilyTree, options: CsvExportOptions = {}): string {
   const delimiter = options.delimiter ?? ','
   const lang = options.headerLanguage ?? 'en'
-  const language = lang === 'pl' ? 'pl' : 'en'
 
   // Rows: oldest first, then by surname/given name; short readable ids p1, p2, …
   const people = Object.values(tree.persons).sort(
     (a, b) =>
       compareFuzzyDates(a.birth?.date, b.birth?.date) ||
-      compareText(a.surname, b.surname, language) ||
-      compareText(a.givenNames, b.givenNames, language) ||
+      compareSurnames(a.surname, b.surname, lang) ||
+      compareText(a.givenNames, b.givenNames, lang) ||
       (a.id < b.id ? -1 : 1)
   )
   const csvId = new Map(people.map((p, i) => [p.id, `p${i + 1}`]))
@@ -83,7 +77,7 @@ export function exportCsv(tree: FamilyTree, options: CsvExportOptions = {}): str
     }
   }
 
-  const header = CSV_COLUMNS.map((c) => (lang === 'pl' ? POLISH_HEADERS[c] : c))
+  const header = CSV_COLUMNS.map((c) => HEADERS[lang][c])
   const lines = [header.join(delimiter)]
   for (const p of people) {
     const slots = parentSlots(bioParents.get(p.id) ?? [])
@@ -92,14 +86,13 @@ export function exportCsv(tree: FamilyTree, options: CsvExportOptions = {}): str
       .map((x) => csvId.get(x.id))
       .filter(Boolean)
       .join(MULTI_SEPARATOR)
-    const living =
-      p.living === undefined ? '' : lang === 'pl' ? (p.living ? 'tak' : 'nie') : String(p.living)
+    const living = p.living === undefined ? '' : LIVING_VALUES[lang][p.living ? 'yes' : 'no']
     const row: Record<CsvColumn, string> = {
       id: csvId.get(p.id)!,
       given_names: p.givenNames,
       surname: p.surname,
       birth_surname: p.birthSurname ?? '',
-      sex: lang === 'pl' ? SEX_PL[p.sex] : p.sex,
+      sex: SEX_VALUES[lang][p.sex],
       birth_date: p.birth?.date ? serializeFuzzyDate(p.birth.date) : '',
       birth_place: p.birth?.place ?? '',
       death_date: p.death?.date ? serializeFuzzyDate(p.death.date) : '',

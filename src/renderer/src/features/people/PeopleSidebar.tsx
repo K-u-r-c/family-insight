@@ -52,9 +52,9 @@ export function PeopleSidebar({ onCollapse }: { onCollapse: () => void }): React
     if (!tree) return []
     const list = searchPersons(tree, query)
     const bySurname = (a: Person, b: Person): number =>
-      format.compare(a.surname, b.surname) || format.compare(a.givenNames, b.givenNames)
+      format.compareSurnames(a.surname, b.surname) || format.compare(a.givenNames, b.givenNames)
     const byGiven = (a: Person, b: Person): number =>
-      format.compare(a.givenNames, b.givenNames) || format.compare(a.surname, b.surname)
+      format.compare(a.givenNames, b.givenNames) || format.compareSurnames(a.surname, b.surname)
     const byBirth = (a: Person, b: Person): number =>
       compareFuzzyDates(a.birth?.date, b.birth?.date) || bySurname(a, b)
     return list.sort(sort === 'surname' ? bySurname : sort === 'givenNames' ? byGiven : byBirth)

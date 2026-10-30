@@ -25,6 +25,10 @@ urodzenia i śmierci, miejsca, opisy i nazwy [wydarzeń](./events) oraz tytuły 
 
 - **Wielkość liter i polskie znaki nie mają znaczenia**: `lodz`, `Lodz` i `Łódź` dają te same
   wyniki.
+- Niemiecka pisownia działa w obie strony: `mueller` i `muller` znajdą Müller, `strasse` znajdzie
+  Straße.
+- Nazwiska rosyjskie (i inne zapisane cyrylicą) można wpisać łacinką: `ivanov` znajdzie Иванов,
+  a `ё` liczy się jak `е`.
 - Przy **kilku słowach** osoba musi pasować do wszystkich.
 - Działają fragmenty słów: `wiśn` znajdzie Wiśniewskiego.
 
@@ -42,4 +46,6 @@ albo **według daty urodzenia**:
 
 <Screenshot name="people-sort" alt="Menu sortowania listy osób z opcjami Według nazwiska, Według imienia i Według daty urodzenia" />
 
-Gdy program działa po polsku, nazwiska są sortowane po polsku (Ł po L, Ś po S).
+Nazwiska są sortowane według zasad języka programu (po polsku Ł po L, Ś po S). Przedrostki
+nazwisk nie liczą się przy sortowaniu: **van der Berg** jest pod B, **de la Cruz** pod C,
+a **von Goethe** pod G – ale wyświetlają się w całości.

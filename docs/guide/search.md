@@ -25,6 +25,9 @@ birth and death, the places, descriptions and names of [life events](./events), 
 | `anna krakow` | people named Anna **and** connected with Kraków |
 
 - **Letter case and Polish letters don't matter**: `lodz`, `Lodz` and `Łódź` give the same results.
+- German spellings work both ways: `mueller` and `muller` find Müller, `strasse` finds Straße.
+- Russian (and other Cyrillic) names can be typed in Latin letters: `ivanov` finds Иванов, and
+  `ё` counts as `е`.
 - With **several words**, a person must match all of them.
 - Parts of words work: `wiśn` finds Wiśniewski.
 
@@ -42,4 +45,6 @@ The **sort** button at the top of the list of people orders it **by surname**, *
 
 <Screenshot name="people-sort" alt="The sort menu of the list of people with By surname, By given name and By date of birth" />
 
-Names are sorted the Polish way (Ł after L, Ś after S) when the program is in Polish.
+Names are sorted the way of the program's language (in Polish, Ł after L and Ś after S). Surname
+particles don't count for sorting: **van der Berg** is listed under B, **de la Cruz** under C and
+**von Goethe** under G – but they are still shown in full.

@@ -8,8 +8,10 @@ Choose **☰ → Export CSV…** (or **File → Export → CSV…** in the menu 
 
 <Screenshot name="csv-export" alt="The Export to CSV dialog with the column separator (comma or semicolon) and the column names (English or Polski)" />
 
-1. **Column separator** – **Comma** for most programs; **Semicolon** for Excel with Polish regional
-   settings, which otherwise puts everything into one column. Family Insight remembers your choice.
+1. **Column separator** – **Comma** for most programs; **Semicolon** for Excel with regional
+   settings that use a decimal comma (Polish, German, French, Spanish, Italian, Portuguese,
+   Russian …), which otherwise puts everything into one column. The default follows the language of
+   the program, and Family Insight remembers your choice.
 2. **Column names** – English (`given_names`, `surname` …) or Polish (`imiona`, `nazwisko` …).
    With Polish names the values are Polish too (`kobieta`, `tak` / `nie`).
 3. Click **Export…** and choose where to save the file. A message with **Show in folder** appears
