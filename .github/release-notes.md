@@ -1,12 +1,15 @@
-## Family Insight 1.0 🌳
+## Family Insight 1.0.1 🌳
 
 A beautiful, simple family tree editor for Windows, macOS and Linux — in English and Polish.
 Piękny i prosty program do tworzenia drzewa genealogicznego — po polsku i po angielsku.
 
-**Highlights / Najważniejsze:** interactive tree with remarriages and half-siblings · one-click
-relatives · partial dates · photos · ancestors/descendants views · diacritics-insensitive search ·
-undo, autosave and crash recovery · CSV import/export friendly to Excel · PNG/SVG/PDF export and
-printing · light and dark theme.
+**New in 1.0.1 / Nowości:** a documentation website with a step-by-step user guide in English and
+Polish – **Help → User Guide** opens it · fixes for adding relatives (the editor always opens, Polish
+surnames for fathers, step-parents) · Ctrl+W in the shortcut sheet.
+Strona z dokumentacją i poradnikiem krok po kroku po polsku i po angielsku – otwiera ją **Pomoc →
+Poradnik** · poprawki dodawania krewnych · Ctrl+W na liście skrótów.
+
+📖 **Documentation / dokumentacja:** <https://k-u-r-c.github.io/family-insight/>
 
 **Installation / instalacja:** [English](https://k-u-r-c.github.io/family-insight/guide/install) ·
 [polski](https://k-u-r-c.github.io/family-insight/pl/guide/install) ·

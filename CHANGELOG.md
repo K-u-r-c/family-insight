@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-30
+
 ### Added
 
 - Documentation website at <https://k-u-r-c.github.io/family-insight/> – a user guide in English
@@ -15,7 +17,6 @@ All notable changes to this project are documented here. The format follows
 
 - **Help → User Guide** and the CSV help links open the documentation website in the language of the
   app; the Polish menu item is now called **Poradnik**.
-
 - The keyboard shortcut sheet also lists <kbd>Ctrl</kbd>+<kbd>W</kbd> (close the tree) and shows
   the Delete key as ⌫ on macOS; the user guide renders the same list.
 
@@ -60,5 +61,6 @@ First public release.
   Intel, ad-hoc signed), Linux (AppImage, deb with `.finsight` file association); app icon.
 - Documentation: README and user guide in English and Polish, CSV and file format specs.
 
-[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/K-u-r-c/family-insight/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/K-u-r-c/family-insight/releases/tag/v1.0.0
