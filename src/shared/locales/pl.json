@@ -71,7 +71,9 @@
     "csvTemplate": "Pobierz szablon CSV…",
     "openRecent": "Otwórz ostatnie",
     "noRecent": "Brak ostatnich plików",
-    "clearRecent": "Wyczyść listę"
+    "clearRecent": "Wyczyść listę",
+    "exportImage": "Eksportuj obraz…",
+    "print": "Drukuj…"
   },
   "sex": {
     "female": "Kobieta",
@@ -495,5 +497,29 @@
       "unsupported": "Ten format obrazu nie jest obsługiwany. Użyj JPG, PNG lub WebP (zdjęcia HEIC z iPhone'a trzeba najpierw przekonwertować).",
       "io": "Nie udało się odczytać obrazu."
     }
+  },
+  "export": {
+    "title": "Eksport obrazu",
+    "description": "Zapisz drzewo jako obraz lub dokument do druku. Eksport zawsze używa jasnych kolorów, przyjaznych dla druku.",
+    "button": "Eksportuj…",
+    "format": "Format",
+    "pngHint": "Obraz do udostępniania lub prezentacji.",
+    "svgHint": "Ostra grafika wektorowa do skalowania lub edycji (np. w Inkscape).",
+    "pdfHint": "Dokument do druku dopasowany do strony.",
+    "scope": "Co wyeksportować",
+    "scopeAll": "Całe drzewo",
+    "scopeVisible": "Widoczny obszar",
+    "scale": "Rozdzielczość",
+    "paper": "Rozmiar papieru",
+    "orientation": "Orientacja",
+    "landscape": "Pozioma",
+    "portrait": "Pionowa",
+    "fitHint": "Drzewo zostanie dopasowane do jednej strony.",
+    "withTitle": "Dodaj nazwę drzewa i dzisiejszą datę",
+    "subtitle": "Family Insight · {{date}}",
+    "done": "Wyeksportowano obraz",
+    "png": "Obraz PNG",
+    "svg": "Obraz SVG",
+    "pdf": "Dokument PDF"
   }
 }

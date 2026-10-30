@@ -36,9 +36,21 @@ function readable(path: string): boolean {
   return listFormats().some((f) => f.extensions.includes(ext))
 }
 
+/** Formats that are only written (images of the tree), not registered as tree formats. */
+const EXPORT_ONLY: Record<string, { extensions: string[]; labelKey: string }> = {
+  png: { extensions: ['png'], labelKey: 'export.png' },
+  svg: { extensions: ['svg'], labelKey: 'export.svg' },
+  pdf: { extensions: ['pdf'], labelKey: 'export.pdf' }
+}
+
 function formatOrNative(id: unknown): FormatAdapter {
+  if (typeof id === 'string' && EXPORT_ONLY[id]) {
+    return { id, ...EXPORT_ONLY[id]!, kind: 'native' }
+  }
   return (typeof id === 'string' && getFormat(id)) || getFormat('finsight')!
 }
+
+export const isWritable = (path: string): boolean => writable.has(resolve(path))
 
 function filters(format: FormatAdapter): Electron.FileFilter[] {
   const own = {
@@ -144,7 +156,8 @@ export function registerFileHandlers(): void {
       if (typeof path !== 'string' || typeof content !== 'string') return { ok: false, error: 'io' }
       const full = resolve(path)
       if (!writable.has(full)) return { ok: false, error: 'permission' }
-      const backup = (options as { backup?: unknown } | undefined)?.backup === true
+      const opts = (options ?? {}) as { backup?: unknown; encoding?: unknown }
+      const backup = opts.backup === true
       try {
         if (
           backup &&
@@ -153,7 +166,10 @@ export function registerFileHandlers(): void {
         ) {
           await rotateBackups(full).catch((error) => console.warn('Backup failed', error))
         }
-        await writeFileAtomic(full, content)
+        await writeFileAtomic(
+          full,
+          opts.encoding === 'base64' ? Buffer.from(content, 'base64') : content
+        )
         if (extname(full).toLowerCase() === `.${FILE_EXTENSION}`) app.addRecentDocument(full)
         return { ok: true, path: full }
       } catch (error) {

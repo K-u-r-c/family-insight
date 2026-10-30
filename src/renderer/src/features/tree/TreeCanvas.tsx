@@ -44,6 +44,22 @@ export function focusEditor(): void {
   )
 }
 
+/** Layout options for the current document and view (shared by the canvas and exports). */
+export function layoutOptions(): Parameters<typeof layoutFamily>[1] | null {
+  const tree = useDocument.getState().tree
+  if (!tree) return null
+  const { mode, depth, collapsed } = useTreeView.getState()
+  const density = useSettings.getState().settings.density
+  const focusId = tree.meta.rootPersonId ?? useDocument.getState().selectedPersonId ?? undefined
+  return {
+    ...SIZES[density],
+    mode,
+    depth,
+    collapsed,
+    focusId: mode === 'family' ? tree.meta.rootPersonId : focusId
+  }
+}
+
 export function useLayout(): Layout | null {
   const tree = useDocument((s) => s.tree)
   const density = useSettings((s) => s.settings.density)

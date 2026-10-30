@@ -71,7 +71,9 @@
     "csvTemplate": "Download CSV Template…",
     "openRecent": "Open Recent",
     "noRecent": "No recent files",
-    "clearRecent": "Clear Recent"
+    "clearRecent": "Clear Recent",
+    "exportImage": "Export Image…",
+    "print": "Print…"
   },
   "sex": {
     "female": "Female",
@@ -467,5 +469,29 @@
       "unsupported": "This image format isn't supported. Use JPG, PNG or WebP (HEIC photos from iPhones need converting first).",
       "io": "The image couldn't be read."
     }
+  },
+  "export": {
+    "title": "Export image",
+    "description": "Save the tree as a picture or a printable document. Exports always use the light, print-friendly colours.",
+    "button": "Export…",
+    "format": "Format",
+    "pngHint": "A picture for sharing or presentations.",
+    "svgHint": "A sharp vector image you can scale or edit (e.g. in Inkscape).",
+    "pdfHint": "A printable document scaled to fit the page.",
+    "scope": "What to export",
+    "scopeAll": "Whole tree",
+    "scopeVisible": "Visible area",
+    "scale": "Resolution",
+    "paper": "Paper size",
+    "orientation": "Orientation",
+    "landscape": "Landscape",
+    "portrait": "Portrait",
+    "fitHint": "The tree is scaled to fit on one page.",
+    "withTitle": "Add the tree name and today's date",
+    "subtitle": "Family Insight · {{date}}",
+    "done": "Image exported",
+    "png": "PNG image",
+    "svg": "SVG image",
+    "pdf": "PDF document"
   }
 }

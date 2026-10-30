@@ -9,7 +9,7 @@ const PROJECT_URL = 'https://github.com/K-u-r-c/family-insight'
 let state: MenuState = { hasDocument: false, canUndo: false, canRedo: false }
 
 /** Items enabled only when a document is open. */
-const DOCUMENT_ITEMS = ['save', 'save-as', 'export-csv']
+const DOCUMENT_ITEMS = ['save', 'save-as', 'export-csv', 'export-image', 'print']
 
 function applyState(menu: Menu | null): void {
   if (!menu) return
@@ -83,6 +83,18 @@ export function buildMenu(): void {
         { type: 'separator' },
         { label: t('menu.importCsv'), click: () => send('file:import-csv') },
         { id: 'export-csv', label: t('menu.exportCsv'), click: () => send('file:export-csv') },
+        {
+          id: 'export-image',
+          label: t('menu.exportImage'),
+          click: () => send('file:export-image')
+        },
+        { type: 'separator' },
+        {
+          id: 'print',
+          label: t('menu.print'),
+          accelerator: 'CmdOrCtrl+P',
+          click: () => send('file:print')
+        },
         ...(isMac
           ? []
           : [{ type: 'separator' as const }, { label: t('menu.quit'), role: 'quit' as const }])

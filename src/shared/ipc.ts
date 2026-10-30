@@ -16,6 +16,8 @@ export const IpcChannel = {
   FileShowInFolder: 'file:show-in-folder',
   FileExists: 'file:exists',
   PhotoPick: 'photo:pick',
+  ExportPdf: 'export:pdf',
+  Print: 'export:print',
   DialogUnsaved: 'dialog:unsaved',
   RecoveryWrite: 'recovery:write',
   RecoveryClear: 'recovery:clear',
@@ -48,6 +50,11 @@ export type FileWriteResult = { ok: true; path: string } | { ok: false; error: F
 export type PhotoPickResult =
   { ok: true; dataUrl: string } | { ok: false; error: 'too-large' | 'unsupported' | 'io' }
 
+export interface PdfOptions {
+  pageSize: 'A4' | 'A3' | 'Letter'
+  landscape: boolean
+}
+
 export type UnsavedChoice = 'save' | 'discard' | 'cancel'
 
 export interface RecoveryEntry {
@@ -72,6 +79,8 @@ export type MenuAction =
   | 'file:save-as'
   | 'file:import-csv'
   | 'file:export-csv'
+  | 'file:export-image'
+  | 'file:print'
   | 'edit:undo'
   | 'edit:redo'
   | 'help:about'
@@ -93,7 +102,15 @@ export interface FamilyInsightApi {
   /** Shows a save dialog; the returned path becomes writable for this session. */
   saveFileDialog(format: FormatId, suggestedName: string): Promise<string | null>
   /** `backup`: rotate `.bak1…5` copies first (explicit saves, if enabled in settings). */
-  writeFile(path: string, content: string, options?: { backup?: boolean }): Promise<FileWriteResult>
+  writeFile(
+    path: string,
+    content: string,
+    options?: { backup?: boolean; encoding?: 'utf8' | 'base64' }
+  ): Promise<FileWriteResult>
+  /** Renders SVG markup to a PDF file (path from `saveFileDialog('pdf', …)`). */
+  exportPdf(svg: string, options: PdfOptions, path: string): Promise<FileWriteResult>
+  /** Opens the system print dialog for SVG markup. */
+  print(svg: string, options: PdfOptions): Promise<boolean>
   showInFolder(path: string): Promise<void>
   /** Which of the given paths still exist (for the recent files list). */
   filesExist(paths: string[]): Promise<boolean[]>

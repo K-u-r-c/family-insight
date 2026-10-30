@@ -1,5 +1,15 @@
 import { useState } from 'react'
-import { FileDown, FileUp, FolderOpen, Menu as MenuIcon, Plus, Save, SaveAll } from 'lucide-react'
+import {
+  FileDown,
+  FileUp,
+  FolderOpen,
+  ImageDown,
+  Menu as MenuIcon,
+  Plus,
+  Printer,
+  Save,
+  SaveAll
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import {
   anchorBelow,
@@ -11,6 +21,7 @@ import {
 import { formatShortcut } from '@renderer/lib/platform'
 import { newTree, openTree, saveTree, saveTreeAs } from '@renderer/services/documentFiles'
 import { startCsvImport } from '@renderer/features/csv/importFlow'
+import { printTree } from '@renderer/features/export/exportImage'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 
 /** In-app file menu (mirrors the native menu, discoverable on every platform). */
@@ -46,7 +57,15 @@ export function FileMenu(): React.JSX.Element {
     },
     { type: 'separator' },
     { label: t('menu.importCsv'), icon: FileUp, onSelect: () => void startCsvImport() },
-    { label: t('menu.exportCsv'), icon: FileDown, onSelect: () => openDialog('export-csv') }
+    { label: t('menu.exportCsv'), icon: FileDown, onSelect: () => openDialog('export-csv') },
+    { label: t('menu.exportImage'), icon: ImageDown, onSelect: () => openDialog('export-image') },
+    { type: 'separator' },
+    {
+      label: t('menu.print'),
+      icon: Printer,
+      shortcut: formatShortcut('Mod+P'),
+      onSelect: () => void printTree()
+    }
   ]
   return (
     <>

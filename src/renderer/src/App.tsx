@@ -12,6 +12,8 @@ import { useWorkspaceUi } from './store/workspaceUi'
 import { ExportCsvDialog } from './features/csv/ExportCsvDialog'
 import { ImportCsvDialog } from './features/csv/ImportCsvDialog'
 import { NewTreeDialog } from './features/welcome/NewTreeDialog'
+import { ExportImageDialog } from './features/export/ExportImageDialog'
+import { printTree } from './features/export/exportImage'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
 import { useAutosave } from './services/autosave'
 import { startCsvImport } from './features/csv/importFlow'
@@ -43,6 +45,12 @@ export function App(): React.JSX.Element {
       'file:save': () => void saveTree(),
       'file:save-as': () => void saveTreeAs(),
       'file:import-csv': () => void startCsvImport(),
+      'file:export-image': () => {
+        if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-image')
+      },
+      'file:print': () => {
+        if (useDocument.getState().tree) void printTree()
+      },
       'help:csv-format': openCsvFormatDocs,
       'help:csv-template': () => void saveCsvTemplate(),
       'file:export-csv': () => {
@@ -71,6 +79,9 @@ export function App(): React.JSX.Element {
         <ExportCsvDialog open onClose={() => openDialog(null)} />
       )}
       {dialog === 'import-csv' && <ImportCsvDialog onClose={() => openDialog(null)} />}
+      {dialog === 'export-image' && hasDocument && (
+        <ExportImageDialog onClose={() => openDialog(null)} />
+      )}
       {dialog === 'new-tree' && (
         <NewTreeDialog
           onClose={() => openDialog(null)}

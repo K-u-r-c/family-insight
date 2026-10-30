@@ -2,7 +2,14 @@ import { join } from 'node:path'
 import { app, BrowserWindow, shell } from 'electron'
 import { resolveLanguage } from '@shared/i18n'
 import { registerBuiltInFormats } from '@core/io/formats'
-import { guardWindowClose, pathFromArgv, registerFileHandlers, requestOpen } from './files'
+import {
+  guardWindowClose,
+  isWritable,
+  pathFromArgv,
+  registerFileHandlers,
+  requestOpen
+} from './files'
+import { registerPrintHandlers } from './printing'
 import { initMainI18n, setMainLanguage } from './i18n'
 import { registerRecoveryHandlers } from './recovery'
 import { registerIpcHandlers } from './ipc'
@@ -96,6 +103,7 @@ if (!hasLock) {
     registerBuiltInFormats()
     registerFileHandlers()
     registerRecoveryHandlers()
+    registerPrintHandlers(isWritable)
     buildMenu()
     createWindow()
 
