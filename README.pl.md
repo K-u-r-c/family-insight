@@ -40,7 +40,8 @@ Wersje nie są jeszcze podpisane cyfrowo:
 
 - **Windows:** jeśli pojawi się SmartScreen, kliknij _Więcej informacji → Uruchom mimo to_.
 - **macOS:** kliknij aplikację prawym przyciskiem → _Otwórz_ lub uruchom `xattr -cr "/Applications/Family Insight.app"`.
-- **Linux (AppImage):** `chmod +x family-insight-*.AppImage` i uruchom.
+- **Linux:** pakiet `.deb` (`sudo apt install ./family-insight-*.deb`) dodaje skrót w menu i otwiera
+  pliki `.finsight` dwuklikiem. AppImage działa wszędzie: `chmod +x family-insight-*.AppImage` i uruchom.
 
 ## Rozwój
 

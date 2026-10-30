@@ -40,7 +40,9 @@ The builds are not code-signed yet:
 
 - **Windows:** if SmartScreen appears, click _More info → Run anyway_.
 - **macOS:** right-click the app → _Open_, or run `xattr -cr "/Applications/Family Insight.app"`.
-- **Linux (AppImage):** `chmod +x family-insight-*.AppImage` and run it.
+- **Linux:** the `.deb` package (`sudo apt install ./family-insight-*.deb`) adds a menu entry and
+  opens `.finsight` files on double-click. The AppImage runs anywhere: `chmod +x family-insight-*.AppImage`
+  and start it.
 
 ## Development
 
