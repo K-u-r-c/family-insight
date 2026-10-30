@@ -24,6 +24,12 @@ if (process.env['FAMILY_INSIGHT_USER_DATA']) {
 }
 const HIDDEN = process.env['FAMILY_INSIGHT_HIDDEN'] === '1'
 
+function windowIcon(): string {
+  return app.isPackaged
+    ? join(process.resourcesPath, 'icon.png')
+    : join(__dirname, '../../build/icon.png')
+}
+
 function createWindow(): BrowserWindow {
   const window = new BrowserWindow({
     ...restoredBounds(),
@@ -31,6 +37,8 @@ function createWindow(): BrowserWindow {
     minHeight: 600,
     show: false,
     title: 'Family Insight',
+    // macOS takes the icon from the app bundle; elsewhere set the window icon explicitly.
+    ...(process.platform === 'darwin' ? {} : { icon: windowIcon() }),
     backgroundColor: '#f6f4f0',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),

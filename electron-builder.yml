@@ -9,6 +9,9 @@ files:
   - package.json
   - '!**/*.map'
 artifactName: ${name}-${version}-${os}-${arch}.${ext}
+extraResources:
+  - from: build/icon.png
+    to: icon.png
 fileAssociations:
   - ext: finsight
     name: Family Insight Tree
@@ -20,12 +23,15 @@ publish:
   owner: K-u-r-c
   repo: family-insight
 win:
+  icon: build/icon.ico
   target:
     - target: nsis
       arch: [x64]
     - target: portable
       arch: [x64]
 nsis:
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
@@ -34,6 +40,7 @@ nsis:
 portable:
   artifactName: ${name}-${version}-portable.${ext}
 mac:
+  icon: build/icon.icns
   category: public.app-category.lifestyle
   target:
     - target: dmg
@@ -42,7 +49,19 @@ mac:
   identity: null
 dmg:
   artifactName: ${name}-${version}-mac-${arch}.${ext}
+  background: build/background.png
+  window:
+    width: 540
+    height: 380
+  contents:
+    - x: 140
+      y: 205
+    - x: 400
+      y: 205
+      type: link
+      path: /Applications
 linux:
+  icon: build/icons
   category: Office
   synopsis: Family tree editor
   target:
