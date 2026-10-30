@@ -8,7 +8,7 @@ Good family history says **where each fact comes from**: a parish register, a ci
 a family letter, an interview with grandma. Family Insight keeps a list of your **sources** and lets
 you **cite** them for every fact.
 
-## Cite a source for a fact
+## Cite a source for a fact {#cite}
 
 1. Select the person and click **Edit**.
 2. Next to **Name** (sources about the person in general), **Birth**, **Life** (the death) and every
@@ -41,6 +41,8 @@ Open **☰ → Sources…** (or **Edit → Sources…** in the menu bar):
   the archive.
 - **Repository** – where the source is kept: an archive, a library, a parish office, a website. Pick
   one from the list or add a new one under **New repository**.
+- **Scans and photos** – attach scans of the source (register pages, certificates); see
+  [Photos and documents](./media#scans-of-sources).
 - **Cited by** lists every fact that cites the source – click one to go to that person.
 - **Delete source** – if the source is cited, Family Insight asks first and removes its citations
   too. Like every change, it can be undone.

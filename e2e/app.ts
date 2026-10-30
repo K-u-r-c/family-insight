@@ -15,9 +15,11 @@ interface LaunchOptions {
   theme?: 'light' | 'dark'
   args?: string[]
   userData?: string
+  /** Show the window (frame timing needs a visible window). */
+  visible?: boolean
 }
 
-/** Launches the built app (`out/`) with an isolated profile in a hidden window. */
+/** Launches the built app (`out/`) with an isolated profile, in a hidden window by default. */
 export async function launch(options: LaunchOptions = {}): Promise<Launched> {
   const userData = options.userData ?? mkdtempSync(join(tmpdir(), 'fi-e2e-'))
   if (!options.userData) {
@@ -28,7 +30,11 @@ export async function launch(options: LaunchOptions = {}): Promise<Launched> {
   }
   const app = await electron.launch({
     args: ['.', ...(options.args ?? [])],
-    env: { ...process.env, FAMILY_INSIGHT_USER_DATA: userData, FAMILY_INSIGHT_HIDDEN: '1' }
+    env: {
+      ...process.env,
+      FAMILY_INSIGHT_USER_DATA: userData,
+      ...(options.visible ? {} : { FAMILY_INSIGHT_HIDDEN: '1' })
+    }
   })
   const page = await app.firstWindow()
   await page.waitForSelector('#root > *')
@@ -38,12 +44,13 @@ export async function launch(options: LaunchOptions = {}): Promise<Launched> {
 /** Replaces native dialogs in the main process with scripted answers. */
 export async function mockDialogs(
   app: ElectronApplication,
-  answers: { open?: string; save?: string; message?: number }
+  answers: { open?: string | string[]; save?: string; message?: number }
 ): Promise<void> {
   await app.evaluate(({ dialog }, a) => {
+    const paths = a.open === undefined ? [] : Array.isArray(a.open) ? a.open : [a.open]
     dialog.showOpenDialog = (async () => ({
-      canceled: !a.open,
-      filePaths: a.open ? [a.open] : []
+      canceled: paths.length === 0,
+      filePaths: paths
     })) as never
     dialog.showSaveDialog = (async () => ({ canceled: !a.save, filePath: a.save })) as never
     dialog.showMessageBox = (async () => ({

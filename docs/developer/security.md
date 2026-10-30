@@ -30,7 +30,8 @@ The window is created in `src/main/index.ts` with:
 `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:`.
 No remote scripts, no `eval`, no network requests to other origins. Photos are shown from `blob:`
 object URLs of their thumbnails, and the crop dialog and exports use `data:` URLs, which is why both
-are allowed for images.
+are allowed for images. PDFs are shown in Chromium's PDF viewer in an `<iframe>` of a `blob:` URL
+(`frame-src blob:`); nothing else may be framed.
 
 Navigation is locked down too: `will-navigate` cancels any attempt to load another page, and
 `setWindowOpenHandler` denies new windows – `https://` links are handed to the default browser with
@@ -68,7 +69,9 @@ The renderer never sees the file system. `src/main/files.ts` enforces:
 - **Media files** enter a library only after main has checked their type by magic bytes (JPEG,
   PNG, WebP, GIF, PDF – never by extension) and size (25 MB). Container entries are only accepted
   under `media/<sha256>.<ext>` and `thumbs/<sha256>.webp`; other names (including `../` paths) are
-  ignored, and nothing is ever extracted to disk.
+  ignored, and nothing is ever extracted to disk – except a temporary copy when the user opens a
+  file in another app (`openMediaExternally`), whose extension follows the detected type (a
+  disguised executable can't be launched that way).
 - Writes are **atomic** (temporary file, then rename), so a crash never leaves a half-written tree.
 - Backups and recovery copies are written only by main, to fixed locations.
 

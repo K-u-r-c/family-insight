@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next'
 import type { Person } from '@core/model/types'
 import { alertDialog, Button } from '@renderer/components/ui'
 import { cx } from '@renderer/lib/cx'
-import { addMediaBytes, dataUrlToBytes } from '@renderer/services/media'
 import { setPortraitCommand } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
 import { PersonAvatar } from './PersonAvatar'
 import { PhotoCropDialog } from './PhotoCropDialog'
+import { savePortrait } from './portrait'
 import styles from './PhotoField.module.css'
 
 const MAX_BYTES = 20 * 1024 * 1024
@@ -37,13 +37,9 @@ export function PhotoField({ person }: { person: Person }): React.JSX.Element {
       danger: true
     })
 
-  const savePortrait = async (dataUrl: string): Promise<void> => {
-    const bytes = dataUrlToBytes(dataUrl)
-    const fileName = `portrait.${bytes[0] === 0xff ? 'jpg' : 'webp'}`
-    const added = await addMediaBytes(bytes, fileName)
-    if (!added.ok) return fail(`photo.error.${added.error}`)
-    const { hash, mime, size, width, height } = added
-    dispatch(setPortraitCommand(person.id, { hash, mime, fileName, size, width, height }))
+  const applyPhoto = async (dataUrl: string): Promise<void> => {
+    const error = await savePortrait(person.id, dataUrl)
+    if (error) await fail(`photo.error.${error}`)
   }
 
   const pick = async (): Promise<void> => {
@@ -103,7 +99,7 @@ export function PhotoField({ person }: { person: Person }): React.JSX.Element {
           onClose={() => setSource(null)}
           onSave={(photo) => {
             setSource(null)
-            void savePortrait(photo)
+            void applyPhoto(photo)
           }}
         />
       )}

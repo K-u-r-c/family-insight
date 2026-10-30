@@ -14,8 +14,11 @@ All notable changes to this project are documented here. The format follows
 - **Sources and citations** – a sources manager (**Edit → Sources…**) with repositories, and
   citations with page, quality, date and transcription for names, birth, death, events,
   relationships and marriages.
-- **Media library** inside the `.finsight` file: photos and documents are stored once, however
-  often they are used, and saving stays fast for trees of hundreds of megabytes.
+- **Photos and documents** – a gallery for every person (JPG, PNG, WebP, GIF, PDF), a viewer with
+  zoom and the built-in PDF viewer, titles, dates and descriptions, family photos shown on several
+  people, any gallery picture as the portrait, and scans attached to sources and citations. Stored
+  once inside the `.finsight` file, however often they are used; saving stays fast for trees of
+  hundreds of megabytes.
 
 ### Changed
 

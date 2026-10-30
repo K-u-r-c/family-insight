@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { formatFuzzyDate, type DateLanguage } from '@core/date/fuzzyDate'
 import { lifespanLabel } from '@core/date/lifespan'
 import type { FuzzyDate, Person } from '@core/model/types'
-import { compareText, formatList, formatNumber } from '@core/text'
+import { compareText, formatFileSize, formatList, formatNumber } from '@core/text'
 import { resolveLanguage } from '@shared/i18n'
 
 export interface Formatters {
@@ -12,6 +12,7 @@ export interface Formatters {
   lifespan: (person: Person) => string
   list: (items: string[]) => string
   number: (value: number) => string
+  fileSize: (bytes: number) => string
   compare: (a: string, b: string) => number
 }
 
@@ -26,6 +27,7 @@ export function useFormat(): Formatters {
       lifespan: (person) => lifespanLabel(person, language),
       list: (items) => formatList(items, language),
       number: (value) => formatNumber(value, language),
+      fileSize: (bytes) => formatFileSize(bytes, language),
       compare: (a, b) => compareText(a, b, language)
     }),
     [language]

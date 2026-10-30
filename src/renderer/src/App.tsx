@@ -29,6 +29,8 @@ import { addPersonAndEdit } from './features/workspace/useAddPerson'
 import { useSettings } from './store/settings'
 import { useTreeView } from './store/treeView'
 import { printTree } from './features/export/exportImage'
+import { MediaDetailsDialog } from './features/media/MediaDetailsDialog'
+import { MediaViewer } from './features/media/MediaViewer'
 import { CitationsDialog } from './features/sources/CitationsDialog'
 import { SourcesDialog } from './features/sources/SourcesDialog'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
@@ -141,6 +143,8 @@ export function App(): React.JSX.Element {
           onClose={() => useWorkspaceUi.getState().setCiting(null)}
         />
       )}
+      {hasDocument && <MediaViewer />}
+      {hasDocument && <MediaDetailsDialog />}
       {dialog === 'new-tree' && (
         <NewTreeDialog
           onClose={() => openDialog(null)}

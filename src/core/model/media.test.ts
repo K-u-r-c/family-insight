@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { remarriageFixture } from '../test/fixtures'
 import {
   addMedia,
+  addPersonMedia,
+  movePersonMedia,
+  peopleOfMedia,
+  removePersonMedia,
+  setMediaPeople,
   mediaEntryName,
   mediaUsage,
   portraitOf,
@@ -114,5 +119,35 @@ describe('media library', () => {
     expect(fixed.persons.jan!.mediaIds).toEqual(['scan'])
     expect(fixed.persons.jan).not.toHaveProperty('portraitMediaId')
     expect(repairMediaReferences(fixed).removed).toBe(0)
+  })
+})
+
+describe('person galleries', () => {
+  it('adds, reorders and removes gallery items', () => {
+    let tree = addPersonMedia(withScan(), 'jan', ['scan', 'akt'])
+    expect(tree.persons.jan!.mediaIds).toEqual(['scan', 'akt'])
+    tree = addPersonMedia(tree, 'jan', ['akt'])
+    expect(tree.persons.jan!.mediaIds).toEqual(['scan', 'akt'])
+    tree = movePersonMedia(tree, 'jan', 'akt', 0)
+    expect(tree.persons.jan!.mediaIds).toEqual(['akt', 'scan'])
+    expect(movePersonMedia(tree, 'jan', 'akt', -5)).toBe(tree)
+    tree = removePersonMedia(tree, 'jan', 'akt')
+    expect(tree.persons.jan!.mediaIds).toEqual(['scan'])
+    expect(tree.media.akt).toBeDefined()
+    tree = removePersonMedia(tree, 'jan', 'scan')
+    expect(tree.persons.jan).not.toHaveProperty('mediaIds')
+    expect(() => addPersonMedia(tree, 'jan', ['nope'])).toThrow('media-not-found')
+    expect(() => movePersonMedia(tree, 'jan', 'scan', 1)).toThrow('media-not-found')
+  })
+
+  it('links one item to several people', () => {
+    let tree = addPersonMedia(withScan(), 'jan', ['akt', 'scan'])
+    tree = setMediaPeople(tree, 'scan', ['jan', 'anna', 'ewa'])
+    expect(peopleOfMedia(tree, 'scan').map((p) => p.id)).toEqual(['jan', 'anna', 'ewa'])
+    expect(tree.persons.jan!.mediaIds).toEqual(['akt', 'scan'])
+    tree = setMediaPeople(tree, 'scan', ['anna'])
+    expect(peopleOfMedia(tree, 'scan').map((p) => p.id)).toEqual(['anna'])
+    expect(tree.persons.jan!.mediaIds).toEqual(['akt'])
+    expect(() => setMediaPeople(tree, 'scan', ['ghost'])).toThrow('person-not-found')
   })
 })

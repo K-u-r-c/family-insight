@@ -190,3 +190,93 @@ export function referencedHashes(tree: FamilyTree): Set<string> {
 export function repairMediaReferences(tree: FamilyTree): { tree: FamilyTree; removed: number } {
   return unlinkMedia(tree, (id) => !tree.media[id])
 }
+
+function requirePerson(tree: FamilyTree, id: PersonId): Person {
+  const person = tree.persons[id]
+  if (!person) throw new ModelError('person-not-found', { id })
+  return person
+}
+
+function withPersonMedia(
+  tree: FamilyTree,
+  person: Person,
+  mediaIds: MediaId[],
+  now?: Date
+): FamilyTree {
+  const next: Person = { ...person, updatedAt: (now ?? new Date()).toISOString() }
+  if (mediaIds.length) next.mediaIds = mediaIds
+  else delete next.mediaIds
+  return { ...tree, meta: touched(tree, now), persons: { ...tree.persons, [person.id]: next } }
+}
+
+/** Appends media items to a person's gallery (items already there stay where they are). */
+export function addPersonMedia(
+  tree: FamilyTree,
+  personId: PersonId,
+  mediaIds: MediaId[],
+  options: Options = {}
+): FamilyTree {
+  const person = requirePerson(tree, personId)
+  for (const id of mediaIds) {
+    if (!tree.media[id]) throw new ModelError('media-not-found', { id })
+  }
+  const list = [...(person.mediaIds ?? [])]
+  for (const id of mediaIds) if (!list.includes(id)) list.push(id)
+  return withPersonMedia(tree, person, list, options.now)
+}
+
+/** Takes a media item out of a person's gallery (the item itself stays in the library). */
+export function removePersonMedia(
+  tree: FamilyTree,
+  personId: PersonId,
+  mediaId: MediaId,
+  options: Options = {}
+): FamilyTree {
+  const person = requirePerson(tree, personId)
+  const list = (person.mediaIds ?? []).filter((id) => id !== mediaId)
+  return withPersonMedia(tree, person, list, options.now)
+}
+
+/** Moves a media item to position `toIndex` of a person's gallery. */
+export function movePersonMedia(
+  tree: FamilyTree,
+  personId: PersonId,
+  mediaId: MediaId,
+  toIndex: number,
+  options: Options = {}
+): FamilyTree {
+  const person = requirePerson(tree, personId)
+  const list = [...(person.mediaIds ?? [])]
+  const from = list.indexOf(mediaId)
+  if (from < 0) throw new ModelError('media-not-found', { id: mediaId })
+  const to = Math.max(0, Math.min(list.length - 1, toIndex))
+  if (from === to) return tree
+  list.splice(to, 0, ...list.splice(from, 1))
+  return withPersonMedia(tree, person, list, options.now)
+}
+
+/** People whose gallery shows a media item, in tree order. */
+export function peopleOfMedia(tree: FamilyTree, mediaId: MediaId): Person[] {
+  return Object.values(tree.persons).filter((p) => p.mediaIds?.includes(mediaId))
+}
+
+/** Shows a media item in exactly these people's galleries (e.g. a family photo). */
+export function setMediaPeople(
+  tree: FamilyTree,
+  mediaId: MediaId,
+  personIds: PersonId[],
+  options: Options = {}
+): FamilyTree {
+  if (!tree.media[mediaId]) throw new ModelError('media-not-found', { id: mediaId })
+  for (const id of personIds) requirePerson(tree, id)
+  let next = tree
+  for (const person of peopleOfMedia(tree, mediaId)) {
+    if (!personIds.includes(person.id)) next = removePersonMedia(next, person.id, mediaId, options)
+  }
+  for (const id of personIds) {
+    if (!next.persons[id]!.mediaIds?.includes(mediaId)) {
+      next = addPersonMedia(next, id, [mediaId], options)
+    }
+  }
+  return next
+}

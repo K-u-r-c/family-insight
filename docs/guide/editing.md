@@ -72,6 +72,8 @@ click **Use photo**.
 
 The photo is stored **inside the `.finsight` file** (scaled to 512 × 512 pixels), so the tree stays
 one file you can copy anywhere. Use **Change…** or **Remove** under the photo to replace or delete it.
+A picture from the person's gallery can become the portrait too (**⋯ → Use as portrait…**, see
+[Photos and documents](./media)).
 
 ## Life events
 

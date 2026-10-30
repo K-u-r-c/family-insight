@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { X, type LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cx } from '@renderer/lib/cx'
@@ -38,6 +38,8 @@ export function Dialog({
 }: DialogProps): React.JSX.Element | null {
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null)
+  // Unique, so a dialog opened from another one (e.g. a person picker) gets its own name.
+  const titleId = useId()
 
   // Remember the trigger while open and give focus back to it when the dialog goes away.
   useEffect(() => {
@@ -66,7 +68,7 @@ export function Dialog({
     <dialog
       ref={ref}
       className={cx(styles.dialog, wide && styles.wide)}
-      aria-labelledby="dialog-title"
+      aria-labelledby={titleId}
       onCancel={(e) => {
         e.preventDefault()
         onClose()
@@ -84,7 +86,7 @@ export function Dialog({
           </div>
         )}
         <div className={styles.titles}>
-          <h2 id="dialog-title" className={styles.title}>
+          <h2 id={titleId} className={styles.title}>
             {title}
           </h2>
           {description && <p className={styles.description}>{description}</p>}

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
-import { isImage } from '@core/model/media'
-import type { FamilyTree, MediaMime, Person } from '@core/model/types'
+import { isImage, MAX_MEDIA_BYTES, type MediaInput } from '@core/model/media'
+import type { FamilyTree, MediaItem, MediaMime, Person } from '@core/model/types'
 import type { MediaPutResult } from '@shared/ipc'
 import { toast } from '@renderer/components/ui'
 import i18n from '@renderer/i18n'
@@ -25,9 +25,15 @@ export const THUMB_SIZE = 256
 const thumbBytes = new Map<string, Uint8Array>()
 const api = (): typeof window.familyInsight => window.familyInsight
 
+/** Object URLs of full-size files, most recently used last (a few large scans at most). */
+const fullUrls = new Map<string, string>()
+const MAX_FULL_URLS = 12
+
 function forget(): void {
   const { library, thumbs } = useMedia.getState()
   for (const url of Object.values(thumbs)) URL.revokeObjectURL(url)
+  for (const url of fullUrls.values()) URL.revokeObjectURL(url)
+  fullUrls.clear()
   thumbBytes.clear()
   if (library) void api().releaseMediaLibrary(library)
 }
@@ -187,4 +193,143 @@ export function portraitDataUrl(tree: FamilyTree, person: Person): string | unde
 export function dataUrlToBytes(url: string): Uint8Array {
   const binary = atob(url.slice(url.indexOf(',') + 1))
   return Uint8Array.from(binary, (c) => c.charCodeAt(0))
+}
+
+/** Object URL of the full file (fetched from the library on first use); `null` if missing. */
+export async function fullMediaUrl(item: MediaItem): Promise<string | null> {
+  const cached = fullUrls.get(item.hash)
+  if (cached) {
+    fullUrls.delete(item.hash)
+    fullUrls.set(item.hash, cached)
+    return cached
+  }
+  const library = currentLibrary()
+  if (!library) return null
+  const bytes = await api().getMedia(library, item.hash)
+  if (!bytes || currentLibrary() !== library) return null
+  const url = URL.createObjectURL(new Blob([bytes as BlobPart], { type: item.mime }))
+  fullUrls.set(item.hash, url)
+  for (const [hash, old] of fullUrls) {
+    if (fullUrls.size <= MAX_FULL_URLS) break
+    URL.revokeObjectURL(old)
+    fullUrls.delete(hash)
+  }
+  return url
+}
+
+/** The full file as a data URL (e.g. for the portrait cropper). */
+export async function mediaDataUrl(item: MediaItem): Promise<string | null> {
+  const library = currentLibrary()
+  const bytes = library ? await api().getMedia(library, item.hash) : null
+  if (!bytes) return null
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(String(reader.result))
+    reader.onerror = () => resolve(null)
+    reader.readAsDataURL(new Blob([bytes as BlobPart], { type: item.mime }))
+  })
+}
+
+function toInput(
+  result: Extract<MediaPutResult, { ok: true }>,
+  size?: {
+    width?: number
+    height?: number
+  }
+): MediaInput {
+  const { hash, mime, fileName } = result
+  return {
+    hash,
+    mime,
+    fileName,
+    size: result.size,
+    ...(size?.width ? { width: size.width, height: size.height } : {})
+  }
+}
+
+function reportFailures(failed: Extract<MediaPutResult, { ok: false }>[]): void {
+  for (const f of failed) {
+    toast({
+      message: i18n.t(
+        `media.error.${f.error}` as never,
+        { name: f.fileName } as never
+      ) as unknown as string,
+      tone: 'error'
+    })
+  }
+}
+
+/** After main added files to the library: thumbnails, dimensions and items to create. */
+async function finishImport(results: MediaPutResult[]): Promise<MediaInput[]> {
+  const library = currentLibrary()
+  const inputs: MediaInput[] = []
+  const failed: Extract<MediaPutResult, { ok: false }>[] = []
+  for (const result of results) {
+    if (!result.ok) {
+      failed.push(result)
+      continue
+    }
+    let size: { width?: number; height?: number } | undefined
+    if (library && isImage(result.mime)) {
+      const bytes = await api().getMedia(library, result.hash)
+      const made = bytes && (await makeThumbnail(bytes, result.mime))
+      if (made) {
+        size = made
+        if (!useMedia.getState().thumbs[result.hash]) {
+          if (await api().putThumbnail(library, result.hash, made.thumb)) {
+            addThumb(result.hash, made.thumb)
+          }
+        }
+      }
+    }
+    inputs.push(toInput(result, size))
+  }
+  reportFailures(failed)
+  return inputs
+}
+
+/** Lets the user pick photos and documents; resolves to the media items to create. */
+export async function pickMediaFiles(): Promise<MediaInput[]> {
+  const library = await ensureLibrary()
+  const result = await api().importMedia(library, true)
+  return result ? finishImport(result.items) : []
+}
+
+/** Adds files dropped from the desktop; resolves to the media items to create. */
+export async function addDroppedFiles(files: File[]): Promise<MediaInput[]> {
+  const library = await ensureLibrary()
+  const results: MediaPutResult[] = []
+  for (const file of files.slice(0, 200)) {
+    if (file.size > MAX_MEDIA_BYTES) {
+      results.push({ ok: false, fileName: file.name, error: 'too-large' })
+      continue
+    }
+    const bytes = new Uint8Array(await file.arrayBuffer())
+    results.push(
+      (await api().putMedia(library, bytes, file.name)) ?? {
+        ok: false,
+        fileName: file.name,
+        error: 'io'
+      }
+    )
+  }
+  return finishImport(results)
+}
+
+/** Opens a file in the system's default app. */
+export async function openMediaExternally(item: MediaItem): Promise<void> {
+  const library = currentLibrary()
+  const ok = library && (await api().openMediaExternally(library, item.hash, item.fileName))
+  if (!ok) {
+    toast({
+      message: i18n.t('media.error.open' as never) as unknown as string,
+      tone: 'error'
+    })
+  }
+}
+
+/** Saves a copy of the file where the user picks. */
+export async function exportMediaFile(item: MediaItem): Promise<void> {
+  const library = currentLibrary()
+  if (library) await api().exportMedia(library, item.hash, item.fileName)
 }

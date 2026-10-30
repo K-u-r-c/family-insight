@@ -16,6 +16,7 @@ import { useDocument } from '@renderer/store/document'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { CommitTextArea, CommitTextField } from '@renderer/features/person/CommitField'
 import { DateField } from '@renderer/features/person/DateField'
+import { MediaStrip } from '@renderer/features/media/MediaStrip'
 import { factLabel } from './facts'
 import styles from './Sources.module.css'
 
@@ -122,6 +123,9 @@ export function CitationsDialog({
                 {citation.text && !open && (
                   <blockquote className={styles.quote}>{citation.text}</blockquote>
                 )}
+                {!open && citation.mediaIds?.length ? (
+                  <MediaStrip label={t('media.scans')} mediaIds={citation.mediaIds} />
+                ) : null}
                 {open && (
                   <div className={styles.fields}>
                     <Select
@@ -166,6 +170,15 @@ export function CitationsDialog({
                       label={t('sources.notes')}
                       value={citation.notes ?? ''}
                       onCommit={(v) => update(citation, { notes: v.trim() ? v : undefined })}
+                    />
+                    <MediaStrip
+                      label={t('media.scans')}
+                      mediaIds={citation.mediaIds ?? []}
+                      link={(mediaIds) =>
+                        updateCitationCommand(target, citation.id, {
+                          mediaIds: mediaIds.length ? mediaIds : undefined
+                        })
+                      }
                     />
                   </div>
                 )}

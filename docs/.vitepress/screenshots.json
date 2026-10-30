@@ -48,9 +48,9 @@
     "pl-dark": [893, 737]
   },
   "csv-import-columns": {
-    "en-light": [829, 636],
-    "en-dark": [862, 662],
-    "pl-light": [862, 662],
+    "en-light": [862, 662],
+    "en-dark": [829, 636],
+    "pl-light": [829, 636],
     "pl-dark": [829, 636]
   },
   "csv-import-errors": {
@@ -124,6 +124,24 @@
     "en-dark": [547, 501],
     "pl-light": [547, 501],
     "pl-dark": [547, 501]
+  },
+  "media-details": {
+    "en-light": [893, 585],
+    "en-dark": [893, 585],
+    "pl-light": [893, 585],
+    "pl-dark": [893, 585]
+  },
+  "media-gallery": {
+    "en-light": [380, 720],
+    "en-dark": [380, 720],
+    "pl-light": [380, 720],
+    "pl-dark": [380, 720]
+  },
+  "media-viewer": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
   },
   "new-tree": {
     "en-light": [547, 295],
@@ -202,6 +220,12 @@
     "en-dark": [893, 529],
     "pl-light": [893, 529],
     "pl-dark": [893, 529]
+  },
+  "source-scans": {
+    "en-light": [928, 784],
+    "en-dark": [928, 784],
+    "pl-light": [928, 784],
+    "pl-dark": [928, 784]
   },
   "sources-details": {
     "en-light": [380, 720],

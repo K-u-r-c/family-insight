@@ -121,6 +121,140 @@ function portrait(): string {
   return file
 }
 
+/** Drawn, clearly fictional "old photos", a letter and a PDF for the media library. */
+function mediaFiles(): string[] {
+  const dir = tempDir()
+  const png = (name: string, svg: string): string => {
+    const file = join(dir, name)
+    writeFileSync(file, new Resvg(svg).render().asPng())
+    return file
+  }
+  const sepia = `<defs><radialGradient id="v" cx="0.5" cy="0.5" r="0.75">
+      <stop offset="0.6" stop-color="#d8c3a0"/><stop offset="1" stop-color="#8f7552"/></radialGradient></defs>`
+  const wedding = png(
+    'wedding-1950.png',
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900">${sepia}
+      <rect width="1200" height="900" fill="url(#v)"/>
+      <path d="M380 900 V380 A220 220 0 0 1 820 380 V900 Z" fill="#b39a76"/>
+      <path d="M440 900 V400 A160 160 0 0 1 760 400 V900 Z" fill="#6f5a41"/>
+      <circle cx="530" cy="420" r="46" fill="#e9d8bd"/><path d="M470 900 L500 500 H560 L590 900 Z" fill="#3b3128"/>
+      <circle cx="670" cy="430" r="44" fill="#e9d8bd"/><path d="M600 900 C610 640 640 510 670 500 C700 510 730 640 750 900 Z" fill="#f4ecdd"/>
+      <path d="M630 400 C640 340 700 340 712 400 C740 470 600 470 630 400 Z" fill="#f8f2e6" opacity="0.8"/>
+    </svg>`
+  )
+  const house = png(
+    'house.png',
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="760">${sepia}
+      <rect width="1000" height="760" fill="url(#v)"/><rect y="560" width="1000" height="200" fill="#9c8462"/>
+      <rect x="260" y="330" width="480" height="260" fill="#c9b08a"/><path d="M220 340 L500 150 L780 340 Z" fill="#6b5640"/>
+      <rect x="450" y="450" width="90" height="140" fill="#4e3f30"/>
+      <rect x="310" y="390" width="90" height="80" fill="#efe3cc"/><rect x="600" y="390" width="90" height="80" fill="#efe3cc"/>
+    </svg>`
+  )
+  const lines = Array.from({ length: 14 }, (_, i) => {
+    const y = 170 + i * 52
+    return `<path d="M110 ${y} q40 -14 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 ${i % 3 ? 0 : -6}" stroke="#3d4f73" stroke-width="4" fill="none" opacity="0.8"/>`
+  }).join('')
+  const letter = png(
+    'letter-1946.png',
+    `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000">
+      <rect width="800" height="1000" fill="#efe6d2"/>
+      <path d="M110 110 q30 -18 60 0 t60 0" stroke="#3d4f73" stroke-width="5" fill="none"/>${lines}</svg>`
+  )
+  const stream = 'BT /F1 22 Tf 40 120 Td (Akt urodzenia / Birth certificate) Tj ET'
+  const pdf = join(dir, 'birth-certificate.pdf')
+  writeFileSync(
+    pdf,
+    [
+      '%PDF-1.4',
+      '1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj',
+      '2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj',
+      '3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 420 300]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>endobj',
+      `4 0 obj<</Length ${stream.length}>>stream`,
+      stream,
+      'endstream endobj',
+      '5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj',
+      'trailer<</Root 1 0 R>>',
+      '%%EOF'
+    ].join('\n')
+  )
+  return [wedding, house, letter, pdf]
+}
+
+/** Adds photos and documents to Jan Kowalski's gallery (through the picker) and describes them. */
+async function addJanMedia(s: Session): Promise<void> {
+  const { page, t } = s
+  await select(s, 'Jan Kowalski')
+  await mockDialogs(s.app, { open: mediaFiles() })
+  await panel(s)
+    .getByRole('region', { name: t('media.gallery') })
+    .getByRole('button', { name: t('media.add') })
+    .click()
+  await panel(s)
+    .getByRole('region', { name: t('media.gallery') })
+    .locator('img')
+    .nth(2)
+    .waitFor()
+  const pl = s.variant.lang === 'pl'
+  const info: Record<string, Record<string, unknown>> = {
+    'wedding-1950.png': {
+      title: pl ? 'Ślub Jana i Anny' : 'Wedding of Jan and Anna',
+      date: { value: '1950-06', qualifier: 'exact' },
+      place: 'Łódź',
+      description: pl
+        ? 'Przed kościołem św. Józefa, zaraz po ceremonii.'
+        : 'In front of St Joseph’s church, just after the ceremony.'
+    },
+    'house.png': {
+      title: pl ? 'Dom rodzinny przy ul. Piotrkowskiej' : 'The family house on Piotrkowska Street',
+      date: { value: '1960', qualifier: 'about' },
+      place: 'Łódź'
+    },
+    'letter-1946.png': {
+      title: pl ? 'List Anny do siostry' : 'Letter from Anna to her sister',
+      date: { value: '1946-03', qualifier: 'exact' }
+    },
+    'birth-certificate.pdf': {
+      title: pl ? 'Akt urodzenia Jana' : 'Jan’s birth certificate',
+      date: { value: '1925-11-04', qualifier: 'exact' },
+      place: 'Łódź'
+    }
+  }
+  await page.evaluate((info) => {
+    type Tree = {
+      persons: Record<
+        string,
+        { id: string; givenNames: string; surname: string; mediaIds?: string[] }
+      >
+      media: Record<string, { id: string; fileName: string }>
+    }
+    const store = (
+      window as unknown as {
+        __familyInsight: {
+          useDocument: { getState: () => { tree: Tree; dispatch: (cmd: unknown) => void } }
+        }
+      }
+    ).__familyInsight.useDocument
+    store.getState().dispatch({
+      label: 'history.editMedia',
+      run: (tree: Tree) => {
+        const media = Object.fromEntries(
+          Object.entries(tree.media).map(([id, m]) => [id, { ...m, ...info[m.fileName] }])
+        )
+        const wedding = Object.values(tree.media).find((m) => m.fileName === 'wedding-1950.png')!
+        const persons = Object.fromEntries(
+          Object.entries(tree.persons).map(([id, p]) =>
+            `${p.givenNames} ${p.surname}` === 'Anna Kowalska'
+              ? [id, { ...p, mediaIds: [wedding.id] }]
+              : [id, p]
+          )
+        )
+        return { tree: { ...tree, media, persons }, result: undefined }
+      }
+    })
+  }, info)
+}
+
 /** Life events of Jan Kowalski in the sample family (texts in the screenshot's language). */
 function janEvents(lang: string): Record<string, unknown>[] {
   const pl = lang === 'pl'
@@ -782,6 +916,99 @@ scene('sources-details', async (s) => {
   await parkMouse(s)
   const marker = panel(s).locator('[data-type="birth"]').getByRole('button')
   return { clip: panel(s), pad: 0, steps: [{ target: marker, badge: 'right' }] }
+})
+
+// ---------------------------------------------------------------------------------------------
+// Photos and documents
+
+scene('media-gallery', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await addJanMedia(s)
+  const gallery = panel(s).getByRole('region', { name: t('media.gallery') })
+  await gallery.evaluate((g) => g.scrollIntoView({ block: 'center' }))
+  await s.page.waitForTimeout(300)
+  await parkMouse(s)
+  return {
+    clip: panel(s),
+    pad: 0,
+    steps: [
+      { target: gallery.getByRole('button', { name: t('media.add') }), badge: 'left' },
+      { target: gallery.getByRole('listitem').first().getByRole('button').last(), badge: 'right' }
+    ]
+  }
+})
+
+scene('media-viewer', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await addJanMedia(s)
+  const title = s.variant.lang === 'pl' ? 'Ślub Jana i Anny' : 'Wedding of Jan and Anna'
+  await panel(s)
+    .getByRole('button', { name: t('media.open', { title }) })
+    .click()
+  await page.getByRole('dialog', { name: title }).getByRole('img').waitFor()
+  await parkMouse(s)
+  return { settle: 800 }
+})
+
+scene('media-details', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await addJanMedia(s)
+  const title = s.variant.lang === 'pl' ? 'Ślub Jana i Anny' : 'Wedding of Jan and Anna'
+  await panel(s)
+    .getByRole('button', { name: t('media.actions', { title }) })
+    .click()
+  await menu(s)
+    .getByRole('menuitem', { name: t('media.editDetails') })
+    .click()
+  await dialog(s).waitFor()
+  return dialogShot(s, {
+    steps: [
+      { target: dialog(s).getByRole('button', { name: t('media.addPerson') }), badge: 'right' }
+    ]
+  })
+})
+
+scene('source-scans', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await addSampleSources(s)
+  await addJanMedia(s)
+  await page.evaluate(() => {
+    type Tree = {
+      media: Record<string, { id: string; fileName: string }>
+      sources: Record<string, { id: string; mediaIds?: string[] }>
+    }
+    const store = (
+      window as unknown as {
+        __familyInsight: {
+          useDocument: { getState: () => { dispatch: (cmd: unknown) => void } }
+        }
+      }
+    ).__familyInsight.useDocument
+    store.getState().dispatch({
+      label: 'history.editSource',
+      run: (tree: Tree) => {
+        const pdf = Object.values(tree.media).find((m) => m.fileName === 'birth-certificate.pdf')!
+        const sources = { ...tree.sources, s1: { ...tree.sources.s1!, mediaIds: [pdf.id] } }
+        return { tree: { ...tree, sources }, result: undefined }
+      }
+    })
+  })
+  await menuAction(s, 'edit:sources')
+  await dialog(s).waitFor()
+  await dialog(s)
+    .getByRole('button')
+    .filter({ hasText: s.variant.lang === 'pl' ? 'Księga' : 'Register' })
+    .first()
+    .click()
+  const strip = dialog(s)
+    .getByRole('group', { name: t('media.scans') })
+    .first()
+  await strip.evaluate((g) => g.scrollIntoView({ block: 'center' }))
+  return dialogShot(s, { steps: [{ target: strip, badge: 'left' }] })
 })
 
 // ---------------------------------------------------------------------------------------------

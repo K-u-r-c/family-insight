@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs'
-import { basename, extname, resolve } from 'node:path'
+import { basename, extname, join, resolve } from 'node:path'
 import { randomUUID } from 'node:crypto'
-import { BrowserWindow, dialog, ipcMain } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
 import { emptyMediaStore, hashBytes, type MediaStore } from '@core/file/container'
 import { MAX_MEDIA_BYTES, sniffMime } from '@core/model/media'
 import { MEDIA_TYPES } from '@core/model/types'
@@ -37,6 +37,13 @@ function put(store: MediaStore, data: Uint8Array, fileName: string): MediaPutRes
   const hash = hashBytes(data)
   if (!store.media.has(hash)) store.media.set(hash, { bytes: data })
   return { ok: true, hash, mime, size: data.length, fileName }
+}
+
+/** A file name safe to create: no folders, no reserved characters. */
+function safeName(fileName: unknown, fallback: string): string {
+  const name = typeof fileName === 'string' && fileName.trim() ? basename(fileName) : fallback
+  // eslint-disable-next-line no-control-regex -- control characters are invalid in file names
+  return name.replace(/[\\/:*?"<>|\x00-\x1f]+/g, '-').slice(0, 150)
 }
 
 const FILTER_EXTENSIONS = Object.values(MEDIA_TYPES).flatMap((ext) =>
@@ -128,9 +135,7 @@ export function registerMediaHandlers(): void {
     async (event, id: unknown, hash: unknown, fileName: unknown): Promise<boolean> => {
       const bytes = typeof hash === 'string' ? getLibrary(id)?.media.get(hash)?.bytes : undefined
       if (!bytes) return false
-      const name = (typeof fileName === 'string' && fileName.trim() ? basename(fileName) : 'media')
-        .replace(/[\\/:*?"<>|]+/g, '-')
-        .slice(0, 150)
+      const name = safeName(fileName, 'media')
       const window = BrowserWindow.fromWebContents(event.sender)
       const ext = extname(name).slice(1)
       const options: Electron.SaveDialogOptions = {
@@ -143,6 +148,23 @@ export function registerMediaHandlers(): void {
       if (result.canceled || !result.filePath) return false
       await writeFileAtomic(resolve(result.filePath), bytes)
       return true
+    }
+  )
+
+  ipcMain.handle(
+    IpcChannel.MediaOpenExternal,
+    async (_e, id: unknown, hash: unknown, fileName: unknown): Promise<boolean> => {
+      const store = getLibrary(id)
+      const bytes = typeof hash === 'string' ? store?.media.get(hash)?.bytes : undefined
+      const mime = bytes && sniffMime(bytes)
+      if (!bytes || !mime) return false
+      // The extension follows the content, so the system never runs a disguised file.
+      const ext = MEDIA_TYPES[mime]
+      const base = safeName(fileName, 'document').replace(/\.[^.]*$/, '')
+      const folder = join(app.getPath('temp'), 'family-insight-media', randomUUID())
+      const path = join(folder, `${base || 'document'}.${ext}`)
+      await writeFileAtomic(path, bytes)
+      return (await shell.openPath(path)) === ''
     }
   )
 }

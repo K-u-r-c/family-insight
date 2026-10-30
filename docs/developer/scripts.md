@@ -30,6 +30,7 @@ All scripts are run with `npm run <name>` (`npm test` for `test`).
 | `test`           | Unit tests once (Vitest).                                                                           |
 | `test:watch`     | Unit tests in watch mode.                                                                           |
 | `test:e2e`       | Builds the app and runs the Playwright end-to-end tests against it.                                 |
+| `test:perf`      | Builds the app and runs the manual performance checks in `e2e/perf` (frame times; not run in CI).   |
 
 ## Package
 

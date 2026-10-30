@@ -133,6 +133,13 @@ flowchart LR
 - **Thumbnails** (WebP, 256 px) are made in the renderer with `createImageBitmap` and a canvas – it
   decodes every supported image type and works on any platform – and stored in the container, so the
   tree view never decodes full scans. PDFs have no thumbnail.
+- **The gallery UI** lives in `src/renderer/src/features/media/`: `GallerySection` (person details),
+  `MediaViewer` (zoom/pan, previous/next; PDFs in Chromium's built-in viewer inside an `<iframe>`
+  of a `blob:` URL, allowed by `frame-src blob:` in the CSP), `MediaDetailsDialog` (title, date,
+  place, description, the people it is shown on) and `MediaStrip` (scans of sources and citations).
+  The viewer and the details dialog are opened through the workspace UI store (`viewMedia`,
+  `setEditingMedia`), so any component can open them. Full-size files are fetched on demand and a
+  dozen object URLs are kept (`fullMediaUrl`).
 - Exported images embed portrait thumbnails as data URLs (`portraitDataUrl`), because the SVG is
   rendered where the renderer's object URLs don't exist.
 - **Crash recovery** writes each media file once to `userData/recovery/<id>.media/<hash>` next to the

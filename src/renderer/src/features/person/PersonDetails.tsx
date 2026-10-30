@@ -19,6 +19,7 @@ import { useFormat } from '@renderer/i18n/format'
 import { useDocument } from '@renderer/store/document'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { EVENT_ICONS, eventName } from './eventTypes'
+import { GallerySection } from '@renderer/features/media/GallerySection'
 import styles from './PersonDetails.module.css'
 import sourceStyles from '@renderer/features/sources/Sources.module.css'
 
@@ -149,6 +150,7 @@ export function PersonDetails({ person }: { person: Person }): React.JSX.Element
           <p className={`${styles.notes} selectable`}>{person.notes}</p>
         </section>
       )}
+      <GallerySection person={person} />
       {sources.length > 0 && (
         <section>
           <h4 className={styles.heading}>

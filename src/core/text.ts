@@ -40,6 +40,23 @@ export function formatNumber(value: number, language: string): string {
   return new Intl.NumberFormat(language).format(value)
 }
 
+/** File size with a unit, e.g. "340 kB", "2.4 MB" (decimal units, as file managers show). */
+export function formatFileSize(bytes: number, language: string): string {
+  const units = ['byte', 'kilobyte', 'megabyte', 'gigabyte'] as const
+  let value = bytes
+  let unit = 0
+  while (value >= 1000 && unit < units.length - 1) {
+    value /= 1000
+    unit++
+  }
+  return new Intl.NumberFormat(language, {
+    style: 'unit',
+    unit: units[unit],
+    unitDisplay: 'short',
+    maximumFractionDigits: value < 10 && unit > 0 ? 1 : 0
+  }).format(value)
+}
+
 /**
  * Masculine form of a Polish surname with a gendered ending (Kowalska → Kowalski,
  * Nowicka → Nowicki, Zawadzka → Zawadzki), part by part for double-barrelled names.

@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { compareText, foldText, formatList, formatNumber, masculineSurname } from './text'
+import {
+  compareText,
+  foldText,
+  formatFileSize,
+  formatList,
+  formatNumber,
+  masculineSurname
+} from './text'
 
 describe('text helpers', () => {
   it('sorts Polish names in Polish order', () => {
@@ -25,6 +32,10 @@ describe('text helpers', () => {
     expect(formatList(['Anna', 'Jan', 'Ewa'], 'pl')).toBe('Anna, Jan i Ewa')
     expect(formatNumber(12345, 'en')).toBe('12,345')
     expect(formatNumber(12345, 'pl').replace(/\s/g, ' ')).toBe('12 345')
+    expect(formatFileSize(340_123, 'en')).toBe('340 kB')
+    expect(formatFileSize(2_412_000, 'en')).toBe('2.4 MB')
+    expect(formatFileSize(2_412_000, 'pl').replace(/\s/g, ' ')).toBe('2,4 MB')
+    expect(formatFileSize(512, 'en')).toBe('512 byte')
   })
 })
 

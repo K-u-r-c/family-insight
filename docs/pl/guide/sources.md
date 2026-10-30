@@ -8,7 +8,7 @@ Dobra historia rodziny mówi, **skąd pochodzi każdy fakt**: z księgi parafial
 cywilnego, spisu ludności, listu, rozmowy z babcią. Family Insight prowadzi listę Twoich **źródeł**
 i pozwala je **cytować** przy każdym fakcie.
 
-## Zacytuj źródło przy fakcie
+## Zacytuj źródło przy fakcie {#cite}
 
 1. Wybierz osobę i kliknij **Edytuj**.
 2. Obok **Imię i nazwisko** (ogólne źródła o osobie), **Urodzenie**, **Życie** (śmierć) i przy każdym
@@ -39,6 +39,8 @@ Otwórz **☰ → Źródła…** (albo **Edycja → Źródła…** w pasku menu)
 - **Tytuł**, **Autor** i **Wydanie** opisują źródło; **Sygnatura** to jego oznaczenie w archiwum.
 - **Repozytorium** – gdzie źródło jest przechowywane: archiwum, biblioteka, kancelaria parafialna,
   strona internetowa. Wybierz je z listy albo dodaj nowe w polu **Nowe repozytorium**.
+- **Skany i zdjęcia** – dołącz skany źródła (strony księgi, akty); zobacz
+  [Zdjęcia i dokumenty](./media#scans-of-sources).
 - **Cytowane przy** wymienia wszystkie fakty, które cytują źródło – kliknij, aby przejść do osoby.
 - **Usuń źródło** – jeśli źródło jest cytowane, Family Insight najpierw zapyta i usunie też
   cytowania. Jak każdą zmianę, można to cofnąć.

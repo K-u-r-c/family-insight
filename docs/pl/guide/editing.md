@@ -71,7 +71,8 @@ suwakiem i kliknij **Użyj zdjęcia**.
 
 Zdjęcie jest zapisywane **w pliku `.finsight`** (w rozmiarze 512 × 512 pikseli), więc drzewo
 pozostaje jednym plikiem, który skopiujesz gdziekolwiek. Przyciski **Zmień…** i **Usuń** pod
-zdjęciem pozwalają je wymienić lub skasować.
+zdjęciem pozwalają je wymienić lub skasować. Portretem może też zostać obraz z galerii osoby
+(**⋯ → Ustaw jako portret…**, zobacz [Zdjęcia i dokumenty](./media)).
 
 ## Wydarzenia
 

@@ -27,6 +27,7 @@ export const IpcChannel = {
   MediaHashes: 'media:hashes',
   MediaPutThumb: 'media:put-thumb',
   MediaExport: 'media:export',
+  MediaOpenExternal: 'media:open-external',
   ExportPdf: 'export:pdf',
   Print: 'export:print',
   DialogUnsaved: 'dialog:unsaved',
@@ -196,6 +197,8 @@ export interface FamilyInsightApi {
   putThumbnail(library: string, hash: string, data: Uint8Array): Promise<boolean>
   /** Saves a media file to a place the user picks; `false` when cancelled. */
   exportMedia(library: string, hash: string, fileName: string): Promise<boolean>
+  /** Opens a media file in the system's default app (via a temporary copy). */
+  openMediaExternally(library: string, hash: string, fileName: string): Promise<boolean>
   /** A file the OS asked us to open before the UI was ready (double-click, argv). */
   takePendingFile(): Promise<string | null>
   onOpenFileRequest(listener: (path: string) => void): () => void

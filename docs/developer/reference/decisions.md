@@ -247,3 +247,21 @@ Details:
   container each time, so a 2-second autosave of an untitled tree doesn't rewrite all photos.
 - **Compatibility:** 1.0.x can't read containers (it reports a damaged file). Accepted: the
   "newer version" message can't be retrofitted into released versions.
+
+## Gallery, viewer and media linking (2026-10, issue #57)
+
+- **Portraits stay crops.** "Use as portrait" opens the existing cropper on the full image and
+  stores the 512 px crop as a new media item, so the card shows a well-framed face while the gallery
+  keeps the original. The gallery therefore marks no item as "the portrait".
+- **One item, many people:** a family photo is one media item listed in several people's `mediaIds`
+  (`setMediaPeople`), not a copy per person. Removing it from a gallery deletes the item only when
+  nothing else uses it (people, sources, citations); the details dialog doesn't let the last
+  reference go, because the item would become unreachable – **Delete from the tree** is explicit.
+- **PDFs** use Chromium's built-in viewer in an `<iframe>` of a `blob:` URL (it works in the
+  sandboxed renderer; the CSP allows `frame-src blob:` only). "Open in another app" writes a
+  temporary copy whose extension follows the detected type. Mobile (#89) will need its own path.
+- **Viewer** is a native `<dialog>` with CSS-transform zoom/pan (wheel around the cursor,
+  double-click, drag, +/−/0 keys) and ←/→ for the list it was opened from.
+- **Performance:** cards only ever show thumbnails, and the canvas renders only visible cards. With
+  1 022 people with portraits, zoomed out to 15 % (≈200 cards on screen), panning keeps 60 fps
+  (p95 frame 16.7 ms, worst 17.7 ms) on the development machine – `npm run test:perf`.

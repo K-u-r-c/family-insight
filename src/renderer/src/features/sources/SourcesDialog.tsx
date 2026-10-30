@@ -23,6 +23,7 @@ import {
 import { useDocument } from '@renderer/store/document'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { CommitTextArea, CommitTextField } from '@renderer/features/person/CommitField'
+import { MediaStrip } from '@renderer/features/media/MediaStrip'
 import { factLabel, factPerson } from './facts'
 import styles from './Sources.module.css'
 
@@ -48,6 +49,7 @@ export function SourcesDialog({ onClose }: { onClose: () => void }): React.JSX.E
 
   const source: Source | undefined = selectedId ? tree.sources[selectedId] : undefined
   const citedBy = source ? getCitationsForSource(tree, source.id) : []
+  const citationMedia = [...new Set(citedBy.flatMap(({ citation }) => citation.mediaIds ?? []))]
   const repositories = Object.values(tree.repositories).sort((a, b) =>
     compareText(a.name, b.name, format.language)
   )
@@ -220,6 +222,24 @@ export function SourcesDialog({ onClose }: { onClose: () => void }): React.JSX.E
                 value={source.notes ?? ''}
                 onCommit={(v) => update({ notes: v.trim() ? v : undefined })}
               />
+              <section>
+                <h3 className={styles.subheading}>{t('media.scans')}</h3>
+                <MediaStrip
+                  label={t('media.scans')}
+                  mediaIds={source.mediaIds ?? []}
+                  link={(mediaIds) =>
+                    updateSourceCommand(source.id, {
+                      mediaIds: mediaIds.length ? mediaIds : undefined
+                    })
+                  }
+                />
+                {citationMedia.length > 0 && (
+                  <>
+                    <p className={styles.muted}>{t('media.fromCitations')}</p>
+                    <MediaStrip label={t('media.fromCitations')} mediaIds={citationMedia} />
+                  </>
+                )}
+              </section>
               <section>
                 <h3 className={styles.subheading}>
                   {t('sources.citedBy', { count: citedBy.length })}

@@ -39,8 +39,12 @@ import {
 } from '@core/model/sources'
 import {
   addMedia,
+  addPersonMedia,
   mediaUsage,
+  movePersonMedia,
   removeMedia,
+  removePersonMedia,
+  setMediaPeople,
   setPortrait,
   updateMedia,
   type MediaInput,
@@ -264,6 +268,15 @@ export const updateMediaCommand = (id: MediaId, patch: MediaPatch): Command => (
   run: (tree) => ({ tree: updateMedia(tree, id, patch), result: undefined })
 })
 
+/** Deletes a media item only if nothing refers to it any more (after detaching it). */
+export const removeMediaIfUnusedCommand = (id: MediaId): Command => ({
+  label: 'history.removeMedia',
+  run: (tree) => ({
+    tree: tree.media[id] && mediaUsage(tree, id) === 0 ? removeMedia(tree, id) : tree,
+    result: undefined
+  })
+})
+
 export const removeMediaCommand = (id: MediaId): Command => ({
   label: 'history.removeMedia',
   run: (tree) => ({ tree: removeMedia(tree, id), result: undefined })
@@ -290,6 +303,56 @@ export const setPortraitCommand = (personId: PersonId, input: MediaInput | null)
     }
     return { tree, result: undefined }
   }
+})
+
+/** Adds new media items (already in the library) to a person's gallery as one step. */
+export const addPersonMediaCommand = (
+  personId: PersonId,
+  inputs: MediaInput[]
+): Command<MediaItem[]> => ({
+  label: 'history.addMedia',
+  run: (initial) => {
+    let tree = initial
+    const items: MediaItem[] = []
+    for (const input of inputs) {
+      const added = addMedia(tree, input)
+      tree = added.tree
+      items.push(added.media)
+    }
+    tree = addPersonMedia(
+      tree,
+      personId,
+      items.map((m) => m.id)
+    )
+    return { tree, result: items }
+  }
+})
+
+/**
+ * Takes a media item out of a person's gallery; when nothing else uses it any more it leaves
+ * the library too.
+ */
+export const removePersonMediaCommand = (personId: PersonId, mediaId: MediaId): Command => ({
+  label: 'history.removeMedia',
+  run: (initial) => {
+    let tree = removePersonMedia(initial, personId, mediaId)
+    if (tree.media[mediaId] && mediaUsage(tree, mediaId) === 0) tree = removeMedia(tree, mediaId)
+    return { tree, result: undefined }
+  }
+})
+
+export const movePersonMediaCommand = (
+  personId: PersonId,
+  mediaId: MediaId,
+  toIndex: number
+): Command => ({
+  label: 'history.moveMedia',
+  run: (tree) => ({ tree: movePersonMedia(tree, personId, mediaId, toIndex), result: undefined })
+})
+
+export const setMediaPeopleCommand = (mediaId: MediaId, personIds: PersonId[]): Command => ({
+  label: 'history.editMedia',
+  run: (tree) => ({ tree: setMediaPeople(tree, mediaId, personIds), result: undefined })
 })
 
 /** Runs several steps as a single undoable command (e.g. "add father" = person + link). */

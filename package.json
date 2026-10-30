@@ -33,6 +33,7 @@
     "dist:win": "npm run build && electron-builder --win",
     "dist:mac": "npm run build && electron-builder --mac",
     "test:e2e": "npm run build && playwright test",
+    "test:perf": "npm run build && playwright test -c playwright.perf.config.ts",
     "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
     "icons": "node scripts/icons.mjs",
     "typecheck:docs": "tsc --noEmit -p tsconfig.docs.json",
