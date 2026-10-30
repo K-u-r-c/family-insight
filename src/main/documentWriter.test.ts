@@ -2,7 +2,7 @@ import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync } 
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { emptyMediaStore, hashBytes, unpackDocument } from '@core/file/container'
+import { emptyMediaStore, hashBytes, packDocument, unpackDocument } from '@core/file/container'
 import { serializeTree } from '@core/file/format'
 import { addMedia } from '@core/model/media'
 import { updatePerson } from '@core/model/operations'
@@ -71,6 +71,10 @@ describe('saving a .finsight document', () => {
 
       tree = updatePerson(tree, 'jan', { notes: 'Changed' })
       let start = performance.now()
+      packDocument(serializeTree(tree), store)
+      const pack = performance.now() - start
+
+      start = performance.now()
       await saveDocument(file, serializeTree(tree), store)
       const autosave = performance.now() - start
 
@@ -80,11 +84,17 @@ describe('saving a .finsight document', () => {
       const explicit = performance.now() - start
 
       console.info(
-        `Saved ${(size / 1e6).toFixed(0)} MB with 500 photos: autosave ${autosave.toFixed(0)} ms, ` +
-          `save with backup rotation ${explicit.toFixed(0)} ms (pack, fsync, rename)`
+        `Saved ${(size / 1e6).toFixed(0)} MB with 500 photos: packing ${pack.toFixed(0)} ms, ` +
+          `autosave ${autosave.toFixed(0)} ms, save with backup rotation ${explicit.toFixed(0)} ms ` +
+          `(pack, write, fsync, rename)`
       )
-      expect(autosave).toBeLessThan(1000)
-      expect(explicit).toBeLessThan(1000)
+      // Packing reuses CRCs and copies nothing, whatever the disk.
+      expect(pack).toBeLessThan(250)
+      // Writing 200 MB is bound by the disk: < 1 s on an SSD; CI runners' virtual disks write
+      // ~160 MB/s, so there the limit only guards against regressions such as re-hashing.
+      const limit = process.env.CI ? 5000 : 1000
+      expect(autosave).toBeLessThan(limit)
+      expect(explicit).toBeLessThan(limit)
     } finally {
       rmSync(dir, { recursive: true, force: true })
     }

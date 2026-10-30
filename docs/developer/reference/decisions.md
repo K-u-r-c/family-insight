@@ -219,8 +219,10 @@ Details:
   200 MB on every autosave. Our writer reuses each file's CRC (read from the zip or computed once) and
   returns chunks that main writes without copying: a tree with 500 photos (205 MB) where one person
   changed saves in **~95 ms** through the real save path (pack, temporary file, `fsync`, rename;
-  NVMe, Linux), with backup rotation ~90 ms; `src/main/documentWriter.test.ts` asserts < 1 s for
-  both. Media are stored, `tree.json` is deflated. No zip64, timestamps fixed to 1980
+  NVMe, Linux), with backup rotation ~90 ms, of which packing is ~10 ms. Writing is bound by the
+  disk: GitHub's Linux runners need ~1.3 s for the same 205 MB (~160 MB/s virtual disk).
+  `src/main/documentWriter.test.ts` asserts packing < 250 ms everywhere and the whole save < 1 s
+  (< 5 s on CI runners). Media are stored, `tree.json` is deflated. No zip64, timestamps fixed to 1980
   (reproducible files).
 - **Backups are hard links** (`.bak1` links to the previous file, which the atomic rename replaces)
   instead of copies, so rotating them costs nothing even for large trees; file systems without hard

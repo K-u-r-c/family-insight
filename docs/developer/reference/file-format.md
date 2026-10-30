@@ -24,7 +24,8 @@ container**; Family Insight 1.0 wrote plain UTF-8 JSON, which still opens.
 - Media are stored uncompressed (they are compressed formats already). Saving reuses each file's
   CRC-32 from when it was read or added, so a save only compresses `tree.json` and writes bytes the
   app already has – 205 MB with 500 photos in about 95 ms on an NVMe disk (including `fsync` and
-  backup rotation), see the performance test in `src/main/documentWriter.test.ts`.
+  backup rotation; packing itself takes ~10 ms, the rest is the disk), see the performance test in
+  `src/main/documentWriter.test.ts`.
 - No zip64; the app opens and saves containers up to 2 GiB (`too-large` otherwise) with at most
   65 535 entries.
 - A file is a container when it starts with the zip signature `PK\x03\x04`; anything else is read
