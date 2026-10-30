@@ -1,4 +1,4 @@
-/** CSV columns as specified in docs/CSV_FORMAT.md, in export order. */
+/** CSV columns as specified in docs/developer/reference/csv-format.md, in export order. */
 export const CSV_COLUMNS = [
   'id',
   'given_names',

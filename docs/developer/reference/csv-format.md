@@ -5,7 +5,7 @@ LibreOffice Calc or Google Sheets. **One row = one person.** Relationships are e
 through ID columns.
 
 > The CSV format is for interchange. The native `.finsight` format (see
-> [FILE_FORMAT.md](FILE_FORMAT.md)) keeps everything; CSV keeps the fields listed below.
+> [file-format.md](file-format.md)) keeps everything; CSV keeps the fields listed below.
 
 ## Encoding and delimiters
 

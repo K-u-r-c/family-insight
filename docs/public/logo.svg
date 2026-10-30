@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3c8a61"/>
+      <stop offset="1" stop-color="#1f5238"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.32" r="0.6">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbf7ee"/>
+      <stop offset="1" stop-color="#efe6d3"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square base (fits macOS, Windows and Linux icon grids) -->
+  <rect x="80" y="80" width="864" height="864" rx="196" fill="url(#bg)"/>
+  <rect x="80" y="80" width="864" height="864" rx="196" fill="url(#glow)"/>
+  <!-- Family tree: a trunk splitting into branches that end in people -->
+  <g fill="none" stroke="#f6efe0" stroke-width="44" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M512 780 V520"/>
+    <path d="M512 560 L352 420"/>
+    <path d="M512 560 L672 420"/>
+    <path d="M512 520 V330"/>
+    <path d="M412 780 H612"/>
+  </g>
+  <circle cx="512" cy="282" r="78" fill="url(#leaf)"/>
+  <circle cx="318" cy="388" r="68" fill="#fbf7ee" fill-opacity="0.86"/>
+  <circle cx="706" cy="388" r="68" fill="#fbf7ee" fill-opacity="0.86"/>
+  <!-- A small heart where the branches meet: the couple at the root -->
+  <path d="M512 640 c-28 -34 -78 -22 -78 16 c0 30 40 54 78 82 c38 -28 78 -52 78 -82 c0 -38 -50 -50 -78 -16 z" fill="#f2c94c"/>
+</svg>

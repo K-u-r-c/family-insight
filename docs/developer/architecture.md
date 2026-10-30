@@ -80,3 +80,21 @@ Formats are pluggable through `src/core/io/registry.ts`:
    right filters automatically.
 3. Add the label and any issue messages to both locale files, a menu entry if needed, and
    unit tests including a round trip.
+
+## Decision: documentation website (issue #38)
+
+The documentation lives in `docs/` and is built with **VitePress** into a static site that is
+deployed to GitHub Pages (<https://k-u-r-c.github.io/family-insight/>).
+
+- **Why VitePress:** Markdown first (docs stay readable on GitHub), built-in i18n with a language
+  switcher, local full-text search (no external service), light/dark mode, and a build that fails
+  on dead links. It runs on its own bundled Vite, independent of the app's Vite.
+- **Languages:** the user guide exists in English (`docs/guide/`) and Polish (`docs/pl/guide/`)
+  with identical page slugs, so the language switcher keeps the current page. The developer
+  documentation (`docs/developer/`) is English only, like the code; the Polish locale links to it.
+- **Branding:** `docs/.vitepress/theme/custom.css` maps the app's colour tokens to VitePress
+  variables and uses the app's fonts (Inter, Source Serif 4) and icon.
+- **Links to source code** use absolute GitHub URLs, because VitePress only resolves links
+  between pages.
+- **Legacy paths:** v1.0.0 opens `docs/user-guide.*.md` and `docs/CSV_FORMAT.md` on GitHub from its
+  Help menu and CSV dialog, so those files stay as short "moved" pages (excluded from the site).

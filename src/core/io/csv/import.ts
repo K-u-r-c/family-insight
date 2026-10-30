@@ -152,7 +152,7 @@ export interface CsvImportResult {
 }
 
 /**
- * Imports CSV text into a new tree per docs/CSV_FORMAT.md. Never throws for bad input:
+ * Imports CSV text into a new tree per docs/developer/reference/csv-format.md. Never throws for bad input:
  * problems are returned as `errors` (block the import) and `warnings` (may be accepted).
  * Issue rows are spreadsheet line numbers (the header is line 1).
  */

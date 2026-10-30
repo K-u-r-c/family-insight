@@ -10,7 +10,7 @@
 
 [**Pobierz**](https://github.com/K-u-r-c/family-insight/releases/latest) ·
 [Podręcznik](docs/user-guide.pl.md) ·
-[Format CSV](docs/CSV_FORMAT.md)
+[Format CSV](docs/developer/reference/csv-format.md)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/hero-dark.png" />
@@ -70,7 +70,7 @@ Wersje nie są jeszcze podpisane cyfrowo, dlatego system poprosi o potwierdzenie
 każdego dokumentu. Ustawienia, kopie odzyskiwania i lista ostatnich plików są w profilu użytkownika.
 
 **Czy mogę przenieść drzewo z innego programu?** Wyeksportuj je do CSV (albo przygotuj arkusz
-z [opisanymi kolumnami](docs/CSV_FORMAT.md)) i użyj _Plik → Importuj → CSV_. Obsługa GEDCOM jest planowana.
+z [opisanymi kolumnami](docs/developer/reference/csv-format.md)) i użyj _Plik → Importuj → CSV_. Obsługa GEDCOM jest planowana.
 
 **Excel pokazuje dziwne znaki / wszystko w jednej kolumnie.** Eksportuj z separatorem _średnik_
 (domyślnym, gdy aplikacja jest po polsku); plik ma znacznik UTF-8 BOM, więc polskie litery
@@ -95,10 +95,10 @@ Wydania dla wszystkich trzech systemów buduje GitHub Actions po wypchnięciu ta
 ## Dokumentacja
 
 - [Podręcznik użytkownika](docs/user-guide.pl.md) · [User guide](docs/user-guide.en.md)
-- [Architektura](docs/ARCHITECTURE.md) (EN)
-- [Format CSV](docs/CSV_FORMAT.md) (EN)
-- [Format pliku `.finsight`](docs/FILE_FORMAT.md) (EN)
-- [Tłumaczenia](docs/I18N.md) (EN)
+- [Architektura](docs/developer/architecture.md) (EN)
+- [Format CSV](docs/developer/reference/csv-format.md) (EN)
+- [Format pliku `.finsight`](docs/developer/reference/file-format.md) (EN)
+- [Tłumaczenia](docs/developer/i18n.md) (EN)
 - [Jak współtworzyć](CONTRIBUTING.md) (EN) · [Lista zmian](CHANGELOG.md)
 
 ## Licencja

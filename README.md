@@ -10,7 +10,7 @@ English · [Polski](README.pl.md)
 
 [**Download**](https://github.com/K-u-r-c/family-insight/releases/latest) ·
 [User guide](docs/user-guide.en.md) ·
-[CSV format](docs/CSV_FORMAT.md)
+[CSV format](docs/developer/reference/csv-format.md)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/hero-dark.png" />
@@ -80,7 +80,7 @@ The builds are not code-signed yet, so your system asks you to confirm the first
 like any document. Settings, recovery copies and the recent files list live in your user profile.
 
 **Can I move my tree from another program?** Export it to CSV (or build a sheet with the
-[documented columns](docs/CSV_FORMAT.md)) and use _File → Import → CSV_. GEDCOM support is planned.
+[documented columns](docs/developer/reference/csv-format.md)) and use _File → Import → CSV_. GEDCOM support is planned.
 
 **Excel shows strange characters / everything in one column.** Export with the _semicolon_
 separator (the default when the app is in Polish); the file includes a UTF-8 BOM so Polish
@@ -115,10 +115,10 @@ Releases are built by GitHub Actions for all three platforms when a `v*` tag is 
 ## Documentation
 
 - [User guide](docs/user-guide.en.md) · [Podręcznik](docs/user-guide.pl.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [CSV format](docs/CSV_FORMAT.md)
-- [`.finsight` file format](docs/FILE_FORMAT.md)
-- [Translations](docs/I18N.md)
+- [Architecture](docs/developer/architecture.md)
+- [CSV format](docs/developer/reference/csv-format.md)
+- [`.finsight` file format](docs/developer/reference/file-format.md)
+- [Translations](docs/developer/i18n.md)
 - [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 ## Tech stack

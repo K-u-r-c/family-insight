@@ -52,7 +52,7 @@ export function parentSlots(parents: Person[]): { father?: PersonId; mother?: Pe
   return slots
 }
 
-/** Exports a tree as CSV text (UTF-8 BOM, CRLF line endings) per docs/CSV_FORMAT.md. */
+/** Exports a tree as CSV text (UTF-8 BOM, CRLF line endings) per docs/developer/reference/csv-format.md. */
 export function exportCsv(tree: FamilyTree, options: CsvExportOptions = {}): string {
   const delimiter = options.delimiter ?? ','
   const lang = options.headerLanguage ?? 'en'

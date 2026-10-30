@@ -4,7 +4,7 @@ import { toast } from '@renderer/components/ui'
 import i18n from '@renderer/i18n'
 
 export const CSV_FORMAT_URL =
-  'https://github.com/K-u-r-c/family-insight/blob/main/docs/CSV_FORMAT.md'
+  'https://github.com/K-u-r-c/family-insight/blob/main/docs/developer/reference/csv-format.md'
 
 /** Opens the CSV format documentation in the default browser. */
 export function openCsvFormatDocs(): void {

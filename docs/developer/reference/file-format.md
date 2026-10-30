@@ -1,7 +1,7 @@
 # `.finsight` file format
 
 The native file is UTF-8 JSON with the extension `.finsight`. Its TypeScript shape is
-`FamilyTree` in [`src/core/model/types.ts`](../src/core/model/types.ts).
+`FamilyTree` in [`src/core/model/types.ts`](https://github.com/K-u-r-c/family-insight/blob/main/src/core/model/types.ts).
 
 ```jsonc
 {

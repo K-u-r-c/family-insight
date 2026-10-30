@@ -108,7 +108,7 @@ Wskazówki dla arkuszy:
 - Rodzice trafiają do `ojciec_id` / `matka_id`, partnerzy do `partnerzy_id` rozdzieleni `|`
   (`p2|p5`).
 - Nazwy kolumn mogą być polskie lub angielskie (`imiona`, `nazwisko`, `data_urodzenia`, …).
-- _Pomoc → Pobierz szablon CSV…_ daje pusty arkusz; pełny opis w [formacie CSV](CSV_FORMAT.md).
+- _Pomoc → Pobierz szablon CSV…_ daje pusty arkusz; pełny opis w [formacie CSV](developer/reference/csv-format.md).
 
 CSV zachowuje imiona, nazwiska, daty, miejsca, status życia, rodziców biologicznych, partnerów
 i notatki. Zdjęcia, daty związków i adopcje zostają tylko w plikach `.finsight`.

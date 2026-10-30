@@ -1,6 +1,6 @@
 # Family Insight – notes for AI assistants
 
-Electron + React + TypeScript family tree app (EN/PL). Read `docs/ARCHITECTURE.md` first.
+Electron + React + TypeScript family tree app (EN/PL). Read `docs/developer/architecture.md` first.
 
 ## Commands
 
@@ -16,7 +16,7 @@ Electron + React + TypeScript family tree app (EN/PL). Read `docs/ARCHITECTURE.m
 - Never hard-code colours: use CSS variables from `src/renderer/src/styles/tokens.css`.
 - Renderer never accesses Node/fs; add IPC in `src/shared/ipc.ts` → `src/main/ipc.ts` →
   `src/preload/index.ts`, and validate input in main.
-- CSV behaviour is specified in `docs/CSV_FORMAT.md`; keep the doc and code in sync.
+- CSV behaviour is specified in `docs/developer/reference/csv-format.md`; keep the doc and code in sync.
 - Commits: Conventional Commits, reference the issue (`Closes #N`).
 
 ## Working through the backlog
@@ -35,6 +35,6 @@ order. #34–#37 (Backlog) are out of scope.
   fps on specific laptops): verify everything possible on Linux / in CI, then add an issue
   comment stating what could not be verified and why. Never tick such a box falsely and
   never stall on it.
-- Make technical decisions autonomously; record significant ones in `docs/ARCHITECTURE.md`.
+- Make technical decisions autonomously; record significant ones in `docs/developer/architecture.md`.
 - macOS/Windows builds can only be verified in GitHub Actions: use
   `gh workflow run release.yml` (workflow_dispatch builds all OSes without publishing).

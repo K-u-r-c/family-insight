@@ -5,7 +5,16 @@ import globals from 'globals'
 import prettier from 'eslint-config-prettier'
 
 export default tseslint.config(
-  { ignores: ['out/**', 'dist/**', 'node_modules/**', 'coverage/**'] },
+  {
+    ignores: [
+      'out/**',
+      'dist/**',
+      'node_modules/**',
+      'coverage/**',
+      'docs/.vitepress/cache/**',
+      'docs/.vitepress/dist/**'
+    ]
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -20,7 +29,8 @@ export default tseslint.config(
       'src/preload/**/*.ts',
       '*.config.{ts,mts,mjs}',
       'scripts/**/*.mjs',
-      'e2e/**/*.ts'
+      'e2e/**/*.ts',
+      'docs/.vitepress/config.mts'
     ],
     languageOptions: { globals: globals.node }
   },

@@ -24,6 +24,7 @@ jobs:
       - run: npm run format:check
       - run: npm test
       - run: npm run build
+      - run: npm run docs:build
 
   e2e:
     runs-on: ubuntu-latest

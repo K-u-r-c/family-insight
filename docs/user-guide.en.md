@@ -103,7 +103,7 @@ Tips for spreadsheets:
 - Parents go to `father_id` / `mother_id`, partners to `partner_ids` separated by `|` (`p2|p5`).
 - Column names can be English or Polish (`imiona`, `nazwisko`, `data_urodzenia`, …).
 - Use _Help → Download CSV template…_ for an empty sheet, and see the full
-  [CSV format](CSV_FORMAT.md).
+  [CSV format](developer/reference/csv-format.md).
 
 CSV keeps names, dates, places, living status, biological parents, partners and notes. Photos,
 partnership dates and adoptive links are kept only in `.finsight` files.
