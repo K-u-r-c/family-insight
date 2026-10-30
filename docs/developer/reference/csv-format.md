@@ -1,3 +1,7 @@
+---
+description: The CSV format Family Insight imports and exports – encoding, columns, values, dates and validation.
+---
+
 # CSV format
 
 Family Insight imports and exports family trees as CSV so they can be edited in Excel,
@@ -16,28 +20,32 @@ through ID columns.
 | Quoting               | RFC 4180: fields containing the delimiter, quotes or line breaks are quoted, `"` is escaped as `""` | RFC 4180                                                                        |
 | Line endings          | CRLF                                                                                                | CRLF or LF                                                                      |
 | Multi-value separator | `\|` (pipe)                                                                                         | `\|`                                                                            |
+| File extensions       | `.csv`                                                                                              | `.csv`, `.tsv`, `.txt`                                                          |
 
 ## Columns
 
-Column order does not matter on import. Unknown columns are ignored (with a warning).
-Headers are case-insensitive and may be given in English **or Polish**.
+Column order does not matter on import. Unknown columns are ignored (with a warning) unless the user
+maps them in the preview. Headers are compared ignoring case and diacritics, treating spaces, hyphens and underscores alike, and
+may be given in English **or Polish**; common spellings are recognised too (`first name`, `last name`,
+`maiden name`, `gender`, `born`, `died`, `alive`, `father`, `mother`, `partners`, `imie` … – see
+`HEADER_ALIASES` in `src/core/io/csv/columns.ts`).
 
-| Column (EN)     | Alias (PL)                            | Required | Description                                                                                             | Example      |
-| --------------- | ------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------- | ------------ |
-| `id`            | `id`                                  | yes      | Unique identifier within the file. Any text without `\|`.                                               | `p1`         |
-| `given_names`   | `imiona`                              | yes*     | Given name(s).                                                                                          | `Jan Józef`  |
-| `surname`       | `nazwisko`                            | yes*     | Current surname.                                                                                        | `Kowalski`   |
-| `birth_surname` | `nazwisko_rodowe`                     | no       | Surname at birth (maiden name).                                                                         | `Nowak`      |
-| `sex`           | `plec` / `płeć`                       | no       | `female`, `male`, `other`, `unknown` (also `F`/`M`, `K`/`M`, `kobieta`/`mężczyzna`). Empty = `unknown`. | `male`       |
-| `birth_date`    | `data_urodzenia`                      | no       | Date, see below.                                                                                        | `1890-05-12` |
-| `birth_place`   | `miejsce_urodzenia`                   | no       | Free text.                                                                                              | `Kraków`     |
-| `death_date`    | `data_smierci` / `data_śmierci`       | no       | Date, see below.                                                                                        | `~1955`      |
-| `death_place`   | `miejsce_smierci` / `miejsce_śmierci` | no       | Free text.                                                                                              | `Łódź`       |
-| `living`        | `zyje` / `żyje`                       | no       | `true`/`false`, `yes`/`no`, `tak`/`nie`, `1`/`0`. Empty = unknown.                                      | `false`      |
-| `father_id`     | `ojciec_id`                           | no       | `id` of a parent (see note).                                                                            | `p7`         |
-| `mother_id`     | `matka_id`                            | no       | `id` of a parent (see note).                                                                            | `p8`         |
-| `partner_ids`   | `partnerzy_id`                        | no       | `\|`-separated `id`s of partners/spouses. Listing the partnership on one side is enough.                | `p2\|p5`     |
-| `notes`         | `notatki`                             | no       | Free text, may contain line breaks (quoted).                                                            |              |
+| Column (EN)     | Alias (PL)                            | Required | Description                                                                                                                                                          | Example      |
+| --------------- | ------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `id`            | `id`                                  | yes      | Unique identifier within the file. Any text without `\|`.                                                                                                            | `p1`         |
+| `given_names`   | `imiona`                              | yes*     | Given name(s).                                                                                                                                                       | `Jan Józef`  |
+| `surname`       | `nazwisko`                            | yes*     | Current surname.                                                                                                                                                     | `Kowalski`   |
+| `birth_surname` | `nazwisko_rodowe`                     | no       | Surname at birth (maiden name).                                                                                                                                      | `Nowak`      |
+| `sex`           | `plec` / `płeć`                       | no       | `female`, `male`, `other`, `unknown`; also `F`, `K`, `woman`, `kobieta` / `M`, `man`, `mężczyzna` / `inna`, `inny` / `nieznana`, `nieznany`, `?`. Empty = `unknown`. | `male`       |
+| `birth_date`    | `data_urodzenia`                      | no       | Date, see below.                                                                                                                                                     | `1890-05-12` |
+| `birth_place`   | `miejsce_urodzenia`                   | no       | Free text.                                                                                                                                                           | `Kraków`     |
+| `death_date`    | `data_smierci` / `data_śmierci`       | no       | Date, see below.                                                                                                                                                     | `~1955`      |
+| `death_place`   | `miejsce_smierci` / `miejsce_śmierci` | no       | Free text.                                                                                                                                                           | `Łódź`       |
+| `living`        | `zyje` / `żyje`                       | no       | `true`/`false`, `yes`/`no`, `y`/`n`, `tak`/`nie`, `t`/`n`, `1`/`0`. Empty = unknown.                                                                                 | `false`      |
+| `father_id`     | `ojciec_id`                           | no       | `id` of a parent (see note).                                                                                                                                         | `p7`         |
+| `mother_id`     | `matka_id`                            | no       | `id` of a parent (see note).                                                                                                                                         | `p8`         |
+| `partner_ids`   | `partnerzy_id`                        | no       | `\|`-separated `id`s of partners/spouses. Listing the partnership on one side is enough.                                                                             | `p2\|p5`     |
+| `notes`         | `notatki`                             | no       | Free text, may contain line breaks (quoted).                                                                                                                         |              |
 
 \* At least one of `given_names` / `surname` must be non-empty.
 
@@ -67,7 +75,7 @@ Dates may be partial and carry a qualifier prefix.
 | `<1890` or `bef 1890` / `przed 1890` | before          |
 | `>1890` or `aft 1890` / `po 1890`    | after           |
 
-Import additionally accepts `12.05.1890` and `05.1890` (Polish style, day first).
+Import additionally accepts `12.05.1890`, `12/05/1890` and `05.1890` (day first).
 Export always writes the ISO form with the symbolic prefix (`~`, `<`, `>`).
 
 ## Validation on import
@@ -75,11 +83,17 @@ Export always writes the ISO form with the symbolic prefix (`~`, `<`, `>`).
 Import never silently drops data. Errors block the import; warnings are shown in the
 preview and can be accepted.
 
-- **Errors:** missing `id`; duplicate `id`; row without any name; reference
-  (`father_id`, `mother_id`, `partner_ids`) to an `id` that does not exist; person listed as
-  their own parent/partner; a cycle in ancestry (someone is their own ancestor).
-- **Warnings:** unknown column; unparseable date (kept in `notes`); unrecognised `sex` value
-  (imported as `unknown`); parent younger than child; death before birth.
+- **Errors** (block the import, each with its row): empty file; no `id` column; no name column; a
+  row without `id`; a duplicate `id`; a row without any name; a reference (`father_id`, `mother_id`,
+  `partner_ids`) to an `id` that doesn't exist; a person referring to themselves; the same person as
+  father and mother; a cycle in ancestry (someone would be their own ancestor).
+- **Warnings** (shown, can be accepted): unknown column; a date that can't be parsed (the text is
+  kept in `notes`); an unrecognised `sex` value (imported as `unknown`); an unrecognised `living`
+  value (left unknown); the date warnings of the editor – death before birth, older than 120 years,
+  parent not older than child.
+
+The codes are in `src/core/issues.ts`; the user-facing messages and fixes are listed in the
+[user guide](/guide/csv-import#problems).
 
 ## Example
 

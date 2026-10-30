@@ -8,6 +8,47 @@ Significant technical decisions, newest last. Each entry says what was decided, 
 alternatives were rejected. Add an entry when you make a decision that future contributors would
 otherwise have to rediscover.
 
+## Electron with electron-vite (2026-10, project start)
+
+**Electron** gives one code base with native installers, menus and file associations on Windows,
+macOS and Linux, and a mature web UI stack. **electron-vite** builds main, preload and renderer with
+Vite (fast HMR, one config). Alternatives: Tauri (smaller binaries, but a second language – Rust – and
+WebView differences between platforms make print/PDF and font rendering less predictable).
+
+## A graph, not a tree (2026-10, issue #1)
+
+People and relationships are nodes and edges (`src/core/model/types.ts`), not a nested tree. Real
+families have remarriages, half-siblings, adoption and unconnected people, which a parent→children
+tree can't express without duplication. Siblings are derived from shared parents instead of being
+stored, so they can't contradict the parent links.
+
+## Pure core, immutable data, snapshot undo (2026-10, issues #1, #7)
+
+All domain logic is pure TypeScript in `src/core`, operations return new trees and share unchanged
+objects, and undo keeps snapshots of whole trees (`src/core/history.ts`) with coalescing for typing.
+Snapshots are simpler and safer than inverse operations (no undo bugs per command) and cheap thanks to
+structural sharing. Zustand holds the current snapshot in the renderer.
+
+## Versioned JSON as the native format (2026-10, issue #8)
+
+`.finsight` is readable JSON with `format` and `schemaVersion`, validated by a hand-written shape
+check (no runtime schema library) and upgraded by explicit migrations. Photos are embedded as data
+URLs so a tree is one file. SQLite was rejected: harder to inspect, back up and e-mail, and not needed
+for trees of a few thousand people.
+
+## CSV for spreadsheets (2026-10, issues #18, #19)
+
+CSV export writes UTF-8 **with BOM** and CRLF, with a choice of `,` or `;` and English or Polish
+headers, because that is what Excel needs to show Polish letters and split columns correctly in Polish
+regional settings. Import is lenient (delimiter and encoding detection incl. Windows-1250, header
+aliases, day-first dates) but never silent: problems block the import with row numbers, warnings
+explain what happens. GEDCOM is planned separately (issue #34).
+
+## No network access (2026-10)
+
+The app makes no network requests – no telemetry, no update checks, no remote fonts. Family data is
+personal, and offline-only is easy to explain and verify. Links open in the user's browser.
+
 ## Tree rendering and layout (2026-10, issue #12) {#layout}
 
 Options evaluated:
@@ -90,3 +131,20 @@ by a markdown-it fence rule for ` ```mermaid ` blocks.
   diagrams.
 - `vitepress-plugin-mermaid` was not used because it doesn't support Mermaid 12 yet; static SVG
   files were rejected because they can't follow the theme and are harder to edit.
+
+## Adding relatives: step-parents and Polish surnames (2026-10, found while documenting)
+
+- **+ Parent** for someone who already has two biological parents adds a **step-parent** instead of
+  failing: biological parents are capped at two by the model, and a step-parent is the most likely
+  meaning; the type can be changed in the parent's menu.
+- A new father gets the family surname in the **masculine form** for Polish feminine endings
+  (`-ska`, `-cka`, `-dzka` → `-ski`, `-cki`, `-dzki`, `masculineSurname` in `src/core/text.ts`).
+  Other languages' surnames are unaffected.
+- Relatives created from the details panel always open in the editor, even when the surname is
+  prefilled – the same as from the card menu.
+
+## Developer documentation in English only (2026-10, issue #38)
+
+The user guide is bilingual, but developer pages are English only, like the code, comments and commit
+messages; translating them would double the maintenance for few readers. Polish placeholder pages keep
+the language switcher working and link to the English pages.
