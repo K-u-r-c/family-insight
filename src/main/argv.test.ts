@@ -12,9 +12,15 @@ describe('pathFromArgv', () => {
   })
 
   it('accepts file:// URLs from desktop launchers', () => {
-    expect(pathFromArgv(['app', 'file:///home/a/Moja%20rodzina.finsight'])).toBe(
-      '/home/a/Moja rodzina.finsight'
-    )
+    if (process.platform === 'win32') {
+      expect(pathFromArgv(['app', 'file:///C:/Users/a/Moja%20rodzina.finsight'])).toBe(
+        'C:\\Users\\a\\Moja rodzina.finsight'
+      )
+    } else {
+      expect(pathFromArgv(['app', 'file:///home/a/Moja%20rodzina.finsight'])).toBe(
+        '/home/a/Moja rodzina.finsight'
+      )
+    }
   })
 
   it('ignores flags, other files and the executable itself', () => {
