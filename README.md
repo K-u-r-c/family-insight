@@ -8,7 +8,12 @@
 
 English · [Polski](README.pl.md)
 
+[![CI](https://github.com/K-u-r-c/family-insight/actions/workflows/ci.yml/badge.svg)](https://github.com/K-u-r-c/family-insight/actions/workflows/ci.yml)
+[![Docs](https://github.com/K-u-r-c/family-insight/actions/workflows/docs.yml/badge.svg)](https://k-u-r-c.github.io/family-insight/)
+[![Latest release](https://img.shields.io/github/v/release/K-u-r-c/family-insight)](https://github.com/K-u-r-c/family-insight/releases/latest)
+
 [**Download**](https://github.com/K-u-r-c/family-insight/releases/latest) ·
+[**Documentation**](https://k-u-r-c.github.io/family-insight/) ·
 [User guide](docs/user-guide.en.md) ·
 [CSV format](docs/developer/reference/csv-format.md)
 
