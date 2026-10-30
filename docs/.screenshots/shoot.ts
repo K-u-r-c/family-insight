@@ -257,7 +257,9 @@ function record(name: string, variant: Variant, width: number, height: number): 
   }
   manifest[name] = { ...manifest[name], [`${variant.lang}-${variant.theme}`]: [width, height] }
   const sorted = Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b)))
-  writeFileSync(MANIFEST, `${JSON.stringify(sorted, null, 2)}\n`)
+  // Same layout as Prettier ([width, height] on one line), so regenerating keeps format:check green.
+  const json = JSON.stringify(sorted, null, 2).replace(/\[\s+(\d+),\s+(\d+)\s+\]/g, '[$1, $2]')
+  writeFileSync(MANIFEST, `${json}\n`)
 }
 
 /**
