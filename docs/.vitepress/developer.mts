@@ -43,6 +43,7 @@ export const developerSidebar: DefaultTheme.SidebarItem[] = [
     text: 'Reference',
     items: [
       { text: 'CSV format', link: '/developer/reference/csv-format' },
+      { text: 'GEDCOM', link: '/developer/reference/gedcom' },
       { text: '.finsight file format', link: '/developer/reference/file-format' },
       { text: 'Preload API', link: '/developer/reference/preload-api' },
       { text: 'Decision log', link: '/developer/reference/decisions' }

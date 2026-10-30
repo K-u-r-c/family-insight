@@ -1,0 +1,98 @@
+/**
+ * ANSEL (ANSI Z39.47), the default character set of GEDCOM 5.5 files. Bytes 0x00–0x7F are ASCII;
+ * 0xA1–0xCF are spacing letters and symbols; 0xE0–0xFE are combining diacritics that come
+ * **before** the base letter (unlike Unicode, where they follow it).
+ */
+
+const SPACING: Record<number, number> = {
+  0xa1: 0x0141, // Ł
+  0xa2: 0x00d8, // Ø
+  0xa3: 0x0110, // Đ
+  0xa4: 0x00de, // Þ
+  0xa5: 0x00c6, // Æ
+  0xa6: 0x0152, // Œ
+  0xa7: 0x02b9, // ʹ
+  0xa8: 0x00b7, // ·
+  0xa9: 0x266d, // ♭
+  0xaa: 0x00ae, // ®
+  0xab: 0x00b1, // ±
+  0xac: 0x01a0, // Ơ
+  0xad: 0x01af, // Ư
+  0xae: 0x02bc, // ʼ
+  0xb0: 0x02bb, // ʻ
+  0xb1: 0x0142, // ł
+  0xb2: 0x00f8, // ø
+  0xb3: 0x0111, // đ
+  0xb4: 0x00fe, // þ
+  0xb5: 0x00e6, // æ
+  0xb6: 0x0153, // œ
+  0xb7: 0x02ba, // ʺ
+  0xb8: 0x0131, // ı
+  0xb9: 0x00a3, // £
+  0xba: 0x00f0, // ð
+  0xbc: 0x01a1, // ơ
+  0xbd: 0x01b0, // ư
+  0xbe: 0x25a1, // □ (empty box)
+  0xbf: 0x25a0, // ■ (black box)
+  0xc0: 0x00b0, // °
+  0xc1: 0x2113, // ℓ
+  0xc2: 0x2117, // ℗
+  0xc3: 0x00a9, // ©
+  0xc4: 0x266f, // ♯
+  0xc5: 0x00bf, // ¿
+  0xc6: 0x00a1, // ¡
+  0xc7: 0x00df, // ß (MARC-8)
+  0xc8: 0x20ac, // €
+  0xcd: 0x0065, // e (midline, GEDCOM extension)
+  0xce: 0x006f, // o (midline, GEDCOM extension)
+  0xcf: 0x00df // ß (GEDCOM extension)
+}
+
+const COMBINING: Record<number, number> = {
+  0xe0: 0x0309, // hook above
+  0xe1: 0x0300, // grave
+  0xe2: 0x0301, // acute
+  0xe3: 0x0302, // circumflex
+  0xe4: 0x0303, // tilde
+  0xe5: 0x0304, // macron
+  0xe6: 0x0306, // breve
+  0xe7: 0x0307, // dot above (ż)
+  0xe8: 0x0308, // diaeresis (ä, ö, ü)
+  0xe9: 0x030c, // caron (č, š)
+  0xea: 0x030a, // ring above
+  0xeb: 0xfe20, // ligature, left half
+  0xec: 0xfe21, // ligature, right half
+  0xed: 0x0315, // comma above right
+  0xee: 0x030b, // double acute
+  0xef: 0x0310, // candrabindu
+  0xf0: 0x0327, // cedilla
+  0xf1: 0x0328, // ogonek (ą, ę)
+  0xf2: 0x0323, // dot below
+  0xf3: 0x0324, // double dot below
+  0xf4: 0x0325, // ring below
+  0xf5: 0x0333, // double underline
+  0xf6: 0x0332, // underline
+  0xf7: 0x0326, // comma below
+  0xf8: 0x031c, // right cedilla
+  0xf9: 0x032e, // half circle below
+  0xfa: 0xfe22, // double tilde, left half
+  0xfb: 0xfe23, // double tilde, right half
+  0xfe: 0x0313 // comma above
+}
+
+/** Decodes ANSEL bytes to a normalised (NFC) string; unknown bytes become U+FFFD. */
+export function decodeAnsel(bytes: Uint8Array): string {
+  const out: string[] = []
+  let pending: number[] = []
+  const emit = (code: number): void => {
+    out.push(String.fromCodePoint(code, ...pending))
+    pending = []
+  }
+  for (const byte of bytes) {
+    if (byte < 0x80) emit(byte)
+    else if (COMBINING[byte] !== undefined) pending.push(COMBINING[byte]!)
+    else emit(SPACING[byte] ?? 0xfffd)
+  }
+  if (pending.length) out.push(String.fromCodePoint(...pending))
+  return out.join('').normalize('NFC')
+}
