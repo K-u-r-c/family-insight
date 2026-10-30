@@ -17,6 +17,8 @@ interface LaunchOptions {
   userData?: string
   /** Show the window (frame timing needs a visible window). */
   visible?: boolean
+  /** Extra environment variables for the app. */
+  env?: Record<string, string>
 }
 
 /** Launches the built app (`out/`) with an isolated profile, in a hidden window by default. */
@@ -33,7 +35,8 @@ export async function launch(options: LaunchOptions = {}): Promise<Launched> {
     env: {
       ...process.env,
       FAMILY_INSIGHT_USER_DATA: userData,
-      ...(options.visible ? {} : { FAMILY_INSIGHT_HIDDEN: '1' })
+      ...(options.visible ? {} : { FAMILY_INSIGHT_HIDDEN: '1' }),
+      ...options.env
     }
   })
   const page = await app.firstWindow()

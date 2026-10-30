@@ -47,9 +47,39 @@ gh run watch
    ```
 
    Expected: `…-setup.exe`, `…-portable.exe`, `…-mac-x64.dmg`, `…-mac-arm64.dmg`,
-   `…-linux-x86_64.AppImage`, `…-linux-amd64.deb` (plus `latest*.yml` metadata).
+   `…-linux-x86_64.AppImage`, `…-linux-amd64.deb`, the update metadata `latest.yml`,
+   `latest-mac.yml`, `latest-linux.yml`, and the `*.blockmap` files.
 
 7. Download at least the build for your own system and start it.
+
+`gh workflow run release.yml` runs the same builds without publishing (artifacts only) – use it to
+check the installers of every OS before tagging.
+
+## Updates {#updates}
+
+Installed apps find new versions through the release itself:
+
+- **Windows installer and AppImage** use electron-updater with the GitHub provider: they read
+  `latest.yml` / `latest-linux.yml` from the latest release, download the installer (differentially
+  where the blockmap allows) and install it on restart. The `publish` section of
+  `electron-builder.yml` makes electron-builder write these files; the release workflow uploads
+  them with the blockmaps.
+- **Portable exe, deb and macOS** can't replace themselves (macOS would need a Developer ID
+  signature, #36); they ask the GitHub releases API for the latest tag and open the release page.
+- A release must therefore keep the file names produced by `artifactName` and include every
+  `latest*.yml` – otherwise installed apps don't see it.
+
+**Testing** without the internet (`e2e/updates.spec.ts`): the built app runs with
+`FAMILY_INSIGHT_UPDATE_TEST=1` and
+
+- `FAMILY_INSIGHT_UPDATE_TARGET=appimage`, `FAMILY_INSIGHT_UPDATE_CONFIG` pointing to a
+  `provider: generic` config for a local server that serves `latest-linux.yml` for version 9.9.9 and
+  a fake AppImage (a script). The test checks the notice, the release notes, the download, and that
+  "Restart now" replaces the file at `APPIMAGE` and starts it (the script writes a marker);
+- `FAMILY_INSIGHT_UPDATE_TARGET=deb` and `FAMILY_INSIGHT_UPDATE_API` pointing to a fake releases API:
+  the notice offers the download page and opens it.
+
+Windows (NSIS) and macOS updates can only be checked on those systems with a real release.
 
 ## Code signing
 

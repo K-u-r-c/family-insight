@@ -32,7 +32,9 @@ the name of the settings folder).
 ## File associations
 
 `fileAssociations` registers `.finsight` (MIME type `application/x-family-insight`, role Editor)
-in the Windows installer, the macOS app bundle and the deb package. The AppImage and the portable
+and `.ged` (GEDCOM, role Viewer – it opens the import) in the Windows installer, the macOS app
+bundle and the deb package. Update metadata (`latest*.yml`) is described in
+[CI and releases](./ci-releases#updates). The AppImage and the portable
 exe don't register anything.
 
 When the system opens a file with the app:
@@ -43,13 +45,13 @@ sequenceDiagram
   participant Main as main process
   participant R as renderer
   OS->>Main: start with argv [..., file] (Windows/Linux)<br/>or "open-file" event (macOS)
-  Main->>Main: pathFromArgv – .finsight paths and file:// URLs
+  Main->>Main: pathFromArgv – .finsight/.ged/.gdz paths and file:// URLs
   alt app already running
     OS->>Main: second-instance(argv)
     Main->>Main: focus the existing window
   end
   Main->>R: file:open-request (or kept until the renderer asks: takePendingFile)
-  R->>R: guardUnsaved → open the tree
+  R->>R: guardUnsaved → open the tree (GEDCOM: import preview)
 ```
 
 `app.requestSingleInstanceLock()` makes sure double-clicking a second file reuses the open window.

@@ -134,7 +134,13 @@ export function registerUpdateHandlers(): void {
   autoUpdater.autoDownload = false
   autoUpdater.autoInstallOnAppQuit = true
   autoUpdater.logger = null
-  if (process.env.FAMILY_INSIGHT_UPDATE_TEST === '1') autoUpdater.forceDevUpdateConfig = true
+  if (process.env.FAMILY_INSIGHT_UPDATE_TEST === '1') {
+    // Tests point the updater at a local server (`provider: generic`).
+    autoUpdater.forceDevUpdateConfig = true
+    if (process.env.FAMILY_INSIGHT_UPDATE_CONFIG) {
+      autoUpdater.updateConfigPath = process.env.FAMILY_INSIGHT_UPDATE_CONFIG
+    }
+  }
   autoUpdater.on('download-progress', (p) =>
     publish({ ...status, state: 'downloading', progress: Math.round(p.percent) })
   )
