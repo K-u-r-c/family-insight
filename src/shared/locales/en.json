@@ -95,7 +95,8 @@
     "importGedcom": "Import GEDCOM…",
     "exportGedcom": "Export GEDCOM…",
     "importGedcomShort": "GEDCOM…",
-    "exportGedcomShort": "GEDCOM…"
+    "exportGedcomShort": "GEDCOM…",
+    "checkUpdates": "Check for Updates…"
   },
   "sex": {
     "female": "Female",
@@ -927,5 +928,29 @@
     "notes": "Include notes",
     "living": "Living",
     "exported": "Exported to {{path}}"
+  },
+  "updates": {
+    "title": "Updates",
+    "automatic": "Check for updates automatically",
+    "checkNow": "Check for updates now…",
+    "checkNowLast": "Check now… (last: {{when}})",
+    "available": "Family Insight {{version}} is available",
+    "downloading": "Downloading Family Insight {{version}}…",
+    "ready": "Family Insight {{version}} is ready to install",
+    "downloadFailed": "The update couldn't be downloaded.",
+    "download": "Download",
+    "openDownload": "Download page",
+    "releaseNotes": "Release notes",
+    "later": "Later",
+    "skip": "Skip this version",
+    "restart": "Restart now",
+    "onQuit": "When I quit",
+    "retry": "Try again",
+    "progress": "Download progress",
+    "notesTitle": "What's new in {{version}}",
+    "upToDateTitle": "You're up to date",
+    "upToDate": "Family Insight {{version}} is the newest version.",
+    "errorTitle": "Couldn't check for updates",
+    "checkFailed": "The update server couldn't be reached. Check your internet connection and try again."
   }
 }

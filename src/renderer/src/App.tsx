@@ -33,6 +33,8 @@ import { MediaDetailsDialog } from './features/media/MediaDetailsDialog'
 import { MediaViewer } from './features/media/MediaViewer'
 import { CitationsDialog } from './features/sources/CitationsDialog'
 import { PlacesDialog } from './features/places/PlacesDialog'
+import { UpdateNotice } from './features/updates/UpdateNotice'
+import { checkForUpdatesManually, initUpdates } from './features/updates/updates'
 import { SourcesDialog } from './features/sources/SourcesDialog'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
 import { useAutosave } from './services/autosave'
@@ -58,6 +60,7 @@ function useHash(): string {
 
 export function App(): React.JSX.Element {
   useApplyTheme()
+  useEffect(() => initUpdates(), [])
   useGlobalShortcuts()
   useFileIntegration()
   useAutosave()
@@ -79,6 +82,7 @@ export function App(): React.JSX.Element {
         if (useDocument.getState().tree) void printTree()
       },
       'help:csv-format': openCsvFormatDocs,
+      'help:check-updates': () => void checkForUpdatesManually(),
       'help:shortcuts': () => useWorkspaceUi.getState().openDialog('shortcuts'),
       'help:about': () => useWorkspaceUi.getState().openDialog('about'),
       'file:close': () => void closeTree(),
@@ -177,6 +181,7 @@ export function App(): React.JSX.Element {
       <RecoveryDialog />
       <ConfirmHost />
       <ChoiceHost />
+      <UpdateNotice />
       <Toaster />
     </>
   )

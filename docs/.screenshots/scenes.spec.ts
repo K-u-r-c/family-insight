@@ -1181,6 +1181,44 @@ scene('gedcom-export', async (s) => {
 })
 
 // ---------------------------------------------------------------------------------------------
+// Updates
+
+/** Pretends the updater found version 1.2.0 (the updater itself is off in this test build). */
+async function fakeUpdate(s: Session): Promise<void> {
+  const pl = s.variant.lang === 'pl'
+  const notes = pl
+    ? '## Nowości\n\n- **Relacje pokrewieństwa** – jak są ze sobą spokrewnieni?\n- Program po niemiecku, francusku, hiszpańsku, włosku, portugalsku i rosyjsku\n\n## Poprawki\n\n- Szybsze otwieranie dużych drzew'
+    : '## New\n\n- **How are they related?** – the relationship between any two people\n- The app in German, French, Spanish, Italian, Portuguese and Russian\n\n## Fixed\n\n- Large trees open faster'
+  await s.app.evaluate(({ BrowserWindow }, notes) => {
+    BrowserWindow.getAllWindows()[0]!.webContents.send('updates:status', {
+      state: 'available',
+      support: 'auto',
+      version: '1.2.0',
+      notes
+    })
+  }, notes)
+}
+
+scene('update-available', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await fakeUpdate(s)
+  const notice = page.getByRole('status', { name: t('updates.title') })
+  await notice.waitFor()
+  await parkMouse(s)
+  return { clip: notice, pad: 24 }
+})
+
+scene('update-notes', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await fakeUpdate(s)
+  await page.getByRole('button', { name: t('updates.releaseNotes') }).click()
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+// ---------------------------------------------------------------------------------------------
 // Exploring the tree
 
 scene('view-controls', async (s) => {

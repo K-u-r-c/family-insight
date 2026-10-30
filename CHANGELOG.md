@@ -34,6 +34,10 @@ All notable changes to this project are documented here. The format follows
   be imported; export as 5.5.1 or 7.0 with photos (folder or `.gdz`), optionally hiding living
   people.
 
+- **Automatic updates**: a notice when a new version is out, with release notes, download in the
+  background and installation on restart (Windows installer and AppImage; other builds open the
+  download page); **Help → Check for Updates…** and a switch in the settings.
+
 ### Changed
 
 - **`.finsight` files are now zip containers** (schema 3). Trees from 1.0 open and are saved in the

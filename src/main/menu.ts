@@ -112,6 +112,7 @@ export function buildMenu(): void {
             label: app.name,
             submenu: [
               { label: t('menu.about'), click: () => send('help:about') },
+              { label: t('menu.checkUpdates'), click: () => send('help:check-updates') },
               { type: 'separator' },
               { label: t('menu.hide'), role: 'hide' },
               { label: t('menu.hideOthers'), role: 'hideOthers' },
@@ -262,6 +263,7 @@ export function buildMenu(): void {
           ? []
           : [
               { type: 'separator' as const },
+              { label: t('menu.checkUpdates'), click: () => send('help:check-updates') },
               { label: t('menu.about'), click: () => send('help:about') }
             ])
       ]

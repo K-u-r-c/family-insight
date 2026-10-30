@@ -95,7 +95,8 @@
     "importGedcom": "Importuj GEDCOM…",
     "exportGedcom": "Eksportuj GEDCOM…",
     "importGedcomShort": "GEDCOM…",
-    "exportGedcomShort": "GEDCOM…"
+    "exportGedcomShort": "GEDCOM…",
+    "checkUpdates": "Sprawdź aktualizacje…"
   },
   "sex": {
     "female": "Kobieta",
@@ -1009,5 +1010,29 @@
     "notes": "Dołącz notatki",
     "living": "Żyjący",
     "exported": "Wyeksportowano do {{path}}"
+  },
+  "updates": {
+    "title": "Aktualizacje",
+    "automatic": "Sprawdzaj aktualizacje automatycznie",
+    "checkNow": "Sprawdź aktualizacje teraz…",
+    "checkNowLast": "Sprawdź teraz… (ostatnio: {{when}})",
+    "available": "Dostępny jest Family Insight {{version}}",
+    "downloading": "Pobieram Family Insight {{version}}…",
+    "ready": "Family Insight {{version}} jest gotowy do instalacji",
+    "downloadFailed": "Nie udało się pobrać aktualizacji.",
+    "download": "Pobierz",
+    "openDownload": "Strona pobierania",
+    "releaseNotes": "Co nowego",
+    "later": "Później",
+    "skip": "Pomiń tę wersję",
+    "restart": "Uruchom ponownie",
+    "onQuit": "Przy zamknięciu",
+    "retry": "Spróbuj ponownie",
+    "progress": "Postęp pobierania",
+    "notesTitle": "Nowości w wersji {{version}}",
+    "upToDateTitle": "Masz najnowszą wersję",
+    "upToDate": "Family Insight {{version}} to najnowsza wersja.",
+    "errorTitle": "Nie udało się sprawdzić aktualizacji",
+    "checkFailed": "Nie można połączyć się z serwerem aktualizacji. Sprawdź połączenie z internetem i spróbuj ponownie."
   }
 }

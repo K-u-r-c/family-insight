@@ -10,12 +10,18 @@ import {
   type MenuAnchor,
   type MenuEntry
 } from '@renderer/components/ui'
-import { changeLanguage } from '@renderer/i18n'
+import i18n, { changeLanguage } from '@renderer/i18n'
+import { checkForUpdatesManually } from '@renderer/features/updates/updates'
 import { useSettings } from '@renderer/store/settings'
 
 const THEMES: ThemePreference[] = ['system', 'light', 'dark']
 
 /** Gear menu with appearance and language choices. */
+/** "today 10:15" style time of the last update check. */
+function formatWhen(iso: string): string {
+  return new Date(iso).toLocaleString(i18n.language, { dateStyle: 'medium', timeStyle: 'short' })
+}
+
 export function SettingsMenu(): React.JSX.Element {
   const { t, i18n } = useTranslation()
   const settings = useSettings((s) => s.settings)
@@ -58,6 +64,22 @@ export function SettingsMenu(): React.JSX.Element {
       label: t('settings.onlineMaps'),
       checked: settings.onlineMaps,
       onSelect: () => void update({ onlineMaps: !settings.onlineMaps })
+    },
+    { type: 'separator' },
+    { type: 'heading', label: t('updates.title') },
+    {
+      label: t('updates.automatic'),
+      checked: settings.updates.checkAutomatically,
+      onSelect: () =>
+        void update({
+          updates: { ...settings.updates, checkAutomatically: !settings.updates.checkAutomatically }
+        })
+    },
+    {
+      label: settings.updates.lastCheck
+        ? t('updates.checkNowLast', { when: formatWhen(settings.updates.lastCheck) })
+        : t('updates.checkNow'),
+      onSelect: () => void checkForUpdatesManually()
     }
   ]
 

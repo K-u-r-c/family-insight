@@ -246,10 +246,10 @@
     "pl-dark": [1280, 800]
   },
   "settings-menu": {
-    "en-light": [219, 500],
-    "en-dark": [219, 500],
-    "pl-light": [219, 500],
-    "pl-dark": [219, 500]
+    "en-light": [219, 629],
+    "en-dark": [219, 629],
+    "pl-light": [219, 643],
+    "pl-dark": [219, 643]
   },
   "shortcuts": {
     "en-light": [893, 529],
@@ -304,6 +304,18 @@
     "en-dark": [174, 37],
     "pl-light": [185, 37],
     "pl-dark": [185, 37]
+  },
+  "update-available": {
+    "en-light": [440, 178],
+    "en-dark": [440, 178],
+    "pl-light": [440, 178],
+    "pl-dark": [440, 178]
+  },
+  "update-notes": {
+    "en-light": [893, 286],
+    "en-dark": [893, 286],
+    "pl-light": [893, 286],
+    "pl-dark": [893, 286]
   },
   "view-ancestors": {
     "en-light": [1280, 800],

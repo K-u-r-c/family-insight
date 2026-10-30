@@ -94,6 +94,7 @@ function guideSidebar(locale: Locale): DefaultTheme.SidebarItem[] {
       text: pl ? 'Pomoc' : 'Help',
       items: [
         { text: pl ? 'Ustawienia' : 'Settings', link: `${p}settings` },
+        { text: pl ? 'Aktualizacje' : 'Updates', link: `${p}updates` },
         { text: pl ? 'Skróty klawiszowe' : 'Keyboard shortcuts', link: `${p}shortcuts` },
         { text: pl ? 'Najczęstsze pytania' : 'FAQ', link: `${p}faq` },
         { text: pl ? 'Rozwiązywanie problemów' : 'Troubleshooting', link: `${p}troubleshooting` },

@@ -163,6 +163,7 @@ export type MenuAction =
   | 'edit:undo'
   | 'edit:redo'
   | 'help:about'
+  | 'help:check-updates'
   | 'help:csv-format'
   | 'help:csv-template'
   | 'help:shortcuts'
