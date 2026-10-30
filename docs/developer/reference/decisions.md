@@ -283,3 +283,26 @@ Details:
   for every request, so a compromised renderer can't bypass it. Everything works offline without it.
 - **Tests never use the network:** the geocoder takes its URL from `FAMILY_INSIGHT_GEOCODER_URL`;
   unit and e2e tests run a local HTTP server.
+
+## Map view: Leaflet with tiles through the main process (2026-10, issue #59)
+
+- **Leaflet 1.9 + leaflet.markercluster** rather than MapLibre GL: raster OpenStreetMap tiles are
+  all we need, Leaflet is small and works without WebGL (old laptops, VMs, CI). The map is a lazily
+  loaded chunk – `MapView` with Leaflet and the cluster plugin is **324 kB (73 kB gzipped) JS +
+  25 kB CSS**, loaded only when the map is opened. MapLibre would add ~800 kB and a WebGL
+  requirement.
+- **Tiles are fetched by main and served as `fi-tile://map/{z}/{x}/{y}.png`** (a privileged custom
+  protocol). The CSP allows `img-src fi-tile:` instead of the internet; main enforces the opt-in
+  setting `onlineMaps` (off by default, consent on first use), sends an identifying User-Agent and
+  caches tiles in memory and on disk for a week, as the OpenStreetMap tile usage policy requires.
+  The tile server is configurable (`mapTileUrl`, http(s) with `{z}/{x}/{y}`).
+- **Markers are one per place** (core `groupByPlace`), clustered at low zoom; colours are a
+  diverging generation scale around the root person (CSS variables `--map-gen-*`, light and dark),
+  so they also work for colour-blind readers together with the legend and labels. A selected
+  person's places are joined chronologically by a dashed polyline (`migrationPath`).
+- The panel with filters, the legend, the picked place's people and the list of places without a
+  location is React; Leaflet only draws markers (`LeafletMap`), so most behaviour is testable with
+  a stubbed map library. Leaflet gets `invalidateSize()` from a `ResizeObserver` when panels open.
+- **Export** captures the map area of the window (`capturePng`), so the PNG matches the screen,
+  including the attribution.
+- Tests and screenshots use a local tile server (`e2e/tileServer.ts`).

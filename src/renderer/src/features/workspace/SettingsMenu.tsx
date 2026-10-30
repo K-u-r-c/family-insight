@@ -53,6 +53,11 @@ export function SettingsMenu(): React.JSX.Element {
       label: t('settings.onlinePlaceLookup'),
       checked: settings.onlinePlaceLookup,
       onSelect: () => void update({ onlinePlaceLookup: !settings.onlinePlaceLookup })
+    },
+    {
+      label: t('settings.onlineMaps'),
+      checked: settings.onlineMaps,
+      onSelect: () => void update({ onlineMaps: !settings.onlineMaps })
     }
   ]
 

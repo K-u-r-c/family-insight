@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import type { MenuAction } from '@shared/ipc'
 import { selectCanRedo, selectCanUndo, useDocument } from '@renderer/store/document'
 import { useTreeView } from '@renderer/store/treeView'
+import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 
 export function isTextInput(el: Element | null): boolean {
   if (!el) return false
@@ -26,6 +27,7 @@ export function useMenuIntegration(handlers: Handlers): void {
   const canRedo = useDocument(selectCanRedo)
   const hasSelection = useDocument((s) => s.selectedPersonId !== null)
   const viewMode = useTreeView((s) => s.mode)
+  const mapOpen = useWorkspaceUi((s) => s.view === 'map')
 
   useEffect(() => {
     void window.familyInsight.setMenuState({
@@ -33,9 +35,10 @@ export function useMenuIntegration(handlers: Handlers): void {
       canUndo,
       canRedo,
       hasSelection,
-      viewMode
+      viewMode,
+      mapOpen
     })
-  }, [hasDocument, canUndo, canRedo, hasSelection, viewMode])
+  }, [hasDocument, canUndo, canRedo, hasSelection, viewMode, mapOpen])
 
   useEffect(
     () =>

@@ -40,10 +40,24 @@ export interface Settings {
   backups: boolean
   /** Send place names to OpenStreetMap Nominatim to find coordinates (opt-in). */
   onlinePlaceLookup: boolean
+  /** Load map tiles from the internet for the map view (opt-in). */
+  onlineMaps: boolean
+  /** Tile server URL template, e.g. `https://tile.openstreetmap.org/{z}/{x}/{y}.png`. */
+  mapTileUrl: string
   panels: PanelSettings
 }
 
 export const MAX_RECENT_FILES = 10
+
+/** OpenStreetMap's standard tiles (usage policy: identifying User-Agent, caching, no bulk). */
+export const DEFAULT_TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+
+/** Whether a tile URL template is acceptable: http(s) with {z}, {x} and {y}. */
+export function isTileUrl(value: unknown): value is string {
+  if (typeof value !== 'string' || value.length > 300) return false
+  if (!/^https?:\/\/\S+$/.test(value)) return false
+  return ['{z}', '{x}', '{y}'].every((p) => value.includes(p))
+}
 
 export function defaultSettings(language: string): Settings {
   return {
@@ -57,6 +71,8 @@ export function defaultSettings(language: string): Settings {
     autosave: true,
     backups: true,
     onlinePlaceLookup: false,
+    onlineMaps: false,
+    mapTileUrl: DEFAULT_TILE_URL,
     panels: { sidebarOpen: true, sidebarWidth: 280, detailsWidth: 380 }
   }
 }
@@ -79,6 +95,8 @@ export function sanitizeSettings(
   const out: Settings = { ...fallback, panels: { ...fallback.panels } }
   if (isLanguage(src.language)) out.language = src.language as string
   if (typeof src.onlinePlaceLookup === 'boolean') out.onlinePlaceLookup = src.onlinePlaceLookup
+  if (typeof src.onlineMaps === 'boolean') out.onlineMaps = src.onlineMaps
+  if (isTileUrl(src.mapTileUrl)) out.mapTileUrl = src.mapTileUrl
   if (src.theme === 'system' || src.theme === 'light' || src.theme === 'dark') out.theme = src.theme
   if (src.csvDelimiter === ',' || src.csvDelimiter === ';') out.csvDelimiter = src.csvDelimiter
   if (src.density === 'comfortable' || src.density === 'compact') out.density = src.density

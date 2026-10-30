@@ -29,6 +29,10 @@ interface WorkspaceUiState {
   viewing: { mediaIds: string[]; index: number; personId?: string } | null
   /** Media item whose details dialog is open. */
   editingMedia: string | null
+  /** The tree canvas or the map. */
+  view: 'tree' | 'map'
+  /** Place selected when the places dialog opens. */
+  placeKey: string | null
   setQuery: (query: string) => void
   setSort: (sort: PeopleSort) => void
   setEditing: (id: string | null) => void
@@ -39,6 +43,8 @@ interface WorkspaceUiState {
   viewMedia: (mediaIds: string[], index: number, personId?: string) => void
   closeViewer: () => void
   setEditingMedia: (id: string | null) => void
+  setView: (view: 'tree' | 'map') => void
+  openPlaces: (placeKey?: string | null) => void
 }
 
 export const useWorkspaceUi = create<WorkspaceUiState>((set) => ({
@@ -50,6 +56,8 @@ export const useWorkspaceUi = create<WorkspaceUiState>((set) => ({
   citing: null,
   viewing: null,
   editingMedia: null,
+  view: 'tree',
+  placeKey: null,
   setQuery: (query) => set({ query }),
   setSort: (sort) => set({ sort }),
   setEditing: (editingId) => set({ editingId }),
@@ -58,5 +66,7 @@ export const useWorkspaceUi = create<WorkspaceUiState>((set) => ({
   setCiting: (citing) => set({ citing }),
   viewMedia: (mediaIds, index, personId) => set({ viewing: { mediaIds, index, personId } }),
   closeViewer: () => set({ viewing: null }),
-  setEditingMedia: (editingMedia) => set({ editingMedia })
+  setEditingMedia: (editingMedia) => set({ editingMedia }),
+  setView: (view) => set({ view }),
+  openPlaces: (placeKey = null) => set({ dialog: 'places', placeKey })
 }))

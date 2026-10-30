@@ -31,7 +31,8 @@
       "comfortable": "Comfortable",
       "compact": "Compact"
     },
-    "onlinePlaceLookup": "Look up places online"
+    "onlinePlaceLookup": "Look up places online",
+    "onlineMaps": "Load maps online"
   },
   "language": {
     "en": "English",
@@ -818,6 +819,53 @@
     "mergeButton": "Merge",
     "consentTitle": "Look up places online?",
     "consentText": "To find coordinates, Family Insight sends the place name – and nothing else – to OpenStreetMap Nominatim, a free service on the internet. Answers are kept on this computer. You can turn this off at any time in the settings (⚙ → Look up places online).",
+    "consentAllow": "Allow"
+  },
+  "map": {
+    "title": "Map",
+    "switch": "Tree or map",
+    "treeView": "Family tree",
+    "panel": "Map filters and places",
+    "show": "Show",
+    "kinds": {
+      "birth": "Births",
+      "death": "Deaths",
+      "marriage": "Marriages",
+      "event": "Other events"
+    },
+    "kind": {
+      "birth": "Born",
+      "death": "Died",
+      "marriage": "Married",
+      "event": "Event"
+    },
+    "period": "Period",
+    "from": "From",
+    "to": "To",
+    "undatedHidden": "Facts without a date are hidden while a period is set.",
+    "legend": "Generations",
+    "generation": {
+      "root": "Same generation",
+      "up_one": "{{count}} generation earlier",
+      "up_other": "{{count}} generations earlier",
+      "down_one": "{{count}} generation later",
+      "down_other": "{{count}} generations later"
+    },
+    "pathOf": "Places of {{name}}, in order",
+    "markerLabel_one": "{{place}}: {{count}} person",
+    "markerLabel_other": "{{place}}: {{count}} people",
+    "unlocated_one": "{{count}} place without a location",
+    "unlocated_other": "{{count}} places without a location",
+    "allLocated": "Every place has a location.",
+    "setLocation": "Set location",
+    "export": "Export map as PNG…",
+    "exported": "Map exported",
+    "noFacts": "No places with a location yet. Give places coordinates to see them on the map.",
+    "offline": "The map background (streets, borders) comes from OpenStreetMap on the internet and is off. Markers are shown without it.",
+    "allow": "Load maps online",
+    "tilesFailed": "Some map tiles couldn't be loaded – are you offline? Markers still work.",
+    "consentTitle": "Load maps online?",
+    "consentText": "The map background is downloaded from OpenStreetMap's tile servers on the internet while you use the map. Only the map area you look at is requested – no names or other data from your tree. Tiles are kept on this computer for a week. You can turn this off at any time in the settings (⚙ → Load maps online).",
     "consentAllow": "Allow"
   }
 }

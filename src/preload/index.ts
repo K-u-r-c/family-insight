@@ -42,6 +42,7 @@ const api: FamilyInsightApi = {
   cancelPlaceLookup: (requestId) => ipcRenderer.invoke(IpcChannel.PlaceLookupCancel, requestId),
   exportPdf: (svg, options, path) => ipcRenderer.invoke(IpcChannel.ExportPdf, svg, options, path),
   print: (svg, options) => ipcRenderer.invoke(IpcChannel.Print, svg, options),
+  capturePng: (rect, path) => ipcRenderer.invoke(IpcChannel.CapturePng, rect, path),
   takePendingFile: () => ipcRenderer.invoke(IpcChannel.FileTakePending),
   onOpenFileRequest: (listener) => subscribe<string>(IpcChannel.FileOpenRequest, listener),
   askUnsaved: (name) => ipcRenderer.invoke(IpcChannel.DialogUnsaved, name),

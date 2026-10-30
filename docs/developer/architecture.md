@@ -147,13 +147,20 @@ flowchart LR
 - The container code, hashing (`@noble/hashes`) and media model are pure TypeScript in `src/core`, so
   a platform without a main process can host the library itself.
 
-## Places and the network
+## Places, the map and the network
 
 People's places are free text; coordinates come from the tree's gazetteer (`tree.places`,
-`src/core/model/places.ts`). The only network access of the app is the opt-in place lookup: the
-renderer asks main (`lookupPlace`), main checks the `onlinePlaceLookup` setting and queries
-OpenStreetMap Nominatim through a rate-limited, caching `Geocoder` (`src/main/geocoder.ts`). See
-the [decision log](./reference/decisions#places-gazetteer-and-opt-in-lookup-2026-10-issue-58).
+`src/core/model/places.ts`). The map view (`features/map`, lazily loaded Leaflet) draws markers
+from `src/core/mapData.ts`. The renderer never talks to the internet; the two opt-in online
+features go through main:
+
+- **Place lookup** – `lookupPlace` → main checks `onlinePlaceLookup` and queries OpenStreetMap
+  Nominatim through a rate-limited, caching `Geocoder` (`src/main/geocoder.ts`).
+- **Map tiles** – Leaflet loads `fi-tile://map/{z}/{x}/{y}.png`; main's protocol handler
+  (`src/main/tiles.ts`) checks `onlineMaps` and fetches and caches the tile (`TileService`).
+
+See the decision log entries for [places](./reference/decisions#places-gazetteer-and-opt-in-lookup-2026-10-issue-58)
+and the [map](./reference/decisions#map-view-leaflet-with-tiles-through-the-main-process-2026-10-issue-59).
 
 ## Further reading
 

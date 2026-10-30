@@ -32,6 +32,7 @@ export const IpcChannel = {
   PlaceLookupCancel: 'places:lookup-cancel',
   ExportPdf: 'export:pdf',
   Print: 'export:print',
+  CapturePng: 'export:capture-png',
   DialogUnsaved: 'dialog:unsaved',
   RecoveryWrite: 'recovery:write',
   RecoveryClear: 'recovery:clear',
@@ -113,6 +114,8 @@ export interface MenuState {
   canRedo: boolean
   hasSelection: boolean
   viewMode: 'family' | 'ancestors' | 'descendants' | 'hourglass'
+  /** The map is shown instead of the tree. */
+  mapOpen: boolean
 }
 
 /** Actions triggered from the native menu and forwarded to the renderer. */
@@ -149,6 +152,7 @@ export type MenuAction =
   | 'view:toggle-sidebar'
   | 'view:toggle-minimap'
   | 'view:statistics'
+  | 'view:toggle-map'
 
 /** The API exposed to the renderer as `window.familyInsight` by the preload script. */
 export interface FamilyInsightApi {
@@ -182,6 +186,11 @@ export interface FamilyInsightApi {
   ): Promise<FileWriteResult>
   /** Renders SVG markup to a PDF file (path from `saveFileDialog('pdf', …)`). */
   exportPdf(svg: string, options: PdfOptions, path: string): Promise<FileWriteResult>
+  /** Saves a rectangle of the window (CSS pixels) as PNG (path from `saveFileDialog('png', …)`). */
+  capturePng(
+    rect: { x: number; y: number; width: number; height: number },
+    path: string
+  ): Promise<FileWriteResult>
   /** Opens the system print dialog for SVG markup. */
   print(svg: string, options: PdfOptions): Promise<boolean>
   showInFolder(path: string): Promise<void>

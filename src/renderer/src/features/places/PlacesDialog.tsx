@@ -10,6 +10,7 @@ import { useFormat } from '@renderer/i18n/format'
 import { mergePlacesCommand, setPlaceCommand } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
+import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import styles from './Places.module.css'
 
 const LOOKUP_ID = 'places-dialog'
@@ -41,7 +42,9 @@ export function PlacesDialog({ onClose }: { onClose: () => void }): React.JSX.El
   const { t } = useTranslation()
   const tree = useDocument((s) => s.tree)
   const [query, setQuery] = useState('')
-  const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  const [selectedKey, setSelectedKey] = useState<string | null>(
+    () => useWorkspaceUi.getState().placeKey
+  )
   const places = useMemo(() => (tree ? listPlaces(tree) : []), [tree])
   if (!tree) return null
   const q = foldText(query.trim())

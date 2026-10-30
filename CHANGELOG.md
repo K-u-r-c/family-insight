@@ -24,6 +24,11 @@ All notable changes to this project are documented here. The format follows
   entered by hand or looked up online (optional, off by default: only the place name is sent to
   OpenStreetMap), and merging of different spellings.
 
+- **Map** of where the family lived (**View → Map**): markers by place coloured by generation,
+  filters by event type and period, the people at a place, a person's path through life, places
+  still without a location, PNG export. The map background from OpenStreetMap is optional and off
+  until you allow it.
+
 ### Changed
 
 - **`.finsight` files are now zip containers** (schema 3). Trees from 1.0 open and are saved in the

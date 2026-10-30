@@ -6,7 +6,7 @@ description: Give the places in your tree a location – look them up online (op
 
 Places are typed as text wherever you enter them – birth, death, life events, marriages, photos.
 **☰ → Places…** (or **Edit → Places…**) collects them in one list, so you can give each place a
-**location** for the map and tidy up spellings.
+**location** for the [map](./map) and tidy up spellings.
 
 <Screenshot name="places-manager" alt="The Places window: a list of places with how often they are used on the left, and Łódź selected on the right with its coordinates, latitude and longitude fields, Save location, Look up online (1) and Merge with another place" />
 

@@ -11,7 +11,8 @@ let state: MenuState = {
   canUndo: false,
   canRedo: false,
   hasSelection: false,
-  viewMode: 'family'
+  viewMode: 'family',
+  mapOpen: false
 }
 
 /** Items enabled only when a document is open. */
@@ -27,6 +28,7 @@ const DOCUMENT_ITEMS = [
   'sources',
   'places',
   'statistics',
+  'map',
   'fit',
   'zoom-in',
   'zoom-out',
@@ -199,6 +201,14 @@ export function buildMenu(): void {
           click: () => updateSettings({ showMinimap: !getSettings().showMinimap })
         },
         item('statistics', t('stats.title'), 'view:statistics'),
+        {
+          id: 'map',
+          label: t('map.title'),
+          type: 'checkbox',
+          checked: state.mapOpen,
+          accelerator: 'CmdOrCtrl+Shift+M',
+          click: () => send('view:toggle-map')
+        },
         { type: 'separator' },
         {
           label: t('settings.theme'),

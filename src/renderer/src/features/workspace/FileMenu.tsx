@@ -67,7 +67,11 @@ export function FileMenu(): React.JSX.Element {
       icon: Library,
       onSelect: () => useWorkspaceUi.getState().openSources()
     },
-    { label: t('menu.places'), icon: MapPin, onSelect: () => openDialog('places') },
+    {
+      label: t('menu.places'),
+      icon: MapPin,
+      onSelect: () => useWorkspaceUi.getState().openPlaces()
+    },
     { type: 'separator' },
     {
       label: t('menu.print'),

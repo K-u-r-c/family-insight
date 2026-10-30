@@ -14,6 +14,7 @@ Click the **Settings** button (⚙) on the right of the toolbar:
 | **Language**              | English, Polski      | The language of the whole program, including the menu bar and dialogs. It changes immediately.                  |
 | **Cards**                 | Comfortable, Compact | The size of the cards in the tree. Compact cards fit more people on the screen and on paper.                    |
 | **Save automatically**    | on (default) / off   | [Autosave](./files#autosave) of trees that already have a file.                                                 |
+| **Load maps online**      | off (default) / on   | Downloads the map background from OpenStreetMap while you use the [map](./map#online).                          |
 | **Look up places online** | off (default) / on   | Lets **Look up online** send a place name to OpenStreetMap to find its coordinates ([Places](./places#lookup)). |
 
 The theme and the language can also be changed on the welcome screen (top-right corner) and in the

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { PanelLeftOpen } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { ResizeHandle } from '@renderer/components/ResizeHandle'
@@ -10,6 +10,7 @@ import { useWindowWidth } from '@renderer/hooks/useWindowWidth'
 import { cx } from '@renderer/lib/cx'
 import { selectCanRedo, selectCanUndo, useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
+import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { StatusBar } from './StatusBar'
 import { Toolbar } from './Toolbar'
 import { useAddPerson } from './useAddPerson'
@@ -17,6 +18,9 @@ import { useWindowTitle } from './useWindowTitle'
 import styles from './Workspace.module.css'
 
 const NARROW = 1100
+
+/** Leaflet is only loaded when the map is opened. */
+const MapView = lazy(() => import('@renderer/features/map/MapView'))
 
 export function Workspace(): React.JSX.Element {
   const { t } = useTranslation()
@@ -38,6 +42,7 @@ export function Workspace(): React.JSX.Element {
     void updateSettings({ panels: { ...panels, ...patch } })
 
   const addPerson = useAddPerson()
+  const view = useWorkspaceUi((s) => s.view)
 
   return (
     <div className={styles.root}>
@@ -76,8 +81,14 @@ export function Workspace(): React.JSX.Element {
           </>
         )}
         <main className={styles.main}>
-          <TreeCanvas onAddPerson={addPerson} />
-          {!sidebarOpen && (
+          {view === 'map' ? (
+            <Suspense fallback={null}>
+              <MapView />
+            </Suspense>
+          ) : (
+            <TreeCanvas onAddPerson={addPerson} />
+          )}
+          {!sidebarOpen && view === 'tree' && (
             <div className={styles.floatingTopLeft}>
               <IconButton
                 icon={PanelLeftOpen}

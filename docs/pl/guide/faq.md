@@ -14,7 +14,8 @@ Twoje drzewo jest w zapisanym pliku `.finsight` – i nigdzie indziej. Family In
 **bez internetu** i nigdzie nie wysyła Twoich danych. Łączy się z internetem tylko na Twoje
 polecenie: odnośnik, np. **Pomoc → Poradnik**, otwiera przeglądarkę, a jeśli zezwolisz na
 [wyszukiwanie miejsc online](./places#lookup), **Wyszukaj online** wysyła nazwę tego jednego
-miejsca – i nic więcej – do OpenStreetMap.
+miejsca – i nic więcej – do OpenStreetMap; gdy zezwolisz na [mapy online](./map#online), mapa
+pobiera swoje tło (tylko obszar mapy, nigdy Twoich danych).
 
 ## Jak zrobić kopię zapasową drzewa?
 

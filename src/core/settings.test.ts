@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { defaultSettings, pushRecentFile, removeRecentFile, sanitizeSettings } from './settings'
+import {
+  DEFAULT_TILE_URL,
+  defaultSettings,
+  pushRecentFile,
+  removeRecentFile,
+  sanitizeSettings
+} from './settings'
 
 const isLang = (v: unknown): boolean => v === 'en' || v === 'pl'
 
@@ -56,6 +62,16 @@ describe('settings', () => {
     expect(sanitizeSettings({ onlinePlaceLookup: true }, base, () => true).onlinePlaceLookup).toBe(
       true
     )
+  })
+
+  it('accepts only valid tile server templates', () => {
+    const base = defaultSettings('en')
+    expect(base).toMatchObject({ onlineMaps: false, mapTileUrl: DEFAULT_TILE_URL })
+    const url = 'https://tiles.example.org/{z}/{x}/{y}.png'
+    expect(sanitizeSettings({ mapTileUrl: url }, base, () => true).mapTileUrl).toBe(url)
+    expect(
+      sanitizeSettings({ mapTileUrl: 'javascript:{z}{x}{y}' }, base, () => true).mapTileUrl
+    ).toBe(DEFAULT_TILE_URL)
   })
 
   it('merges patches onto current settings', () => {

@@ -51,7 +51,7 @@
     "en-light": [862, 662],
     "en-dark": [829, 636],
     "pl-light": [829, 636],
-    "pl-dark": [829, 636]
+    "pl-dark": [862, 662]
   },
   "csv-import-errors": {
     "en-light": [893, 755],
@@ -125,6 +125,18 @@
     "pl-light": [547, 501],
     "pl-dark": [547, 501]
   },
+  "map-offline": {
+    "en-light": [608, 137],
+    "en-dark": [608, 137],
+    "pl-light": [608, 137],
+    "pl-dark": [608, 137]
+  },
+  "map-overview": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
   "media-details": {
     "en-light": [893, 585],
     "en-dark": [893, 585],
@@ -192,10 +204,10 @@
     "pl-dark": [547, 289]
   },
   "places-manager": {
-    "en-light": [893, 682],
+    "en-light": [928, 708],
     "en-dark": [928, 708],
     "pl-light": [928, 708],
-    "pl-dark": [928, 708]
+    "pl-dark": [893, 682]
   },
   "recovery": {
     "en-light": [568, 310],
@@ -222,10 +234,10 @@
     "pl-dark": [1280, 800]
   },
   "settings-menu": {
-    "en-light": [219, 469],
-    "en-dark": [219, 469],
-    "pl-light": [219, 469],
-    "pl-dark": [219, 469]
+    "en-light": [219, 500],
+    "en-dark": [219, 500],
+    "pl-light": [219, 500],
+    "pl-dark": [219, 500]
   },
   "shortcuts": {
     "en-light": [893, 529],
@@ -234,7 +246,7 @@
     "pl-dark": [893, 529]
   },
   "source-scans": {
-    "en-light": [928, 784],
+    "en-light": [893, 755],
     "en-dark": [928, 784],
     "pl-light": [928, 784],
     "pl-dark": [928, 784]
@@ -247,9 +259,9 @@
   },
   "sources-manager": {
     "en-light": [928, 784],
-    "en-dark": [928, 784],
+    "en-dark": [893, 755],
     "pl-light": [928, 784],
-    "pl-dark": [928, 784]
+    "pl-dark": [893, 755]
   },
   "statistics": {
     "en-light": [893, 755],

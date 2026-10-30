@@ -31,7 +31,8 @@
       "comfortable": "Wygodne",
       "compact": "Kompaktowe"
     },
-    "onlinePlaceLookup": "Wyszukuj miejsca online"
+    "onlinePlaceLookup": "Wyszukuj miejsca online",
+    "onlineMaps": "Wczytuj mapy online"
   },
   "language": {
     "en": "English",
@@ -882,6 +883,61 @@
     "mergeButton": "Scal",
     "consentTitle": "Wyszukiwać miejsca online?",
     "consentText": "Aby znaleźć współrzędne, Family Insight wysyła nazwę miejsca – i nic więcej – do OpenStreetMap Nominatim, bezpłatnej usługi w internecie. Odpowiedzi są przechowywane na tym komputerze. Możesz to w każdej chwili wyłączyć w ustawieniach (⚙ → Wyszukuj miejsca online).",
+    "consentAllow": "Zezwól"
+  },
+  "map": {
+    "title": "Mapa",
+    "switch": "Drzewo lub mapa",
+    "treeView": "Drzewo genealogiczne",
+    "panel": "Filtry mapy i miejsca",
+    "show": "Pokaż",
+    "kinds": {
+      "birth": "Urodzenia",
+      "death": "Zgony",
+      "marriage": "Śluby",
+      "event": "Inne wydarzenia"
+    },
+    "kind": {
+      "birth": "Urodzenie",
+      "death": "Śmierć",
+      "marriage": "Ślub",
+      "event": "Wydarzenie"
+    },
+    "period": "Okres",
+    "from": "Od",
+    "to": "Do",
+    "undatedHidden": "Fakty bez daty są ukryte, gdy ustawiony jest okres.",
+    "legend": "Pokolenia",
+    "generation": {
+      "root": "To samo pokolenie",
+      "up_one": "{{count}} pokolenie wcześniej",
+      "up_few": "{{count}} pokolenia wcześniej",
+      "up_many": "{{count}} pokoleń wcześniej",
+      "up_other": "{{count}} pokolenia wcześniej",
+      "down_one": "{{count}} pokolenie później",
+      "down_few": "{{count}} pokolenia później",
+      "down_many": "{{count}} pokoleń później",
+      "down_other": "{{count}} pokolenia później"
+    },
+    "pathOf": "Miejsca: {{name}}, po kolei",
+    "markerLabel_one": "{{place}}: {{count}} osoba",
+    "markerLabel_few": "{{place}}: {{count}} osoby",
+    "markerLabel_many": "{{place}}: {{count}} osób",
+    "markerLabel_other": "{{place}}: {{count}} osoby",
+    "unlocated_one": "{{count}} miejsce bez położenia",
+    "unlocated_few": "{{count}} miejsca bez położenia",
+    "unlocated_many": "{{count}} miejsc bez położenia",
+    "unlocated_other": "{{count}} miejsca bez położenia",
+    "allLocated": "Każde miejsce ma położenie.",
+    "setLocation": "Ustaw położenie",
+    "export": "Eksportuj mapę do PNG…",
+    "exported": "Wyeksportowano mapę",
+    "noFacts": "Nie ma jeszcze miejsc z położeniem. Nadaj miejscom współrzędne, aby zobaczyć je na mapie.",
+    "offline": "Tło mapy (ulice, granice) pochodzi z OpenStreetMap w internecie i jest wyłączone. Znaczniki są pokazane bez niego.",
+    "allow": "Wczytuj mapy online",
+    "tilesFailed": "Nie udało się wczytać części mapy – czy jesteś offline? Znaczniki nadal działają.",
+    "consentTitle": "Wczytywać mapy online?",
+    "consentText": "Tło mapy jest pobierane z serwerów OpenStreetMap w internecie, gdy korzystasz z mapy. Pobierany jest tylko oglądany obszar – bez imion ani innych danych z drzewa. Fragmenty mapy są przechowywane na tym komputerze przez tydzień. Możesz to w każdej chwili wyłączyć w ustawieniach (⚙ → Wczytuj mapy online).",
     "consentAllow": "Zezwól"
   }
 }

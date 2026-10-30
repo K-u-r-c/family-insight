@@ -31,7 +31,8 @@ The window is created in `src/main/index.ts` with:
 No remote scripts, no `eval`, no network requests to other origins. Photos are shown from `blob:`
 object URLs of their thumbnails, and the crop dialog and exports use `data:` URLs, which is why both
 are allowed for images. PDFs are shown in Chromium's PDF viewer in an `<iframe>` of a `blob:` URL
-(`frame-src blob:`); nothing else may be framed.
+(`frame-src blob:`); nothing else may be framed. Map tiles are images from the app's own
+`fi-tile:` protocol, served by main – the CSP doesn't allow any internet origin.
 
 Navigation is locked down too: `will-navigate` cancels any attempt to load another page, and
 `setWindowOpenHandler` denies new windows – `https://` links are handed to the default browser with
@@ -86,7 +87,10 @@ The renderer never sees the file system. `src/main/files.ts` enforces:
   with an explanation on first use, and only on an explicit click. Main (`src/main/geocoder.ts`)
   sends the single place name to OpenStreetMap Nominatim – at most one request per second, an
   identifying User-Agent, answers cached in `userData/place-lookup-cache.json`. The renderer never
-  talks to the network; the CSP is unchanged.
+  talks to the network; the CSP is unchanged. The opt-in **online maps** (`onlineMaps`, off by
+  default, consent on first use) work the same way: main fetches tiles for the `fi-tile:` protocol
+  with an identifying User-Agent and a week-long cache; a tile request is refused while the setting
+  is off.
 
 ## When you add a feature
 

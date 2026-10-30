@@ -84,12 +84,16 @@ export function App(): React.JSX.Element {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openSources()
       },
       'edit:places': () => {
-        if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('places')
+        if (useDocument.getState().tree) useWorkspaceUi.getState().openPlaces()
       },
       'edit:find': () => {
         const search = document.getElementById('workspace-search') as HTMLInputElement | null
         search?.focus()
         search?.select()
+      },
+      'view:toggle-map': () => {
+        const ui = useWorkspaceUi.getState()
+        if (useDocument.getState().tree) ui.setView(ui.view === 'map' ? 'tree' : 'map')
       },
       'view:mode-family': () => useTreeView.getState().setMode('family'),
       'view:mode-ancestors': () => useTreeView.getState().setMode('ancestors'),

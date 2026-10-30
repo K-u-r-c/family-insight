@@ -6,7 +6,7 @@ description: Nadaj miejscom w drzewie położenie – wyszukaj je online (opcjon
 
 Miejsca wpisujesz jako tekst wszędzie tam, gdzie się pojawiają – przy urodzeniu, śmierci,
 wydarzeniach, ślubach i zdjęciach. **☰ → Miejsca…** (albo **Edycja → Miejsca…**) zbiera je w jednej
-liście, abyś mógł nadać każdemu miejscu **położenie** na mapie i uporządkować zapisy.
+liście, abyś mógł nadać każdemu miejscu **położenie** na [mapie](./map) i uporządkować zapisy.
 
 <Screenshot name="places-manager" alt="Okno Miejsca: lista miejsc z liczbą użyć po lewej i zaznaczona Łódź po prawej ze współrzędnymi, polami szerokości i długości, przyciskami Zapisz położenie, Wyszukaj online (1) i częścią Scal z innym miejscem" />
 

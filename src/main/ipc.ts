@@ -23,7 +23,8 @@ export function registerIpcHandlers(): void {
       canUndo: s.canUndo === true,
       canRedo: s.canRedo === true,
       hasSelection: s.hasSelection === true,
-      viewMode: modes.find((m) => m === s.viewMode) ?? 'family'
+      viewMode: modes.find((m) => m === s.viewMode) ?? 'family',
+      mapOpen: s.mapOpen === true
     })
   })
 

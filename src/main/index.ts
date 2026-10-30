@@ -14,6 +14,7 @@ import { initMainI18n, setMainLanguage } from './i18n'
 import { registerMediaHandlers } from './media'
 import { registerPlaceHandlers } from './places'
 import { registerRecoveryHandlers } from './recovery'
+import { registerTileProtocol, registerTileScheme } from './tiles'
 import { registerIpcHandlers } from './ipc'
 import { attachEditContextMenu } from './contextMenu'
 import { buildMenu } from './menu'
@@ -25,6 +26,7 @@ if (process.env['FAMILY_INSIGHT_USER_DATA']) {
   app.setPath('userData', process.env['FAMILY_INSIGHT_USER_DATA'])
 }
 const HIDDEN = process.env['FAMILY_INSIGHT_HIDDEN'] === '1'
+registerTileScheme()
 
 function windowIcon(): string {
   return app.isPackaged
@@ -120,6 +122,7 @@ if (!hasLock) {
     registerRecoveryHandlers()
     registerMediaHandlers()
     registerPlaceHandlers()
+    registerTileProtocol()
     registerPrintHandlers(isWritable)
     buildMenu()
     createWindow()

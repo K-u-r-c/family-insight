@@ -5,6 +5,7 @@ import { Button, IconButton, TextField } from '@renderer/components/ui'
 import { formatShortcut } from '@renderer/lib/platform'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { ViewModeControls } from '@renderer/features/tree/ViewModeControls'
+import { WorkspaceViewSwitch } from './WorkspaceViewSwitch'
 import { FileMenu } from './FileMenu'
 import { SettingsMenu } from './SettingsMenu'
 import { TreeNameField } from './TreeNameField'
@@ -26,6 +27,7 @@ export function Toolbar({
   onRedo
 }: ToolbarProps): React.JSX.Element {
   const { t } = useTranslation()
+  const view = useWorkspaceUi((s) => s.view)
   const query = useWorkspaceUi((s) => s.query)
   const setQuery = useWorkspaceUi((s) => s.setQuery)
 
@@ -63,7 +65,8 @@ export function Toolbar({
         />
       </div>
       <div className={styles.divider} />
-      <ViewModeControls />
+      <WorkspaceViewSwitch />
+      {view === 'tree' && <ViewModeControls />}
       <div className={styles.spacer} />
       <TextField
         id="workspace-search"

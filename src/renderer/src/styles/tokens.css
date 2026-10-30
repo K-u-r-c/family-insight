@@ -88,6 +88,17 @@
   --color-unknown-text: #5c554c;
   --color-edge: #b5ac9f;
   --color-highlight: #f2c94c;
+  /* Map markers by generation relative to the root: ancestors warm, descendants cool, the
+     root's generation neutral (diverging scale). */
+  --map-gen-m3: #7a3f17;
+  --map-gen-m2: #a85a24;
+  --map-gen-m1: #cf8a4f;
+  --map-gen-0: #7f7b74;
+  --map-gen-p1: #5b8fc4;
+  --map-gen-p2: #2f66a3;
+  --map-gen-p3: #1d4777;
+  --map-gen-none: #b5ac9f;
+  --map-path: #c2410c;
   --shadow-sm: 0 1px 2px rgb(35 32 28 / 6%), 0 1px 3px rgb(35 32 28 / 7%);
   --shadow-md: 0 4px 12px rgb(35 32 28 / 8%), 0 2px 4px rgb(35 32 28 / 5%);
   --shadow-lg: 0 18px 48px rgb(35 32 28 / 16%), 0 4px 12px rgb(35 32 28 / 8%);
@@ -140,6 +151,16 @@
   --shadow-md: 0 4px 16px rgb(0 0 0 / 35%);
   --shadow-lg: 0 18px 48px rgb(0 0 0 / 50%);
 
+  --map-gen-m3: #f0b583;
+  --map-gen-m2: #dc935a;
+  --map-gen-m1: #b8743f;
+  --map-gen-0: #8f8a82;
+  --map-gen-p1: #4d7cb0;
+  --map-gen-p2: #79a5d6;
+  --map-gen-p3: #a9c8ec;
+  --map-gen-none: #5f5951;
+  --map-path: #fb923c;
+
   color-scheme: dark;
 }
 
@@ -187,6 +208,16 @@
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 30%);
     --shadow-md: 0 4px 16px rgb(0 0 0 / 35%);
     --shadow-lg: 0 18px 48px rgb(0 0 0 / 50%);
+
+    --map-gen-m3: #f0b583;
+    --map-gen-m2: #dc935a;
+    --map-gen-m1: #b8743f;
+    --map-gen-0: #8f8a82;
+    --map-gen-p1: #4d7cb0;
+    --map-gen-p2: #79a5d6;
+    --map-gen-p3: #a9c8ec;
+    --map-gen-none: #5f5951;
+    --map-path: #fb923c;
 
     color-scheme: dark;
   }

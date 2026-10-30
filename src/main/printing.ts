@@ -69,6 +69,26 @@ export function registerPrintHandlers(isWritable: (path: string) => boolean): vo
     }
   )
 
+  // A part of the window (the map view) as PNG.
+  ipcMain.handle(IpcChannel.CapturePng, async (event, rect: unknown, path: unknown) => {
+    const r = (typeof rect === 'object' && rect !== null ? rect : {}) as Record<string, unknown>
+    const n = (v: unknown): number =>
+      typeof v === 'number' && Number.isFinite(v) ? Math.round(v) : -1
+    const area = { x: n(r.x), y: n(r.y), width: n(r.width), height: n(r.height) }
+    if (typeof path !== 'string' || Object.values(area).some((v) => v < 0) || !area.width) {
+      return { ok: false, error: 'io' }
+    }
+    const full = resolve(path)
+    if (!isWritable(full)) return { ok: false, error: 'permission' }
+    try {
+      const image = await event.sender.capturePage(area)
+      await writeFileAtomic(full, image.toPNG())
+      return { ok: true, path: full }
+    } catch {
+      return { ok: false, error: 'io' }
+    }
+  })
+
   ipcMain.handle(IpcChannel.Print, async (_e, svg: unknown, options: unknown) => {
     if (typeof svg !== 'string') return false
     const opts = sanitize(options)

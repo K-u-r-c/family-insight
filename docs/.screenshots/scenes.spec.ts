@@ -6,10 +6,11 @@
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import type { Locator } from '@playwright/test'
+import { test, type Locator } from '@playwright/test'
 import { Resvg } from '@resvg/resvg-js'
 import { mockDialogs, tempDir } from '../../e2e/app'
-import { scene, type Session, type ShotOptions } from './shoot'
+import { startTileServer } from '../../e2e/tileServer'
+import { scene, type Session, type ShotOptions, type StartOptions } from './shoot'
 
 const ROOT = join(__dirname, '..', '..')
 const FIXTURE = join(ROOT, 'e2e', 'fixtures', 'kowalscy.finsight')
@@ -1065,6 +1066,98 @@ scene('places-consent', async (s) => {
     .or(page.getByRole('dialog', { name: t('places.consentTitle') }))
   await question.first().waitFor()
   return { clip: question.first(), pad: 24, settle: 600 }
+})
+
+// ---------------------------------------------------------------------------------------------
+// Map
+
+/** Local tile server, so the map screenshots never depend on the internet. */
+let tileServer: Awaited<ReturnType<typeof startTileServer>> | null = null
+test.beforeAll(async () => {
+  tileServer = await startTileServer()
+})
+test.afterAll(async () => {
+  await tileServer?.close()
+})
+const onlineMap = (): StartOptions => ({
+  settings: {
+    onlineMaps: true,
+    mapTileUrl: tileServer!.url,
+    panels: { sidebarOpen: false, sidebarWidth: 280, detailsWidth: 380 }
+  }
+})
+
+/** Coordinates for the places of the sample family. */
+async function locateAllSamplePlaces(s: Session): Promise<void> {
+  await s.page.evaluate(() => {
+    const store = (
+      window as unknown as {
+        __familyInsight: { useDocument: { getState: () => { dispatch: (cmd: unknown) => void } } }
+      }
+    ).__familyInsight.useDocument
+    const at = (lat: number, lon: number) => ({ lat, lon, source: 'manual' })
+    store.getState().dispatch({
+      label: 'history.setPlace',
+      run: (tree: { places: object }) => ({
+        tree: {
+          ...tree,
+          places: {
+            lodz: at(51.7592, 19.456),
+            poznan: at(52.4064, 16.9252),
+            gdansk: at(54.352, 18.6466),
+            krakow: at(50.0619, 19.9369),
+            gniezno: at(52.535, 17.5826),
+            sopot: at(54.4418, 18.5601),
+            warszawa: at(52.2297, 21.0118)
+          }
+        },
+        result: undefined
+      })
+    })
+  })
+}
+
+async function openMap(s: Session): Promise<void> {
+  await s.page.getByRole('radio', { name: s.t('map.title') }).click()
+  await s.page.getByTestId('map').waitFor()
+}
+
+scene(
+  'map-overview',
+  async (s) => {
+    const { page, t } = s
+    await openSample(s)
+    await locateAllSamplePlaces(s)
+    await openMap(s)
+    await page.locator('img.leaflet-tile-loaded').first().waitFor()
+    const marker = page.getByRole('button', { name: /^(Łódź|Lodz)/ }).first()
+    await marker.click()
+    const panel = page.getByRole('complementary', { name: t('map.panel') })
+    // Picking a person from the place selects them: details open, their path is drawn.
+    await panel.getByRole('button', { name: 'Józef Kowalski' }).first().click()
+    await page.waitForTimeout(800)
+    await parkMouse(s)
+    return {
+      settle: 1200,
+      steps: [
+        { target: panel.getByRole('heading', { name: t('map.show') }), badge: 'right' },
+        { target: marker, badge: 'right' },
+        { target: panel.getByRole('heading', { name: t('map.legend') }), badge: 'right' }
+      ]
+    }
+  },
+  onlineMap
+)
+
+scene('map-offline', async (s) => {
+  const { page } = s
+  await openSample(s)
+  await locateAllSamplePlaces(s)
+  await openMap(s)
+  const notice = page.getByRole('status').filter({ hasText: 'OpenStreetMap' })
+  await notice.waitFor()
+  await parkMouse(s)
+  return { clip: notice, pad: 24 }
 })
 
 // ---------------------------------------------------------------------------------------------
