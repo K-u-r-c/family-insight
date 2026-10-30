@@ -1,4 +1,4 @@
-import { Redo2, Search, Undo2, UserPlus } from 'lucide-react'
+import { BarChart3, Redo2, Search, Undo2, UserPlus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { TreeLogo } from '@renderer/components/TreeLogo'
 import { Button, IconButton, TextField } from '@renderer/components/ui'
@@ -85,6 +85,11 @@ export function Toolbar({
             }
           }
         }}
+      />
+      <IconButton
+        icon={BarChart3}
+        label={t('stats.title')}
+        onClick={() => useWorkspaceUi.getState().openDialog('stats')}
       />
       <SettingsMenu />
     </header>

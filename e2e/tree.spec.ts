@@ -147,3 +147,15 @@ test('view modes, collapsing and saving the view with the file', async () => {
   await expect(again.page.getByLabel('Generations to show')).toHaveValue('1')
   await closeApp(again.app)
 })
+
+test('statistics: tiles, bars that filter, and the to-do list', async () => {
+  const { app, page } = await launch({ args: [sample()] })
+  await page.getByRole('button', { name: 'Statistics' }).click()
+  await expect(page.getByRole('dialog').getByText('15', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: /^Łódź/ }).click()
+  await expect(page.getByLabel('Search')).toHaveValue('Łódź')
+  await page.getByRole('button', { name: 'Statistics' }).click()
+  await page.getByRole('dialog').getByRole('button', { name: 'Józef Kowalski' }).click()
+  await expect(page.getByRole('heading', { name: 'Józef Kowalski' })).toBeVisible()
+  await closeApp(app)
+})

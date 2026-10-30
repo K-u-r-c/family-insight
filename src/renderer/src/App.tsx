@@ -13,6 +13,7 @@ import { ExportCsvDialog } from './features/csv/ExportCsvDialog'
 import { ImportCsvDialog } from './features/csv/ImportCsvDialog'
 import { NewTreeDialog } from './features/welcome/NewTreeDialog'
 import { ExportImageDialog } from './features/export/ExportImageDialog'
+import { StatsDialog } from './features/stats/StatsDialog'
 import { printTree } from './features/export/exportImage'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
 import { useAutosave } from './services/autosave'
@@ -82,6 +83,7 @@ export function App(): React.JSX.Element {
       {dialog === 'export-image' && hasDocument && (
         <ExportImageDialog onClose={() => openDialog(null)} />
       )}
+      {dialog === 'stats' && hasDocument && <StatsDialog onClose={() => openDialog(null)} />}
       {dialog === 'new-tree' && (
         <NewTreeDialog
           onClose={() => openDialog(null)}

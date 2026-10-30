@@ -493,5 +493,29 @@
     "png": "PNG image",
     "svg": "SVG image",
     "pdf": "PDF document"
+  },
+  "stats": {
+    "title": "Statistics",
+    "people_one": "person",
+    "people_other": "people",
+    "living": "living",
+    "deceased": "deceased",
+    "generations_one": "generation",
+    "generations_other": "generations",
+    "averageLifespan": "average lifespan (years)",
+    "longestLived_one": "Longest life: {{name}}, {{count}} year.",
+    "longestLived_other": "Longest life: {{name}}, {{count}} years.",
+    "show": "Show",
+    "givenNames": "Most common given names",
+    "surnames": "Most common surnames",
+    "birthPlaces": "Most common birth places",
+    "noData": "Not enough data yet.",
+    "barTooltip_one": "{{label}}: {{count}} person – click to highlight",
+    "barTooltip_other": "{{label}}: {{count}} people – click to highlight",
+    "todo_one": "To complete ({{count}} person)",
+    "todo_other": "To complete ({{count}} people)",
+    "todoDone": "Everyone has dates and parents. Nice work!",
+    "noDates": "no dates",
+    "noParents": "no parents"
   }
 }
