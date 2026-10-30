@@ -33,6 +33,12 @@ nsis:
   installerIcon: build/icon.ico
   uninstallerIcon: build/icon.ico
   oneClick: false
+  perMachine: false
+  multiLanguageInstaller: true
+  installerLanguages:
+    - en_US
+    - pl_PL
+  createStartMenuShortcut: true
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   shortcutName: Family Insight
@@ -46,7 +52,9 @@ mac:
     - target: dmg
       arch: [x64, arm64]
   hardenedRuntime: false
-  identity: null
+  # Ad-hoc signature: required for Apple Silicon to run the app at all without a
+  # Developer ID certificate (users still confirm the first launch; see README).
+  identity: '-'
 dmg:
   artifactName: ${name}-${version}-mac-${arch}.${ext}
   background: build/background.png
@@ -70,3 +78,23 @@ linux:
     - target: deb
       arch: [x64]
   maintainer: Jakub Kurc <jak.kurc@gmail.com>
+  vendor: Jakub Kurc
+  executableName: family-insight
+  desktop:
+    entry:
+      Name: Family Insight
+      Comment: Family tree editor
+      Comment[pl]: Edytor drzewa genealogicznego
+      Keywords: genealogy;family;tree;genealogia;rodzina;drzewo;
+      StartupWMClass: Family Insight
+deb:
+  depends:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libxtst6
+    - xdg-utils
+    - libatspi2.0-0
+    - libuuid1
+    - libsecret-1-0

@@ -85,14 +85,7 @@ export async function readFile(path: string): Promise<FileReadResult> {
   }
 }
 
-function isFilePathArg(arg: string): boolean {
-  return extname(arg).toLowerCase() === `.${FILE_EXTENSION}` && !arg.startsWith('-')
-}
-
-/** Extracts a `.finsight` path from command-line arguments. */
-export function pathFromArgv(argv: string[]): string | null {
-  return argv.slice(1).find(isFilePathArg) ?? null
-}
+export { pathFromArgv } from './argv'
 
 /** Opens a file requested by the OS: forwards it to the window or keeps it until the UI asks. */
 export function requestOpen(path: string): void {
