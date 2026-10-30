@@ -1,0 +1,353 @@
+0 HEAD
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 SOUR FAMILY_INSIGHT
+2 NAME Family Insight
+1 DATE 30 OCT 2026
+1 CHAR UTF-8
+1 SUBM @U1@
+0 @U1@ SUBM
+1 NAME Family Insight
+0 @I1@ INDI
+1 NAME Józef /Kowalski/
+2 GIVN Józef
+2 SURN Kowalski
+1 SEX M
+1 BIRT
+2 DATE ABT 1898
+2 PLAC Kraków
+1 DEAT
+2 DATE 2 MAR 1971
+2 PLAC Łódź
+1 FAMS @F1@
+0 @I2@ INDI
+1 NAME Maria /Nowak/
+2 GIVN Maria
+2 SURN Nowak
+1 NAME Maria /Kowalska/
+2 TYPE married
+2 GIVN Maria
+2 SURN Kowalska
+1 SEX F
+1 BIRT
+2 DATE 15 AUG 1902
+2 PLAC Wieliczka
+1 DEAT
+2 DATE 1988
+2 PLAC Łódź
+1 FAMS @F1@
+0 @I3@ INDI
+1 NAME Stefan /Wiśniewski/
+2 GIVN Stefan
+2 SURN Wiśniewski
+1 SEX M
+1 BIRT
+2 DATE 1900
+2 PLAC Poznań
+1 DEAT
+2 DATE 1944
+2 PLAC Warszawa
+1 FAMS @F2@
+1 NOTE Died in the Warsaw Uprising.
+0 @I4@ INDI
+1 NAME Helena /Zielińska/
+2 GIVN Helena
+2 SURN Zielińska
+1 NAME Helena /Wiśniewska/
+2 TYPE married
+2 GIVN Helena
+2 SURN Wiśniewska
+1 SEX F
+1 BIRT
+2 DATE 20 JAN 1905
+2 PLAC Poznań
+1 DEAT
+2 DATE 11 NOV 1990
+2 PLAC Poznań
+1 FAMS @F2@
+0 @I5@ INDI
+1 NAME Jan /Kowalski/
+2 GIVN Jan
+2 SURN Kowalski
+1 SEX M
+1 BIRT
+2 DATE 4 NOV 1925
+2 PLAC Łódź
+1 DEAT
+2 DATE 30 JUN 2001
+2 PLAC Łódź
+1 FAMC @F1@
+1 FAMS @F3@
+1 NOTE Engineer who built bridges.
+2 CONT Loved fishing.
+0 @I6@ INDI
+1 NAME Anna /Wiśniewska/
+2 GIVN Anna
+2 SURN Wiśniewska
+1 NAME Anna /Kowalska/
+2 TYPE married
+2 GIVN Anna
+2 SURN Kowalska
+1 SEX F
+1 BIRT
+2 DATE 12 APR 1928
+2 PLAC Poznań
+1 DEAT
+2 DATE 2015
+2 PLAC Łódź
+1 FAMC @F2@
+1 FAMS @F3@
+0 @I7@ INDI
+1 NAME Zofia /Kowalska/
+2 GIVN Zofia
+2 SURN Kowalska
+1 SEX F
+1 BIRT
+2 DATE 1 FEB 1930
+2 PLAC Łódź
+1 DEAT
+2 DATE 1931
+2 PLAC Łódź
+1 FAMC @F1@
+0 @I8@ INDI
+1 NAME Tadeusz /Wiśniewski/
+2 GIVN Tadeusz
+2 SURN Wiśniewski
+1 SEX M
+1 BIRT
+2 DATE 7 JUL 1932
+2 PLAC Poznań
+1 DEAT
+2 DATE 5 MAY 2010
+2 PLAC Poznań
+1 FAMC @F2@
+1 FAMS @F4@
+0 @I9@ INDI
+1 NAME Irena /Lewandowska/
+2 GIVN Irena
+2 SURN Lewandowska
+1 NAME Irena /Wiśniewska/
+2 TYPE married
+2 GIVN Irena
+2 SURN Wiśniewska
+1 SEX F
+1 BIRT
+2 DATE 1935
+2 PLAC Gniezno
+1 FAMS @F4@
+0 @I10@ INDI
+1 NAME Ewa /Kowalska/
+2 GIVN Ewa
+2 SURN Kowalska
+1 NAME Ewa /Lis/
+2 TYPE married
+2 GIVN Ewa
+2 SURN Lis
+1 SEX F
+1 BIRT
+2 DATE 21 JUL 1952
+2 PLAC Łódź
+1 FAMC @F3@
+1 FAMS @F5@
+0 @I11@ INDI
+1 NAME Tomasz /Lis/
+2 GIVN Tomasz
+2 SURN Lis
+1 SEX M
+1 BIRT
+2 DATE 3 MAR 1950
+2 PLAC Gdańsk
+1 FAMS @F5@
+0 @I12@ INDI
+1 NAME Piotr /Kowalski/
+2 GIVN Piotr
+2 SURN Kowalski
+1 SEX M
+1 BIRT
+2 DATE 9 SEP 1955
+2 PLAC Łódź
+1 FAMC @F3@
+1 FAMS @F6@
+1 FAMS @F7@
+1 NOTE Married twice.
+0 @I13@ INDI
+1 NAME Magdalena /Nowicka/
+2 GIVN Magdalena
+2 SURN Nowicka
+1 SEX F
+1 BIRT
+2 DATE 1961
+2 PLAC Łódź
+1 FAMS @F6@
+0 @I14@ INDI
+1 NAME Katarzyna /Mazur/
+2 GIVN Katarzyna
+2 SURN Mazur
+1 NAME Katarzyna /Kowalska/
+2 TYPE married
+2 GIVN Katarzyna
+2 SURN Kowalska
+1 SEX F
+1 BIRT
+2 DATE 24 DEC 1958
+2 PLAC Kraków
+1 FAMS @F7@
+0 @I15@ INDI
+1 NAME Barbara /Wiśniewska/
+2 GIVN Barbara
+2 SURN Wiśniewska
+1 SEX F
+1 BIRT
+2 DATE 10 OCT 1960
+2 PLAC Poznań
+1 FAMC @F4@
+0 @I16@ INDI
+1 NAME Aleksandra /Lis/
+2 GIVN Aleksandra
+2 SURN Lis
+1 SEX F
+1 BIRT
+2 DATE 5 MAY 1980
+2 PLAC Gdańsk
+1 FAMC @F5@
+1 FAMS @F8@
+0 @I17@ INDI
+1 NAME Marek /Lis/
+2 GIVN Marek
+2 SURN Lis
+1 SEX M
+1 BIRT
+2 DATE 10 OCT 1983
+2 PLAC Gdańsk
+1 FAMC @F5@
+0 @I18@ INDI
+1 NAME Michał /Kowalski/
+2 GIVN Michał
+2 SURN Kowalski
+1 SEX M
+1 BIRT
+2 DATE 14 FEB 1984
+2 PLAC Łódź
+1 FAMC @F6@
+1 NOTE Son from the first marriage.
+0 @I19@ INDI
+1 NAME Jakub /Kowalski/
+2 GIVN Jakub
+2 SURN Kowalski
+1 SEX M
+1 BIRT
+2 DATE 15 JAN 1990
+2 PLAC Kraków
+1 FAMC @F7@
+1 FAMS @F9@
+0 @I20@ INDI
+1 NAME Natalia /Kowalska/
+2 GIVN Natalia
+2 SURN Kowalska
+1 SEX F
+1 BIRT
+2 DATE 30 JUN 1993
+2 PLAC Kraków
+1 FAMC @F7@
+0 @I21@ INDI
+1 NAME Paweł /Zając/
+2 GIVN Paweł
+2 SURN Zając
+1 SEX M
+1 BIRT
+2 DATE 1 SEP 1979
+2 PLAC Sopot
+1 FAMS @F8@
+0 @I22@ INDI
+1 NAME Julia /Kamińska/
+2 GIVN Julia
+2 SURN Kamińska
+1 NAME Julia /Kowalska/
+2 TYPE married
+2 GIVN Julia
+2 SURN Kowalska
+1 SEX F
+1 BIRT
+2 DATE 8 MAR 1992
+2 PLAC Wrocław
+1 FAMS @F9@
+0 @I23@ INDI
+1 NAME Zuzanna /Zając/
+2 GIVN Zuzanna
+2 SURN Zając
+1 SEX F
+1 BIRT
+2 DATE 4 APR 2010
+2 PLAC Gdańsk
+1 FAMC @F8@
+0 @I24@ INDI
+1 NAME Antoni /Zając/
+2 GIVN Antoni
+2 SURN Zając
+1 SEX M
+1 BIRT
+2 DATE 11 NOV 2013
+2 PLAC Gdańsk
+1 FAMC @F8@
+0 @I25@ INDI
+1 NAME Lena /Kowalska/
+2 GIVN Lena
+2 SURN Kowalska
+1 SEX F
+1 BIRT
+2 DATE 1 JUL 2021
+2 PLAC Kraków
+1 FAMC @F9@
+0 @F1@ FAM
+1 HUSB @I1@
+1 WIFE @I2@
+1 MARR Y
+1 CHIL @I5@
+1 CHIL @I7@
+0 @F2@ FAM
+1 HUSB @I3@
+1 WIFE @I4@
+1 MARR Y
+1 CHIL @I6@
+1 CHIL @I8@
+0 @F3@ FAM
+1 HUSB @I5@
+1 WIFE @I6@
+1 MARR Y
+1 CHIL @I10@
+1 CHIL @I12@
+0 @F4@ FAM
+1 HUSB @I8@
+1 WIFE @I9@
+1 MARR Y
+1 CHIL @I15@
+0 @F5@ FAM
+1 HUSB @I11@
+1 WIFE @I10@
+1 MARR Y
+1 CHIL @I16@
+1 CHIL @I17@
+0 @F6@ FAM
+1 HUSB @I12@
+1 WIFE @I13@
+1 MARR Y
+1 CHIL @I18@
+0 @F7@ FAM
+1 HUSB @I12@
+1 WIFE @I14@
+1 MARR Y
+1 CHIL @I19@
+1 CHIL @I20@
+0 @F8@ FAM
+1 HUSB @I21@
+1 WIFE @I16@
+1 MARR Y
+1 CHIL @I23@
+1 CHIL @I24@
+0 @F9@ FAM
+1 HUSB @I19@
+1 WIFE @I22@
+1 MARR Y
+1 CHIL @I25@
+0 TRLR

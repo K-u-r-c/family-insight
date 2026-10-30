@@ -97,3 +97,47 @@ become step-parents (`gedcom-extra-parents`); a link closing an ancestry cycle i
 **Fixtures** in `src/core/io/gedcom/fixtures/` are synthetic files in the style of Gramps,
 Ancestry, MyHeritage, FamilySearch and GEDCOM 7 exports (plus an ANSEL file built in the test) –
 no real people's data.
+
+## Export – `export.ts`
+
+`exportGedcom(tree, options)` writes **5.5.1** (UTF-8, the default – most programs read it) or
+**7.0**, and returns the media files the text references (`media/<file name>`), so the caller can
+copy them next to the `.ged` file or pack a GEDZIP (`writeGedzip`). Cross-references are numbered in
+tree order (`@I1@`, `@F1@`, `@S1@`, `@R1@`, `@O1@`), so the same tree always gives the same file.
+
+- `HEAD` with `GEDC.VERS`, `SOUR FAMILY_INSIGHT`, `DATE`, `CHAR UTF-8` (5.5.1) and a `SUBM` record;
+  `TRLR` at the end. Dates use English month names whatever the UI language.
+- A person with a birth surname gets two names: the birth name first, then the current one with
+  `TYPE married` – the import reads it back the same way.
+- Life events use their standard tag; military service, awards and custom events become
+  `EVEN` + `TYPE`. The description is the value of attributes (`OCCU`, `EDUC`, `RELI`) and `EVEN`,
+  and the `TYPE` of other events. A period is `DATE FROM … TO …`.
+- Families: every partnership is a `FAM`; children whose parents aren't partners get a `FAM` of
+  their parents. A child's pedigree is `FAMC.PEDI` when both parents have the same kind, otherwise
+  `_FREL`/`_MREL` on `CHIL` (as Ancestry writes it); step-parents always use `_FREL`/`_MREL`.
+- The portrait is an `OBJE` link with `_PRIM Y`; gallery items are plain `OBJE` links to media
+  records (`FILE` + `FORM`, `TITL`, the description as `NOTE`).
+- Coordinates from the gazetteer are written as `PLAC.MAP.LATI`/`LONG`.
+- `privatizeLiving` replaces people who may be alive (not marked deceased, no death, born less than
+  110 years ago or without a birth date) with "Living" and leaves out everything but their sex and
+  family links – the usual practice when sharing trees.
+
+### What a round trip keeps and loses
+
+`export.test.ts` exports the sample family with events, sources, citations, media, coordinates,
+step and adoptive links, and a partnership that ended, re-imports it, and compares everything
+(for both versions, and for a random tree of 400 people). Intentionally lossy:
+
+| Field                                                                                | In GEDCOM                                                                                                                            |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `living: true`                                                                       | GEDCOM only records death, so "alive" becomes unknown.                                                                               |
+| Source URL                                                                           | a `URL: …` line in the source's note.                                                                                                |
+| Partnership kinds other than marriage and engagement, end reasons other than divorce | `FAM.EVEN` with `TYPE Partnership` / `End: separation` – Family Insight reads them back; other programs show a generic family event. |
+| Qualifiers of a period's dates                                                       | `FROM … TO …` dates are exact.                                                                                                       |
+| Media file bytes                                                                     | not in the text: in a `media/` folder next to the file (5.5.1) or inside a GEDZIP (7.0).                                             |
+| View settings, root person                                                           | not exported (the first person becomes the root on import).                                                                          |
+
+Sample exports of the sample family are in `docs/public/samples/` (`sample-family-5.5.1.ged`,
+`sample-family-7.0.ged`); `samples.test.ts` re-imports them and regenerates them with
+`UPDATE_GEDCOM_SAMPLES=1`. No external GEDCOM validator was available offline; the files were
+checked by re-importing them and against the specification.
