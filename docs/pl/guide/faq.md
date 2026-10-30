@@ -12,7 +12,7 @@ Tak. Jest darmowy i ma otwarty kod (licencja MIT), bez reklam, kont i subskrypcj
 
 Twoje drzewo jest w zapisanym pliku `.finsight` – i nigdzie indziej. Family Insight działa w pełni
 **bez internetu** i nigdzie nie wysyła Twoich danych. Internet otwiera się tylko wtedy, gdy
-klikniesz odnośnik, np. **Pomoc → Podręcznik użytkownika**, który otwiera przeglądarkę.
+klikniesz odnośnik, np. **Pomoc → Poradnik**, który otwiera przeglądarkę.
 
 ## Jak zrobić kopię zapasową drzewa?
 

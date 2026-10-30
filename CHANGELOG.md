@@ -6,7 +6,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Documentation website at <https://k-u-r-c.github.io/family-insight/> – a user guide in English
+  and Polish with screenshots of every step, and developer documentation.
+
 ### Changed
+
+- **Help → User Guide** and the CSV help links open the documentation website in the language of the
+  app; the Polish menu item is now called **Poradnik**.
 
 - The keyboard shortcut sheet also lists <kbd>Ctrl</kbd>+<kbd>W</kbd> (close the tree) and shows
   the Delete key as ⌫ on macOS; the user guide renders the same list.

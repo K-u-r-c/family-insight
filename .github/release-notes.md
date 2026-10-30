@@ -8,8 +8,10 @@ relatives · partial dates · photos · ancestors/descendants views · diacritic
 undo, autosave and crash recovery · CSV import/export friendly to Excel · PNG/SVG/PDF export and
 printing · light and dark theme.
 
-See the [user guide](https://github.com/K-u-r-c/family-insight/blob/main/docs/user-guide.en.md) ·
-[podręcznik](https://github.com/K-u-r-c/family-insight/blob/main/docs/user-guide.pl.md) ·
+**Installation / instalacja:** [English](https://k-u-r-c.github.io/family-insight/guide/install) ·
+[polski](https://k-u-r-c.github.io/family-insight/pl/guide/install) ·
+[user guide](https://k-u-r-c.github.io/family-insight/guide/) ·
+[poradnik](https://k-u-r-c.github.io/family-insight/pl/guide/) ·
 [changelog](https://github.com/K-u-r-c/family-insight/blob/main/CHANGELOG.md).
 
 ## Download / Pobierz

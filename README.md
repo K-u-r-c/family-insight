@@ -13,9 +13,8 @@ English · [Polski](README.pl.md)
 [![Latest release](https://img.shields.io/github/v/release/K-u-r-c/family-insight)](https://github.com/K-u-r-c/family-insight/releases/latest)
 
 [**Download**](https://github.com/K-u-r-c/family-insight/releases/latest) ·
-[**Documentation**](https://k-u-r-c.github.io/family-insight/) ·
-[User guide](docs/user-guide.en.md) ·
-[CSV format](docs/developer/reference/csv-format.md)
+[**User guide**](https://k-u-r-c.github.io/family-insight/guide/) ·
+[Developer docs](https://k-u-r-c.github.io/family-insight/developer/)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/public/screenshots/en/dark/workspace.webp" />
@@ -85,7 +84,7 @@ The builds are not code-signed yet, so your system asks you to confirm the first
 like any document. Settings, recovery copies and the recent files list live in your user profile.
 
 **Can I move my tree from another program?** Export it to CSV (or build a sheet with the
-[documented columns](docs/developer/reference/csv-format.md)) and use _File → Import → CSV_. GEDCOM support is planned.
+[documented columns](https://k-u-r-c.github.io/family-insight/guide/csv-import)) and use _File → Import → CSV_. GEDCOM support is planned.
 
 **Excel shows strange characters / everything in one column.** Export with the _semicolon_
 separator (the default when the app is in Polish); the file includes a UTF-8 BOM so Polish
@@ -105,25 +104,17 @@ npm run test:e2e   # end-to-end tests against the built app
 npm run dist       # build installers for the current OS into dist/
 ```
 
-| Script                                         | Description                                         |
-| ---------------------------------------------- | --------------------------------------------------- |
-| `npm run dev`                                  | Run in development mode                             |
-| `npm run build`                                | Bundle main, preload and renderer into `out/`       |
-| `npm test`                                     | Unit tests (Vitest)                                 |
-| `npm run test:e2e`                             | End-to-end tests (Playwright driving the built app) |
-| `npm run lint` / `npm run format`              | ESLint / Prettier                                   |
-| `npm run icons`                                | Regenerate app icons from `build/icon.svg`          |
-| `npm run dist:linux` / `dist:win` / `dist:mac` | Platform installers                                 |
-
 Releases are built by GitHub Actions for all three platforms when a `v*` tag is pushed.
 
 ## Documentation
 
-- [User guide](docs/user-guide.en.md) · [Podręcznik](docs/user-guide.pl.md)
-- [Architecture](docs/developer/architecture.md)
-- [CSV format](docs/developer/reference/csv-format.md)
-- [`.finsight` file format](docs/developer/reference/file-format.md)
-- [Translations](docs/developer/i18n.md)
+Everything is on the **[documentation website](https://k-u-r-c.github.io/family-insight/)**:
+
+- [User guide](https://k-u-r-c.github.io/family-insight/guide/) ·
+  [Poradnik (PL)](https://k-u-r-c.github.io/family-insight/pl/guide/) – installation, tutorials,
+  CSV import/export, FAQ and troubleshooting
+- [Developer documentation](https://k-u-r-c.github.io/family-insight/developer/) – setup,
+  architecture, how-to guides, the CSV and `.finsight` formats
 - [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
 
 ## Tech stack

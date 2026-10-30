@@ -1,12 +1,10 @@
 import { app, BrowserWindow, Menu, shell, type MenuItemConstructorOptions } from 'electron'
 import { SUPPORTED_LANGUAGES, type Language } from '@shared/i18n'
 import { IpcChannel, type MenuAction, type MenuState } from '@shared/ipc'
+import { guideUrl, ISSUES_URL, PROJECT_URL } from '@shared/links'
 import { requestOpen } from './files'
 import { t } from './i18n'
 import { getSettings, updateSettings } from './settings'
-
-export const PROJECT_URL = 'https://github.com/K-u-r-c/family-insight'
-const ISSUES_URL = `${PROJECT_URL}/issues/new/choose`
 
 let state: MenuState = {
   hasDocument: false,
@@ -84,11 +82,6 @@ function recentSubmenu(): MenuItemConstructorOptions[] {
       }
     }
   ]
-}
-
-function guideUrl(): string {
-  const language = getSettings().language === 'pl' ? 'pl' : 'en'
-  return `${PROJECT_URL}/blob/main/docs/user-guide.${language}.md`
 }
 
 /** Builds the localized application menu. Call again after the language or recent files change. */
@@ -234,7 +227,11 @@ export function buildMenu(): void {
     {
       label: t('menu.help'),
       submenu: [
-        { label: t('menu.userGuide'), click: () => void shell.openExternal(guideUrl()) },
+        {
+          id: 'user-guide',
+          label: t('menu.userGuide'),
+          click: () => void shell.openExternal(guideUrl(getSettings().language))
+        },
         item('shortcuts', t('menu.shortcuts'), 'help:shortcuts', 'F1'),
         { type: 'separator' },
         { label: t('menu.csvFormat'), click: () => send('help:csv-format') },

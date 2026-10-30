@@ -1,14 +1,12 @@
 import { csvTemplate } from '@core/io/csv/template'
 import { resolveLanguage } from '@shared/i18n'
+import { guideUrl } from '@shared/links'
 import { toast } from '@renderer/components/ui'
 import i18n from '@renderer/i18n'
 
-export const CSV_FORMAT_URL =
-  'https://github.com/K-u-r-c/family-insight/blob/main/docs/developer/reference/csv-format.md'
-
-/** Opens the CSV format documentation in the default browser. */
+/** Opens the user guide's CSV import page (in the UI language) in the default browser. */
 export function openCsvFormatDocs(): void {
-  window.open(CSV_FORMAT_URL, '_blank', 'noopener')
+  window.open(guideUrl(resolveLanguage(i18n.language), 'csv-import'), '_blank', 'noopener')
 }
 
 /** Saves an empty CSV with headers in the current UI language. */

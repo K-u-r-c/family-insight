@@ -13,9 +13,8 @@
 [![Latest release](https://img.shields.io/github/v/release/K-u-r-c/family-insight)](https://github.com/K-u-r-c/family-insight/releases/latest)
 
 [**Pobierz**](https://github.com/K-u-r-c/family-insight/releases/latest) ·
-[**Dokumentacja**](https://k-u-r-c.github.io/family-insight/pl/) ·
-[Podręcznik](docs/user-guide.pl.md) ·
-[Format CSV](docs/developer/reference/csv-format.md)
+[**Poradnik**](https://k-u-r-c.github.io/family-insight/pl/guide/) ·
+[Dla programistów](https://k-u-r-c.github.io/family-insight/developer/) (EN)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/public/screenshots/pl/dark/workspace.webp" />
@@ -75,7 +74,7 @@ Wersje nie są jeszcze podpisane cyfrowo, dlatego system poprosi o potwierdzenie
 każdego dokumentu. Ustawienia, kopie odzyskiwania i lista ostatnich plików są w profilu użytkownika.
 
 **Czy mogę przenieść drzewo z innego programu?** Wyeksportuj je do CSV (albo przygotuj arkusz
-z [opisanymi kolumnami](docs/developer/reference/csv-format.md)) i użyj _Plik → Importuj → CSV_. Obsługa GEDCOM jest planowana.
+z [opisanymi kolumnami](https://k-u-r-c.github.io/family-insight/pl/guide/csv-import)) i użyj _Plik → Importuj → CSV_. Obsługa GEDCOM jest planowana.
 
 **Excel pokazuje dziwne znaki / wszystko w jednej kolumnie.** Eksportuj z separatorem _średnik_
 (domyślnym, gdy aplikacja jest po polsku); plik ma znacznik UTF-8 BOM, więc polskie litery
@@ -99,11 +98,13 @@ Wydania dla wszystkich trzech systemów buduje GitHub Actions po wypchnięciu ta
 
 ## Dokumentacja
 
-- [Podręcznik użytkownika](docs/user-guide.pl.md) · [User guide](docs/user-guide.en.md)
-- [Architektura](docs/developer/architecture.md) (EN)
-- [Format CSV](docs/developer/reference/csv-format.md) (EN)
-- [Format pliku `.finsight`](docs/developer/reference/file-format.md) (EN)
-- [Tłumaczenia](docs/developer/i18n.md) (EN)
+Wszystko znajdziesz na **[stronie dokumentacji](https://k-u-r-c.github.io/family-insight/pl/)**:
+
+- [Poradnik](https://k-u-r-c.github.io/family-insight/pl/guide/) ·
+  [User guide (EN)](https://k-u-r-c.github.io/family-insight/guide/) – instalacja, samouczki,
+  import i eksport CSV, najczęstsze pytania i rozwiązywanie problemów
+- [Dokumentacja dla programistów](https://k-u-r-c.github.io/family-insight/developer/) (EN) –
+  uruchomienie projektu, architektura, poradniki, formaty CSV i `.finsight`
 - [Jak współtworzyć](CONTRIBUTING.md) (EN) · [Lista zmian](CHANGELOG.md)
 
 ## Licencja

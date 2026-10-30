@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ISSUES_URL, LICENSE_URL, PROJECT_URL } from '@shared/links'
 import { TreeLogo } from '@renderer/components/TreeLogo'
 import { Button, Dialog } from '@renderer/components/ui'
 import styles from './AboutDialog.module.css'
-
-const PROJECT_URL = 'https://github.com/K-u-r-c/family-insight'
 
 export function AboutDialog({ onClose }: { onClose: () => void }): React.JSX.Element {
   const { t } = useTranslation()
@@ -33,10 +32,10 @@ export function AboutDialog({ onClose }: { onClose: () => void }): React.JSX.Ele
           <Button size="sm" onClick={() => open(PROJECT_URL)}>
             {t('about.website')}
           </Button>
-          <Button size="sm" onClick={() => open(`${PROJECT_URL}/issues/new/choose`)}>
+          <Button size="sm" onClick={() => open(ISSUES_URL)}>
             {t('menu.reportBug')}
           </Button>
-          <Button size="sm" onClick={() => open(`${PROJECT_URL}/blob/main/LICENSE`)}>
+          <Button size="sm" onClick={() => open(LICENSE_URL)}>
             {t('about.license')}
           </Button>
         </div>

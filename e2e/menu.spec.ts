@@ -69,3 +69,23 @@ test('native menu is localized, reflects state and drives the app', async () => 
   )
   await closeApp(app)
 })
+
+for (const [language, url] of [
+  ['en', 'https://k-u-r-c.github.io/family-insight/guide/'],
+  ['pl', 'https://k-u-r-c.github.io/family-insight/pl/guide/']
+] as const) {
+  test(`Help → User guide opens the documentation website (${language})`, async () => {
+    const { app } = await launch({ language })
+    const opened = await app.evaluate(async ({ Menu, shell }) => {
+      let target = ''
+      shell.openExternal = (async (u: string) => {
+        target = u
+      }) as typeof shell.openExternal
+      Menu.getApplicationMenu()!.getMenuItemById('user-guide')!.click()
+      await new Promise((resolve) => setTimeout(resolve, 100))
+      return target
+    })
+    expect(opened).toBe(url)
+    await closeApp(app)
+  })
+}
