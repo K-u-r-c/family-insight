@@ -179,6 +179,24 @@
   border-color: var(--color-accent);
 }
 
+/* Shown on hover/focus; always shown while the branch is collapsed. */
+.toggle {
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--easing);
+}
+
+.wrap:hover .toggle,
+.wrap:focus-within .toggle,
+.toggleCollapsed {
+  opacity: 1;
+}
+
+.toggleCollapsed {
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wrap {
     transition: none;

@@ -432,5 +432,20 @@
     "untitled": "Never saved",
     "restored": "Restored “{{name}}”. Save it to keep the changes.",
     "failed": "This copy couldn't be restored."
+  },
+  "view": {
+    "mode": "View",
+    "family": "Family",
+    "ancestors": "Ancestors",
+    "descendants": "Descendants",
+    "hourglass": "Hourglass",
+    "familyHint": "Everyone in the tree",
+    "ancestorsHint": "Ancestors of the root or selected person",
+    "descendantsHint": "Descendants of the root or selected person",
+    "hourglassHint": "Ancestors and descendants of the root or selected person",
+    "depth": "Generations to show",
+    "generations_one": "{{count}} generation",
+    "generations_other": "{{count}} generations",
+    "allGenerations": "All generations"
   }
 }

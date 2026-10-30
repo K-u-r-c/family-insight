@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { serializeTree } from '@core/file/format'
 import { selectIsDirty, useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
+import { treeForSave } from './viewMeta'
 
 export const AUTOSAVE_DELAY = 2000
 
@@ -36,7 +37,7 @@ export function useAutosave(): void {
       const { tree, filePath } = state
       if (!tree || !selectIsDirty(state)) return
       const id = recoverySession()
-      const content = serializeTree(tree)
+      const content = serializeTree(treeForSave(tree))
       if (filePath && useSettings.getState().settings.autosave) {
         const result = await window.familyInsight.writeFile(filePath, content)
         if (result.ok) {

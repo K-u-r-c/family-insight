@@ -51,6 +51,18 @@ export function checkTreeShape(doc: unknown): string[] {
   ) {
     errors.push('meta: invalid')
   }
+  if (isObj(meta) && meta.view !== undefined) {
+    const v = meta.view
+    if (
+      !isObj(v) ||
+      !oneOf(v.mode, ['family', 'ancestors', 'descendants', 'hourglass']) ||
+      typeof v.depth !== 'number' ||
+      !Array.isArray(v.collapsed) ||
+      !v.collapsed.every(isStr)
+    ) {
+      errors.push('meta.view: invalid')
+    }
+  }
   if (!isObj(doc.persons)) errors.push('persons: expected object')
   else {
     for (const [id, p] of Object.entries(doc.persons)) {

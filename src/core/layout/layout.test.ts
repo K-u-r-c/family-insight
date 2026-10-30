@@ -205,6 +205,21 @@ describe('view modes', () => {
     )
   })
 
+  it.each(['family', 'ancestors', 'descendants', 'hourglass'] as const)(
+    '%s mode lays out the selection without overlaps',
+    (mode) => {
+      const l = layoutFamily(tree, { mode, focusId: 'ola', depth: 3 })
+      const ids = selectPeople(tree, { mode, focusId: 'ola', depth: 3 })
+      expect(l.nodes.map((n) => n.id).sort()).toEqual([...ids].sort())
+      expect(l.nodes.some((n) => n.id === 'ola')).toBe(true)
+      assertNoOverlap(l)
+      // Every edge connects two visible people.
+      for (const e of l.edges) {
+        expect(ids.has(e.source) && ids.has(e.target)).toBe(true)
+      }
+    }
+  )
+
   it('collapsed branches hide descendants', () => {
     const ids = selectPeople(tree, { mode: 'family', collapsed: new Set(['ola']) })
     expect(ids.has('kuba')).toBe(false)

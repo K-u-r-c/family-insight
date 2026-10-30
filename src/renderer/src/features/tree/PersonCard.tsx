@@ -18,6 +18,8 @@ interface PersonCardProps {
   match: boolean
   dimmed: boolean
   collapsed: boolean
+  /** Collapsing branches makes sense in this view mode. */
+  canCollapse: boolean
   onSelect: (id: string) => void
   onEdit: (id: string) => void
   onContextMenu: (id: string, x: number, y: number) => void
@@ -33,6 +35,7 @@ export const PersonCard = memo(function PersonCard({
   match,
   dimmed,
   collapsed,
+  canCollapse,
   onSelect,
   onEdit,
   onContextMenu,
@@ -44,7 +47,8 @@ export const PersonCard = memo(function PersonCard({
   const deceased = isLiving(person) === false
   const lifespan = format.lifespan(person)
   const born = person.birthSurname ? t('tree.born', { surname: person.birthSurname }) : ''
-  const showToggle = node.hasHiddenChildren || collapsed
+  // Collapse a visible branch, or expand a collapsed one (not children hidden by depth).
+  const showToggle = canCollapse && (collapsed || (node.hasChildren && !node.hasHiddenChildren))
 
   return (
     <div
@@ -112,7 +116,7 @@ export const PersonCard = memo(function PersonCard({
       {showToggle && (
         <button
           type="button"
-          className={styles.toggle}
+          className={cx(styles.toggle, collapsed && styles.toggleCollapsed)}
           aria-label={collapsed ? t('tree.expand', { name }) : t('tree.collapse', { name })}
           title={collapsed ? t('tree.expand', { name }) : t('tree.collapse', { name })}
           onClick={(e) => {

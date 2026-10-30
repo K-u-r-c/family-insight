@@ -5,7 +5,8 @@ import type {
   ParentChildRelationship,
   PartnershipRelationship,
   Person,
-  PersonId
+  PersonId,
+  TreeViewMode
 } from '../model/types'
 
 /**
@@ -18,7 +19,7 @@ import type {
  * children below their parents) → route edges.
  */
 
-export type ViewMode = 'family' | 'ancestors' | 'descendants' | 'hourglass'
+export type ViewMode = TreeViewMode
 
 export interface LayoutOptions {
   mode?: ViewMode
@@ -55,6 +56,8 @@ export interface LayoutNode {
   generation: number
   /** Some children are not shown (collapsed branch or outside the view mode). */
   hasHiddenChildren: boolean
+  /** The person has children in the tree (shown or not). */
+  hasChildren: boolean
 }
 
 export interface LayoutEdge {
@@ -588,7 +591,8 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
         width: o.nodeWidth,
         height: o.nodeHeight,
         generation,
-        hasHiddenChildren: (full.children.get(id) ?? []).some((r) => !ids.has(r.childId))
+        hasHiddenChildren: (full.children.get(id) ?? []).some((r) => !ids.has(r.childId)),
+        hasChildren: (full.children.get(id) ?? []).length > 0
       }
       nodes.push(node)
       pos.set(id, node)

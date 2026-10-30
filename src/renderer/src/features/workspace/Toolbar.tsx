@@ -4,6 +4,7 @@ import { TreeLogo } from '@renderer/components/TreeLogo'
 import { Button, IconButton, TextField } from '@renderer/components/ui'
 import { formatShortcut } from '@renderer/lib/platform'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
+import { ViewModeControls } from '@renderer/features/tree/ViewModeControls'
 import { FileMenu } from './FileMenu'
 import { SettingsMenu } from './SettingsMenu'
 import { TreeNameField } from './TreeNameField'
@@ -61,6 +62,8 @@ export function Toolbar({
           onClick={onRedo}
         />
       </div>
+      <div className={styles.divider} />
+      <ViewModeControls />
       <div className={styles.spacer} />
       <TextField
         id="workspace-search"

@@ -73,12 +73,22 @@ export interface PartnershipRelationship {
 
 export type Relationship = ParentChildRelationship | PartnershipRelationship
 
+export type TreeViewMode = 'family' | 'ancestors' | 'descendants' | 'hourglass'
+
+/** How the tree was being viewed when saved (restored on open; not part of undo). */
+export interface TreeViewMeta {
+  mode: TreeViewMode
+  depth: number
+  collapsed: PersonId[]
+}
+
 export interface TreeMeta {
   name: string
   createdAt: string
   updatedAt: string
   /** Person the tree view centres on by default. */
   rootPersonId?: PersonId
+  view?: TreeViewMeta
 }
 
 /** The whole family tree document, as stored in a `.finsight` file. */

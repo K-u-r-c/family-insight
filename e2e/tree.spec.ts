@@ -113,3 +113,37 @@ test('person details: age, timeline and edit mode', async () => {
   await expect(page.getByRole('heading', { name: 'Anna Kowalska' })).toBeVisible()
   await closeApp(app)
 })
+
+test('view modes, collapsing and saving the view with the file', async () => {
+  const file = sample()
+  const { app, page } = await launch({ args: [file] })
+  const canvas = page.getByRole('application', { name: 'Family tree' })
+  await expect(canvas.locator('[data-person-id]')).toHaveCount(15)
+
+  // Collapse Jan's branch (root): his descendants disappear.
+  await canvas.locator('[data-person-id="jan"]').hover()
+  await page.getByRole('button', { name: 'Hide descendants of Jan Kowalski' }).click()
+  await expect(canvas.locator('[data-person-id="piotr"]')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Show descendants of Jan Kowalski' }).click()
+  await expect(canvas.locator('[data-person-id="piotr"]')).toHaveCount(1)
+
+  await page.getByRole('radio', { name: 'Ancestors' }).click()
+  await expect(canvas.locator('[data-person-id]')).toHaveCount(3)
+  await page.getByRole('radio', { name: 'Descendants' }).click()
+  await page.getByLabel('Generations to show').selectOption('1')
+  await expect(canvas.locator('[data-person-id]')).toHaveCount(7)
+
+  await app.evaluate(({ BrowserWindow }) =>
+    BrowserWindow.getAllWindows()[0]!.webContents.send('menu:action', 'file:save')
+  )
+  await expect(page.getByText('All changes saved')).toBeVisible()
+  await closeApp(app)
+
+  const again = await launch({ args: [file] })
+  await expect(again.page.getByRole('radio', { name: 'Descendants' })).toHaveAttribute(
+    'aria-checked',
+    'true'
+  )
+  await expect(again.page.getByLabel('Generations to show')).toHaveValue('1')
+  await closeApp(again.app)
+})

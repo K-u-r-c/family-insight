@@ -120,6 +120,17 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
     )
   }, [layout, size, docKey, setViewport, filePath])
 
+  // Re-fit when the view mode or depth changes.
+  const mode = useTreeView((s) => s.mode)
+  const depth = useTreeView((s) => s.depth)
+  const lastView = useRef(`${mode}:${depth}`)
+  useEffect(() => {
+    const key = `${mode}:${depth}`
+    if (key === lastView.current || !layout || !size.width) return
+    lastView.current = key
+    setViewport(fitViewport({ x: 0, y: 0, width: layout.width, height: layout.height }, size), true)
+  }, [mode, depth, layout, size, setViewport])
+
   // Remember where the user was looking in this file (only once it has been fitted).
   useEffect(() => {
     if (filePath && fittedFor.current === docKey) savedViewports.set(filePath, viewport)
@@ -189,6 +200,27 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
     setPanning(false)
     if (d && !d.moved) select(null)
   }
+
+  // Keep a toggled (collapsed/expanded) person at the same place on screen.
+  const anchor = useRef<{ id: string; x: number; y: number } | null>(null)
+  const onToggleCollapse = useCallback(
+    (id: string) => {
+      const node = positions.get(id)
+      const vp = useTreeView.getState().viewport
+      if (node) anchor.current = { id, x: node.x * vp.k + vp.x, y: node.y * vp.k + vp.y }
+      toggleCollapsed(id)
+    },
+    [positions, toggleCollapsed]
+  )
+  useEffect(() => {
+    const a = anchor.current
+    if (!a) return
+    anchor.current = null
+    const node = positions.get(a.id)
+    if (!node) return
+    const vp = useTreeView.getState().viewport
+    setViewport({ k: vp.k, x: a.x - node.x * vp.k, y: a.y - node.y * vp.k })
+  }, [positions, setViewport])
 
   const onEdit = useCallback(
     (id: string) => {
@@ -368,10 +400,11 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
               match={matches?.has(node.id) ?? false}
               dimmed={matches !== null && !matches.has(node.id)}
               collapsed={collapsed.has(node.id)}
+              canCollapse={mode !== 'ancestors'}
               onSelect={select}
               onEdit={onEdit}
               onContextMenu={onContextMenu}
-              onToggleCollapse={toggleCollapsed}
+              onToggleCollapse={onToggleCollapse}
             />
           )
         })}

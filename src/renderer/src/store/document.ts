@@ -10,6 +10,7 @@ import {
 } from '@core/history'
 import { createEmptyTree } from '@core/model/tree'
 import type { FamilyTree, PersonId } from '@core/model/types'
+import { applyViewMeta } from '@renderer/services/viewMeta'
 import { renameTreeCommand, type Command } from './commands'
 
 interface DocumentState {
@@ -46,7 +47,8 @@ export const useDocument = create<DocumentState>((set, get) => ({
 
   newDocument: (name) => get().loadDocument(createEmptyTree(name), null),
 
-  loadDocument: (tree, filePath, options) =>
+  loadDocument: (tree, filePath, options) => {
+    applyViewMeta(tree)
     set({
       tree,
       history: createHistory(tree),
@@ -54,7 +56,8 @@ export const useDocument = create<DocumentState>((set, get) => ({
       savedTree: options?.dirty ? null : tree,
       selectedPersonId: null,
       documentId: get().documentId + 1
-    }),
+    })
+  },
 
   closeDocument: () =>
     set({ tree: null, history: null, filePath: null, savedTree: null, selectedPersonId: null }),

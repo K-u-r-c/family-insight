@@ -9,6 +9,7 @@ import { useSettings } from '@renderer/store/settings'
 import { addPersonCommand } from '@renderer/store/commands'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { clearRecovery } from './autosave'
+import { treeForSave } from './viewMeta'
 
 const api = (): typeof window.familyInsight => window.familyInsight
 const t = (key: string, options?: Record<string, unknown>): string =>
@@ -110,7 +111,7 @@ export async function openTreeAt(path: string): Promise<void> {
 async function writeTo(path: string): Promise<boolean> {
   const tree = useDocument.getState().tree
   if (!tree) return false
-  const result = await api().writeFile(path, serializeTree(tree), { backup: true })
+  const result = await api().writeFile(path, serializeTree(treeForSave(tree)), { backup: true })
   if (!result.ok) {
     await showFileError(result.error, true)
     return false

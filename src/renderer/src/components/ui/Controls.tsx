@@ -8,6 +8,10 @@ export interface SegmentOption<T extends string> {
   value: T
   label: string
   icon?: LucideIcon
+  /** Accessible name/tooltip when the label is empty (icon-only segments). */
+  title?: string
+  /** Accessible name for icon-only segments (defaults to `title`). */
+  ariaLabel?: string
 }
 
 interface SegmentedControlProps<T extends string> {
@@ -59,6 +63,8 @@ export function SegmentedControl<T extends string>({
           className={styles.segment}
           aria-checked={option.value === value}
           tabIndex={option.value === value ? 0 : -1}
+          title={option.title}
+          aria-label={option.label ? undefined : (option.ariaLabel ?? option.title)}
           onClick={() => onChange(option.value)}
         >
           {option.icon && <Icon icon={option.icon} size={14} />}

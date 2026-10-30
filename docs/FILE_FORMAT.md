@@ -24,4 +24,6 @@ The native file is UTF-8 JSON with the extension `.finsight`. Its TypeScript sha
 - Dates use `FuzzyDate` (`{ "value": "1890-05", "qualifier": "about" }`).
 - Photos are stored inline as data URLs (resized, see the photos issue) so a tree is one
   self-contained file that is easy to back up and share.
+- `meta.view` (optional) stores how the tree was being viewed (`mode`, `depth`, `collapsed`
+  person ids). It is restored on open and is not part of undo.
 - Files are written atomically (write to a temp file, then rename) to avoid corruption.

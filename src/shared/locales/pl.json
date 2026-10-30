@@ -458,5 +458,22 @@
     "untitled": "Nigdy nie zapisane",
     "restored": "Przywrócono „{{name}}”. Zapisz je, aby zachować zmiany.",
     "failed": "Nie udało się przywrócić tej kopii."
+  },
+  "view": {
+    "mode": "Widok",
+    "family": "Rodzina",
+    "ancestors": "Przodkowie",
+    "descendants": "Potomkowie",
+    "hourglass": "Klepsydra",
+    "familyHint": "Wszyscy w drzewie",
+    "ancestorsHint": "Przodkowie osoby głównej lub wybranej",
+    "descendantsHint": "Potomkowie osoby głównej lub wybranej",
+    "hourglassHint": "Przodkowie i potomkowie osoby głównej lub wybranej",
+    "depth": "Liczba pokoleń",
+    "generations_one": "{{count}} pokolenie",
+    "generations_few": "{{count}} pokolenia",
+    "generations_many": "{{count}} pokoleń",
+    "generations_other": "{{count}} pokolenia",
+    "allGenerations": "Wszystkie pokolenia"
   }
 }
