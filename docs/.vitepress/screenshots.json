@@ -49,9 +49,9 @@
   },
   "csv-import-columns": {
     "en-light": [862, 662],
-    "en-dark": [829, 636],
-    "pl-light": [829, 636],
-    "pl-dark": [862, 662]
+    "en-dark": [862, 662],
+    "pl-light": [862, 662],
+    "pl-dark": [829, 636]
   },
   "csv-import-errors": {
     "en-light": [893, 755],
@@ -216,10 +216,10 @@
     "pl-dark": [547, 289]
   },
   "places-manager": {
-    "en-light": [928, 708],
-    "en-dark": [928, 708],
+    "en-light": [893, 682],
+    "en-dark": [893, 682],
     "pl-light": [928, 708],
-    "pl-dark": [893, 682]
+    "pl-dark": [928, 708]
   },
   "recovery": {
     "en-light": [568, 310],
@@ -258,7 +258,7 @@
     "pl-dark": [893, 529]
   },
   "source-scans": {
-    "en-light": [893, 755],
+    "en-light": [928, 784],
     "en-dark": [928, 784],
     "pl-light": [928, 784],
     "pl-dark": [928, 784]
@@ -270,10 +270,10 @@
     "pl-dark": [380, 720]
   },
   "sources-manager": {
-    "en-light": [928, 784],
+    "en-light": [893, 755],
     "en-dark": [893, 755],
     "pl-light": [928, 784],
-    "pl-dark": [893, 755]
+    "pl-dark": [928, 784]
   },
   "statistics": {
     "en-light": [893, 755],

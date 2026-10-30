@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-30
+
 ### Added
 
 - **Life events** besides birth and death – baptism, emigration, military service, occupation,
@@ -19,21 +21,17 @@ All notable changes to this project are documented here. The format follows
   people, any gallery picture as the portrait, and scans attached to sources and citations. Stored
   once inside the `.finsight` file, however often they are used; saving stays fast for trees of
   hundreds of megabytes.
-
 - **Places** – a list of all places with how often they are used (**Edit → Places…**), locations
   entered by hand or looked up online (optional, off by default: only the place name is sent to
   OpenStreetMap), and merging of different spellings.
-
 - **Map** of where the family lived (**View → Map**): markers by place coloured by generation,
   filters by event type and period, the people at a place, a person's path through life, places
   still without a location, PNG export. The map background from OpenStreetMap is optional and off
   until you allow it.
-
 - **GEDCOM import and export** (**File → Import / Export → GEDCOM**, or drop a `.ged` file):
   GEDCOM 5.5, 5.5.1 and 7.0 including GEDZIP, ANSEL and UTF-16 files, with a preview of what will
   be imported; export as 5.5.1 or 7.0 with photos (folder or `.gdz`), optionally hiding living
   people.
-
 - **Automatic updates**: a notice when a new version is out, with release notes, download in the
   background and installation on restart (Windows installer and AppImage; other builds open the
   download page); **Help → Check for Updates…** and a switch in the settings.
@@ -100,6 +98,7 @@ First public release.
   Intel, ad-hoc signed), Linux (AppImage, deb with `.finsight` file association); app icon.
 - Documentation: README and user guide in English and Polish, CSV and file format specs.
 
-[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/K-u-r-c/family-insight/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/K-u-r-c/family-insight/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/K-u-r-c/family-insight/releases/tag/v1.0.0
