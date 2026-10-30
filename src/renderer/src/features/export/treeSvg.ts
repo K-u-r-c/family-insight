@@ -133,7 +133,12 @@ export function buildTreeSvg(tree: FamilyTree, layout: Layout, options: TreeSvgO
   const header = o.title ? 64 : 0
   // A few pixels of breathing room so card borders at the edges aren't clipped.
   const bleed = 4
-  const area = o.crop ?? { x: -bleed, y: -bleed, width: layout.width + bleed * 2, height: layout.height + bleed * 2 }
+  const area = o.crop ?? {
+    x: -bleed,
+    y: -bleed,
+    width: layout.width + bleed * 2,
+    height: layout.height + bleed * 2
+  }
   const width = Math.ceil(area.width + margin * 2)
   const height = Math.ceil(area.height + margin * 2 + header)
   const visible = (n: { x: number; y: number; width: number; height: number }): boolean =>
