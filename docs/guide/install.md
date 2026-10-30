@@ -8,7 +8,7 @@ Family Insight is free. Download it from the
 [releases page on GitHub](https://github.com/K-u-r-c/family-insight/releases/latest) – under
 **Assets**, pick the file for your system.
 
-## Which file do I download?
+## Which file do I download? {#which-file}
 
 | Your computer                               | File                                               |
 | ------------------------------------------- | -------------------------------------------------- |
@@ -105,14 +105,14 @@ sudo apt install ./family-insight-<version>-linux-amd64.deb
 The package adds **Family Insight** to the applications menu (category Office) and opens
 `.finsight` files on double-click. From a terminal, start it with `family-insight`.
 
-## Updating
+## Updating {#updating}
 
 Family Insight doesn't update itself yet. To get a new version, download it from the
 [releases page](https://github.com/K-u-r-c/family-insight/releases/latest) and install it the same
 way – over the old one (Windows installer, `.deb`), by replacing the app in Applications (macOS) or
 the old AppImage file. Your trees are separate files and are not touched; your settings are kept.
 
-## Uninstalling
+## Uninstalling {#uninstalling}
 
 | System             | How                                                               |
 | ------------------ | ----------------------------------------------------------------- |

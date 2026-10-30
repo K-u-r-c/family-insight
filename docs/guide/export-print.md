@@ -32,7 +32,7 @@ Choose **☰ → Print…** or press <kbd>Ctrl</kbd>+<kbd>P</kbd> (<kbd>⌘</kbd
 print window opens with the whole tree on an A4 landscape page, with the tree name and date. Choose
 the printer and paper there.
 
-## Tips for large trees
+## Tips for large trees {#large-trees}
 
 - On one page a big tree gets very small. Print parts of it instead: switch to the **Ancestors**
   or **Descendants** view with a few [generations](./view-modes#generations), or

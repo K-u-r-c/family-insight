@@ -8,7 +8,7 @@ Family Insight jest darmowy. Pobierz go ze
 [strony wydań na GitHubie](https://github.com/K-u-r-c/family-insight/releases/latest) – w sekcji
 **Assets** wybierz plik dla swojego systemu.
 
-## Który plik pobrać?
+## Który plik pobrać? {#which-file}
 
 | Twój komputer                              | Plik                                            |
 | ------------------------------------------ | ----------------------------------------------- |
@@ -48,7 +48,7 @@ Po instalacji dwuklik na pliku `.finsight` otwiera go w Family Insight.
 
 `family-insight-<wersja>-portable.exe` działa bez instalacji – np. z pendrive’a. Pobierz go
 i kliknij dwukrotnie (potwierdź SmartScreen jak wyżej). Ustawienia i tak są zapisywane w Twoim
-profilu użytkownika (zobacz [Odinstalowanie](#odinstalowanie)); wersja przenośna nie rejestruje
+profilu użytkownika (zobacz [Odinstalowanie](#uninstalling)); wersja przenośna nie rejestruje
 plików `.finsight`.
 
 ## macOS
@@ -106,14 +106,14 @@ sudo apt install ./family-insight-<wersja>-linux-amd64.deb
 Pakiet dodaje **Family Insight** do menu aplikacji (kategoria Biuro) i otwiera pliki `.finsight`
 dwuklikiem. Z terminala uruchomisz go poleceniem `family-insight`.
 
-## Aktualizacja
+## Aktualizacja {#updating}
 
 Family Insight nie aktualizuje się jeszcze sam. Aby mieć nową wersję, pobierz ją ze
 [strony wydań](https://github.com/K-u-r-c/family-insight/releases/latest) i zainstaluj tak samo –
 na starą (instalator Windows, `.deb`), zastępując aplikację w folderze Aplikacje (macOS) albo stary
 plik AppImage. Twoje drzewa to osobne pliki i nic się z nimi nie dzieje; ustawienia zostają.
 
-## Odinstalowanie
+## Odinstalowanie {#uninstalling}
 
 | System              | Jak                                                                                |
 | ------------------- | ---------------------------------------------------------------------------------- |

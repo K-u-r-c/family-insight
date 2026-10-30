@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The keyboard shortcut sheet also lists <kbd>Ctrl</kbd>+<kbd>W</kbd> (close the tree) and shows
+  the Delete key as ⌫ on macOS; the user guide renders the same list.
+
 ### Fixed
 
 - Adding a father, child or sibling from the details panel now opens the new person's editor even

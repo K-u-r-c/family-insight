@@ -84,7 +84,7 @@ Zaawansowane → Pokazuj wszystkie rozszerzenia nazw plików**.
 Pliki przeniesione lub usunięte są na liście ostatnich przekreślone; usuń je przyciskiem **×**.
 
 Jeśli pliku nie da się otworzyć, Family Insight powie dlaczego – np. że zapisano go w nowszej
-wersji (zaktualizuj program, zobacz [Instalacja](./install#aktualizacja)) albo że jest uszkodzony
+wersji (zaktualizuj program, zobacz [Instalacja](./install#updating)) albo że jest uszkodzony
 (spróbuj [kopii zapasowej](#backups)).
 
 ## Przenoszenie drzewa na inny komputer

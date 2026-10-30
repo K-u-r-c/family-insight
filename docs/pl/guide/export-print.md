@@ -33,7 +33,7 @@ Wybierz **☰ → Drukuj…** albo naciśnij <kbd>Ctrl</kbd>+<kbd>P</kbd> (<kbd>
 się systemowe okno drukowania z całym drzewem na poziomej stronie A4, z nazwą drzewa i datą.
 Tam wybierzesz drukarkę i papier.
 
-## Wskazówki dla dużych drzew
+## Wskazówki dla dużych drzew {#large-trees}
 
 - Na jednej stronie duże drzewo robi się bardzo małe. Drukuj je w częściach: przełącz na widok
   **Przodkowie** lub **Potomkowie** z kilkoma [pokoleniami](./view-modes#generations) albo
