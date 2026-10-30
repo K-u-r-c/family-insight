@@ -283,7 +283,7 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
           ...(['father', 'mother', 'partner', 'child', 'sibling'] as const).map((role) => ({
             label: t(`relations.add.${role}`),
             icon: UserPlus,
-            onSelect: () => void addNewRelative(person, role).then(focusEditor)
+            onSelect: () => void addNewRelative(person, role).then((id) => id && focusEditor())
           })),
           { type: 'separator' },
           {

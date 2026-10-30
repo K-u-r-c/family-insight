@@ -39,3 +39,15 @@ export function formatList(
 export function formatNumber(value: number, language: string): string {
   return new Intl.NumberFormat(language).format(value)
 }
+
+/**
+ * Masculine form of a Polish surname with a gendered ending (Kowalska → Kowalski,
+ * Nowicka → Nowicki, Zawadzka → Zawadzki), part by part for double-barrelled names.
+ * Other surnames are returned unchanged.
+ */
+export function masculineSurname(surname: string): string {
+  return surname
+    .split('-')
+    .map((part) => part.replace(/(sk|ck|dzk)a$/u, '$1i').replace(/(SK|CK|DZK)A$/u, '$1I'))
+    .join('-')
+}

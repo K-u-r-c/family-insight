@@ -43,3 +43,32 @@ test('build a three-generation family from one person', async () => {
   await expect(page.getByText('That would make someone their own ancestor.')).toBeVisible()
   await closeApp(app)
 })
+
+test('a new father of a woman gets the masculine surname and opens for editing', async () => {
+  const { app, page } = await launch()
+  await page.getByRole('button', { name: 'New family tree' }).click()
+  await page.getByRole('button', { name: 'Create' }).click()
+  await page.getByLabel('Given names').fill('Anna')
+  await page.getByLabel('Surname', { exact: true }).fill('Kowalska')
+  await page.getByRole('button', { name: 'Done' }).click()
+  await expect(page.getByRole('heading', { name: 'Anna Kowalska' })).toBeVisible()
+
+  // The surname is prefilled, yet the editor still opens with the cursor in "Given names".
+  await page.getByRole('button', { name: 'Father' }).click()
+  await expect(page.getByLabel('Given names')).toBeFocused()
+  await expect(page.getByLabel('Surname', { exact: true })).toHaveValue('Kowalski')
+  await page.getByLabel('Given names').fill('Jan')
+  await page.getByLabel('Given names').press('Enter')
+  await page.getByRole('button', { name: 'Done' }).click()
+
+  // With both biological parents present, another parent is added as a step-parent.
+  await page.getByTitle('Go to Anna Kowalska').click()
+  await page.getByRole('button', { name: 'Mother' }).click()
+  await page.getByLabel('Given names').fill('Maria')
+  await page.getByLabel('Given names').press('Enter')
+  await page.getByTitle('Go to Anna Kowalska').first().click()
+  await page.getByRole('button', { name: 'Parent', exact: true }).click()
+  await expect(page.getByLabel('Given names')).toBeFocused()
+  await expect(page.getByText('A person can have at most two biological parents')).toBeHidden()
+  await closeApp(app)
+})

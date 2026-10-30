@@ -6,7 +6,8 @@ import {
   getPartnerships,
   otherPartner
 } from '@core/model/tree'
-import type { FamilyTree, Person, PersonId, Sex } from '@core/model/types'
+import type { FamilyTree, ParentChildKind, Person, PersonId, Sex } from '@core/model/types'
+import { masculineSurname } from '@core/text'
 import { choose, toast } from '@renderer/components/ui'
 import i18n from '@renderer/i18n'
 import {
@@ -41,6 +42,14 @@ function biologicalParents(tree: FamilyTree, id: PersonId): PersonId[] {
   return getParentLinks(tree, id)
     .filter((r) => r.kind === 'biological')
     .map((r) => r.parentId)
+}
+
+/**
+ * Kind of a newly added parent: biological while the child has fewer than two biological
+ * parents, otherwise a step-parent (the type can be changed later in the parent's menu).
+ */
+function newParentKind(tree: FamilyTree, childId: PersonId): ParentChildKind {
+  return biologicalParents(tree, childId).length >= 2 ? 'step' : 'biological'
 }
 
 /** If the child has exactly one other biological parent, partner them with the new parent. */
@@ -95,33 +104,39 @@ function oppositeSex(sex: Sex): Sex {
   return sex === 'male' ? 'female' : sex === 'female' ? 'male' : 'unknown'
 }
 
-/** Creates a new relative of `person` in one undoable step and selects them for editing. */
-export async function addNewRelative(person: Person, role: Role): Promise<void> {
+/**
+ * Creates a new relative of `person` in one undoable step and selects them. Returns the new
+ * person's id, or `undefined` when nothing was added (e.g. the user cancelled).
+ */
+export async function addNewRelative(person: Person, role: Role): Promise<PersonId | undefined> {
   const tree = useDocument.getState().tree
-  if (!tree) return
+  if (!tree) return undefined
   let otherParentId: PersonId | null | undefined = null
   if (role === 'child') {
     otherParentId = await pickOtherParent(tree, person)
-    if (otherParentId === undefined) return
+    if (otherParentId === undefined) return undefined
   }
 
-  runCommand(
+  return runCommand(
     composeCommands(`relations.add.${role}`, (initial, run) => {
       if (role === 'father' || role === 'mother' || role === 'parent') {
         const parent = run(
           addPersonCommand({
             givenNames: '',
-            surname: role === 'father' ? familySurname(person) : '',
+            surname: role === 'father' ? masculineSurname(familySurname(person)) : '',
             sex: SEX_FOR_ROLE[role] ?? 'unknown'
           })
         )
-        run(addParentChildCommand(parent.id, person.id))
-        partnerWithOtherParent(initial, person.id, parent.id, run)
+        const kind = newParentKind(initial, person.id)
+        run(addParentChildCommand(parent.id, person.id, kind))
+        if (kind === 'biological') partnerWithOtherParent(initial, person.id, parent.id, run)
+        return parent.id
       } else if (role === 'partner') {
         const partner = run(
           addPersonCommand({ givenNames: '', surname: '', sex: oppositeSex(person.sex) })
         )
         run(addPartnershipCommand(person.id, partner.id))
+        return partner.id
       } else if (role === 'child') {
         const other = otherParentId ? initial.persons[otherParentId] : undefined
         const child = run(
@@ -129,6 +144,7 @@ export async function addNewRelative(person: Person, role: Role): Promise<void> 
         )
         run(addParentChildCommand(person.id, child.id))
         if (other) run(addParentChildCommand(other.id, child.id))
+        return child.id
       } else if (role === 'sibling') {
         const sibling = run(
           addPersonCommand({ givenNames: '', surname: familySurname(person), sex: 'unknown' })
@@ -136,7 +152,9 @@ export async function addNewRelative(person: Person, role: Role): Promise<void> 
         for (const link of getParentLinks(initial, person.id)) {
           run(addParentChildCommand(link.parentId, sibling.id, link.kind))
         }
+        return sibling.id
       }
+      return undefined
     })
   )
 }
@@ -157,8 +175,9 @@ export async function linkExistingRelative(
   const linked = runCommand(
     composeCommands(`relations.add.${role}`, (initial, run) => {
       if (role === 'father' || role === 'mother' || role === 'parent') {
-        run(addParentChildCommand(other.id, person.id))
-        partnerWithOtherParent(initial, person.id, other.id, run)
+        const kind = newParentKind(initial, person.id)
+        run(addParentChildCommand(other.id, person.id, kind))
+        if (kind === 'biological') partnerWithOtherParent(initial, person.id, other.id, run)
       } else if (role === 'partner') {
         run(addPartnershipCommand(person.id, other.id))
       } else if (role === 'child') {

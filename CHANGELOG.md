@@ -6,6 +6,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Adding a father, child or sibling from the details panel now opens the new person's editor even
+  when the surname is filled in automatically (before, only relatives without a surname did).
+- A new father of a woman gets the masculine form of a Polish surname (Kowalska → Kowalski).
+- **+ Parent** for a person who already has two biological parents adds a step-parent instead of
+  failing with an error.
+
 ## [1.0.0] - 2026-10-30
 
 First public release.

@@ -39,6 +39,7 @@ import {
   runCommand,
   type Role
 } from './relationActions'
+import { focusEditor } from '@renderer/features/tree/TreeCanvas'
 import styles from './FamilySection.module.css'
 
 const KINDS: ParentChildKind[] = ['biological', 'adoptive', 'step', 'foster']
@@ -155,7 +156,7 @@ function Group({
             icon={Plus}
             disabled={a.disabled}
             title={a.hint}
-            onClick={() => void addNewRelative(person, a.role)}
+            onClick={() => void addNewRelative(person, a.role).then((id) => id && focusEditor())}
           >
             {a.label}
           </Button>
