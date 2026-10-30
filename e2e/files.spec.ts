@@ -1,7 +1,7 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { expect, test } from '@playwright/test'
-import { closeApp, launch, mockDialogs, tempDir } from './app'
+import { closeApp, launch, mockDialogs, tempDir, readTree } from './app'
 
 const SAMPLE = {
   format: 'family-insight',
@@ -37,10 +37,10 @@ test('new tree, save as, reopen from argv', async () => {
     BrowserWindow.getAllWindows()[0]!.webContents.send('menu:action', 'file:save-as')
   })
   await expect.poll(() => existsSync(target)).toBe(true)
-  const saved = JSON.parse(readFileSync(target, 'utf8'))
+  const saved = readTree(target)
   expect(saved).toMatchObject({
     format: 'family-insight',
-    schemaVersion: 2,
+    schemaVersion: 3,
     meta: { name: 'My family' }
   })
   await expect(page.getByText('All changes saved')).toBeVisible()

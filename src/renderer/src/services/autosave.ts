@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { serializeTree } from '@core/file/format'
 import { selectIsDirty, useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
+import { currentLibrary } from './media'
 import { treeForSave } from './viewMeta'
 
 export const AUTOSAVE_DELAY = 2000
@@ -39,14 +40,20 @@ export function useAutosave(): void {
       const id = recoverySession()
       const content = serializeTree(treeForSave(tree))
       if (filePath && useSettings.getState().settings.autosave) {
-        const result = await window.familyInsight.writeFile(filePath, content)
+        const result = await window.familyInsight.writeDocument(filePath, content, currentLibrary())
         if (result.ok) {
           useDocument.getState().markSaved(result.path, tree)
           await window.familyInsight.clearRecovery(id)
           return
         }
       }
-      await window.familyInsight.writeRecovery(id, filePath, tree.meta.name, content)
+      await window.familyInsight.writeRecovery(
+        id,
+        filePath,
+        tree.meta.name,
+        content,
+        currentLibrary()
+      )
     }
     const unsubscribe = useDocument.subscribe((state, prev) => {
       if (state.documentId !== prev.documentId && previousSession) {

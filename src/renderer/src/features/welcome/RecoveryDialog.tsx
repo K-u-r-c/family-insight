@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { LifeBuoy } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { parseTree } from '@core/file/format'
+import { parseTreeWithWarnings } from '@core/file/format'
 import type { RecoveryEntry } from '@shared/ipc'
 import { Button, Dialog, toast } from '@renderer/components/ui'
+import { attachLibrary } from '@renderer/services/media'
 import { useDocument } from '@renderer/store/document'
 import styles from './RecoveryDialog.module.css'
 
@@ -26,8 +27,9 @@ export function RecoveryDialog(): React.JSX.Element | null {
     const data = await window.familyInsight.readRecovery(entry.id)
     try {
       if (!data) throw new Error('missing')
-      const tree = parseTree(data.content)
+      const { tree, media } = parseTreeWithWarnings(data.content)
       useDocument.getState().loadDocument(tree, data.originalPath, { dirty: true })
+      await attachLibrary(data.library, media)
       toast({ message: t('recovery.restored', { name: entry.name }), tone: 'success' })
     } catch {
       toast({ message: t('recovery.failed'), tone: 'error' })

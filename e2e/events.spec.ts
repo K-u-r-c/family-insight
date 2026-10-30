@@ -1,7 +1,7 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { expect, test } from '@playwright/test'
-import { closeApp, launch, mockDialogs, tempDir } from './app'
+import { closeApp, launch, mockDialogs, tempDir, readTree } from './app'
 
 test('life event: add military service 1914–1918, save, reopen, see it in details', async () => {
   const target = join(tempDir(), 'events.finsight')
@@ -28,7 +28,7 @@ test('life event: add military service 1914–1918, save, reopen, see it in deta
     BrowserWindow.getAllWindows()[0]!.webContents.send('menu:action', 'file:save-as')
   })
   await expect.poll(() => existsSync(target)).toBe(true)
-  const saved = JSON.parse(readFileSync(target, 'utf8'))
+  const saved = readTree(target)
   const jan = Object.values(saved.persons as Record<string, { events: unknown[] }>)[0]!
   expect(jan.events).toMatchObject([
     {

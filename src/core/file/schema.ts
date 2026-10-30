@@ -1,4 +1,4 @@
-import { CITATION_QUALITIES, EVENT_TYPES } from '../model/types'
+import { CITATION_QUALITIES, EVENT_TYPES, MEDIA_TYPES } from '../model/types'
 
 /**
  * Hand-written shape validation for `.finsight` documents (no runtime dependency).
@@ -16,6 +16,39 @@ const QUALIFIER = ['exact', 'about', 'before', 'after'] as const
 const PC_KIND = ['biological', 'adoptive', 'step', 'foster'] as const
 const P_KIND = ['marriage', 'partnership', 'engagement', 'other'] as const
 const END_REASON = ['divorce', 'separation', 'death', 'other'] as const
+const HASH = /^[0-9a-f]{64}$/
+
+function checkIds(v: unknown, path: string, errors: string[]): void {
+  if (v !== undefined && !(Array.isArray(v) && v.every(isStr))) {
+    errors.push(`${path}: expected a list of ids`)
+  }
+}
+
+function checkMedia(doc: Obj, errors: string[]): void {
+  if (!isObj(doc.media)) {
+    errors.push('media: expected object')
+    return
+  }
+  for (const [id, m] of Object.entries(doc.media)) {
+    const path = `media.${id}`
+    if (!isObj(m) || m.id !== id || !isStr(m.fileName)) {
+      errors.push(`${path}: needs id and fileName`)
+      continue
+    }
+    if (!isStr(m.hash) || !HASH.test(m.hash)) errors.push(`${path}.hash: expected SHA-256 hex`)
+    if (!isStr(m.mime) || !(m.mime in MEDIA_TYPES)) errors.push(`${path}.mime: unsupported`)
+    checkDate(m.date, `${path}.date`, errors)
+    for (const key of ['title', 'place', 'description'] as const) {
+      if (!optStr(m[key])) errors.push(`${path}.${key}: expected text`)
+    }
+    for (const key of ['size', 'width', 'height'] as const) {
+      const n = m[key]
+      if (n !== undefined && !(typeof n === 'number' && Number.isFinite(n) && n >= 0)) {
+        errors.push(`${path}.${key}: expected a number`)
+      }
+    }
+  }
+}
 
 function checkCitations(v: unknown, path: string, errors: string[]): void {
   if (v === undefined) return
@@ -36,6 +69,7 @@ function checkCitations(v: unknown, path: string, errors: string[]): void {
     for (const key of ['page', 'text', 'notes'] as const) {
       if (!optStr(c[key])) errors.push(`${at}.${key}: expected text`)
     }
+    checkIds(c.mediaIds, `${at}.mediaIds`, errors)
   })
 }
 
@@ -58,9 +92,7 @@ function checkSources(doc: Obj, errors: string[]): void {
       ] as const) {
         if (!optStr(s[key])) errors.push(`${path}.${key}: expected text`)
       }
-      if (s.mediaIds !== undefined && !(Array.isArray(s.mediaIds) && s.mediaIds.every(isStr))) {
-        errors.push(`${path}.mediaIds: expected a list of ids`)
-      }
+      checkIds(s.mediaIds, `${path}.mediaIds`, errors)
     }
   }
   if (!isObj(doc.repositories)) errors.push('repositories: expected object')
@@ -171,9 +203,8 @@ export function checkTreeShape(doc: unknown): string[] {
       if (p.living !== undefined && typeof p.living !== 'boolean')
         errors.push(`${path}.living: expected boolean`)
       if (!optStr(p.notes)) errors.push(`${path}.notes: expected text`)
-      if (p.photo !== undefined && !(isStr(p.photo) && p.photo.startsWith('data:image/'))) {
-        errors.push(`${path}.photo: expected image data URL`)
-      }
+      checkIds(p.mediaIds, `${path}.mediaIds`, errors)
+      if (!optStr(p.portraitMediaId)) errors.push(`${path}.portraitMediaId: expected text`)
       if (!isStr(p.createdAt) || !isStr(p.updatedAt)) errors.push(`${path}: missing timestamps`)
     }
   }
@@ -209,5 +240,6 @@ export function checkTreeShape(doc: unknown): string[] {
     }
   }
   checkSources(doc, errors)
+  checkMedia(doc, errors)
   return errors
 }

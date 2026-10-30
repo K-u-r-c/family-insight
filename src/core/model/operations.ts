@@ -280,9 +280,16 @@ export function mergeTrees(
     ...Object.keys(other.persons),
     ...Object.keys(other.relationships),
     ...Object.keys(other.sources),
-    ...Object.keys(other.repositories)
+    ...Object.keys(other.repositories),
+    ...Object.keys(other.media)
   ]) {
-    if (tree.persons[id] || tree.relationships[id] || tree.sources[id] || tree.repositories[id]) {
+    if (
+      tree.persons[id] ||
+      tree.relationships[id] ||
+      tree.sources[id] ||
+      tree.repositories[id] ||
+      tree.media[id]
+    ) {
       throw new ModelError('duplicate-id', { id })
     }
   }
@@ -292,7 +299,8 @@ export function mergeTrees(
     persons: { ...tree.persons, ...other.persons },
     relationships: { ...tree.relationships, ...other.relationships },
     sources: { ...tree.sources, ...other.sources },
-    repositories: { ...tree.repositories, ...other.repositories }
+    repositories: { ...tree.repositories, ...other.repositories },
+    media: { ...tree.media, ...other.media }
   }
 }
 

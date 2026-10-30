@@ -265,7 +265,12 @@
     "removeRepository": "Usunięcie repozytorium",
     "addCitation": "Dodanie cytowania",
     "editCitation": "Edycja cytowania",
-    "removeCitation": "Usunięcie cytowania"
+    "removeCitation": "Usunięcie cytowania",
+    "addMedia": "Dodanie multimediów",
+    "editMedia": "Edycja multimediów",
+    "removeMedia": "Usunięcie multimediów",
+    "setPortrait": "Zmiana zdjęcia",
+    "removePortrait": "Usunięcie zdjęcia"
   },
   "files": {
     "treeFilter": "Drzewo Family Insight",
@@ -287,7 +292,9 @@
       "invalid-json": "Plik jest uszkodzony albo nie jest drzewem Family Insight.",
       "not-a-family-tree": "To nie jest plik drzewa Family Insight.",
       "newer-version": "To drzewo zapisano w nowszej wersji Family Insight. Zaktualizuj aplikację, aby je otworzyć.",
-      "invalid-data": "Plik zawiera nieprawidłowe dane i nie można go bezpiecznie otworzyć."
+      "invalid-data": "Plik zawiera nieprawidłowe dane i nie można go bezpiecznie otworzyć.",
+      "corrupt-container": "Plik jest uszkodzony i nie można go otworzyć. Spróbuj jednej z kopii zapasowych (.bak1 … .bak5) obok niego.",
+      "missing-tree": "Ten plik nie zawiera drzewa genealogicznego."
     },
     "csvFilter": "Arkusz CSV"
   },
@@ -317,7 +324,11 @@
     "dangling-citations-removed_one": "{{count}} cytowanie wskazywało na brakujące źródło i zostało usunięte. Zapisz drzewo, aby zachować poprawkę.",
     "dangling-citations-removed_few": "{{count}} cytowania wskazywały na brakujące źródła i zostały usunięte. Zapisz drzewo, aby zachować poprawkę.",
     "dangling-citations-removed_many": "{{count}} cytowań wskazywało na brakujące źródła i zostało usuniętych. Zapisz drzewo, aby zachować poprawkę.",
-    "dangling-citations-removed_other": "{{count}} cytowania wskazywało na brakujące źródła i zostało usuniętych. Zapisz drzewo, aby zachować poprawkę."
+    "dangling-citations-removed_other": "{{count}} cytowania wskazywało na brakujące źródła i zostało usuniętych. Zapisz drzewo, aby zachować poprawkę.",
+    "dangling-media-removed_one": "Usunięto {{count}} odwołanie do brakującego zdjęcia lub dokumentu. Zapisz drzewo, aby zachować poprawkę.",
+    "dangling-media-removed_few": "Usunięto {{count}} odwołania do brakujących zdjęć lub dokumentów. Zapisz drzewo, aby zachować poprawkę.",
+    "dangling-media-removed_many": "Usunięto {{count}} odwołań do brakujących zdjęć lub dokumentów. Zapisz drzewo, aby zachować poprawkę.",
+    "dangling-media-removed_other": "Usunięto {{count}} odwołania do brakujących zdjęć lub dokumentów. Zapisz drzewo, aby zachować poprawkę."
   },
   "relations": {
     "parents": "Rodzice",
@@ -393,7 +404,8 @@
       "event-not-found": "To wydarzenie już nie istnieje.",
       "source-not-found": "To źródło już nie istnieje.",
       "repository-not-found": "To repozytorium już nie istnieje.",
-      "citation-not-found": "To cytowanie już nie istnieje."
+      "citation-not-found": "To cytowanie już nie istnieje.",
+      "media-not-found": "To zdjęcie lub dokument już nie istnieje."
     }
   },
   "timeline": {
@@ -757,5 +769,12 @@
     "fact": {
       "parentChild": "{{parent}} – rodzic osoby {{child}}"
     }
+  },
+  "media": {
+    "filter": "Zdjęcia i dokumenty",
+    "missing_one": "W pliku brakuje {{count}} zdjęcia lub dokumentu.",
+    "missing_few": "W pliku brakuje {{count}} zdjęć lub dokumentów.",
+    "missing_many": "W pliku brakuje {{count}} zdjęć lub dokumentów.",
+    "missing_other": "W pliku brakuje {{count}} zdjęcia lub dokumentu."
   }
 }

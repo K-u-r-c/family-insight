@@ -5,13 +5,14 @@ import { compareFuzzyDates } from '@core/date/fuzzyDate'
 import { displayName, isLiving } from '@core/model/tree'
 import type { Person } from '@core/model/types'
 import { matchRanges, searchPersons } from '@core/search'
-import { anchorBelow, Avatar, IconButton, Menu, type MenuAnchor } from '@renderer/components/ui'
+import { anchorBelow, IconButton, Menu, type MenuAnchor } from '@renderer/components/ui'
 import { Panel } from '@renderer/features/workspace/Panel'
 import { useFormat } from '@renderer/i18n/format'
 import { cx } from '@renderer/lib/cx'
 import { useDocument } from '@renderer/store/document'
 import { useWorkspaceUi, type PeopleSort } from '@renderer/store/workspaceUi'
 import styles from './PeopleSidebar.module.css'
+import { PersonAvatar } from '@renderer/features/person/PersonAvatar'
 
 const ROW_HEIGHT = 52
 const OVERSCAN = 8
@@ -149,14 +150,7 @@ export function PeopleSidebar({ onCollapse }: { onCollapse: () => void }): React
                     if (person.id !== selectedId) select(person.id)
                   }}
                 >
-                  <Avatar
-                    givenNames={person.givenNames}
-                    surname={person.surname}
-                    sex={person.sex}
-                    photo={person.photo}
-                    size={32}
-                    deceased={isLiving(person) === false}
-                  />
+                  <PersonAvatar person={person} size={32} deceased={isLiving(person) === false} />
                   <span className={styles.text}>
                     <span className={styles.name}>
                       <Highlighted text={name} query={query} />

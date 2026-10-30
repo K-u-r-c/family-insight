@@ -73,12 +73,14 @@ version makes the document clean again. Saving (`services/documentFiles.ts`):
 
 1. `treeForSave(tree)` adds the current view settings to `meta.view`;
 2. `serializeTree` produces the JSON;
-3. `window.familyInsight.writeFile(path, content, { backup: true })` – main rotates `.bak1…5` and
-   writes atomically;
+3. `window.familyInsight.writeDocument(path, content, library, { backup: true })` – main rotates
+   `.bak1…5`, packs the JSON with the document's media into the container and writes atomically;
 4. `markSaved(path, tree)` records the saved version and the file path.
 
-Opening a file goes the other way: `readFile` → `parseTree` (validate + migrate) → `loadDocument` →
-`applyViewMeta`.
+Opening a file goes the other way: `readFile` (main unpacks the container into a media library) →
+`parseTreeWithWarnings` (validate + migrate) → `loadDocument` → `attachLibrary` (thumbnails, bytes
+moved out by migrations) → `applyViewMeta`. Media bytes never enter the store or the undo history –
+only the `media` metadata does; see [the media library](./architecture#media-library).
 
 ## Autosave and crash recovery
 
@@ -90,13 +92,14 @@ flowchart TD
   C["document changed"] --> T{"dirty after 2 s?"}
   T -- no --> X["clear recovery snapshot"]
   T -- yes --> F{"has a file and<br/>autosave is on?"}
-  F -- yes --> W["writeFile(path)"] --> OK{"ok?"}
+  F -- yes --> W["writeDocument(path)"] --> OK{"ok?"}
   OK -- yes --> S["markSaved + clear snapshot"]
   OK -- no --> R
-  F -- no --> R["writeRecovery(id, path, name, content)"]
+  F -- no --> R["writeRecovery(id, path, name, content, library)"]
 ```
 
-Recovery snapshots are JSON files in `userData/recovery/<id>.json`, one per open document session.
+Recovery snapshots are JSON files in `userData/recovery/<id>.json`, one per open document session;
+the media they list are written once each to `userData/recovery/<id>.media/`.
 They are removed when the document is saved, discarded or closed normally. At start-up,
 `listRecoverable` (main) returns snapshots that are newer than their original file; the renderer
 shows the recovery dialog for them. Autosave never creates backup copies – only explicit saves do.

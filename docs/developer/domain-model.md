@@ -16,6 +16,7 @@ classDiagram
     meta: TreeMeta
     persons: Record~PersonId, Person~
     relationships: Record~RelationshipId, Relationship~
+    media: Record~MediaId, MediaItem~
   }
   class TreeMeta {
     name: string
@@ -33,8 +34,17 @@ classDiagram
     death?: LifeEvent
     living?: boolean
     notes?: string
-    photo?: data URL
+    portraitMediaId?: MediaId
+    mediaIds?: MediaId[]
     events: PersonEvent[]
+  }
+  class MediaItem {
+    id: MediaId
+    hash: SHA-256
+    mime: jpeg | png | webp | gif | pdf
+    fileName: string
+    title?, place?, description?: string
+    date?: FuzzyDate
   }
   class PersonEvent {
     id: string
@@ -70,6 +80,8 @@ classDiagram
   FamilyTree --> "*" PartnershipRelationship
   Person --> LifeEvent
   Person --> "*" PersonEvent
+  FamilyTree --> "*" MediaItem
+  Person ..> MediaItem : portrait, gallery
   PartnershipRelationship --> LifeEvent
   LifeEvent --> FuzzyDate
 ```
@@ -80,8 +92,11 @@ classDiagram
   `displayName()` joins them.
 - `living` is `true`, `false` or **absent for “unknown”**. `isLiving()` infers `false` when there is a
   death date or place.
-- `photo` is a data URL of a 512 × 512 WebP image (JPEG where WebP encoding isn't available),
-  stored inline so a tree is one self-contained file.
+- `portraitMediaId` points to a media item – the portrait cropped to 512 × 512 (WebP, or JPEG where
+  WebP encoding isn't available). Media items describe photos and documents; their bytes are stored
+  once per SHA-256 hash in the `.finsight` container, outside the JSON (`src/core/model/media.ts`,
+  see [the media library](./architecture#media-library)). Before schema 3 the portrait was a
+  `photo` data URL.
 - Ids are opaque strings (`crypto.randomUUID()`), never shown to users. CSV export assigns
   readable ids `p1`, `p2` … instead.
 

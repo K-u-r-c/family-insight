@@ -22,9 +22,10 @@ Insight also keeps the last five versions next to the file automatically
 
 ## How big can a tree be? Do photos make it huge?
 
-Trees with a thousand people and more work smoothly. Photos are reduced to 512 × 512 pixels when you add
-them, so each adds only some tens of kilobytes – a tree with a few hundred photos stays a few
-megabytes and is easy to e-mail.
+Trees with a thousand people and more work smoothly. Portraits are reduced to 512 × 512 pixels when
+you add them, so each adds only some tens of kilobytes – a tree with a few hundred portraits stays a
+few megabytes and is easy to e-mail. Pictures are stored inside the file once, however many times
+they are used, and saving stays quick even when the file grows to hundreds of megabytes.
 
 ## Can I open a tree from another genealogy program (GEDCOM)?
 

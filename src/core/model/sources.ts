@@ -230,6 +230,17 @@ function filterCitations(
   return { tree: next, removed }
 }
 
+/** Applies `fn` to every citation in the tree; returning the same object keeps it unchanged. */
+export function mapCitations(tree: FamilyTree, fn: (citation: Citation) => Citation): FamilyTree {
+  let next = tree
+  for (const target of citationTargets(tree)) {
+    const list = getCitations(next, target)
+    const mapped = list.map(fn)
+    if (mapped.some((c, i) => c !== list[i])) next = setCitations(next, target, mapped)
+  }
+  return next
+}
+
 /** All citations of a source, with the fact each one supports. */
 export function getCitationsForSource(
   tree: FamilyTree,

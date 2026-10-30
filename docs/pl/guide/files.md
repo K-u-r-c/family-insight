@@ -7,8 +7,16 @@ description: Zapisywanie i otwieranie drzew, autozapis, odzyskiwanie po awarii, 
 ## Plik `.finsight`
 
 Każde drzewo to jeden plik z rozszerzeniem **`.finsight`** – w środku jest wszystko: osoby,
-relacje, zdjęcia i sposób wyświetlania drzewa. To Ty decydujesz, gdzie leży; możesz go kopiować,
-archiwizować i wysyłać e-mailem jak każdy dokument.
+relacje, źródła, zdjęcia i sposób wyświetlania drzewa. To Ty decydujesz, gdzie leży; możesz go
+kopiować, archiwizować i wysyłać e-mailem jak każdy dokument.
+
+::: info Starsze wersje
+Od wersji 1.1 plik `.finsight` jest skompresowaną paczką (jak plik zip), żeby zdjęcia i skany
+dokumentów mieściły się w nim oszczędnie: każdy obraz jest zapisany tylko raz, niezależnie od tego, ile
+razy go użyto. Family Insight 1.1 otwiera drzewa z wersji 1.0 i zapisuje je w nowej postaci; **wersja
+1.0 nie otworzy drzew zapisanych w 1.1** – zaktualizuj program na każdym komputerze, którego używasz
+(zobacz [Instalacja](./install#updating)).
+:::
 
 ## Zapisywanie
 

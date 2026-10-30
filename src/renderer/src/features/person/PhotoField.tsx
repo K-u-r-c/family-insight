@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { Camera, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { Person } from '@core/model/types'
-import { alertDialog, Avatar, Button } from '@renderer/components/ui'
+import { alertDialog, Button } from '@renderer/components/ui'
 import { cx } from '@renderer/lib/cx'
-import { updatePersonCommand } from '@renderer/store/commands'
+import { addMediaBytes, dataUrlToBytes } from '@renderer/services/media'
+import { setPortraitCommand } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
+import { PersonAvatar } from './PersonAvatar'
 import { PhotoCropDialog } from './PhotoCropDialog'
 import styles from './PhotoField.module.css'
 
@@ -21,7 +23,7 @@ function readFile(file: File): Promise<string> {
   })
 }
 
-/** Portrait: pick or drop an image, crop it, or remove it. */
+/** Portrait: pick or drop an image, crop it, or remove it. The crop goes to the media library. */
 export function PhotoField({ person }: { person: Person }): React.JSX.Element {
   const { t } = useTranslation()
   const dispatch = useDocument((s) => s.dispatch)
@@ -34,6 +36,15 @@ export function PhotoField({ person }: { person: Person }): React.JSX.Element {
       message: t(key as never) as unknown as string,
       danger: true
     })
+
+  const savePortrait = async (dataUrl: string): Promise<void> => {
+    const bytes = dataUrlToBytes(dataUrl)
+    const fileName = `portrait.${bytes[0] === 0xff ? 'jpg' : 'webp'}`
+    const added = await addMediaBytes(bytes, fileName)
+    if (!added.ok) return fail(`photo.error.${added.error}`)
+    const { hash, mime, size, width, height } = added
+    dispatch(setPortraitCommand(person.id, { hash, mime, fileName, size, width, height }))
+  }
 
   const pick = async (): Promise<void> => {
     const result = await window.familyInsight.pickPhoto()
@@ -68,24 +79,18 @@ export function PhotoField({ person }: { person: Person }): React.JSX.Element {
         onDragLeave={() => setOver(false)}
         onDrop={(e) => void onDrop(e)}
       >
-        <Avatar
-          givenNames={person.givenNames}
-          surname={person.surname}
-          sex={person.sex}
-          photo={person.photo}
-          size={72}
-        />
+        <PersonAvatar person={person} size={72} />
       </div>
       <div className={styles.actions}>
         <Button size="sm" icon={Camera} onClick={() => void pick()}>
-          {person.photo ? t('photo.change') : t('photo.add')}
+          {person.portraitMediaId ? t('photo.change') : t('photo.add')}
         </Button>
-        {person.photo && (
+        {person.portraitMediaId && (
           <Button
             size="sm"
             variant="ghost"
             icon={Trash2}
-            onClick={() => dispatch(updatePersonCommand(person.id, { photo: undefined }))}
+            onClick={() => dispatch(setPortraitCommand(person.id, null))}
           >
             {t('photo.remove')}
           </Button>
@@ -98,7 +103,7 @@ export function PhotoField({ person }: { person: Person }): React.JSX.Element {
           onClose={() => setSource(null)}
           onSave={(photo) => {
             setSource(null)
-            dispatch(updatePersonCommand(person.id, { photo }))
+            void savePortrait(photo)
           }}
         />
       )}

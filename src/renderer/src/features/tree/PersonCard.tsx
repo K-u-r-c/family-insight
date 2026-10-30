@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next'
 import type { LayoutNode } from '@core/layout/layout'
 import { displayName, isLiving } from '@core/model/tree'
 import type { Person } from '@core/model/types'
-import { Avatar, Icon } from '@renderer/components/ui'
+import { Icon } from '@renderer/components/ui'
 import { useFormat } from '@renderer/i18n/format'
 import { cx } from '@renderer/lib/cx'
 import styles from './PersonCard.module.css'
+import { PersonAvatar } from '@renderer/features/person/PersonAvatar'
 
 interface PersonCardProps {
   person: Person
@@ -87,14 +88,7 @@ export const PersonCard = memo(function PersonCard({
         }}
         onPointerDown={(e) => e.stopPropagation()}
       >
-        <Avatar
-          givenNames={person.givenNames}
-          surname={person.surname}
-          sex={person.sex}
-          photo={person.photo}
-          size={compact ? 30 : 40}
-          deceased={deceased}
-        />
+        <PersonAvatar person={person} size={compact ? 30 : 40} deceased={deceased} />
         <span className={styles.text}>
           <span className={styles.name}>{name}</span>
           {(lifespan || born) && (

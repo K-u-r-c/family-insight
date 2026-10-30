@@ -1,7 +1,7 @@
-import { copyFileSync, existsSync, readFileSync } from 'node:fs'
+import { copyFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { expect, test } from '@playwright/test'
-import { closeApp, launch, tempDir } from './app'
+import { closeApp, launch, tempDir, readTree } from './app'
 
 test('autosave writes saved files and explicit saves keep backups', async () => {
   const file = join(tempDir(), 'kowalscy.finsight')
@@ -13,7 +13,7 @@ test('autosave writes saved files and explicit saves keep backups', async () => 
   await page.keyboard.press('Enter')
   await expect(page.getByText('Unsaved changes')).toBeVisible()
   await expect(page.getByText('All changes saved')).toBeVisible({ timeout: 6000 })
-  expect(JSON.parse(readFileSync(file, 'utf8')).meta.name).toBe('Kowalscy (autosave)')
+  expect(readTree(file).meta.name).toBe('Kowalscy (autosave)')
   // Autosave does not create backups; an explicit save does.
   expect(existsSync(`${file}.bak1`)).toBe(false)
   await app.evaluate(({ BrowserWindow }) =>

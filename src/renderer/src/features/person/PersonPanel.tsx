@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Check, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { displayName, isLiving } from '@core/model/tree'
-import { Avatar, Button, IconButton } from '@renderer/components/ui'
+import { Button, IconButton } from '@renderer/components/ui'
 import { useFormat } from '@renderer/i18n/format'
 import { Panel } from '@renderer/features/workspace/Panel'
 import { useDocument } from '@renderer/store/document'
@@ -12,6 +12,7 @@ import { FamilySection } from './FamilySection'
 import { PersonDetails, useAgeLabel } from './PersonDetails'
 import { PersonEditor } from './PersonEditor'
 import styles from './PersonPanel.module.css'
+import { PersonAvatar } from '@renderer/features/person/PersonAvatar'
 
 /** Right-hand panel for the selected person: read-only details or the editor. */
 export function PersonPanel(): React.JSX.Element | null {
@@ -62,14 +63,7 @@ export function PersonPanel(): React.JSX.Element | null {
       }
     >
       <div className={styles.header}>
-        <Avatar
-          givenNames={person.givenNames}
-          surname={person.surname}
-          sex={person.sex}
-          photo={person.photo}
-          size={64}
-          deceased={isLiving(person) === false}
-        />
+        <PersonAvatar person={person} size={64} deceased={isLiving(person) === false} />
         <div className={styles.headerText}>
           <h3 className={styles.name}>{name}</h3>
           {person.birthSurname && (

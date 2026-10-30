@@ -5,6 +5,7 @@ export const MODEL_ERROR_CODES = [
   'source-not-found',
   'repository-not-found',
   'citation-not-found',
+  'media-not-found',
   'relationship-not-found',
   'self-relationship',
   'duplicate-relationship',

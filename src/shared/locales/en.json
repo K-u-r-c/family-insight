@@ -251,7 +251,12 @@
     "removeRepository": "Delete repository",
     "addCitation": "Add citation",
     "editCitation": "Edit citation",
-    "removeCitation": "Remove citation"
+    "removeCitation": "Remove citation",
+    "addMedia": "Add media",
+    "editMedia": "Edit media",
+    "removeMedia": "Delete media",
+    "setPortrait": "Change photo",
+    "removePortrait": "Remove photo"
   },
   "files": {
     "treeFilter": "Family Insight tree",
@@ -273,7 +278,9 @@
       "invalid-json": "The file is damaged or isn't a Family Insight tree.",
       "not-a-family-tree": "This isn't a Family Insight tree file.",
       "newer-version": "This tree was saved by a newer version of Family Insight. Please update the app to open it.",
-      "invalid-data": "The file contains invalid data and can't be opened safely."
+      "invalid-data": "The file contains invalid data and can't be opened safely.",
+      "corrupt-container": "The file is damaged and can't be opened. Try one of its backup copies (.bak1 … .bak5) next to it.",
+      "missing-tree": "This file doesn't contain a family tree."
     },
     "csvFilter": "CSV spreadsheet"
   },
@@ -301,7 +308,9 @@
     "dangling-citation": "A citation refers to a source that doesn’t exist (“{{id}}”).",
     "dangling-repository": "A source refers to a repository that doesn’t exist (“{{id}}”).",
     "dangling-citations-removed_one": "{{count}} citation referred to a missing source and was removed. Save the tree to keep the fix.",
-    "dangling-citations-removed_other": "{{count}} citations referred to missing sources and were removed. Save the tree to keep the fix."
+    "dangling-citations-removed_other": "{{count}} citations referred to missing sources and were removed. Save the tree to keep the fix.",
+    "dangling-media-removed_one": "{{count}} link to a missing photo or document was removed. Save the tree to keep the fix.",
+    "dangling-media-removed_other": "{{count}} links to missing photos or documents were removed. Save the tree to keep the fix."
   },
   "relations": {
     "parents": "Parents",
@@ -377,7 +386,8 @@
       "event-not-found": "This event no longer exists.",
       "source-not-found": "This source no longer exists.",
       "repository-not-found": "This repository no longer exists.",
-      "citation-not-found": "This citation no longer exists."
+      "citation-not-found": "This citation no longer exists.",
+      "media-not-found": "The photo or document no longer exists."
     }
   },
   "timeline": {
@@ -705,5 +715,10 @@
     "fact": {
       "parentChild": "{{parent}} – parent of {{child}}"
     }
+  },
+  "media": {
+    "filter": "Photos and documents",
+    "missing_one": "{{count}} photo or document is missing from the file.",
+    "missing_other": "{{count}} photos or documents are missing from the file."
   }
 }

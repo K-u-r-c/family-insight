@@ -20,7 +20,6 @@ import type {
 import { compareFuzzyDates } from '@core/date/fuzzyDate'
 import {
   anchorBelow,
-  Avatar,
   Button,
   IconButton,
   Menu,
@@ -42,6 +41,7 @@ import {
 } from './relationActions'
 import { focusEditor } from '@renderer/features/tree/TreeCanvas'
 import styles from './FamilySection.module.css'
+import { PersonAvatar } from '@renderer/features/person/PersonAvatar'
 
 const KINDS: ParentChildKind[] = ['biological', 'adoptive', 'step', 'foster']
 
@@ -75,14 +75,7 @@ function RelativeRow({
         aria-label={name}
         aria-describedby={meta ? metaId : undefined}
       >
-        <Avatar
-          givenNames={person.givenNames}
-          surname={person.surname}
-          sex={person.sex}
-          photo={person.photo}
-          size={32}
-          deceased={isLiving(person) === false}
-        />
+        <PersonAvatar person={person} size={32} deceased={isLiving(person) === false} />
         <span className={styles.text}>
           <span className={styles.name}>{name}</span>
           {meta && (

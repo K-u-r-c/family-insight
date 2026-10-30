@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs'
 import { extname, resolve } from 'node:path'
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
+import { ContainerError, packDocument, unpackDocument } from '@core/file/container'
 import { decodeText } from '@core/file/encoding'
 import { FILE_EXTENSION } from '@core/file/format'
 import { getFormat, listFormats, type FormatAdapter } from '@core/io/registry'
@@ -14,10 +15,13 @@ import {
 } from '@shared/ipc'
 import { rotateBackups } from './backups'
 import { writeFileAtomic } from './fsUtils'
+import { createLibrary, getLibrary } from './media'
 import { getSettings } from './settings'
 import { t } from './i18n'
 
 const MAX_FILE_BYTES = 200 * 1024 * 1024
+/** `.finsight` containers carry photos and scans, so they may be much larger. */
+const MAX_DOCUMENT_BYTES = 2 * 1024 * 1024 * 1024 - 1
 const MAX_PHOTO_BYTES = 20 * 1024 * 1024
 const PHOTO_TYPES: Record<string, string> = {
   jpg: 'image/jpeg',
@@ -71,16 +75,28 @@ export async function readFile(path: string): Promise<FileReadResult> {
   const full = resolve(path)
   if (!readable(full)) return { ok: false, path: full, error: 'unsupported' }
   try {
+    const isDocument = extname(full).toLowerCase() === `.${FILE_EXTENSION}`
     const stat = await fs.stat(full)
-    if (stat.size > MAX_FILE_BYTES) return { ok: false, path: full, error: 'too-large' }
-    const buffer = await fs.readFile(full)
-    if (extname(full).toLowerCase() === `.${FILE_EXTENSION}`) {
+    if (stat.size > (isDocument ? MAX_DOCUMENT_BYTES : MAX_FILE_BYTES)) {
+      return { ok: false, path: full, error: 'too-large' }
+    }
+    const buffer = new Uint8Array(await fs.readFile(full))
+    if (isDocument) {
+      const { json, store } = unpackDocument(buffer)
       writable.add(full)
       app.addRecentDocument(full)
+      return {
+        ok: true,
+        path: full,
+        content: json,
+        encoding: 'utf-8',
+        library: createLibrary(store)
+      }
     }
     const { text, encoding } = decodeText(buffer)
     return { ok: true, path: full, content: text, encoding }
   } catch (error) {
+    if (error instanceof ContainerError) return { ok: false, path: full, error: error.code }
     return { ok: false, path: full, error: errorCode(error) }
   }
 }
@@ -164,6 +180,39 @@ export function registerFileHandlers(): void {
           opts.encoding === 'base64' ? Buffer.from(content, 'base64') : content
         )
         if (extname(full).toLowerCase() === `.${FILE_EXTENSION}`) app.addRecentDocument(full)
+        return { ok: true, path: full }
+      } catch (error) {
+        return { ok: false, error: errorCode(error) }
+      }
+    }
+  )
+
+  ipcMain.handle(
+    IpcChannel.FileWriteDocument,
+    async (
+      _event,
+      path: unknown,
+      json: unknown,
+      library: unknown,
+      options: unknown
+    ): Promise<FileWriteResult> => {
+      if (typeof path !== 'string' || typeof json !== 'string') return { ok: false, error: 'io' }
+      const full = resolve(path)
+      if (!writable.has(full) || extname(full).toLowerCase() !== `.${FILE_EXTENSION}`) {
+        return { ok: false, error: 'permission' }
+      }
+      try {
+        const store = getLibrary(library) ?? { media: new Map(), thumbs: new Map() }
+        const { chunks, missing } = packDocument(json, store)
+        if (missing.length) console.warn(`Saving without ${missing.length} missing media files`)
+        if (
+          (options as { backup?: unknown } | undefined)?.backup === true &&
+          getSettings().backups
+        ) {
+          await rotateBackups(full).catch((error) => console.warn('Backup failed', error))
+        }
+        await writeFileAtomic(full, chunks)
+        app.addRecentDocument(full)
         return { ok: true, path: full }
       } catch (error) {
         return { ok: false, error: errorCode(error) }

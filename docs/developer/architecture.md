@@ -11,7 +11,7 @@ logic and everything that touches the operating system or the screen.
 flowchart TB
   subgraph main["Main process (Node.js)"]
     M1["window, native menu<br/>dialogs, printing"]
-    M2["files, settings,<br/>recovery, backups"]
+    M2["files, settings,<br/>recovery, backups,<br/>media libraries"]
     M3["IPC handlers<br/>(validate every input)"]
   end
   subgraph preload["Preload"]
@@ -85,8 +85,8 @@ sequenceDiagram
   S->>S: new immutable tree,<br/>pushHistory
   S-->>UI: re-render
   Note over A: 2 s after the last change
-  A->>M: writeFile(path, JSON) via preload
-  M->>M: writable? atomic write
+  A->>M: writeDocument(path, JSON, library) via preload
+  M->>M: writable? pack container,<br/>atomic write
   M-->>A: ok
   A->>S: markSaved(tree)
 ```
@@ -95,7 +95,50 @@ sequenceDiagram
   (for example a cycle) throws and is shown as a toast, leaving the tree untouched.
 - The tree is immutable: unchanged people and relationships are shared between versions, which keeps
   undo snapshots cheap.
-- Saving serialises the tree with `serializeTree` (`src/core/file`) and writes it atomically in main.
+- Saving serialises the tree with `serializeTree` (`src/core/file`); main packs the JSON with the
+  document's media into the `.finsight` container and writes it atomically.
+
+## Media library {#media-library}
+
+Photos and scanned documents are not part of the JSON. The document lists them as `media` items
+(id, SHA-256 `hash`, type, file name, title …); their bytes live in a **media library** – a
+`MediaStore` (`src/core/file/container.ts`) of `hash → bytes` plus thumbnails – held by the main
+process for each open document and addressed by an id:
+
+```mermaid
+flowchart LR
+  subgraph renderer["Renderer"]
+    D["useDocument<br/>tree.media (metadata)"]
+    T["useMedia<br/>library id, thumbnail URLs"]
+  end
+  subgraph main["Main process"]
+    L["media libraries<br/>id → MediaStore"]
+  end
+  F[(".finsight<br/>tree.json + media/ + thumbs/")]
+  R[("userData/recovery<br/>id.json + id.media/")]
+  F -->|"readFile: unpackDocument"| L
+  T -->|"importMedia / putMedia / putThumbnail"| L
+  L -->|"getThumbnails / getMedia"| T
+  D -->|"writeDocument(JSON, library)"| L
+  L -->|"packDocument"| F
+  L -->|"writeRecovery: new files only"| R
+```
+
+- **Saving sends only JSON** over IPC. Main includes the media the JSON lists – everything else is
+  garbage-collected from the file, never from the library, because undo may bring an item back.
+  Unchanged media keep their CRC, so saving a large tree costs little more than writing it.
+- Reading a `.finsight` file creates a library (`FileReadResult.library`); new trees get one on first
+  use (`ensureLibrary` in `services/media.ts`) and a library is released when another document
+  opens.
+- **Thumbnails** (WebP, 256 px) are made in the renderer with `createImageBitmap` and a canvas – it
+  decodes every supported image type and works on any platform – and stored in the container, so the
+  tree view never decodes full scans. PDFs have no thumbnail.
+- Exported images embed portrait thumbnails as data URLs (`portraitDataUrl`), because the SVG is
+  rendered where the renderer's object URLs don't exist.
+- **Crash recovery** writes each media file once to `userData/recovery/<id>.media/<hash>` next to the
+  JSON snapshot; restoring loads them into a new library.
+- The container code, hashing (`@noble/hashes`) and media model are pure TypeScript in `src/core`, so
+  a platform without a main process can host the library itself.
 
 ## Further reading
 

@@ -10,6 +10,7 @@ import { useSettings } from '@renderer/store/settings'
 import { addPersonCommand } from '@renderer/store/commands'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { clearRecovery } from './autosave'
+import { attachLibrary, currentLibrary } from './media'
 import { treeForSave } from './viewMeta'
 
 const api = (): typeof window.familyInsight => window.familyInsight
@@ -87,14 +88,17 @@ export async function loadTreeFile(result: FileReadResult): Promise<boolean> {
   }
   let tree: FamilyTree
   let repaired: Issue[]
+  let extracted: Map<string, Uint8Array>
   try {
-    ;({ tree, warnings: repaired } = parseTreeWithWarnings(result.content))
+    ;({ tree, warnings: repaired, media: extracted } = parseTreeWithWarnings(result.content))
   } catch (error) {
+    if (result.library) void api().releaseMediaLibrary(result.library)
     await showFileError(error instanceof FileParseError ? error.code : 'invalid-data')
     return false
   }
   // A repaired file is marked as changed, so the next save (or autosave) writes the fix.
   useDocument.getState().loadDocument(tree, result.path, { dirty: repaired.length > 0 })
+  await attachLibrary(result.library ?? (await api().createMediaLibrary()), extracted)
   for (const issue of repaired) {
     toast({
       message: i18n.t(`issues.${issue.code}` as never, issue.params as never) as unknown as string,
@@ -120,7 +124,14 @@ export async function openTreeAt(path: string): Promise<void> {
 async function writeTo(path: string): Promise<boolean> {
   const tree = useDocument.getState().tree
   if (!tree) return false
-  const result = await api().writeFile(path, serializeTree(treeForSave(tree)), { backup: true })
+  const result = await api().writeDocument(
+    path,
+    serializeTree(treeForSave(tree)),
+    currentLibrary(),
+    {
+      backup: true
+    }
+  )
   if (!result.ok) {
     await showFileError(result.error, true)
     return false

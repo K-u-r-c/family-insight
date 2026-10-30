@@ -11,6 +11,7 @@ import {
 } from './files'
 import { registerPrintHandlers } from './printing'
 import { initMainI18n, setMainLanguage } from './i18n'
+import { registerMediaHandlers } from './media'
 import { registerRecoveryHandlers } from './recovery'
 import { registerIpcHandlers } from './ipc'
 import { attachEditContextMenu } from './contextMenu'
@@ -116,6 +117,7 @@ if (!hasLock) {
     registerBuiltInFormats()
     registerFileHandlers()
     registerRecoveryHandlers()
+    registerMediaHandlers()
     registerPrintHandlers(isWritable)
     buildMenu()
     createWindow()

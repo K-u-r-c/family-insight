@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next'
 import { searchPersons } from '@core/search'
 import { displayName, isLiving } from '@core/model/tree'
 import type { Person, PersonId } from '@core/model/types'
-import { Avatar, Dialog, TextField } from '@renderer/components/ui'
+import { Dialog, TextField } from '@renderer/components/ui'
 import { useFormat } from '@renderer/i18n/format'
 import { useDocument } from '@renderer/store/document'
 import styles from './PersonPickerDialog.module.css'
+import { PersonAvatar } from '@renderer/features/person/PersonAvatar'
 
 interface PersonPickerDialogProps {
   open: boolean
@@ -64,14 +65,7 @@ export function PersonPickerDialog({
             className={styles.option}
             onClick={() => onPick(p)}
           >
-            <Avatar
-              givenNames={p.givenNames}
-              surname={p.surname}
-              sex={p.sex}
-              photo={p.photo}
-              size={32}
-              deceased={isLiving(p) === false}
-            />
+            <PersonAvatar person={p} size={32} deceased={isLiving(p) === false} />
             <span className={styles.text}>
               <span className={styles.name}>{displayName(p) || t('person.unnamed')}</span>
               <span className={styles.meta}>{format.lifespan(p)}</span>

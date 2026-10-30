@@ -5,6 +5,7 @@ import i18n from '@renderer/i18n'
 import { layoutOptions } from '@renderer/features/tree/TreeCanvas'
 import { useDocument } from '@renderer/store/document'
 import { useTreeView } from '@renderer/store/treeView'
+import { portraitDataUrl } from '@renderer/services/media'
 import { buildTreeSvg, canvasMeasure, type TreeSvg } from './treeSvg'
 
 export type ImageFormat = 'png' | 'svg' | 'pdf'
@@ -43,7 +44,8 @@ export function currentTreeSvg(options: ImageExportOptions): TreeSvg | null {
     title: options.withTitle ? tree.meta.name : undefined,
     subtitle: options.withTitle ? t('export.subtitle', { date }) : undefined,
     unnamed: t('person.unnamed'),
-    bornLabel: (surname) => t('tree.born', { surname })
+    bornLabel: (surname) => t('tree.born', { surname }),
+    portrait: (person) => portraitDataUrl(tree, person)
   })
 }
 

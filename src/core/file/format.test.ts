@@ -5,6 +5,8 @@ import { migrate } from './migrations'
 import { remarriageFixture } from '../test/fixtures'
 import { addPersonEvent, updatePerson } from '../model/operations'
 import { SCHEMA_VERSION } from '../model/types'
+import { addMedia, setPortrait } from '../model/media'
+import { hashBytes } from './container'
 
 function code(fn: () => unknown): string | undefined {
   try {
@@ -20,12 +22,11 @@ describe('.finsight format', () => {
     let tree = remarriageFixture()
     tree = updatePerson(tree, 'jan', {
       birth: { date: { value: '1890-05', qualifier: 'about' }, place: 'Kraków' },
-      notes: 'Linia 1\nLinia 2 „cudzysłów"',
-      photo: 'data:image/webp;base64,AAAA'
+      notes: 'Linia 1\nLinia 2 „cudzysłów"'
     })
     tree.meta.rootPersonId = 'jan'
     const text = serializeTree(tree)
-    expect(text.startsWith('{\n  "format": "family-insight",\n  "schemaVersion": 2')).toBe(true)
+    expect(text.startsWith('{\n  "format": "family-insight",\n  "schemaVersion": 3')).toBe(true)
     expect(parseTree(text)).toEqual(tree)
     expect(parseTree('\uFEFF' + text)).toEqual(tree)
   })
@@ -41,7 +42,7 @@ describe('.finsight format', () => {
 
   it('refuses files from a newer version', () => {
     const text = serializeTree(remarriageFixture()).replace(
-      '"schemaVersion": 2',
+      `"schemaVersion": ${SCHEMA_VERSION}`,
       '"schemaVersion": 99'
     )
     expect(code(() => parseTree(text))).toBe('newer-version')
@@ -65,6 +66,9 @@ describe('.finsight format', () => {
 function asVersion1(tree: ReturnType<typeof remarriageFixture>): string {
   const doc = JSON.parse(serializeTree(tree))
   doc.schemaVersion = 1
+  delete doc.sources
+  delete doc.repositories
+  delete doc.media
   for (const p of Object.values(doc.persons) as Record<string, unknown>[]) delete p.events
   return JSON.stringify(doc, null, 2)
 }
@@ -77,10 +81,10 @@ describe('schema v2: life events', () => {
     expect(tree).toEqual(remarriageFixture())
   })
 
-  it('opens a v1 file, saves it as v2 and re-opens it identically', () => {
+  it('opens a v1 file, saves it in the current version and re-opens it identically', () => {
     const fromV1 = parseTree(asVersion1(remarriageFixture()))
     const saved = serializeTree(fromV1)
-    expect(JSON.parse(saved).schemaVersion).toBe(2)
+    expect(JSON.parse(saved).schemaVersion).toBe(SCHEMA_VERSION)
     expect(parseTree(saved)).toEqual(fromV1)
   })
 
@@ -117,7 +121,7 @@ describe('schema v2: life events', () => {
   it('an app that only knows v1 refuses v2 files as "newer version"', () => {
     // A v1.0.x app has SCHEMA_VERSION 1; a v2 file is newer for it, like v3 is for this one.
     const text = serializeTree(remarriageFixture()).replace(
-      '"schemaVersion": 2',
+      `"schemaVersion": ${SCHEMA_VERSION}`,
       `"schemaVersion": ${SCHEMA_VERSION + 1}`
     )
     expect(code(() => parseTree(text))).toBe('newer-version')
@@ -127,8 +131,6 @@ describe('schema v2: life events', () => {
 describe('schema v2: sources and citations', () => {
   it('migrates v1 files to empty sources and repositories', () => {
     const doc = JSON.parse(asVersion1(remarriageFixture()))
-    delete doc.sources
-    delete doc.repositories
     const tree = parseTree(JSON.stringify(doc))
     expect(tree.sources).toEqual({})
     expect(tree.repositories).toEqual({})
@@ -167,6 +169,91 @@ describe('schema v2: sources and citations', () => {
     expect(tree.persons.jan!.citations).toBeUndefined()
     expect(warnings).toEqual([
       { severity: 'warning', code: 'dangling-citations-removed', params: { count: 1 } }
+    ])
+  })
+})
+
+/** 1×1 PNG. */
+const PNG = Uint8Array.from(
+  atob(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='
+  ),
+  (c) => c.charCodeAt(0)
+)
+
+describe('schema v3: media library', () => {
+  /** The tree as a schema-v2 file whose people have portraits as data URLs. */
+  function asVersion2WithPhotos(): string {
+    const doc = JSON.parse(serializeTree(remarriageFixture()))
+    doc.schemaVersion = 2
+    delete doc.media
+    const dataUrl = `data:image/png;base64,${btoa(String.fromCharCode(...PNG))}`
+    doc.persons.jan.photo = dataUrl
+    doc.persons.anna.photo = dataUrl
+    doc.persons.ewa.photo = 'data:image/png;base64,bm90IGFuIGltYWdl'
+    return JSON.stringify(doc)
+  }
+
+  it('moves v2 portraits into the media library, stored once per content', () => {
+    const { tree, media } = parseTreeWithWarnings(asVersion2WithPhotos())
+    const hash = hashBytes(PNG)
+    expect([...media.keys()]).toEqual([hash])
+    expect(media.get(hash)).toEqual(PNG)
+    expect(tree.persons.jan).not.toHaveProperty('photo')
+    expect(tree.persons.jan!.portraitMediaId).toBe('portrait-jan')
+    expect(tree.media['portrait-jan']).toEqual({
+      id: 'portrait-jan',
+      hash,
+      mime: 'image/png',
+      fileName: 'portrait.png',
+      size: PNG.length
+    })
+    expect(tree.media['portrait-anna']!.hash).toBe(hash)
+    // Not an image: the broken portrait is dropped rather than failing the whole file.
+    expect(tree.persons.ewa).not.toHaveProperty('photo')
+    expect(tree.persons.ewa!.portraitMediaId).toBeUndefined()
+  })
+
+  it('round-trips media items and references', () => {
+    let tree = addMedia(
+      remarriageFixture(),
+      {
+        hash: 'a'.repeat(64),
+        mime: 'application/pdf',
+        fileName: 'akt.pdf',
+        title: 'Birth certificate',
+        date: { value: '1890', qualifier: 'exact' }
+      },
+      { id: 'm1' }
+    ).tree
+    tree = setPortrait(tree, 'jan', 'm1')
+    tree = updatePerson(tree, 'anna', { mediaIds: ['m1'] })
+    expect(parseTree(serializeTree(tree))).toEqual(tree)
+  })
+
+  it('validates media items', () => {
+    const bad = (item: unknown): string | undefined => {
+      const doc = JSON.parse(serializeTree(remarriageFixture()))
+      doc.media = { m1: item }
+      return code(() => parseTree(JSON.stringify(doc)))
+    }
+    const ok = { id: 'm1', hash: 'b'.repeat(64), mime: 'image/png', fileName: 'a.png' }
+    expect(bad(ok)).toBeUndefined()
+    expect(bad({ ...ok, hash: 'xyz' })).toBe('invalid-data')
+    expect(bad({ ...ok, mime: 'image/heic' })).toBe('invalid-data')
+    expect(bad({ ...ok, width: -1 })).toBe('invalid-data')
+    expect(bad({ ...ok, id: 'm2' })).toBe('invalid-data')
+  })
+
+  it('drops references to missing media items on load and reports it', () => {
+    const doc = JSON.parse(serializeTree(remarriageFixture()))
+    doc.persons.jan.portraitMediaId = 'gone'
+    doc.persons.anna.mediaIds = ['gone']
+    const { tree, warnings } = parseTreeWithWarnings(JSON.stringify(doc))
+    expect(tree.persons.jan!.portraitMediaId).toBeUndefined()
+    expect(tree.persons.anna!.mediaIds).toBeUndefined()
+    expect(warnings).toEqual([
+      { severity: 'warning', code: 'dangling-media-removed', params: { count: 2 } }
     ])
   })
 })

@@ -7,7 +7,7 @@
  */
 
 /** Bump when the persisted document shape changes; add a migration in `src/core/file`. */
-export const SCHEMA_VERSION = 2
+export const SCHEMA_VERSION = 3
 
 export type PersonId = string
 export type RelationshipId = string
@@ -59,7 +59,7 @@ export interface Source {
   url?: string
   notes?: string
   /** Scans or photos of the source (media library). */
-  mediaIds?: string[]
+  mediaIds?: MediaId[]
 }
 
 export const CITATION_QUALITIES = ['primary', 'secondary', 'questionable', 'unreliable'] as const
@@ -77,6 +77,41 @@ export interface Citation {
   /** A transcription or quotation of the relevant text. */
   text?: string
   notes?: string
+  /** Scans of the record (media library). */
+  mediaIds?: MediaId[]
+}
+
+export type MediaId = string
+
+/** File types the media library accepts, with the extension used inside the container. */
+export const MEDIA_TYPES = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+  'application/pdf': 'pdf'
+} as const
+
+export type MediaMime = keyof typeof MEDIA_TYPES
+
+/**
+ * A photo or scanned document. The bytes are stored once per SHA-256 `hash` in the
+ * `.finsight` container (`media/<hash>.<ext>`), not in the JSON (schema v3).
+ */
+export interface MediaItem {
+  id: MediaId
+  hash: string
+  mime: MediaMime
+  /** Original file name, used when exporting the file again. */
+  fileName: string
+  /** Size in bytes. */
+  size?: number
+  title?: string
+  date?: FuzzyDate
+  place?: string
+  description?: string
+  width?: number
+  height?: number
 }
 
 /** Built-in kinds of life events; `custom` uses `PersonEvent.customType` as its name. */
@@ -140,8 +175,10 @@ export interface Person {
   /** `undefined` means "unknown"; inferred from `death` when absent. */
   living?: boolean
   notes?: string
-  /** Portrait as a data URL (see the photos issue for size limits). */
-  photo?: string
+  /** Photos and documents of the person, in the order the user arranged them. */
+  mediaIds?: MediaId[]
+  /** Portrait shown on the card (schema v3; replaces the v1/v2 `photo` data URL). */
+  portraitMediaId?: MediaId
   createdAt: string
   updatedAt: string
 }
@@ -199,4 +236,6 @@ export interface FamilyTree {
   /** Sources and repositories of the whole tree (schema v2). */
   sources: Record<SourceId, Source>
   repositories: Record<RepositoryId, Repository>
+  /** Media library: photos and scanned documents (schema v3). */
+  media: Record<MediaId, MediaItem>
 }

@@ -19,6 +19,7 @@ import {
   updateRepositoryCommand,
   updateSourceCommand,
   removePersonCommand,
+  setPortraitCommand,
   updatePersonCommand
 } from './commands'
 import { selectCanRedo, selectCanUndo, selectIsDirty, useDocument } from './document'
@@ -159,5 +160,31 @@ describe('document store', () => {
     s.dispatch(removeCitationCommand(target, citation.id))
     s.dispatch(removeRepositoryCommand(repo.id))
     expect(useDocument.getState().tree!.repositories).toEqual({})
+  })
+
+  it('replaces portraits as one undoable step and drops unused ones', () => {
+    const s = useDocument.getState()
+    const jan = s.dispatch(addPersonCommand(person('Jan')))
+    const photo = (c: string) => ({
+      hash: c.repeat(64),
+      mime: 'image/webp' as const,
+      fileName: 'portrait.webp'
+    })
+    s.dispatch(setPortraitCommand(jan.id, photo('a')))
+    const first = useDocument.getState().tree!
+    const firstId = first.persons[jan.id]!.portraitMediaId!
+    expect(first.media[firstId]!.hash).toBe('a'.repeat(64))
+
+    s.dispatch(setPortraitCommand(jan.id, photo('b')))
+    let tree = useDocument.getState().tree!
+    expect(Object.values(tree.media).map((m) => m.hash)).toEqual(['b'.repeat(64)])
+
+    useDocument.getState().undo()
+    expect(useDocument.getState().tree).toBe(first)
+    useDocument.getState().redo()
+    s.dispatch(setPortraitCommand(jan.id, null))
+    tree = useDocument.getState().tree!
+    expect(tree.persons[jan.id]!.portraitMediaId).toBeUndefined()
+    expect(tree.media).toEqual({})
   })
 })

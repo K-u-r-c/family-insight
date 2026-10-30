@@ -200,3 +200,43 @@ partnership dialog; the open target lives in the workspace UI store, so any comp
 In the details view a fact's superscript count opens the same dialog instead of a hover popover –
 it works with keyboard and touch the same way. The sources manager is a dialog reachable from
 **☰** and **Edit → Sources…**.
+
+## Media library in a zip container, schema 3 (2026-10, issue #56)
+
+Photos and scanned documents (many per person, PDFs, 25 MB each) don't fit into the JSON file as
+data URLs: base64 adds a third, and every autosave would rewrite and re-encode all of them. Options:
+
+| Option                                          | Verdict                                                                                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| (a) JSON with a deduplicated base64 media table | Simple, but files grow by a third, parsing and saving a 200 MB JSON string is slow, and limits would have to be tiny.     |
+| **(b) zip container** (`tree.json` + `media/`)  | **Chosen.** Still one file to copy, mail or open on a phone; media stored once by SHA-256; saving writes bytes it has.    |
+| (c) sidecar folder next to the file             | Easy to break: copying only the `.finsight` file loses the photos; awkward with mobile document pickers and share sheets. |
+
+Details:
+
+- **Own minimal zip writer/reader** (`src/core/file/zip.ts`) with fflate only for deflate. fflate's
+  `zipSync` recomputes every CRC and concatenates everything into one buffer – about 400 ms for
+  200 MB on every autosave. Our writer reuses each file's CRC (read from the zip or computed once) and
+  returns chunks that main writes without copying: a tree with 500 photos (205 MB) where one person
+  changed saves in **~85 ms** including `fsync` (NVMe, Linux); the unit test asserts < 1 s. Media
+  are stored, `tree.json` is deflated. No zip64, timestamps fixed to 1980 (reproducible files).
+- **Bytes live in the main process** per open document (a "library" addressed by id); the renderer
+  sends only JSON when saving and holds only thumbnail object URLs. Garbage collection happens when
+  writing the container, never in the library, so undo can bring a deleted item back.
+- **Hashing:** SHA-256 via `@noble/hashes` (audited, synchronous, pure JS) – the load pipeline and
+  migrations are synchronous and must also run without Node (mobile, #82+). ~175 MB/s is plenty for
+  25 MB files.
+- **Thumbnails** are generated in the renderer (`createImageBitmap` + canvas → WebP 256 px):
+  Electron's `nativeImage` decodes only PNG/JPEG and can't render PDFs on Linux, while the canvas
+  path handles JPEG/PNG/WebP/GIF everywhere, including a Capacitor webview. PDFs get an icon.
+- **Type by content:** files are accepted by their magic bytes (JPEG, PNG, GIF, WebP, PDF), never by
+  extension; at most 25 MB per file.
+- **Schema 3** rather than folding into the unreleased schema 2 (as #54 did): the migration moves
+  bytes out of the JSON (portrait data URLs become media items and container entries via a migration
+  context), which is easier to test and reason about as its own step. Both ship in 1.1.
+- **Portraits** are media items (`portraitMediaId`), the cropped 512 px image added to the library.
+  Replacing or removing a portrait deletes the old item when nothing else uses it.
+- **Crash recovery** writes media files once per snapshot (`<id>.media/<hash>`) instead of a full
+  container each time, so a 2-second autosave of an untitled tree doesn't rewrite all photos.
+- **Compatibility:** 1.0.x can't read containers (it reports a damaged file). Accepted: the
+  "newer version" message can't be retrofitted into released versions.

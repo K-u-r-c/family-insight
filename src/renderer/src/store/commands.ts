@@ -37,10 +37,21 @@ import {
   type SourceInput,
   type SourcePatch
 } from '@core/model/sources'
+import {
+  addMedia,
+  mediaUsage,
+  removeMedia,
+  setPortrait,
+  updateMedia,
+  type MediaInput,
+  type MediaPatch
+} from '@core/model/media'
 import type {
   Citation,
   CitationId,
   FamilyTree,
+  MediaId,
+  MediaItem,
   ParentChildKind,
   PartnershipRelationship,
   Person,
@@ -237,6 +248,48 @@ export const mergeTreeCommand = (other: FamilyTree): Command => ({
 export const setRootCommand = (id: PersonId | undefined): Command => ({
   label: 'history.setRoot',
   run: (tree) => ({ tree: setRootPerson(tree, id), result: undefined })
+})
+
+export const addMediaCommand = (input: MediaInput): Command<MediaItem> => ({
+  label: 'history.addMedia',
+  run: (tree) => {
+    const { tree: next, media } = addMedia(tree, input)
+    return { tree: next, result: media }
+  }
+})
+
+export const updateMediaCommand = (id: MediaId, patch: MediaPatch): Command => ({
+  label: 'history.editMedia',
+  coalesceKey: `media:${id}:${Object.keys(patch).sort().join(',')}`,
+  run: (tree) => ({ tree: updateMedia(tree, id, patch), result: undefined })
+})
+
+export const removeMediaCommand = (id: MediaId): Command => ({
+  label: 'history.removeMedia',
+  run: (tree) => ({ tree: removeMedia(tree, id), result: undefined })
+})
+
+/**
+ * Sets a person's portrait to a new media item (`null` removes it). The previous portrait
+ * leaves the library when nothing else uses it.
+ */
+export const setPortraitCommand = (personId: PersonId, input: MediaInput | null): Command => ({
+  label: input ? 'history.setPortrait' : 'history.removePortrait',
+  run: (initial) => {
+    let tree = initial
+    const previous = tree.persons[personId]?.portraitMediaId
+    let mediaId: MediaId | undefined
+    if (input) {
+      const added = addMedia(tree, input)
+      tree = added.tree
+      mediaId = added.media.id
+    }
+    tree = setPortrait(tree, personId, mediaId)
+    if (previous && tree.media[previous] && mediaUsage(tree, previous) === 0) {
+      tree = removeMedia(tree, previous)
+    }
+    return { tree, result: undefined }
+  }
 })
 
 /** Runs several steps as a single undoable command (e.g. "add father" = person + link). */

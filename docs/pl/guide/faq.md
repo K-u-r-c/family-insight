@@ -21,9 +21,10 @@ Insight sam też trzyma obok pliku pięć ostatnich wersji ([kopie zapasowe](./f
 
 ## Jak duże może być drzewo? Czy zdjęcia bardzo je powiększają?
 
-Drzewa z tysiącem osób i więcej działają płynnie. Zdjęcia są przy dodawaniu zmniejszane do 512 × 512
-pikseli, więc każde zajmuje tylko kilkadziesiąt kilobajtów – drzewo z kilkuset zdjęciami ma kilka
-megabajtów i łatwo je wysłać e-mailem.
+Drzewa z tysiącem osób i więcej działają płynnie. Portrety są przy dodawaniu zmniejszane do 512 × 512
+pikseli, więc każdy zajmuje tylko kilkadziesiąt kilobajtów – drzewo z kilkuset portretami ma kilka
+megabajtów i łatwo je wysłać e-mailem. Obrazy są zapisane w pliku tylko raz, niezależnie od tego, ile
+razy ich użyto, a zapis pozostaje szybki nawet wtedy, gdy plik urośnie do setek megabajtów.
 
 ## Czy otworzę drzewo z innego programu genealogicznego (GEDCOM)?
 

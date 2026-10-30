@@ -73,6 +73,8 @@ export interface TreeSvgOptions {
   measure?: Measure
   unnamed?: string
   bornLabel?: (surname: string) => string
+  /** Portrait to embed as a data URL (exports can't load the app's object URLs). */
+  portrait?: (person: Person) => string | undefined
 }
 
 export interface TreeSvg {
@@ -109,14 +111,15 @@ function card(
   const initials =
     ((person.givenNames.trim()[0] ?? '') + (person.surname.trim()[0] ?? '')).toLocaleUpperCase() ||
     '?'
+  const photo = o.portrait?.(person)
   const clipId = `clip-${node.id.replace(/[^a-zA-Z0-9-]/g, '')}`
   const nameY = metaText ? y + h / 2 - 2 : y + h / 2 + 5
   return [
     `<g>`,
     `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${compact ? 10 : 14}" fill="${PALETTE.card}" stroke="${PALETTE.border}"/>`,
     `<rect x="${x}" y="${y + 10}" width="3" height="${h - 20}" rx="1.5" fill="${PALETTE.sex[person.sex]}"/>`,
-    person.photo
-      ? `<clipPath id="${clipId}"><circle cx="${ax + avatar / 2}" cy="${ay + avatar / 2}" r="${avatar / 2}"/></clipPath><image href="${person.photo}" x="${ax}" y="${ay}" width="${avatar}" height="${avatar}" clip-path="url(#${clipId})" preserveAspectRatio="xMidYMid slice"/>`
+    photo
+      ? `<clipPath id="${clipId}"><circle cx="${ax + avatar / 2}" cy="${ay + avatar / 2}" r="${avatar / 2}"/></clipPath><image href="${photo}" x="${ax}" y="${ay}" width="${avatar}" height="${avatar}" clip-path="url(#${clipId})" preserveAspectRatio="xMidYMid slice"/>`
       : `<circle cx="${ax + avatar / 2}" cy="${ay + avatar / 2}" r="${avatar / 2}" fill="${PALETTE.soft[person.sex]}"/><text x="${ax + avatar / 2}" y="${ay + avatar / 2 + avatar * 0.14}" text-anchor="middle" font-family="${escapeXml(FONT)}" font-size="${Math.round(avatar * 0.38)}" font-weight="650" fill="${PALETTE.sex[person.sex]}">${escapeXml(initials)}</text>`,
     `<text x="${tx}" y="${nameY}" font-family="${escapeXml(FONT)}" font-size="${compact ? 13 : 14}" font-weight="600" fill="${deceased ? PALETTE.muted : PALETTE.text}">${escapeXml(name)}</text>`,
     metaText

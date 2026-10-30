@@ -7,8 +7,15 @@ description: Save and open family trees, autosave, crash recovery, backup copies
 ## The `.finsight` file
 
 Each family tree is one file with the extension **`.finsight`** – everything is inside: people,
-relationships, photos and how the tree was viewed. You decide where it lives, and you can copy,
-back up or e-mail it like any other document.
+relationships, sources, photos and how the tree was viewed. You decide where it lives, and you can
+copy, back up or e-mail it like any other document.
+
+::: info Older versions
+Since version 1.1 a `.finsight` file is a compressed package (like a zip file) so that photos and
+scanned documents fit in efficiently: each picture is stored only once, however often it is used.
+Family Insight 1.1 opens trees from 1.0 and saves them in the new form; **1.0 can't open trees saved
+by 1.1** – update it on every computer you use (see [Installation](./install#updating)).
+:::
 
 ## Saving
 

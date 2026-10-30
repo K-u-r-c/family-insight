@@ -1,7 +1,8 @@
-import { mkdtempSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { _electron as electron, type ElectronApplication, type Page } from '@playwright/test'
+import { unzipSync } from 'fflate'
 
 export interface Launched {
   app: ElectronApplication
@@ -60,4 +61,12 @@ export function tempDir(): string {
 export async function closeApp(app: ElectronApplication): Promise<void> {
   await mockDialogs(app, { message: 1 })
   await app.close()
+}
+
+/** The document JSON of a saved `.finsight` file (container or legacy JSON). */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function readTree(path: string): any {
+  const bytes = readFileSync(path)
+  const json = bytes[0] === 0x50 ? unzipSync(bytes)['tree.json']! : bytes
+  return JSON.parse(new TextDecoder().decode(json))
 }

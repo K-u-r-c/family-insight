@@ -28,8 +28,9 @@ The window is created in `src/main/index.ts` with:
 
 `src/renderer/index.html` sets a strict **Content Security Policy**:
 `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:`.
-No remote scripts, no `eval`, no network requests to other origins. Photos are data URLs, which is
-why `data:` is allowed for images.
+No remote scripts, no `eval`, no network requests to other origins. Photos are shown from `blob:`
+object URLs of their thumbnails, and the crop dialog and exports use `data:` URLs, which is why both
+are allowed for images.
 
 Navigation is locked down too: `will-navigate` cancels any attempt to load another page, and
 `setWindowOpenHandler` denies new windows – `https://` links are handed to the default browser with
@@ -62,7 +63,12 @@ The renderer never sees the file system. `src/main/files.ts` enforces:
   (`writable` set). `writeFile` to any other path fails with `permission` – even a compromised
   renderer can't overwrite arbitrary files.
 - **Readable files** must have the extension of a registered format (`.finsight`, `.csv`), and are
-  limited to 200 MB; photos are picked through their own dialog and limited to 20 MB.
+  limited to 200 MB (`.finsight` containers to 2 GiB); photos are picked through their own dialog
+  and limited to 20 MB.
+- **Media files** enter a library only after main has checked their type by magic bytes (JPEG,
+  PNG, WebP, GIF, PDF – never by extension) and size (25 MB). Container entries are only accepted
+  under `media/<sha256>.<ext>` and `thumbs/<sha256>.webp`; other names (including `../` paths) are
+  ignored, and nothing is ever extracted to disk.
 - Writes are **atomic** (temporary file, then rename), so a crash never leaves a half-written tree.
 - Backups and recovery copies are written only by main, to fixed locations.
 
