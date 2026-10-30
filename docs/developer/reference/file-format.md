@@ -23,9 +23,10 @@ container**; Family Insight 1.0 wrote plain UTF-8 JSON, which still opens.
   **garbage-collected on save**. Unknown entries are ignored when reading.
 - Media are stored uncompressed (they are compressed formats already). Saving reuses each file's
   CRC-32 from when it was read or added, so a save only compresses `tree.json` and writes bytes the
-  app already has – 205 MB with 500 photos in about 85 ms on an NVMe disk (including `fsync`), see
-  the performance test in `src/core/file/container.test.ts`.
-- No zip64: a container is limited to 4 GiB (the app opens files up to 2 GiB) and 65 535 entries.
+  app already has – 205 MB with 500 photos in about 95 ms on an NVMe disk (including `fsync` and
+  backup rotation), see the performance test in `src/main/documentWriter.test.ts`.
+- No zip64; the app opens and saves containers up to 2 GiB (`too-large` otherwise) with at most
+  65 535 entries.
 - A file is a container when it starts with the zip signature `PK\x03\x04`; anything else is read
   as legacy JSON. A damaged zip (bad CRC, truncated, encrypted) is reported as
   `corrupt-container`, a zip without `tree.json` as `missing-tree`.
@@ -282,7 +283,8 @@ field still opens in an older one.
 view is stored in `meta.view`. The renderer sends only this JSON to main (`writeDocument`); main
 packs it with the media of the document's library (`packDocument`) and writes the chunks
 **atomically** (temporary file + `fsync` + rename) without concatenating them in memory. Explicit
-saves first copy the previous file to `name.finsight.bak1` and rotate older copies up to `.bak5`.
+saves first keep the previous file as `name.finsight.bak1` (a hard link where possible, otherwise a
+copy) and rotate older copies up to `.bak5`.
 
 ## Versioning and migrations
 

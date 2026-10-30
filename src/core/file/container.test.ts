@@ -1,6 +1,3 @@
-import { closeSync, fsyncSync, mkdtempSync, openSync, rmSync, writevSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
 import { strToU8, unzipSync } from 'fflate'
 import { describe, expect, it } from 'vitest'
 import { addMedia, setPortrait } from '../model/media'
@@ -43,17 +40,6 @@ function withMedia(
   const hash = hashBytes(bytes)
   store.media.set(hash, { bytes })
   return addMedia(tree, { hash, mime, fileName: `${id}.png`, size: bytes.length }, { id }).tree
-}
-
-/** Writes chunks the way main does (in order, without concatenating). */
-function writeChunks(path: string, chunks: Uint8Array[]): void {
-  const fd = openSync(path, 'w')
-  try {
-    for (let i = 0; i < chunks.length; i += 512) writevSync(fd, chunks.slice(i, i + 512))
-    if (process.env.FINSIGHT_PERF_FSYNC) fsyncSync(fd)
-  } finally {
-    closeSync(fd)
-  }
 }
 
 const pack = (tree: FamilyTree, store: MediaStore): Uint8Array =>
@@ -146,27 +132,4 @@ describe('.finsight container', () => {
       'missing-tree'
     )
   })
-
-  it('saves a tree with 500 photos where one person changed in under a second', () => {
-    const store = emptyMediaStore()
-    let tree = remarriageFixture()
-    const PHOTO_BYTES = 400 * 1024
-    for (let i = 0; i < 500; i++) tree = withMedia(tree, store, `m${i}`, fakeImage(i, PHOTO_BYTES))
-    const dir = mkdtempSync(join(tmpdir(), 'finsight-perf-'))
-    try {
-      // First save computes the CRCs; afterwards only the JSON changes.
-      writeChunks(join(dir, 'tree.finsight'), packDocument(serializeTree(tree), store).chunks)
-      tree = updatePerson(tree, 'jan', { notes: 'Changed' })
-      const start = performance.now()
-      const { chunks } = packDocument(serializeTree(tree), store)
-      writeChunks(join(dir, 'tree.finsight'), chunks)
-      const ms = performance.now() - start
-      const total = chunks.reduce((n, c) => n + c.length, 0)
-      console.info(`Saved ${(total / 1e6).toFixed(0)} MB with 500 photos in ${ms.toFixed(0)} ms`)
-      expect(total).toBeGreaterThan(200e6)
-      expect(ms).toBeLessThan(1000)
-    } finally {
-      rmSync(dir, { recursive: true, force: true })
-    }
-  }, 60_000)
 })

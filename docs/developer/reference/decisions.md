@@ -218,8 +218,13 @@ Details:
   `zipSync` recomputes every CRC and concatenates everything into one buffer – about 400 ms for
   200 MB on every autosave. Our writer reuses each file's CRC (read from the zip or computed once) and
   returns chunks that main writes without copying: a tree with 500 photos (205 MB) where one person
-  changed saves in **~85 ms** including `fsync` (NVMe, Linux); the unit test asserts < 1 s. Media
-  are stored, `tree.json` is deflated. No zip64, timestamps fixed to 1980 (reproducible files).
+  changed saves in **~95 ms** through the real save path (pack, temporary file, `fsync`, rename;
+  NVMe, Linux), with backup rotation ~90 ms; `src/main/documentWriter.test.ts` asserts < 1 s for
+  both. Media are stored, `tree.json` is deflated. No zip64, timestamps fixed to 1980
+  (reproducible files).
+- **Backups are hard links** (`.bak1` links to the previous file, which the atomic rename replaces)
+  instead of copies, so rotating them costs nothing even for large trees; file systems without hard
+  links (FAT/exFAT, some network shares) fall back to copying.
 - **Bytes live in the main process** per open document (a "library" addressed by id); the renderer
   sends only JSON when saving and holds only thumbnail object URLs. Garbage collection happens when
   writing the container, never in the library, so undo can bring a deleted item back.

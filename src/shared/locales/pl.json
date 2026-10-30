@@ -286,7 +286,7 @@
       "saveTitle": "Nie udało się zapisać pliku",
       "not-found": "Plik już nie istnieje. Mógł zostać przeniesiony lub usunięty.",
       "permission": "Nie masz uprawnień do tego pliku.",
-      "too-large": "Plik jest zbyt duży, aby go otworzyć.",
+      "too-large": "Plik jest zbyt duży, aby go otworzyć lub zapisać.",
       "unsupported": "Ten typ pliku nie jest obsługiwany.",
       "io": "Wystąpił błąd podczas odczytu lub zapisu pliku.",
       "invalid-json": "Plik jest uszkodzony albo nie jest drzewem Family Insight.",

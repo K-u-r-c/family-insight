@@ -272,7 +272,7 @@
       "saveTitle": "Couldn't save the file",
       "not-found": "The file doesn't exist any more. It may have been moved or deleted.",
       "permission": "You don't have permission to access this file.",
-      "too-large": "The file is too large to open.",
+      "too-large": "The file is too large to open or save.",
       "unsupported": "This type of file isn't supported.",
       "io": "Something went wrong while reading or writing the file.",
       "invalid-json": "The file is damaged or isn't a Family Insight tree.",

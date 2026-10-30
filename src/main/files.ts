@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs'
 import { extname, resolve } from 'node:path'
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
-import { ContainerError, packDocument, unpackDocument } from '@core/file/container'
+import { ContainerError, unpackDocument } from '@core/file/container'
 import { decodeText } from '@core/file/encoding'
 import { FILE_EXTENSION } from '@core/file/format'
 import { getFormat, listFormats, type FormatAdapter } from '@core/io/registry'
@@ -14,14 +14,13 @@ import {
   type UnsavedChoice
 } from '@shared/ipc'
 import { rotateBackups } from './backups'
+import { DocumentTooLargeError, MAX_DOCUMENT_BYTES, saveDocument } from './documentWriter'
 import { writeFileAtomic } from './fsUtils'
 import { createLibrary, getLibrary } from './media'
 import { getSettings } from './settings'
 import { t } from './i18n'
 
 const MAX_FILE_BYTES = 200 * 1024 * 1024
-/** `.finsight` containers carry photos and scans, so they may be much larger. */
-const MAX_DOCUMENT_BYTES = 2 * 1024 * 1024 * 1024 - 1
 const MAX_PHOTO_BYTES = 20 * 1024 * 1024
 const PHOTO_TYPES: Record<string, string> = {
   jpg: 'image/jpeg',
@@ -202,19 +201,14 @@ export function registerFileHandlers(): void {
         return { ok: false, error: 'permission' }
       }
       try {
-        const store = getLibrary(library) ?? { media: new Map(), thumbs: new Map() }
-        const { chunks, missing } = packDocument(json, store)
-        if (missing.length) console.warn(`Saving without ${missing.length} missing media files`)
-        if (
-          (options as { backup?: unknown } | undefined)?.backup === true &&
-          getSettings().backups
-        ) {
-          await rotateBackups(full).catch((error) => console.warn('Backup failed', error))
-        }
-        await writeFileAtomic(full, chunks)
+        const backup =
+          (options as { backup?: unknown } | undefined)?.backup === true && getSettings().backups
+        const { missing } = await saveDocument(full, json, getLibrary(library), { backup })
+        if (missing.length) console.warn(`Saved without ${missing.length} missing media files`)
         app.addRecentDocument(full)
         return { ok: true, path: full }
       } catch (error) {
+        if (error instanceof DocumentTooLargeError) return { ok: false, error: 'too-large' }
         return { ok: false, error: errorCode(error) }
       }
     }

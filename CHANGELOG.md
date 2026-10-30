@@ -6,6 +6,24 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **Life events** besides birth and death – baptism, emigration, military service, occupation,
+  residence and more, with dates, periods, places and descriptions; shown in the details timeline,
+  searchable and counted in the statistics.
+- **Sources and citations** – a sources manager (**Edit → Sources…**) with repositories, and
+  citations with page, quality, date and transcription for names, birth, death, events,
+  relationships and marriages.
+- **Media library** inside the `.finsight` file: photos and documents are stored once, however
+  often they are used, and saving stays fast for trees of hundreds of megabytes.
+
+### Changed
+
+- **`.finsight` files are now zip containers** (schema 3). Trees from 1.0 open and are saved in the
+  new format; **Family Insight 1.0 can't open files saved by 1.1** – update every computer you use.
+- Backup copies (`.bak1…5`) are hard links where the file system allows it, so they are instant even
+  for large trees.
+
 ## [1.0.1] - 2026-10-30
 
 ### Added

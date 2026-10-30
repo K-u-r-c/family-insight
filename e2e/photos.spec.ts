@@ -1,4 +1,4 @@
-import { copyFileSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { expect, test } from '@playwright/test'
 import { unzipSync } from 'fflate'
@@ -66,10 +66,19 @@ test('portraits of files from version 1.0 move into the media library', async ()
   expect(Buffer.from(entries[`media/${portrait.hash}.png`]!).equals(png)).toBe(true)
   expect(entries[`thumbs/${portrait.hash}.webp`]).toBeDefined()
 
-  // Reopening the container shows the portrait again.
+  // Reopening the container shows the portrait again, and exported images embed it.
   await closeApp(app)
   const again = await launch({ args: [file] })
   await expect(again.page.locator('[data-person-id="ewa"] img')).toHaveAttribute('src', /^blob:/)
+  const svg = join(tempDir(), 'tree.svg')
+  await mockDialogs(again.app, { save: svg })
+  await again.page.getByRole('button', { name: 'File' }).click()
+  await again.page.getByRole('menuitem', { name: 'Export Image…' }).click()
+  await again.page.getByRole('radio', { name: 'SVG', exact: true }).click()
+  await again.page.getByRole('button', { name: 'Export…' }).click()
+  await expect(again.page.getByText('Image exported')).toBeVisible()
+  await expect.poll(() => existsSync(svg)).toBe(true)
+  expect(readFileSync(svg, 'utf8').match(/href="data:image\/webp;base64,/g)).toHaveLength(1)
   await closeApp(again.app)
 })
 
