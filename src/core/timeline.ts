@@ -6,7 +6,8 @@ import type {
   PartnershipEndReason,
   PartnershipKind,
   PersonEvent,
-  PersonId
+  PersonId,
+  RelationshipId
 } from './model/types'
 
 export type TimelineEvent =
@@ -16,6 +17,7 @@ export type TimelineEvent =
       type: 'partnership'
       date?: FuzzyDate
       place?: string
+      relationshipId: RelationshipId
       partnerId: PersonId
       kind: PartnershipKind
     }
@@ -23,6 +25,7 @@ export type TimelineEvent =
       type: 'partnership-end'
       date?: FuzzyDate
       place?: string
+      relationshipId: RelationshipId
       partnerId: PersonId
       reason?: PartnershipEndReason
     }
@@ -55,6 +58,7 @@ export function buildTimeline(tree: FamilyTree, personId: PersonId): TimelineEve
       type: 'partnership',
       date: r.start?.date,
       place: r.start?.place,
+      relationshipId: r.id,
       partnerId,
       kind: r.kind
     })
@@ -63,6 +67,7 @@ export function buildTimeline(tree: FamilyTree, personId: PersonId): TimelineEve
         type: 'partnership-end',
         date: r.end.date,
         place: r.end.place,
+        relationshipId: r.id,
         partnerId,
         reason: r.end.reason
       })

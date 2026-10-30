@@ -2,6 +2,7 @@ import { ageAt } from './date/fuzzyDate'
 import { getParentLinks, isLiving } from './model/tree'
 import type { FamilyTree, Person, PersonId } from './model/types'
 import { compareText } from './text'
+import { factsWithoutSource, recordedFacts } from './model/sources'
 
 export interface CountItem {
   label: string
@@ -32,6 +33,9 @@ export interface TreeStats {
   eventPlaces: CountItem[]
   /** People without any life event besides birth and death. */
   withoutEvents: PersonId[]
+  /** Recorded facts and how many of them cite at least one source. */
+  facts: number
+  sourcedFacts: number
 }
 
 function top(items: Map<string, PersonId[]>, limit: number, language: string): CountItem[] {
@@ -85,6 +89,8 @@ export function computeStats(
     }
   }
 
+  const facts = recordedFacts(tree)
+
   // Generations: longest descent chain, memoised over parent links.
   const depth = new Map<PersonId, number>()
   const visiting = new Set<PersonId>()
@@ -124,6 +130,8 @@ export function computeStats(
     missingParents: people.filter((p) => getParentLinks(tree, p.id).length === 0).map((p) => p.id),
     eventTypes: top(eventTypes, limit, language),
     eventPlaces: top(eventPlaces, limit, language),
-    withoutEvents: people.filter((p) => p.events.length === 0).map((p) => p.id)
+    withoutEvents: people.filter((p) => p.events.length === 0).map((p) => p.id),
+    facts: facts.length,
+    sourcedFacts: facts.length - factsWithoutSource(tree).length
   }
 }

@@ -1,5 +1,5 @@
 import { useId, useMemo, useState } from 'react'
-import { Link2, MoreHorizontal, Plus } from 'lucide-react'
+import { BookMarked, Link2, MoreHorizontal, Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import {
   displayName,
@@ -30,6 +30,7 @@ import {
 import { useFormat } from '@renderer/i18n/format'
 import { updateRelationshipCommand } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
+import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { PartnershipDialog } from './PartnershipDialog'
 import { PersonPickerDialog } from './PersonPickerDialog'
 import {
@@ -249,6 +250,12 @@ export function FamilySection({ person }: { person: Person }): React.JSX.Element
           checked: link.kind === kind,
           onSelect: () => void runCommand(updateRelationshipCommand(link.id, { kind }))
         })),
+        {
+          label: t('sources.citationsTitle'),
+          icon: BookMarked,
+          onSelect: () =>
+            useWorkspaceUi.getState().setCiting({ kind: 'relationship', relationshipId: link.id })
+        },
         { type: 'separator' },
         {
           label: t('relations.removeLink'),
@@ -264,6 +271,12 @@ export function FamilySection({ person }: { person: Person }): React.JSX.Element
       anchor,
       entries: [
         { label: t('relations.editPartnership'), onSelect: () => setEditing(link.id) },
+        {
+          label: t('sources.citationsTitle'),
+          icon: BookMarked,
+          onSelect: () =>
+            useWorkspaceUi.getState().setCiting({ kind: 'relationship', relationshipId: link.id })
+        },
         { type: 'separator' },
         {
           label: t('relations.removeLink'),

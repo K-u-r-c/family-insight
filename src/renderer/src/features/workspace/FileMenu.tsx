@@ -4,6 +4,7 @@ import {
   FileUp,
   FolderOpen,
   ImageDown,
+  Library,
   Menu as MenuIcon,
   Plus,
   Printer,
@@ -59,6 +60,12 @@ export function FileMenu(): React.JSX.Element {
     { label: t('menu.importCsv'), icon: FileUp, onSelect: () => void startCsvImport() },
     { label: t('menu.exportCsv'), icon: FileDown, onSelect: () => openDialog('export-csv') },
     { label: t('menu.exportImage'), icon: ImageDown, onSelect: () => openDialog('export-image') },
+    { type: 'separator' },
+    {
+      label: t('menu.sources'),
+      icon: Library,
+      onSelect: () => useWorkspaceUi.getState().openSources()
+    },
     { type: 'separator' },
     {
       label: t('menu.print'),

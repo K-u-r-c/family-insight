@@ -63,6 +63,7 @@ function guideSidebar(locale: Locale): DefaultTheme.SidebarItem[] {
         { text: pl ? 'Edycja osoby' : 'Editing a person', link: `${p}editing` },
         { text: pl ? 'Wydarzenia' : 'Life events', link: `${p}events` },
         { text: pl ? 'Relacje' : 'Relationships', link: `${p}relationships` },
+        { text: pl ? 'Źródła' : 'Sources', link: `${p}sources` },
         { text: pl ? 'Usuwanie i cofanie' : 'Deleting and undoing', link: `${p}undo` }
       ]
     },

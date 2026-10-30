@@ -29,6 +29,8 @@ import { addPersonAndEdit } from './features/workspace/useAddPerson'
 import { useSettings } from './store/settings'
 import { useTreeView } from './store/treeView'
 import { printTree } from './features/export/exportImage'
+import { CitationsDialog } from './features/sources/CitationsDialog'
+import { SourcesDialog } from './features/sources/SourcesDialog'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
 import { useAutosave } from './services/autosave'
 import { startCsvImport } from './features/csv/importFlow'
@@ -75,6 +77,9 @@ export function App(): React.JSX.Element {
         const id = useDocument.getState().selectedPersonId
         if (id) void deletePersonWithConfirm(id)
       },
+      'edit:sources': () => {
+        if (useDocument.getState().tree) useWorkspaceUi.getState().openSources()
+      },
       'edit:find': () => {
         const search = document.getElementById('workspace-search') as HTMLInputElement | null
         search?.focus()
@@ -106,6 +111,7 @@ export function App(): React.JSX.Element {
   const hash = useHash()
   const hasDocument = useDocument((s) => s.tree !== null)
   const dialog = useWorkspaceUi((s) => s.dialog)
+  const citing = useWorkspaceUi((s) => s.citing)
   const openDialog = useWorkspaceUi((s) => s.openDialog)
   return (
     <>
@@ -128,6 +134,13 @@ export function App(): React.JSX.Element {
       {dialog === 'stats' && hasDocument && <StatsDialog onClose={() => openDialog(null)} />}
       {dialog === 'shortcuts' && <ShortcutsDialog onClose={() => openDialog(null)} />}
       {dialog === 'about' && <AboutDialog onClose={() => openDialog(null)} />}
+      {dialog === 'sources' && hasDocument && <SourcesDialog onClose={() => openDialog(null)} />}
+      {citing && hasDocument && (
+        <CitationsDialog
+          target={citing}
+          onClose={() => useWorkspaceUi.getState().setCiting(null)}
+        />
+      )}
       {dialog === 'new-tree' && (
         <NewTreeDialog
           onClose={() => openDialog(null)}

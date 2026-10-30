@@ -143,3 +143,12 @@
   flex-direction: column;
   gap: var(--space-3);
 }
+
+.citeLine {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: calc(var(--space-1) * -1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

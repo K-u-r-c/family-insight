@@ -78,6 +78,11 @@ zdjęciem pozwalają je wymienić lub skasować.
 Chrzest, szkoły, praca, przeprowadzki, służba wojskowa, pogrzeb … zapisuje się w sekcji
 **Wydarzenia** w edycji. Zobacz [Wydarzenia](./events).
 
+## Źródła
+
+Mały przycisk źródeł obok **Imię i nazwisko**, **Urodzenie**, **Życie** i przy każdym wydarzeniu
+zapisuje, skąd pochodzi fakt. Zobacz [Źródła](./sources).
+
 ## Notatki
 
 Wszystko, co warto zapamiętać – zawód, historie, gdzie leży dokument. Notatki widać w panelu

@@ -9,6 +9,7 @@ import type {
 import { Button, Dialog, Select } from '@renderer/components/ui'
 import { updateRelationshipCommand } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
+import { CiteButton } from '@renderer/features/sources/CiteButton'
 import { DateField } from './DateField'
 import { PlaceField } from './PlaceField'
 import { runCommand } from './relationActions'
@@ -69,6 +70,10 @@ export function PartnershipDialog({
           value={rel.start?.place ?? ''}
           onCommit={(place) => update({ start: merge(rel.start, { place: place.trim() }) })}
         />
+        <p className={styles.citeLine}>
+          {t('sources.general')}{' '}
+          <CiteButton target={{ kind: 'partnership-start', relationshipId: rel.id }} />
+        </p>
         <DateField
           label={t('relations.endDate')}
           value={rel.end?.date}
@@ -83,6 +88,10 @@ export function PartnershipDialog({
           }))}
           onChange={(reason) => update({ end: merge(rel.end, { reason: reason || undefined }) })}
         />
+        <p className={styles.citeLine}>
+          {t('sources.general')}{' '}
+          <CiteButton target={{ kind: 'partnership-end', relationshipId: rel.id }} />
+        </p>
       </div>
     </Dialog>
   )

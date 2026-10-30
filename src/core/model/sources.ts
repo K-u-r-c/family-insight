@@ -242,10 +242,9 @@ export function getCitationsForSource(
   )
 }
 
-/** Recorded facts (birth, death, life events, relationships) that cite no source. */
-export function factsWithoutSource(tree: FamilyTree): CitationTarget[] {
+/** Recorded facts that can be sourced: birth/death/partnership dates or places, events, relationships. */
+export function recordedFacts(tree: FamilyTree): CitationTarget[] {
   return citationTargets(tree).filter((target) => {
-    if (getCitations(tree, target).length) return false
     switch (target.kind) {
       case 'person':
         return false
@@ -266,6 +265,11 @@ export function factsWithoutSource(tree: FamilyTree): CitationTarget[] {
       }
     }
   })
+}
+
+/** Recorded facts (birth, death, life events, relationships) that cite no source. */
+export function factsWithoutSource(tree: FamilyTree): CitationTarget[] {
+  return recordedFacts(tree).filter((target) => getCitations(tree, target).length === 0)
 }
 
 /** Source ids cited anywhere for a person (their own facts and their relationships). */

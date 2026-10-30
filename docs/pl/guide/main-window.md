@@ -9,7 +9,7 @@ Gdy drzewo jest otwarte, okno wygląda tak:
 <Screenshot name="workspace-tour" alt="Główne okno z ponumerowanymi elementami: 1 menu pliku, 2 Dodaj osobę, 3 tryby widoku, 4 wyszukiwanie, 5 lista osób, 6 panel szczegółów, 7 mapa przeglądowa, 8 przyciski powiększenia" />
 
 1. **Menu pliku** (☰) – nowe drzewo, otwieranie, zapisywanie, zapisywanie jako, import i eksport
-   CSV, eksport obrazu i druk. Zobacz [Zapisywanie i otwieranie](./files).
+   CSV, eksport obrazu, [źródła](./sources) i druk. Zobacz [Zapisywanie i otwieranie](./files).
 2. **Dodaj osobę** – dodaje nową osobę, która nie jest jeszcze z nikim spokrewniona. Obok są
    przyciski **Cofnij** i **Ponów**.
 3. **Tryby widoku** – cała rodzina albo przodkowie, potomkowie lub jedno i drugie („klepsydra”)

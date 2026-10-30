@@ -94,6 +94,7 @@ export type MenuAction =
   | 'edit:add-person'
   | 'edit:delete'
   | 'edit:find'
+  | 'edit:sources'
   | 'view:mode-family'
   | 'view:mode-ancestors'
   | 'view:mode-descendants'

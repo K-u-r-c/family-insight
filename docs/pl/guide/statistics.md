@@ -15,6 +15,8 @@ Statystyki** w pasku menu:
 - **żyjących** i **zmarłych** – według [statusu życia](./editing#life-status) (osoby o nieznanym
   statusie nie należą do żadnej grupy);
 - **pokolenia** – najdłuższa linia od najstarszego przodka do najmłodszego potomka;
+- **faktów ze źródłem** – jaka część zapisanych faktów (dat, miejsc, wydarzeń, relacji) cytuje
+  co najmniej jedno [źródło](./sources);
 - **średnia długość życia** – osób zmarłych, które mają datę urodzenia i śmierci. Pod spodem
   widać, kto żył najdłużej; **Pokaż** wybiera tę osobę.
 

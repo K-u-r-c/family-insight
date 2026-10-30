@@ -197,6 +197,108 @@ async function setEvents(
   )
 }
 
+/** Sources, a repository and citations for Jan Kowalski in the sample family. */
+async function addSampleSources(s: Session): Promise<void> {
+  const pl = s.variant.lang === 'pl'
+  await s.page.evaluate(
+    ({ pl }) => {
+      type Tree = {
+        persons: Record<string, { id: string; givenNames: string; surname: string; birth?: object }>
+        relationships: Record<
+          string,
+          { id: string; type: string; partnerIds?: string[]; start?: object }
+        >
+        sources: object
+        repositories: object
+      }
+      const store = (
+        window as unknown as {
+          __familyInsight: {
+            useDocument: { getState: () => { tree: Tree; dispatch: (cmd: unknown) => void } }
+          }
+        }
+      ).__familyInsight.useDocument
+      const { tree, dispatch } = store.getState()
+      const find = (name: string) =>
+        Object.values(tree.persons).find((p) => `${p.givenNames} ${p.surname}` === name)!
+      const jan = find('Jan Kowalski')
+      const anna = find('Anna Kowalska')
+      const marriage = Object.values(tree.relationships).find(
+        (r) =>
+          r.type === 'partnership' &&
+          r.partnerIds!.includes(jan.id) &&
+          r.partnerIds!.includes(anna.id)
+      )!
+      const sources = {
+        s1: {
+          id: 's1',
+          title: pl
+            ? 'Księga urodzeń parafii św. Józefa w Łodzi 1925'
+            : 'Register of births, St Joseph’s parish, Łódź 1925',
+          repositoryId: 'r1',
+          callNumber: '1234/56'
+        },
+        s2: {
+          id: 's2',
+          title: pl ? 'Spis powszechny 1931' : 'Census 1931',
+          author: pl ? 'GUS' : 'Central Statistical Office'
+        },
+        s3: {
+          id: 's3',
+          title: pl ? 'List Anny do siostry, 1946' : 'Letter from Anna to her sister, 1946'
+        }
+      }
+      const repositories = {
+        r1: {
+          id: 'r1',
+          name: pl ? 'Archiwum Państwowe w Łodzi' : 'State Archive in Łódź',
+          url: 'https://www.lodz.ap.gov.pl'
+        }
+      }
+      dispatch({
+        label: 'history.addCitation',
+        run: (t: Tree) => ({
+          tree: {
+            ...t,
+            sources,
+            repositories,
+            persons: {
+              ...t.persons,
+              [jan.id]: {
+                ...jan,
+                citations: [{ id: 'c2', sourceId: 's2', page: '12', quality: 'secondary' }],
+                birth: {
+                  ...jan.birth,
+                  citations: [
+                    {
+                      id: 'c1',
+                      sourceId: 's1',
+                      page: pl ? 'akt 345' : 'entry 345',
+                      quality: 'primary',
+                      text: pl
+                        ? 'Jan, syn Józefa Kowalskiego i Marii z Nowaków, urodzony 4 listopada 1925 r.'
+                        : 'Jan, son of Józef Kowalski and Maria née Nowak, born on 4 November 1925.'
+                    }
+                  ]
+                }
+              }
+            },
+            relationships: {
+              ...t.relationships,
+              [marriage.id]: {
+                ...marriage,
+                citations: [{ id: 'c3', sourceId: 's3', quality: 'questionable' }]
+              }
+            }
+          },
+          result: undefined
+        })
+      })
+    },
+    { pl }
+  )
+}
+
 // ---------------------------------------------------------------------------------------------
 // Getting started
 
@@ -619,6 +721,67 @@ scene('events-details', async (s) => {
     .scrollIntoViewIfNeeded()
   await parkMouse(s)
   return { clip: panel(s), pad: 0 }
+})
+
+scene('sources-manager', async (s) => {
+  await openSample(s)
+  await addSampleSources(s)
+  await menuAction(s, 'edit:sources')
+  await dialog(s).waitFor()
+  await dialog(s)
+    .getByRole('button', { name: /^(Register of births|Księga urodzeń)/ })
+    .click()
+  return dialogShot(s)
+})
+
+scene('citations-dialog', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await addSampleSources(s)
+  await select(s, 'Jan Kowalski')
+  await panel(s)
+    .getByRole('button', { name: t('common.edit') })
+    .click()
+  await panel(s)
+    .getByRole('button', {
+      name: new RegExp(
+        `^${t('sources.citeTitle', { fact: 'Jan Kowalski – ' + t('timeline.birth') })}`
+      )
+    })
+    .click()
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('cite-buttons', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await addSampleSources(s)
+  await select(s, 'Jan Kowalski')
+  await panel(s)
+    .getByRole('button', { name: t('common.edit') })
+    .click()
+  const birth = panel(s).getByRole('button', {
+    name: new RegExp(
+      `^${t('sources.citeTitle', { fact: 'Jan Kowalski – ' + t('timeline.birth') })}`
+    )
+  })
+  await birth.scrollIntoViewIfNeeded()
+  await parkMouse(s)
+  return { clip: panel(s), pad: 0, steps: [{ target: birth, badge: 'right' }] }
+})
+
+scene('sources-details', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await addSampleSources(s)
+  await select(s, 'Jan Kowalski')
+  const heading = panel(s).getByRole('heading', { name: t('timeline.title') })
+  await heading.evaluate((h) => h.scrollIntoView({ block: 'start' }))
+  await s.page.waitForTimeout(300)
+  await parkMouse(s)
+  const marker = panel(s).locator('[data-type="birth"]').getByRole('button')
+  return { clip: panel(s), pad: 0, steps: [{ target: marker, badge: 'right' }] }
 })
 
 // ---------------------------------------------------------------------------------------------

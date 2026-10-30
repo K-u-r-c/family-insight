@@ -12,6 +12,7 @@ import { useIssueText } from '@renderer/i18n/issues'
 import { CommitTextArea, CommitTextField } from './CommitField'
 import { DateField } from './DateField'
 import { EventsSection } from './EventsSection'
+import { CiteButton } from '@renderer/features/sources/CiteButton'
 import { PhotoField } from './PhotoField'
 import { PlaceField } from './PlaceField'
 import styles from './PersonEditor.module.css'
@@ -71,7 +72,9 @@ export function PersonEditor({ person }: { person: Person }): React.JSX.Element 
       </fieldset>
 
       <fieldset className={styles.group}>
-        <legend className={styles.legend}>{t('person.name')}</legend>
+        <legend className={styles.legend}>
+          {t('person.name')} <CiteButton target={{ kind: 'person', personId: person.id }} />
+        </legend>
         <CommitTextField
           id="person-given-names"
           label={t('person.givenNames')}
@@ -117,7 +120,9 @@ export function PersonEditor({ person }: { person: Person }): React.JSX.Element 
       </fieldset>
 
       <fieldset className={styles.group}>
-        <legend className={styles.legend}>{t('person.birth')}</legend>
+        <legend className={styles.legend}>
+          {t('person.birth')} <CiteButton target={{ kind: 'birth', personId: person.id }} />
+        </legend>
         <DateField
           label={t('person.birthDate')}
           value={person.birth?.date}
@@ -131,7 +136,9 @@ export function PersonEditor({ person }: { person: Person }): React.JSX.Element 
       </fieldset>
 
       <fieldset className={styles.group}>
-        <legend className={styles.legend}>{t('person.lifeStatus')}</legend>
+        <legend className={styles.legend}>
+          {t('person.lifeStatus')} <CiteButton target={{ kind: 'death', personId: person.id }} />
+        </legend>
         <div className={styles.field}>
           <SegmentedControl
             block

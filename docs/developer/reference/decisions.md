@@ -191,3 +191,12 @@ covers both features. Development files of schema 2 without `sources` are normal
 - A dangling `sourceId` is an error for `validateTree`, but the loader repairs it (drops the citation
   with a warning, marks the document changed) instead of refusing the file – losing one reference is
   better than not being able to open a tree.
+
+## Citation UI (2026-10, issue #55)
+
+One `CitationsDialog` edits the citations of any fact, opened from a small `CiteButton` (with the
+number of sources) next to name, birth, death, events, in the relationship menus and in the
+partnership dialog; the open target lives in the workspace UI store, so any component can open it.
+In the details view a fact's superscript count opens the same dialog instead of a hover popover –
+it works with keyboard and touch the same way. The sources manager is a dialog reachable from
+**☰** and **Edit → Sources…**.

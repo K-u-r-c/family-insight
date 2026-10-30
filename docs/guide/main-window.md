@@ -8,8 +8,8 @@ When a tree is open, the window looks like this:
 
 <Screenshot name="workspace-tour" alt="The main window with numbered parts: 1 file menu, 2 Add person, 3 view modes, 4 search, 5 list of people, 6 details panel, 7 overview map, 8 zoom controls" />
 
-1. **File menu** (☰) – new tree, open, save, save as, import and export CSV, export an image and
-   print. See [Saving and opening](./files).
+1. **File menu** (☰) – new tree, open, save, save as, import and export CSV, export an image,
+   [sources](./sources) and print. See [Saving and opening](./files).
 2. **Add person** – adds a new person who isn't related to anyone yet. Next to it are **Undo** and
    **Redo**.
 3. **View modes** – the whole family, or the ancestors, descendants or both (“hourglass”) of one

@@ -9,14 +9,18 @@ import {
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { ageAt } from '@core/date/fuzzyDate'
+import { compareText } from '@core/text'
 import { displayName, isLiving } from '@core/model/tree'
 import type { Person } from '@core/model/types'
 import { buildTimeline, type TimelineEvent } from '@core/timeline'
+import { getCitations, sourcesOfPerson, type CitationTarget } from '@core/model/sources'
 import { Icon } from '@renderer/components/ui'
 import { useFormat } from '@renderer/i18n/format'
 import { useDocument } from '@renderer/store/document'
+import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 import { EVENT_ICONS, eventName } from './eventTypes'
 import styles from './PersonDetails.module.css'
+import sourceStyles from '@renderer/features/sources/Sources.module.css'
 
 const ICONS: Record<TimelineEvent['type'], LucideIcon> = {
   birth: Sparkles,
@@ -56,6 +60,10 @@ export function PersonDetails({ person }: { person: Person }): React.JSX.Element
   const tree = useDocument((s) => s.tree)!
   const select = useDocument((s) => s.select)
   const events = buildTimeline(tree, person.id)
+  const sources = [...sourcesOfPerson(tree, person.id)]
+    .map((id) => tree.sources[id])
+    .filter((s) => s !== undefined)
+    .sort((a, b) => compareText(a.title, b.title, format.language))
 
   const nameOf = (id: string): string =>
     displayName(tree.persons[id] ?? { givenNames: '', surname: '' }) || t('person.unnamed')
@@ -122,7 +130,10 @@ export function PersonDetails({ person }: { person: Person }): React.JSX.Element
                         ? format.date(e.date)
                         : t('timeline.unknownDate')}
                   </span>
-                  <span className={styles.eventLabel}>{label(e)}</span>
+                  <span className={styles.eventLabel}>
+                    {label(e)}
+                    <Marker target={targetOf(e, person.id)} />
+                  </span>
                   {e.place && <span className={styles.eventPlace}>{e.place}</span>}
                 </div>
               </li>
@@ -138,6 +149,63 @@ export function PersonDetails({ person }: { person: Person }): React.JSX.Element
           <p className={`${styles.notes} selectable`}>{person.notes}</p>
         </section>
       )}
+      {sources.length > 0 && (
+        <section>
+          <h4 className={styles.heading}>
+            {t('sources.general')} <Marker target={{ kind: 'person', personId: person.id }} />
+          </h4>
+          <ul className={styles.sources}>
+            {sources.map((source) => (
+              <li key={source.id}>
+                <button
+                  type="button"
+                  className={sourceStyles.linkButton}
+                  onClick={() => useWorkspaceUi.getState().openSources(source.id)}
+                >
+                  {source.title}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
+  )
+}
+
+/** The fact behind a timeline entry, for its citations (children are other people's facts). */
+function targetOf(e: TimelineEvent, personId: string): CitationTarget | null {
+  switch (e.type) {
+    case 'birth':
+    case 'death':
+      return { kind: e.type, personId }
+    case 'event':
+      return { kind: 'event', personId, eventId: e.event.id }
+    case 'partnership':
+      return { kind: 'partnership-start', relationshipId: e.relationshipId }
+    case 'partnership-end':
+      return { kind: 'partnership-end', relationshipId: e.relationshipId }
+    case 'child':
+      return null
+  }
+}
+
+/** Superscript count of a fact's sources; opens them. Nothing when the fact has none. */
+function Marker({ target }: { target: CitationTarget | null }): React.JSX.Element | null {
+  const { t } = useTranslation()
+  const tree = useDocument((s) => s.tree)
+  if (!tree || !target) return null
+  const count = getCitations(tree, target).length
+  if (!count) return null
+  return (
+    <button
+      type="button"
+      className={sourceStyles.marker}
+      aria-label={t('sources.markerLabel', { count })}
+      title={t('sources.markerLabel', { count })}
+      onClick={() => useWorkspaceUi.getState().setCiting(target)}
+    >
+      {count}
+    </button>
   )
 }

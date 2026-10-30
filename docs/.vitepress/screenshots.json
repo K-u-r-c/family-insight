@@ -17,6 +17,18 @@
     "pl-light": [373, 388],
     "pl-dark": [373, 388]
   },
+  "citations-dialog": {
+    "en-light": [893, 486],
+    "en-dark": [893, 486],
+    "pl-light": [893, 486],
+    "pl-dark": [893, 486]
+  },
+  "cite-buttons": {
+    "en-light": [380, 720],
+    "en-dark": [380, 720],
+    "pl-light": [380, 720],
+    "pl-dark": [380, 720]
+  },
   "collapse-branch": {
     "en-light": [360, 215],
     "en-dark": [360, 215],
@@ -36,10 +48,10 @@
     "pl-dark": [893, 737]
   },
   "csv-import-columns": {
-    "en-light": [862, 662],
+    "en-light": [829, 636],
     "en-dark": [862, 662],
-    "pl-light": [829, 636],
-    "pl-dark": [862, 662]
+    "pl-light": [862, 662],
+    "pl-dark": [829, 636]
   },
   "csv-import-errors": {
     "en-light": [893, 755],
@@ -96,10 +108,10 @@
     "pl-dark": [395, 720]
   },
   "file-menu": {
-    "en-light": [225, 353],
-    "en-dark": [225, 353],
-    "pl-light": [238, 353],
-    "pl-dark": [238, 353]
+    "en-light": [225, 393],
+    "en-dark": [225, 393],
+    "pl-light": [238, 393],
+    "pl-dark": [238, 393]
   },
   "first-person": {
     "en-light": [1280, 800],
@@ -120,16 +132,16 @@
     "pl-dark": [547, 295]
   },
   "parent-kind": {
-    "en-light": [373, 282],
-    "en-dark": [373, 282],
-    "pl-light": [373, 282],
-    "pl-dark": [373, 282]
+    "en-light": [373, 313],
+    "en-dark": [373, 313],
+    "pl-light": [373, 313],
+    "pl-dark": [373, 313]
   },
   "partnership-dialog": {
-    "en-light": [547, 589],
-    "en-dark": [547, 589],
-    "pl-light": [547, 589],
-    "pl-dark": [547, 589]
+    "en-light": [547, 647],
+    "en-dark": [547, 647],
+    "pl-light": [547, 647],
+    "pl-dark": [547, 647]
   },
   "people-sort": {
     "en-light": [226, 198],
@@ -162,10 +174,10 @@
     "pl-dark": [568, 310]
   },
   "relation-options": {
-    "en-light": [373, 159],
-    "en-dark": [373, 159],
-    "pl-light": [373, 159],
-    "pl-dark": [373, 159]
+    "en-light": [373, 191],
+    "en-dark": [373, 191],
+    "pl-light": [373, 191],
+    "pl-dark": [373, 191]
   },
   "remarriage": {
     "en-light": [1280, 800],
@@ -190,6 +202,18 @@
     "en-dark": [893, 529],
     "pl-light": [893, 529],
     "pl-dark": [893, 529]
+  },
+  "sources-details": {
+    "en-light": [380, 720],
+    "en-dark": [380, 720],
+    "pl-light": [380, 720],
+    "pl-dark": [380, 720]
+  },
+  "sources-manager": {
+    "en-light": [928, 784],
+    "en-dark": [928, 784],
+    "pl-light": [928, 784],
+    "pl-dark": [928, 784]
   },
   "statistics": {
     "en-light": [893, 755],

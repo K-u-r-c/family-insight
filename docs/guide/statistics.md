@@ -15,6 +15,8 @@ the menu bar:
 - **living** and **deceased** – by [life status](./editing#life-status) (people with an unknown
   status are in neither group);
 - **generations** – the longest line from the oldest ancestor down to the youngest descendant;
+- **facts with a source** – the share of recorded facts (dates, places, life events, relationships)
+  that cite at least one [source](./sources);
 - **average lifespan** – of deceased people with both a birth and a death date. Below it you see who
   lived longest; click **Show** to select that person.
 

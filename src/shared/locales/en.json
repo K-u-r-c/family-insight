@@ -86,7 +86,8 @@
     "find": "Find…",
     "showSidebar": "People List",
     "userGuide": "User Guide",
-    "reportBug": "Report a Problem…"
+    "reportBug": "Report a Problem…",
+    "sources": "Sources…"
   },
   "sex": {
     "female": "Female",
@@ -557,7 +558,8 @@
     "eventTypes": "Most common life events",
     "eventPlaces": "Most common event places",
     "withoutEvents_one": "{{count}} person has no life events yet.",
-    "withoutEvents_other": "{{count}} people have no life events yet."
+    "withoutEvents_other": "{{count}} people have no life events yet.",
+    "sourcedFacts": "facts with a source"
   },
   "shortcuts": {
     "title": "Keyboard shortcuts",
@@ -633,6 +635,75 @@
       "retirement": "Retirement",
       "award": "Award",
       "custom": "Other event"
+    }
+  },
+  "sources": {
+    "title": "Sources",
+    "description": "Documents and records your facts come from: registers, censuses, letters, interviews.",
+    "search": "Search sources",
+    "new": "New source",
+    "untitled": "New source",
+    "empty": "No sources yet. Add the registers, certificates and letters you used.",
+    "citedCount_one": "cited {{count}} time",
+    "citedCount_other": "cited {{count}} times",
+    "pickTitle": "Choose a source",
+    "pickText": "Select a source on the left or create a new one.",
+    "titleLabel": "Title",
+    "titlePlaceholder": "e.g. Parish register of births 1925",
+    "author": "Author",
+    "publication": "Publication",
+    "publicationPlaceholder": "e.g. volume, year, publisher",
+    "repository": "Repository",
+    "noRepository": "— none —",
+    "newRepository": "New repository",
+    "repositoryPlaceholder": "e.g. State Archive in Łódź",
+    "addRepository": "Add",
+    "callNumber": "Call number",
+    "url": "Web address",
+    "notes": "Notes",
+    "citedBy_one": "Cited by {{count}} fact",
+    "citedBy_other": "Cited by {{count}} facts",
+    "notCited": "Not cited yet.",
+    "delete": "Delete source",
+    "deleteTitle": "Delete “{{title}}”?",
+    "deleteCited_one": "It is cited {{count}} time. The citation will be removed too.",
+    "deleteCited_other": "It is cited {{count}} times. The citations will be removed too.",
+    "deleted": "“{{title}}” deleted",
+    "manage": "Manage sources…",
+    "citationsTitle": "Sources",
+    "noCitations": "No sources for this fact yet.",
+    "citationRemoved": "Citation removed",
+    "editCitation": "Edit citation of {{source}}",
+    "removeCitation": "Remove citation of {{source}}",
+    "source": "Source",
+    "page": "Page or entry",
+    "pagePlaceholder": "e.g. p. 12, entry 345",
+    "qualityLabel": "Reliability",
+    "date": "Date of the record",
+    "text": "Transcription",
+    "textPlaceholder": "The words of the record, as written",
+    "addCitation": "Add a source",
+    "chooseSource": "Existing source",
+    "choosePlaceholder": "Choose a source…",
+    "orNewSource": "… or a new source",
+    "newSourceTitle": "New source",
+    "createAndCite": "Create and cite",
+    "citeTitle": "Sources for {{fact}}",
+    "citeLabel_one": "Sources for {{fact}} ({{count}} source)",
+    "citeLabel_other": "Sources for {{fact}} ({{count}} sources)",
+    "markerLabel_one": "{{count}} source – show",
+    "markerLabel_other": "{{count}} sources – show",
+    "general": "Sources",
+    "generalCite": "General sources about this person",
+    "quality": {
+      "none": "Not assessed",
+      "primary": "Primary (made at the time)",
+      "secondary": "Secondary (made later)",
+      "questionable": "Questionable",
+      "unreliable": "Unreliable"
+    },
+    "fact": {
+      "parentChild": "{{parent}} – parent of {{child}}"
     }
   }
 }

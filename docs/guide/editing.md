@@ -78,6 +78,11 @@ one file you can copy anywhere. Use **Change…** or **Remove** under the photo 
 Baptism, schools, jobs, moves, military service, burial … are recorded in the **Life events**
 section of the editor. See [Life events](./events).
 
+## Sources
+
+The small source button next to **Name**, **Birth**, **Life** and each life event records where a
+fact comes from. See [Sources](./sources).
+
 ## Notes
 
 Anything worth remembering – occupation, stories, where a document is kept. Notes are shown in the

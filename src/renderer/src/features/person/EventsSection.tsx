@@ -23,6 +23,7 @@ import {
   updateEventCommand
 } from '@renderer/store/commands'
 import { useDocument } from '@renderer/store/document'
+import { CiteButton } from '@renderer/features/sources/CiteButton'
 import { CommitTextArea, CommitTextField } from './CommitField'
 import { DateField } from './DateField'
 import { EVENT_CATEGORIES, EVENT_ICONS, eventName } from './eventTypes'
@@ -116,6 +117,7 @@ export function EventsSection({ person, warnings }: EventsSectionProps): React.J
                   <span className={styles.summary}>{summary(event)}</span>
                 </button>
                 <div className={styles.actions}>
+                  <CiteButton target={{ kind: 'event', personId: person.id, eventId: event.id }} />
                   <IconButton
                     icon={ChevronUp}
                     size="sm"

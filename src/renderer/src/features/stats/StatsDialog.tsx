@@ -139,6 +139,14 @@ export function StatsDialog({ onClose }: { onClose: () => void }): React.JSX.Ele
             value={stats.averageLifespan === null ? '—' : format.number(stats.averageLifespan)}
             label={t('stats.averageLifespan')}
           />
+          <Tile
+            value={
+              stats.facts
+                ? `${format.number(Math.round((stats.sourcedFacts / stats.facts) * 100))} %`
+                : '—'
+            }
+            label={t('stats.sourcedFacts')}
+          />
         </div>
         {stats.longestLived && (
           <p className={styles.note}>
