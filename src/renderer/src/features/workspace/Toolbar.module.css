@@ -1,5 +1,7 @@
 .toolbar {
   display: flex;
+  min-width: 0;
+  overflow: hidden;
   gap: var(--space-2);
   align-items: center;
   height: 52px;
@@ -10,9 +12,10 @@
 
 .brand {
   display: flex;
+  flex-shrink: 1;
   gap: var(--space-2);
   align-items: center;
-  min-width: 0;
+  min-width: 60px;
 }
 
 .logo {
@@ -40,11 +43,13 @@
 }
 
 .search {
-  width: clamp(160px, 22vw, 300px);
+  flex: 0 1 300px;
+  min-width: 140px;
 }
 
 .nameButton {
   max-width: 320px;
+  min-width: 0;
   height: var(--control-sm);
   padding: 0 var(--space-2);
   overflow: hidden;

@@ -22,7 +22,8 @@ export function ViewModeControls(): React.JSX.Element {
   const depth = useTreeView((s) => s.depth)
   const setMode = useTreeView((s) => s.setMode)
   const setDepth = useTreeView((s) => s.setDepth)
-  const wide = useWindowWidth() >= 1320
+  // Labels need room (Polish ones are long, and the depth selector takes space too).
+  const wide = useWindowWidth() >= (mode === 'family' ? 1400 : 1560)
 
   return (
     <div className={styles.controls}>
