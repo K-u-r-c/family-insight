@@ -11,6 +11,7 @@ import { useDocument } from '@renderer/store/document'
 import { useIssueText } from '@renderer/i18n/issues'
 import { CommitTextArea, CommitTextField } from './CommitField'
 import { DateField } from './DateField'
+import { EventsSection } from './EventsSection'
 import { PhotoField } from './PhotoField'
 import { PlaceField } from './PlaceField'
 import styles from './PersonEditor.module.css'
@@ -175,6 +176,8 @@ export function PersonEditor({ person }: { person: Person }): React.JSX.Element 
           ))}
         </div>
       )}
+
+      <EventsSection person={person} warnings={warnings} />
 
       <fieldset className={styles.group}>
         <legend className={styles.legend}>{t('person.notes')}</legend>

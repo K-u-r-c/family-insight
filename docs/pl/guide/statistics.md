@@ -24,6 +24,11 @@ Trzy listy pokazują pięć najczęstszych **imion** (liczy się pierwsze imię)
 rodowe, jeśli jest) i **miejsc urodzenia**. Kliknij pasek, aby go
 [wyszukać](./search) – np. kliknij **Łódź**, aby zobaczyć wszystkich urodzonych w Łodzi.
 
+## Wydarzenia
+
+Dwie kolejne listy pokazują najczęstsze **wydarzenia** i **miejsca wydarzeń**; kliknij miejsce, aby
+je wyszukać. Pod nimi widać, ile osób nie ma jeszcze żadnych wydarzeń ([Wydarzenia](./events)).
+
 ## Do uzupełnienia
 
 Ostatnia sekcja wymienia osoby, którym **brakuje dat** (nie mają daty urodzenia ani śmierci) albo

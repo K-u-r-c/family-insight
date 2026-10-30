@@ -12,8 +12,8 @@ the matching cards are highlighted while everyone else fades:
 
 ## What you can search for
 
-Search looks at **given names, surnames, birth surnames, places of birth and death, and the years
-of birth and death**:
+Search looks at **given names, surnames, birth surnames, places of birth and death, the years of
+birth and death, and the places, descriptions and names of [life events](./events)**:
 
 | You type      | Finds                                           |
 | ------------- | ----------------------------------------------- |

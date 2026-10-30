@@ -15,6 +15,7 @@ import { buildTimeline, type TimelineEvent } from '@core/timeline'
 import { Icon } from '@renderer/components/ui'
 import { useFormat } from '@renderer/i18n/format'
 import { useDocument } from '@renderer/store/document'
+import { EVENT_ICONS, eventName } from './eventTypes'
 import styles from './PersonDetails.module.css'
 
 const ICONS: Record<TimelineEvent['type'], LucideIcon> = {
@@ -91,9 +92,7 @@ export function PersonDetails({ person }: { person: Person }): React.JSX.Element
         )
       case 'event':
         return [
-          e.event.type === 'custom' && e.event.customType
-            ? e.event.customType
-            : t(`events.type.${e.event.type}`),
+          eventName(e.event, (key) => t(key as never) as unknown as string),
           e.event.description
         ]
           .filter(Boolean)
@@ -110,11 +109,18 @@ export function PersonDetails({ person }: { person: Person }): React.JSX.Element
             {events.map((e, i) => (
               <li key={i} className={styles.event} data-type={e.type}>
                 <span className={styles.dot}>
-                  <Icon icon={ICONS[e.type]} size={13} />
+                  <Icon
+                    icon={e.type === 'event' ? EVENT_ICONS[e.event.type] : ICONS[e.type]}
+                    size={13}
+                  />
                 </span>
                 <div className={styles.eventBody}>
                   <span className={styles.eventDate}>
-                    {e.date ? format.date(e.date) : t('timeline.unknownDate')}
+                    {e.type === 'event' && e.event.endDate
+                      ? `${e.date ? format.date(e.date) : '…'} – ${format.date(e.event.endDate)}`
+                      : e.date
+                        ? format.date(e.date)
+                        : t('timeline.unknownDate')}
                   </span>
                   <span className={styles.eventLabel}>{label(e)}</span>
                   {e.place && <span className={styles.eventPlace}>{e.place}</span>}

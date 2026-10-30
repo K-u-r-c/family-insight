@@ -73,6 +73,11 @@ Zdjęcie jest zapisywane **w pliku `.finsight`** (w rozmiarze 512 × 512 pikseli
 pozostaje jednym plikiem, który skopiujesz gdziekolwiek. Przyciski **Zmień…** i **Usuń** pod
 zdjęciem pozwalają je wymienić lub skasować.
 
+## Wydarzenia
+
+Chrzest, szkoły, praca, przeprowadzki, służba wojskowa, pogrzeb … zapisuje się w sekcji
+**Wydarzenia** w edycji. Zobacz [Wydarzenia](./events).
+
 ## Notatki
 
 Wszystko, co warto zapamiętać – zawód, historie, gdzie leży dokument. Notatki widać w panelu

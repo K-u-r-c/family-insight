@@ -24,6 +24,11 @@ Three lists show the five most common **given names** (the first given name coun
 (the birth surname when there is one) and **birth places**. Click a bar to
 [search](./search) for it – for example click **Łódź** to see everyone born there.
 
+## Life events
+
+Two more lists show the most common **life events** and **event places**; click a place to search
+for it. Below them you see how many people have no life events yet ([Life events](./events)).
+
 ## To complete
 
 The last section lists people who are **missing dates** (no birth or death date) or **missing

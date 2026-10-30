@@ -121,6 +121,82 @@ function portrait(): string {
   return file
 }
 
+/** Life events of Jan Kowalski in the sample family (texts in the screenshot's language). */
+function janEvents(lang: string): Record<string, unknown>[] {
+  const pl = lang === 'pl'
+  const d = (value: string) => ({ value, qualifier: 'exact' })
+  return [
+    { id: 'ev1', type: 'baptism', date: d('1925-11-22'), place: 'Łódź' },
+    {
+      id: 'ev2',
+      type: 'military-service',
+      date: d('1944'),
+      endDate: d('1945'),
+      description: pl ? '1. Armia Wojska Polskiego' : '1st Polish Army'
+    },
+    {
+      id: 'ev3',
+      type: 'education',
+      date: d('1946'),
+      endDate: d('1951'),
+      place: 'Łódź',
+      description: pl ? 'Politechnika Łódzka' : 'Lodz University of Technology'
+    },
+    {
+      id: 'ev4',
+      type: 'occupation',
+      date: d('1951'),
+      endDate: d('1990'),
+      description: pl ? 'Inżynier mostowy' : 'Bridge engineer'
+    },
+    {
+      id: 'ev5',
+      type: 'burial',
+      date: d('2001-07-04'),
+      place: 'Łódź',
+      description: pl ? 'Stary Cmentarz' : 'Old Cemetery'
+    }
+  ]
+}
+
+/** Gives a person life events through the store (test hook), as one undoable change. */
+async function setEvents(
+  s: Session,
+  name: string,
+  events: Record<string, unknown>[]
+): Promise<void> {
+  await s.page.evaluate(
+    ({ name, events }) => {
+      const store = (
+        window as unknown as {
+          __familyInsight: {
+            useDocument: {
+              getState: () => {
+                tree: {
+                  persons: Record<string, { id: string; givenNames: string; surname: string }>
+                }
+                dispatch: (cmd: unknown) => void
+              }
+            }
+          }
+        }
+      ).__familyInsight.useDocument
+      const { tree, dispatch } = store.getState()
+      const person = Object.values(tree.persons).find(
+        (p) => `${p.givenNames} ${p.surname}` === name
+      )!
+      dispatch({
+        label: 'history.addEvent',
+        run: (t: typeof tree) => ({
+          tree: { ...t, persons: { ...t.persons, [person.id]: { ...person, events } } },
+          result: undefined
+        })
+      })
+    },
+    { name, events }
+  )
+}
+
 // ---------------------------------------------------------------------------------------------
 // Getting started
 
@@ -484,6 +560,65 @@ scene('delete-confirm', async (s) => {
     .click()
   await dialog(s).waitFor()
   return dialogShot(s)
+})
+
+scene('events-editor', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await setEvents(s, 'Jan Kowalski', janEvents(s.variant.lang))
+  await select(s, 'Jan Kowalski')
+  await panel(s)
+    .getByRole('button', { name: t('common.edit') })
+    .click()
+  const name = t('events.type.military-service')
+  await panel(s)
+    .getByRole('button', { name: t('events.edit', { name }) })
+    .click()
+  const legend = panel(s).getByText(t('events.title'), { exact: true })
+  await legend.scrollIntoViewIfNeeded()
+  await page.waitForTimeout(400)
+  await parkMouse(s)
+  return {
+    clip: panel(s),
+    pad: 0,
+    steps: [
+      {
+        target: panel(s).getByRole('button', { name: t('events.edit', { name }) }),
+        badge: 'above'
+      },
+      {
+        target: panel(s).getByRole('button', { name: t('events.moveUp', { name }) }),
+        badge: 'above'
+      },
+      { target: panel(s).getByLabel(t('events.endDate')), badge: 'above' }
+    ]
+  }
+})
+
+scene('events-menu', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await select(s, 'Lena Kowalska')
+  await panel(s)
+    .getByRole('button', { name: t('common.edit') })
+    .click()
+  const add = panel(s).getByRole('button', { name: t('events.add') })
+  await add.scrollIntoViewIfNeeded()
+  await add.click()
+  await menu(s).waitFor()
+  return { clip: [add, menu(s)], pad: 16 }
+})
+
+scene('events-details', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await setEvents(s, 'Jan Kowalski', janEvents(s.variant.lang))
+  await select(s, 'Jan Kowalski')
+  await panel(s)
+    .getByRole('heading', { name: t('timeline.title') })
+    .scrollIntoViewIfNeeded()
+  await parkMouse(s)
+  return { clip: panel(s), pad: 0 }
 })
 
 // ---------------------------------------------------------------------------------------------

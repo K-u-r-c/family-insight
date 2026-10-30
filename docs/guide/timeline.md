@@ -23,8 +23,10 @@ Below are the person's **family** (see [Adding people](./people)) and their **li
 - **Born** – date and place of birth;
 - **Married** (or partnered, engaged) – with the partner's name, date and place;
 - **Child born** – each child, by date of birth;
+- **life events** – baptism, education, occupation, military service … with their date or period
+  ([Life events](./events));
 - **Divorced**, **Separated from**, **Widowed** – when a partnership ended;
-- **Died** – date and place of death.
+- **Died** – date and place of death, followed by burial or cremation.
 
 Birth always comes first and death last; events without a date are shown in a natural order with
 “Date unknown”. Click a name in the timeline to go to that person.

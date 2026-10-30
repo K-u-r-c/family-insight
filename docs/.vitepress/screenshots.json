@@ -65,6 +65,24 @@
     "pl-light": [1280, 800],
     "pl-dark": [1280, 800]
   },
+  "events-details": {
+    "en-light": [380, 720],
+    "en-dark": [380, 720],
+    "pl-light": [380, 720],
+    "pl-dark": [380, 720]
+  },
+  "events-editor": {
+    "en-light": [380, 720],
+    "en-dark": [380, 720],
+    "pl-light": [380, 720],
+    "pl-dark": [380, 720]
+  },
+  "events-menu": {
+    "en-light": [235, 768],
+    "en-dark": [235, 768],
+    "pl-light": [261, 768],
+    "pl-dark": [261, 768]
+  },
   "export-image": {
     "en-light": [547, 490],
     "en-dark": [547, 490],
@@ -174,10 +192,10 @@
     "pl-dark": [893, 529]
   },
   "statistics": {
-    "en-light": [893, 668],
-    "en-dark": [893, 668],
-    "pl-light": [893, 682],
-    "pl-dark": [893, 682]
+    "en-light": [893, 755],
+    "en-dark": [893, 755],
+    "pl-light": [893, 755],
+    "pl-dark": [893, 755]
   },
   "timeline": {
     "en-light": [380, 720],

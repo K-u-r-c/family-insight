@@ -23,8 +23,10 @@ Sekcja **Życie** pokazuje po kolei wszystko, co wydarzyło się w życiu osoby:
 - **Urodzenie** – data i miejsce urodzenia;
 - **Ślub z:** (albo związek, zaręczyny) – z imieniem partnera, datą i miejscem;
 - **Narodziny dziecka:** – każde dziecko, według daty urodzenia;
+- **wydarzenia** – chrzest, edukacja, zawód, służba wojskowa … z datą lub okresem
+  ([Wydarzenia](./events));
 - **Rozwód z:**, **Separacja z:**, **Owdowienie:** – gdy związek się zakończył;
-- **Śmierć** – data i miejsce śmierci.
+- **Śmierć** – data i miejsce śmierci, a po niej pogrzeb lub kremacja.
 
 Urodzenie jest zawsze pierwsze, a śmierć ostatnia; wydarzenia bez daty są pokazane w naturalnej
 kolejności z dopiskiem „Data nieznana”. Kliknij imię na osi, aby przejść do tej osoby.

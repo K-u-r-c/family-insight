@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { computeStats } from './stats'
 import { TreeBuilder } from './test/fixtures'
 import { createEmptyTree } from './model/tree'
+import { addPersonEvent } from './model/operations'
 
 const d = (value: string) => ({ value, qualifier: 'exact' as const })
 
@@ -66,5 +67,21 @@ describe('computeStats', () => {
       averageLifespan: null,
       longestLived: null
     })
+  })
+})
+
+describe('life event statistics', () => {
+  it('counts event types and places and lists people without events', () => {
+    let tree = new TreeBuilder().person('jan', 'Jan').person('ewa', 'Ewa').person('ola', 'Ola').tree
+    tree = addPersonEvent(tree, 'jan', { type: 'emigration', place: 'Hamburg' }).tree
+    tree = addPersonEvent(tree, 'jan', { type: 'occupation', place: 'Łódź' }).tree
+    tree = addPersonEvent(tree, 'ewa', { type: 'emigration', place: 'Hamburg' }).tree
+    const stats = computeStats(tree)
+    expect(stats.eventTypes.map((i) => [i.label, i.count])).toEqual([
+      ['emigration', 2],
+      ['occupation', 1]
+    ])
+    expect(stats.eventPlaces[0]).toMatchObject({ label: 'Hamburg', count: 2 })
+    expect(stats.withoutEvents).toEqual(['ola'])
   })
 })

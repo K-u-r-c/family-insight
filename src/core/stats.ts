@@ -27,6 +27,11 @@ export interface TreeStats {
   /** People missing important data, for a "to do" list. */
   missingDates: PersonId[]
   missingParents: PersonId[]
+  /** Most common life event types (label = `EventType`) and event places. */
+  eventTypes: CountItem[]
+  eventPlaces: CountItem[]
+  /** People without any life event besides birth and death. */
+  withoutEvents: PersonId[]
 }
 
 function top(items: Map<string, PersonId[]>, limit: number, language: string): CountItem[] {
@@ -53,6 +58,8 @@ export function computeStats(
   const givenNames = new Map<string, PersonId[]>()
   const surnames = new Map<string, PersonId[]>()
   const places = new Map<string, PersonId[]>()
+  const eventTypes = new Map<string, PersonId[]>()
+  const eventPlaces = new Map<string, PersonId[]>()
   const ages: { personId: PersonId; years: number }[] = []
   let living = 0
   let deceased = 0
@@ -68,6 +75,10 @@ export function computeStats(
     add(givenNames, p.givenNames.split(/\s+/)[0], p.id)
     add(surnames, p.birthSurname || p.surname, p.id)
     add(places, p.birth?.place, p.id)
+    for (const e of p.events) {
+      add(eventTypes, e.type, p.id)
+      add(eventPlaces, e.place, p.id)
+    }
     if (status === false && p.birth?.date && p.death?.date) {
       const age = ageAt(p.birth.date, p.death.date)
       if (age) ages.push({ personId: p.id, years: age.years })
@@ -110,6 +121,9 @@ export function computeStats(
     surnames: top(surnames, limit, language),
     birthPlaces: top(places, limit, language),
     missingDates: people.filter((p) => !hasDates(p)).map((p) => p.id),
-    missingParents: people.filter((p) => getParentLinks(tree, p.id).length === 0).map((p) => p.id)
+    missingParents: people.filter((p) => getParentLinks(tree, p.id).length === 0).map((p) => p.id),
+    eventTypes: top(eventTypes, limit, language),
+    eventPlaces: top(eventPlaces, limit, language),
+    withoutEvents: people.filter((p) => p.events.length === 0).map((p) => p.id)
   }
 }

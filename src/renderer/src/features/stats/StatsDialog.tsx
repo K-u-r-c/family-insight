@@ -20,15 +20,38 @@ function Tile({ value, label }: { value: string; label: string }): React.JSX.Ele
   )
 }
 
+function BarContent({
+  label,
+  count,
+  max
+}: {
+  label: string
+  count: number
+  max: number
+}): React.JSX.Element {
+  return (
+    <>
+      <span className={styles.barLabel}>{label}</span>
+      <span className={styles.track} aria-hidden="true">
+        <span className={styles.fill} style={{ width: `${(count / max) * 100}%` }} />
+      </span>
+      <span className={styles.barValue}>{count}</span>
+    </>
+  )
+}
+
 /** Horizontal bars, one hue (magnitude), counts labelled directly; click filters the tree. */
 function BarList({
   title,
   items,
-  onPick
+  onPick,
+  labelOf = (label) => label
 }: {
   title: string
   items: CountItem[]
-  onPick: (label: string) => void
+  /** Click a bar to search for it; without it the bars are not interactive. */
+  onPick?: (label: string) => void
+  labelOf?: (label: string) => string
 }): React.JSX.Element {
   const { t } = useTranslation()
   const max = Math.max(1, ...items.map((i) => i.count))
@@ -41,18 +64,20 @@ function BarList({
         <ol className={styles.bars}>
           {items.map((item) => (
             <li key={item.label}>
-              <button
-                type="button"
-                className={styles.bar}
-                title={t('stats.barTooltip', { label: item.label, count: item.count })}
-                onClick={() => onPick(item.label)}
-              >
-                <span className={styles.barLabel}>{item.label}</span>
-                <span className={styles.track} aria-hidden="true">
-                  <span className={styles.fill} style={{ width: `${(item.count / max) * 100}%` }} />
-                </span>
-                <span className={styles.barValue}>{item.count}</span>
-              </button>
+              {onPick ? (
+                <button
+                  type="button"
+                  className={styles.bar}
+                  title={t('stats.barTooltip', { label: labelOf(item.label), count: item.count })}
+                  onClick={() => onPick(item.label)}
+                >
+                  <BarContent label={labelOf(item.label)} count={item.count} max={max} />
+                </button>
+              ) : (
+                <div className={styles.bar}>
+                  <BarContent label={labelOf(item.label)} count={item.count} max={max} />
+                </div>
+              )}
             </li>
           ))}
         </ol>
@@ -134,7 +159,16 @@ export function StatsDialog({ onClose }: { onClose: () => void }): React.JSX.Ele
           <BarList title={t('stats.givenNames')} items={stats.givenNames} onPick={pick} />
           <BarList title={t('stats.surnames')} items={stats.surnames} onPick={pick} />
           <BarList title={t('stats.birthPlaces')} items={stats.birthPlaces} onPick={pick} />
+          <BarList
+            title={t('stats.eventTypes')}
+            items={stats.eventTypes}
+            labelOf={(type) => t(`events.type.${type}` as never) as unknown as string}
+          />
+          <BarList title={t('stats.eventPlaces')} items={stats.eventPlaces} onPick={pick} />
         </div>
+        <p className={styles.note}>
+          {t('stats.withoutEvents', { count: stats.withoutEvents.length })}
+        </p>
         <section className={styles.card}>
           <h3 className={styles.cardTitle}>{t('stats.todo', { count: todo.length })}</h3>
           {todo.length === 0 ? (

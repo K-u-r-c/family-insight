@@ -537,7 +537,11 @@
     "todo_other": "To complete ({{count}} people)",
     "todoDone": "Everyone has dates and parents. Nice work!",
     "noDates": "no dates",
-    "noParents": "no parents"
+    "noParents": "no parents",
+    "eventTypes": "Most common life events",
+    "eventPlaces": "Most common event places",
+    "withoutEvents_one": "{{count}} person has no life events yet.",
+    "withoutEvents_other": "{{count}} people have no life events yet."
   },
   "shortcuts": {
     "title": "Keyboard shortcuts",
@@ -570,6 +574,29 @@
     "credits": "Built with Electron, React, TypeScript, Inter and Source Serif. © 2026 Jakub Kurc and contributors."
   },
   "events": {
+    "title": "Life events",
+    "empty": "Baptism, schools, jobs, moves, military service … – add what you know.",
+    "add": "Add event",
+    "removed": "{{name}} removed",
+    "moveUp": "Move {{name}} up",
+    "moveDown": "Move {{name}} down",
+    "edit": "Edit {{name}}",
+    "remove": "Remove {{name}}",
+    "typeLabel": "Type",
+    "customType": "Name of the event",
+    "customTypePlaceholder": "e.g. Pilgrimage",
+    "date": "Date (or start)",
+    "endDate": "End date (optional)",
+    "place": "Place",
+    "description": "Description",
+    "descriptionPlaceholder": "e.g. teacher, 13th Infantry Regiment, University of Kraków",
+    "notes": "Notes",
+    "category": {
+      "religious": "Religious",
+      "work": "Work, school and service",
+      "places": "Moves and residence",
+      "other": "Other"
+    },
     "type": {
       "baptism": "Baptism",
       "christening": "Christening",

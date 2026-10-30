@@ -73,6 +73,11 @@ click **Use photo**.
 The photo is stored **inside the `.finsight` file** (scaled to 512 × 512 pixels), so the tree stays
 one file you can copy anywhere. Use **Change…** or **Remove** under the photo to replace or delete it.
 
+## Life events
+
+Baptism, schools, jobs, moves, military service, burial … are recorded in the **Life events**
+section of the editor. See [Life events](./events).
+
 ## Notes
 
 Anything worth remembering – occupation, stories, where a document is kept. Notes are shown in the

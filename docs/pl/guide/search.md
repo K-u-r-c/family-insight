@@ -12,8 +12,8 @@ ich karty są wyróżnione, a pozostałe przygaszone:
 
 ## Czego możesz szukać
 
-Wyszukiwanie przegląda **imiona, nazwiska, nazwiska rodowe, miejsca urodzenia i śmierci oraz
-lata urodzenia i śmierci**:
+Wyszukiwanie przegląda **imiona, nazwiska, nazwiska rodowe, miejsca urodzenia i śmierci, lata
+urodzenia i śmierci oraz miejsca, opisy i nazwy [wydarzeń](./events)**:
 
 | Wpisujesz     | Znajduje                                       |
 | ------------- | ---------------------------------------------- |
