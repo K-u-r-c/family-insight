@@ -57,7 +57,7 @@ test('native menu is localized, reflects state and drives the app', async () => 
   await app.evaluate(({ BrowserWindow }) =>
     BrowserWindow.getAllWindows()[0]!.webContents.send('menu:action', 'help:about')
   )
-  await expect(page.getByText('Version 0.1.0')).toBeVisible()
+  await expect(page.getByText(/^Version \d+\.\d+\.\d+$/)).toBeVisible()
   await page.getByRole('button', { name: 'Close', exact: true }).last().click()
 
   await app.evaluate(({ BrowserWindow }) =>

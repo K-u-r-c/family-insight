@@ -6,6 +6,10 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-30
+
+First public release.
+
 ### Added
 
 - **Family tree editor** for Windows, macOS and Linux, fully in English and Polish, with light,
@@ -34,3 +38,6 @@ All notable changes to this project are documented here. The format follows
 - Installers: Windows (NSIS in English and Polish, portable), macOS (DMG for Apple Silicon and
   Intel, ad-hoc signed), Linux (AppImage, deb with `.finsight` file association); app icon.
 - Documentation: README and user guide in English and Polish, CSV and file format specs.
+
+[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/K-u-r-c/family-insight/releases/tag/v1.0.0
