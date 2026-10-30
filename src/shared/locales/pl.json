@@ -255,7 +255,16 @@
     "addEvent": "Dodanie wydarzenia",
     "editEvent": "Edycja wydarzenia",
     "removeEvent": "Usunięcie wydarzenia",
-    "moveEvent": "Przeniesienie wydarzenia"
+    "moveEvent": "Przeniesienie wydarzenia",
+    "addSource": "Dodanie źródła",
+    "editSource": "Edycja źródła",
+    "removeSource": "Usunięcie źródła",
+    "addRepository": "Dodanie repozytorium",
+    "editRepository": "Edycja repozytorium",
+    "removeRepository": "Usunięcie repozytorium",
+    "addCitation": "Dodanie cytowania",
+    "editCitation": "Edycja cytowania",
+    "removeCitation": "Usunięcie cytowania"
   },
   "files": {
     "treeFilter": "Drzewo Family Insight",
@@ -301,7 +310,13 @@
     "invalid-living": "„{{value}}” to nie jest tak/nie; status życia pozostaje nieznany.",
     "event-before-birth": "Wydarzenie osoby {{name}} ma datę wcześniejszą niż urodzenie.",
     "event-after-death": "Wydarzenie osoby {{name}} ma datę późniejszą niż śmierć.",
-    "event-end-before-start": "To wydarzenie kończy się przed rozpoczęciem."
+    "event-end-before-start": "To wydarzenie kończy się przed rozpoczęciem.",
+    "dangling-citation": "Cytowanie odwołuje się do nieistniejącego źródła („{{id}}”).",
+    "dangling-repository": "Źródło odwołuje się do nieistniejącego repozytorium („{{id}}”).",
+    "dangling-citations-removed_one": "{{count}} cytowanie wskazywało na brakujące źródło i zostało usunięte. Zapisz drzewo, aby zachować poprawkę.",
+    "dangling-citations-removed_few": "{{count}} cytowania wskazywały na brakujące źródła i zostały usunięte. Zapisz drzewo, aby zachować poprawkę.",
+    "dangling-citations-removed_many": "{{count}} cytowań wskazywało na brakujące źródła i zostało usuniętych. Zapisz drzewo, aby zachować poprawkę.",
+    "dangling-citations-removed_other": "{{count}} cytowania wskazywało na brakujące źródła i zostało usuniętych. Zapisz drzewo, aby zachować poprawkę."
   },
   "relations": {
     "parents": "Rodzice",
@@ -374,7 +389,10 @@
       "duplicate-id": "Osoba o tym identyfikatorze już istnieje.",
       "ancestry-cycle": "Wtedy ktoś byłby swoim własnym przodkiem.",
       "too-many-biological-parents": "Osoba może mieć najwyżej dwoje rodziców biologicznych. Oznacz jednego jako adopcyjnego, przybranego lub zastępczego.",
-      "event-not-found": "To wydarzenie już nie istnieje."
+      "event-not-found": "To wydarzenie już nie istnieje.",
+      "source-not-found": "To źródło już nie istnieje.",
+      "repository-not-found": "To repozytorium już nie istnieje.",
+      "citation-not-found": "To cytowanie już nie istnieje."
     }
   },
   "timeline": {

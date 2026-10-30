@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { FileParseError, parseTree, serializeTree } from './format'
+import { FileParseError, parseTree, parseTreeWithWarnings, serializeTree } from './format'
+import { addCitation, addRepository, addSource } from '../model/sources'
 import { migrate } from './migrations'
 import { remarriageFixture } from '../test/fixtures'
 import { addPersonEvent, updatePerson } from '../model/operations'
@@ -120,6 +121,53 @@ describe('schema v2: life events', () => {
       `"schemaVersion": ${SCHEMA_VERSION + 1}`
     )
     expect(code(() => parseTree(text))).toBe('newer-version')
+  })
+})
+
+describe('schema v2: sources and citations', () => {
+  it('migrates v1 files to empty sources and repositories', () => {
+    const doc = JSON.parse(asVersion1(remarriageFixture()))
+    delete doc.sources
+    delete doc.repositories
+    const tree = parseTree(JSON.stringify(doc))
+    expect(tree.sources).toEqual({})
+    expect(tree.repositories).toEqual({})
+  })
+
+  it('round-trips sources, repositories and citations', () => {
+    let tree = addRepository(remarriageFixture(), { name: 'Archive', url: 'https://x.pl' }).tree
+    const repositoryId = Object.keys(tree.repositories)[0]!
+    const { tree: withSource, source } = addSource(tree, { title: 'Census 1921', repositoryId })
+    tree = addCitation(
+      withSource,
+      { kind: 'birth', personId: 'jan' },
+      {
+        sourceId: source.id,
+        page: '12',
+        quality: 'primary'
+      }
+    ).tree
+    expect(parseTree(serializeTree(tree))).toEqual(tree)
+  })
+
+  it('validates sources and citations', () => {
+    const doc = JSON.parse(serializeTree(remarriageFixture()))
+    doc.sources = { s1: { id: 's1' } }
+    expect(code(() => parseTree(JSON.stringify(doc)))).toBe('invalid-data')
+    const doc2 = JSON.parse(serializeTree(remarriageFixture()))
+    doc2.sources = { s1: { id: 's1', title: 'Register' } }
+    doc2.persons.jan.citations = [{ id: 'c1', sourceId: 's1', quality: 'excellent' }]
+    expect(code(() => parseTree(JSON.stringify(doc2)))).toBe('invalid-data')
+  })
+
+  it('drops citations of missing sources on load and reports it', () => {
+    const doc = JSON.parse(serializeTree(remarriageFixture()))
+    doc.persons.jan.citations = [{ id: 'c1', sourceId: 'missing' }]
+    const { tree, warnings } = parseTreeWithWarnings(JSON.stringify(doc))
+    expect(tree.persons.jan!.citations).toBeUndefined()
+    expect(warnings).toEqual([
+      { severity: 'warning', code: 'dangling-citations-removed', params: { count: 1 } }
+    ])
   })
 })
 

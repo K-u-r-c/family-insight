@@ -276,14 +276,23 @@ export function mergeTrees(
   options: OpOptions = {}
 ): FamilyTree {
   const timestamp = (options.now ?? new Date()).toISOString()
-  for (const id of [...Object.keys(other.persons), ...Object.keys(other.relationships)]) {
-    if (tree.persons[id] || tree.relationships[id]) throw new ModelError('duplicate-id', { id })
+  for (const id of [
+    ...Object.keys(other.persons),
+    ...Object.keys(other.relationships),
+    ...Object.keys(other.sources),
+    ...Object.keys(other.repositories)
+  ]) {
+    if (tree.persons[id] || tree.relationships[id] || tree.sources[id] || tree.repositories[id]) {
+      throw new ModelError('duplicate-id', { id })
+    }
   }
   return {
     ...tree,
     meta: touch(tree, timestamp),
     persons: { ...tree.persons, ...other.persons },
-    relationships: { ...tree.relationships, ...other.relationships }
+    relationships: { ...tree.relationships, ...other.relationships },
+    sources: { ...tree.sources, ...other.sources },
+    repositories: { ...tree.repositories, ...other.repositories }
   }
 }
 

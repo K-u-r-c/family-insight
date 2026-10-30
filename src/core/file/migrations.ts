@@ -8,9 +8,12 @@ const isObj = (v: unknown): v is RawDoc => typeof v === 'object' && v !== null &
 export type Migration = (doc: RawDoc) => RawDoc
 
 export const MIGRATIONS: Record<number, Migration> = {
-  // v1 → v2: people get a list of life events (baptism, emigration, …).
+  // v1 → v2: people get a list of life events (baptism, emigration, …); the tree gets
+  // sources and repositories for citations.
   1: (doc) => ({
     ...doc,
+    sources: isObj(doc.sources) ? doc.sources : {},
+    repositories: isObj(doc.repositories) ? doc.repositories : {},
     persons: Object.fromEntries(
       Object.entries(isObj(doc.persons) ? doc.persons : {}).map(([id, p]) => [
         id,

@@ -13,7 +13,9 @@ export function createEmptyTree(name: string, now: Date = new Date()): FamilyTre
     schemaVersion: SCHEMA_VERSION,
     meta: { name, createdAt: timestamp, updatedAt: timestamp },
     persons: {},
-    relationships: {}
+    relationships: {},
+    sources: {},
+    repositories: {}
   }
 }
 

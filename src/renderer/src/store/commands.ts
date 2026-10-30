@@ -19,7 +19,27 @@ import {
   type PersonPatch,
   type RelationshipPatch
 } from '@core/model/operations'
+import {
+  addCitation,
+  addRepository,
+  addSource,
+  removeCitation,
+  removeRepository,
+  removeSource,
+  updateCitation,
+  updateRepository,
+  updateSource,
+  type CitationInput,
+  type CitationPatch,
+  type CitationTarget,
+  type RepositoryInput,
+  type RepositoryPatch,
+  type SourceInput,
+  type SourcePatch
+} from '@core/model/sources'
 import type {
+  Citation,
+  CitationId,
   FamilyTree,
   ParentChildKind,
   PartnershipRelationship,
@@ -28,7 +48,11 @@ import type {
   PersonEventId,
   PersonId,
   Relationship,
-  RelationshipId
+  RelationshipId,
+  Repository,
+  RepositoryId,
+  Source,
+  SourceId
 } from '@core/model/types'
 
 /**
@@ -95,6 +119,71 @@ export const moveEventCommand = (
 ): Command => ({
   label: 'history.moveEvent',
   run: (tree) => ({ tree: movePersonEvent(tree, personId, eventId, toIndex), result: undefined })
+})
+
+export const addSourceCommand = (input: SourceInput): Command<Source> => ({
+  label: 'history.addSource',
+  run: (tree) => {
+    const { tree: next, source } = addSource(tree, input)
+    return { tree: next, result: source }
+  }
+})
+
+export const updateSourceCommand = (id: SourceId, patch: SourcePatch): Command => ({
+  label: 'history.editSource',
+  coalesceKey: `source:${id}:${Object.keys(patch).sort().join(',')}`,
+  run: (tree) => ({ tree: updateSource(tree, id, patch), result: undefined })
+})
+
+/** Deletes a source and all its citations in one undoable step. */
+export const removeSourceCommand = (id: SourceId): Command => ({
+  label: 'history.removeSource',
+  run: (tree) => ({ tree: removeSource(tree, id), result: undefined })
+})
+
+export const addRepositoryCommand = (input: RepositoryInput): Command<Repository> => ({
+  label: 'history.addRepository',
+  run: (tree) => {
+    const { tree: next, repository } = addRepository(tree, input)
+    return { tree: next, result: repository }
+  }
+})
+
+export const updateRepositoryCommand = (id: RepositoryId, patch: RepositoryPatch): Command => ({
+  label: 'history.editRepository',
+  coalesceKey: `repository:${id}:${Object.keys(patch).sort().join(',')}`,
+  run: (tree) => ({ tree: updateRepository(tree, id, patch), result: undefined })
+})
+
+export const removeRepositoryCommand = (id: RepositoryId): Command => ({
+  label: 'history.removeRepository',
+  run: (tree) => ({ tree: removeRepository(tree, id), result: undefined })
+})
+
+export const addCitationCommand = (
+  target: CitationTarget,
+  input: CitationInput
+): Command<Citation> => ({
+  label: 'history.addCitation',
+  run: (tree) => {
+    const { tree: next, citation } = addCitation(tree, target, input)
+    return { tree: next, result: citation }
+  }
+})
+
+export const updateCitationCommand = (
+  target: CitationTarget,
+  citationId: CitationId,
+  patch: CitationPatch
+): Command => ({
+  label: 'history.editCitation',
+  coalesceKey: `citation:${citationId}:${Object.keys(patch).sort().join(',')}`,
+  run: (tree) => ({ tree: updateCitation(tree, target, citationId, patch), result: undefined })
+})
+
+export const removeCitationCommand = (target: CitationTarget, citationId: CitationId): Command => ({
+  label: 'history.removeCitation',
+  run: (tree) => ({ tree: removeCitation(tree, target, citationId), result: undefined })
 })
 
 export const removePersonCommand = (id: PersonId): Command => ({

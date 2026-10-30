@@ -1,5 +1,6 @@
-import { FileParseError, parseTree, serializeTree } from '@core/file/format'
+import { FileParseError, parseTreeWithWarnings, serializeTree } from '@core/file/format'
 import { pushRecentFile, removeRecentFile } from '@core/settings'
+import type { Issue } from '@core/issues'
 import type { FamilyTree } from '@core/model/types'
 import type { FileErrorCode, FileReadResult } from '@shared/ipc'
 import { alertDialog, toast } from '@renderer/components/ui'
@@ -85,13 +86,21 @@ export async function loadTreeFile(result: FileReadResult): Promise<boolean> {
     return false
   }
   let tree: FamilyTree
+  let repaired: Issue[]
   try {
-    tree = parseTree(result.content)
+    ;({ tree, warnings: repaired } = parseTreeWithWarnings(result.content))
   } catch (error) {
     await showFileError(error instanceof FileParseError ? error.code : 'invalid-data')
     return false
   }
-  useDocument.getState().loadDocument(tree, result.path)
+  // A repaired file is marked as changed, so the next save (or autosave) writes the fix.
+  useDocument.getState().loadDocument(tree, result.path, { dirty: repaired.length > 0 })
+  for (const issue of repaired) {
+    toast({
+      message: i18n.t(`issues.${issue.code}` as never, issue.params as never) as unknown as string,
+      tone: 'error'
+    })
+  }
   await rememberRecent(result.path, tree.meta.name)
   return true
 }

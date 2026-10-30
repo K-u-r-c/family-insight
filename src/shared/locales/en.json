@@ -241,7 +241,16 @@
     "addEvent": "Add event",
     "editEvent": "Edit event",
     "removeEvent": "Remove event",
-    "moveEvent": "Move event"
+    "moveEvent": "Move event",
+    "addSource": "Add source",
+    "editSource": "Edit source",
+    "removeSource": "Delete source",
+    "addRepository": "Add repository",
+    "editRepository": "Edit repository",
+    "removeRepository": "Delete repository",
+    "addCitation": "Add citation",
+    "editCitation": "Edit citation",
+    "removeCitation": "Remove citation"
   },
   "files": {
     "treeFilter": "Family Insight tree",
@@ -287,7 +296,11 @@
     "invalid-living": "“{{value}}” isn't yes/no; the living status is left unknown.",
     "event-before-birth": "An event of {{name}} is dated before their birth.",
     "event-after-death": "An event of {{name}} is dated after their death.",
-    "event-end-before-start": "This event ends before it starts."
+    "event-end-before-start": "This event ends before it starts.",
+    "dangling-citation": "A citation refers to a source that doesn’t exist (“{{id}}”).",
+    "dangling-repository": "A source refers to a repository that doesn’t exist (“{{id}}”).",
+    "dangling-citations-removed_one": "{{count}} citation referred to a missing source and was removed. Save the tree to keep the fix.",
+    "dangling-citations-removed_other": "{{count}} citations referred to missing sources and were removed. Save the tree to keep the fix."
   },
   "relations": {
     "parents": "Parents",
@@ -360,7 +373,10 @@
       "duplicate-id": "A person with this ID already exists.",
       "ancestry-cycle": "That would make someone their own ancestor.",
       "too-many-biological-parents": "A person can have at most two biological parents. Mark one as adoptive, step or foster instead.",
-      "event-not-found": "This event no longer exists."
+      "event-not-found": "This event no longer exists.",
+      "source-not-found": "This source no longer exists.",
+      "repository-not-found": "This repository no longer exists.",
+      "citation-not-found": "This citation no longer exists."
     }
   },
   "timeline": {

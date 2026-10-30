@@ -1,4 +1,4 @@
-import { EVENT_TYPES } from '../model/types'
+import { CITATION_QUALITIES, EVENT_TYPES } from '../model/types'
 
 /**
  * Hand-written shape validation for `.finsight` documents (no runtime dependency).
@@ -16,6 +16,67 @@ const QUALIFIER = ['exact', 'about', 'before', 'after'] as const
 const PC_KIND = ['biological', 'adoptive', 'step', 'foster'] as const
 const P_KIND = ['marriage', 'partnership', 'engagement', 'other'] as const
 const END_REASON = ['divorce', 'separation', 'death', 'other'] as const
+
+function checkCitations(v: unknown, path: string, errors: string[]): void {
+  if (v === undefined) return
+  if (!Array.isArray(v)) {
+    errors.push(`${path}: expected a list`)
+    return
+  }
+  v.forEach((c, i) => {
+    const at = `${path}[${i}]`
+    if (!isObj(c) || !isStr(c.id) || !isStr(c.sourceId)) {
+      errors.push(`${at}: needs id and sourceId`)
+      return
+    }
+    if (c.quality !== undefined && !oneOf(c.quality, CITATION_QUALITIES)) {
+      errors.push(`${at}.quality: invalid`)
+    }
+    checkDate(c.date, `${at}.date`, errors)
+    for (const key of ['page', 'text', 'notes'] as const) {
+      if (!optStr(c[key])) errors.push(`${at}.${key}: expected text`)
+    }
+  })
+}
+
+function checkSources(doc: Obj, errors: string[]): void {
+  if (!isObj(doc.sources)) errors.push('sources: expected object')
+  else {
+    for (const [id, s] of Object.entries(doc.sources)) {
+      const path = `sources.${id}`
+      if (!isObj(s) || s.id !== id || !isStr(s.title)) {
+        errors.push(`${path}: needs id and title`)
+        continue
+      }
+      for (const key of [
+        'author',
+        'publication',
+        'repositoryId',
+        'callNumber',
+        'url',
+        'notes'
+      ] as const) {
+        if (!optStr(s[key])) errors.push(`${path}.${key}: expected text`)
+      }
+      if (s.mediaIds !== undefined && !(Array.isArray(s.mediaIds) && s.mediaIds.every(isStr))) {
+        errors.push(`${path}.mediaIds: expected a list of ids`)
+      }
+    }
+  }
+  if (!isObj(doc.repositories)) errors.push('repositories: expected object')
+  else {
+    for (const [id, r] of Object.entries(doc.repositories)) {
+      const path = `repositories.${id}`
+      if (!isObj(r) || r.id !== id || !isStr(r.name)) {
+        errors.push(`${path}: needs id and name`)
+        continue
+      }
+      for (const key of ['address', 'url', 'notes'] as const) {
+        if (!optStr(r[key])) errors.push(`${path}.${key}: expected text`)
+      }
+    }
+  }
+}
 
 function checkEvents(v: unknown, path: string, errors: string[]): void {
   if (!Array.isArray(v)) {
@@ -37,6 +98,7 @@ function checkEvents(v: unknown, path: string, errors: string[]): void {
     for (const key of ['customType', 'place', 'description', 'notes'] as const) {
       if (!optStr(e[key])) errors.push(`${at}.${key}: expected text`)
     }
+    checkCitations(e.citations, `${at}.citations`, errors)
   })
 }
 
@@ -60,6 +122,7 @@ function checkEvent(v: unknown, path: string, errors: string[], extra?: (o: Obj)
   }
   checkDate(v.date, `${path}.date`, errors)
   if (!optStr(v.place)) errors.push(`${path}.place: expected text`)
+  checkCitations(v.citations, `${path}.citations`, errors)
   extra?.(v)
 }
 
@@ -104,6 +167,7 @@ export function checkTreeShape(doc: unknown): string[] {
       checkEvent(p.birth, `${path}.birth`, errors)
       checkEvent(p.death, `${path}.death`, errors)
       checkEvents(p.events, `${path}.events`, errors)
+      checkCitations(p.citations, `${path}.citations`, errors)
       if (p.living !== undefined && typeof p.living !== 'boolean')
         errors.push(`${path}.living: expected boolean`)
       if (!optStr(p.notes)) errors.push(`${path}.notes: expected text`)
@@ -141,7 +205,9 @@ export function checkTreeShape(doc: unknown): string[] {
       } else {
         errors.push(`${path}.type: invalid`)
       }
+      checkCitations(r.citations, `${path}.citations`, errors)
     }
   }
+  checkSources(doc, errors)
   return errors
 }

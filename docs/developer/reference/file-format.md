@@ -71,8 +71,20 @@ reading and writing are `parseTree` and `serializeTree` in `src/core/file/format
       "type": "parent-child",
       "parentId": "5f0c…",
       "childId": "e6a0…",
-      "kind": "biological"
+      "kind": "biological",
+      "citations": [{ "id": "c41a…", "sourceId": "s7f2…", "page": "No. 12", "quality": "primary" }]
     }
+  },
+  "sources": {
+    "s7f2…": {
+      "id": "s7f2…",
+      "title": "Parish register of births 1925",
+      "repositoryId": "r0b9…",
+      "callNumber": "Sygn. 1/25"
+    }
+  },
+  "repositories": {
+    "r0b9…": { "id": "r0b9…", "name": "State Archive in Łódź", "url": "https://www.lodz.ap.gov.pl" }
   }
 }
 ```
@@ -88,6 +100,8 @@ reading and writing are `parseTree` and `serializeTree` in `src/core/file/format
 | `meta`          | object  | yes      | Tree name, timestamps, root person and view.                 |
 | `persons`       | object  | yes      | People keyed by id; each value's `id` equals its key.        |
 | `relationships` | object  | yes      | Relationships keyed by id; each value's `id` equals its key. |
+| `sources`       | object  | yes (v2) | Sources keyed by id (since v2).                              |
+| `repositories`  | object  | yes (v2) | Repositories keyed by id (since v2).                         |
 
 ### `meta`
 
@@ -154,6 +168,22 @@ Partnership:
 
 Birth and death stay in `birth` / `death` (they drive the layout, ages and statistics); events are
 additional facts.
+
+### Sources, repositories and citations (since v2)
+
+**Source** – `id`, `title` (required), `author`, `publication`, `repositoryId`, `callNumber`, `url`,
+`notes` (text) and `mediaIds` (list of media ids).
+
+**Repository** – `id`, `name` (required), `address`, `url`, `notes`.
+
+**Citation** – `{ id, sourceId, page?, quality?, date?, text?, notes? }`; `quality` is `primary`,
+`secondary`, `questionable` or `unreliable`, `date` a FuzzyDate. Citations are stored **next to the
+fact they support**, as an optional `citations` list on: the person (general sources), `birth`,
+`death`, each life event, each relationship, and a partnership's `start` and `end`.
+
+A citation whose `sourceId` doesn't exist is repaired on load: the citation is dropped, the user sees
+a warning and the document is marked as changed so the next save stores the fix. A source pointing
+to a missing repository loses the link.
 
 ### LifeEvent and FuzzyDate
 

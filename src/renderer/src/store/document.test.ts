@@ -3,12 +3,21 @@ import { isModelError } from '@core/model/errors'
 import {
   addParentChildCommand,
   addPartnershipCommand,
+  addCitationCommand,
   addEventCommand,
+  addRepositoryCommand,
+  addSourceCommand,
   addPersonCommand,
   composeCommands,
   moveEventCommand,
+  removeCitationCommand,
   removeEventCommand,
+  removeRepositoryCommand,
+  removeSourceCommand,
+  updateCitationCommand,
   updateEventCommand,
+  updateRepositoryCommand,
+  updateSourceCommand,
   removePersonCommand,
   updatePersonCommand
 } from './commands'
@@ -125,5 +134,30 @@ describe('document store', () => {
     useDocument.getState().undo()
     useDocument.getState().undo()
     expect(events()).toEqual(['baptism', 'Blacksmith'])
+  })
+
+  it('deleting a cited source removes its citations in one undoable step', () => {
+    const s = useDocument.getState()
+    const jan = s.dispatch(addPersonCommand(person('Jan')))
+    const source = s.dispatch(addSourceCommand({ title: 'Parish register' }))
+    s.dispatch(updateSourceCommand(source.id, { callNumber: '12' }))
+    const target = { kind: 'person' as const, personId: jan.id }
+    const citation = s.dispatch(addCitationCommand(target, { sourceId: source.id, page: '3' }))
+    s.dispatch(updateCitationCommand(target, citation.id, { quality: 'primary' }))
+    const repo = s.dispatch(addRepositoryCommand({ name: 'Archive' }))
+    s.dispatch(updateRepositoryCommand(repo.id, { address: 'Kraków' }))
+    s.dispatch(removeSourceCommand(source.id))
+    let tree = useDocument.getState().tree!
+    expect(tree.sources[source.id]).toBeUndefined()
+    expect(tree.persons[jan.id]!.citations).toBeUndefined()
+    useDocument.getState().undo()
+    tree = useDocument.getState().tree!
+    expect(tree.sources[source.id]!.callNumber).toBe('12')
+    expect(tree.persons[jan.id]!.citations).toEqual([
+      { id: citation.id, sourceId: source.id, page: '3', quality: 'primary' }
+    ])
+    s.dispatch(removeCitationCommand(target, citation.id))
+    s.dispatch(removeRepositoryCommand(repo.id))
+    expect(useDocument.getState().tree!.repositories).toEqual({})
   })
 })

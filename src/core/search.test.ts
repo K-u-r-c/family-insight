@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { matchRanges, searchPersons } from './search'
 import { TreeBuilder } from './test/fixtures'
 import { addPersonEvent } from './model/operations'
+import { addCitation, addSource } from './model/sources'
 
 const tree = new TreeBuilder()
   .person('a', 'Łucja', 'female', {
@@ -59,5 +60,14 @@ describe('searching life events', () => {
     expect(names('hamburg')).toEqual(['Jan'])
     expect(names('nauczycielka')).toEqual(['Ewa'])
     expect(names('pielgrzymka')).toEqual(['Ewa'])
+  })
+})
+
+describe('searching sources', () => {
+  it('finds people by the titles of sources cited for them', () => {
+    let tree = new TreeBuilder().person('jan', 'Jan').person('ewa', 'Ewa').tree
+    const { tree: t2, source } = addSource(tree, { title: 'Księga chrztów parafii Mariackiej' })
+    tree = addCitation(t2, { kind: 'person', personId: 'jan' }, { sourceId: source.id }).tree
+    expect(searchPersons(tree, 'mariackiej').map((p) => p.givenNames)).toEqual(['Jan'])
   })
 })

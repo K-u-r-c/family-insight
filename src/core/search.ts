@@ -1,9 +1,16 @@
 import { yearOf } from './date/fuzzyDate'
+import { sourcesOfPerson } from './model/sources'
 import type { FamilyTree, Person } from './model/types'
 import { foldText } from './text'
 
-/** Text a person can be found by: names, birth surname, places and years. */
-export function searchableText(person: Person): string {
+/**
+ * Text a person can be found by: names, birth surname, places, years, life events and – with the
+ * tree – the titles of sources cited for the person.
+ */
+export function searchableText(person: Person, tree?: FamilyTree): string {
+  const sources = tree
+    ? [...sourcesOfPerson(tree, person.id)].map((id) => tree.sources[id]?.title)
+    : []
   return foldText(
     [
       person.givenNames,
@@ -13,7 +20,8 @@ export function searchableText(person: Person): string {
       person.death?.place,
       yearOf(person.birth?.date),
       yearOf(person.death?.date),
-      ...person.events.flatMap((e) => [e.place, e.description, e.customType])
+      ...person.events.flatMap((e) => [e.place, e.description, e.customType]),
+      ...sources
     ]
       .filter((v) => v !== undefined && v !== '')
       .join(' ')
@@ -29,7 +37,7 @@ export function searchPersons(tree: FamilyTree, query: string): Person[] {
   const people = Object.values(tree.persons)
   if (!words.length) return people
   return people.filter((p) => {
-    const text = searchableText(p)
+    const text = searchableText(p, tree)
     return words.every((w) => text.includes(w))
   })
 }

@@ -94,6 +94,16 @@ or a `custom` event with its own name. `date` and `endDate` describe a period. T
 searchable, and get plausibility warnings (event before birth, after death, end before start).
 Birth and death remain separate fields because the layout, ages and statistics rely on them.
 
+### Sources and citations
+
+The tree holds `sources` and `repositories`; a **citation** (`{ sourceId, page, quality, date, text,
+notes }`) is stored next to the fact it supports – the person, birth, death, a life event, a
+relationship, or a partnership's start/end. `src/core/model/sources.ts` addresses facts with a
+`CitationTarget` and provides `addCitation` / `updateCitation` / `removeCitation`, source and
+repository operations (deleting a source removes its citations; deleting a repository unlinks its
+sources), and queries: `getCitationsForSource`, `factsWithoutSource`, `sourcesOfPerson`. Search
+includes the titles of a person's sources.
+
 ## Relationships
 
 There are two kinds of edges:

@@ -1,4 +1,5 @@
 import type { Issue } from '../issues'
+import { citationTargets, getCitations } from './sources'
 import { displayName } from './tree'
 import type { FamilyTree, PersonId } from './types'
 
@@ -95,6 +96,27 @@ export function validateTree(tree: FamilyTree): Issue[] {
         state.set(top[0], 2)
         stack.pop()
       }
+    }
+  }
+
+  for (const target of citationTargets(tree)) {
+    for (const citation of getCitations(tree, target)) {
+      if (!tree.sources[citation.sourceId]) {
+        issues.push({
+          severity: 'error',
+          code: 'dangling-citation',
+          params: { id: citation.sourceId }
+        })
+      }
+    }
+  }
+  for (const source of Object.values(tree.sources)) {
+    if (source.repositoryId && !tree.repositories[source.repositoryId]) {
+      issues.push({
+        severity: 'warning',
+        code: 'dangling-repository',
+        params: { id: source.repositoryId }
+      })
     }
   }
 

@@ -176,3 +176,18 @@ lifespans, statistics and CSV depend on them, and keeping them avoids touching a
 - Plausibility checks only warn when dates certainly contradict each other (an earlier year, or both
   at least month-precise), so `1890` baptism vs `1890-05` birth is no warning.
 - CSV stays one row per person; events are carried by GEDCOM (#60–#63).
+
+## Sources and citations folded into schema v2 (2026-10, issue #54)
+
+Sources, repositories and citations were added to **schema 2** instead of introducing schema 3,
+because schema 2 hadn't been released yet (no user has a version-2 file); one migration `1 → 2`
+covers both features. Development files of schema 2 without `sources` are normalised on load.
+
+- Citations live **next to the fact** they support (optional `citations` lists) rather than in a
+  central table with fact paths: moving or deleting a fact can't leave orphaned citations, and the
+  editor shows them where the fact is.
+- `CitationTarget` addresses a fact uniformly, so one set of operations and UI components handles
+  person, birth, death, life events, relationships and partnership start/end.
+- A dangling `sourceId` is an error for `validateTree`, but the loader repairs it (drops the citation
+  with a warning, marks the document changed) instead of refusing the file – losing one reference is
+  better than not being able to open a tree.

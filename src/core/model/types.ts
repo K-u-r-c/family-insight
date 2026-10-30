@@ -29,6 +29,54 @@ export interface FuzzyDate {
 export interface LifeEvent {
   date?: FuzzyDate
   place?: string
+  /** Sources supporting this fact. */
+  citations?: Citation[]
+}
+
+export type SourceId = string
+export type RepositoryId = string
+export type CitationId = string
+
+/** Where a source is kept: an archive, a library, a parish office, a website. */
+export interface Repository {
+  id: RepositoryId
+  name: string
+  address?: string
+  url?: string
+  notes?: string
+}
+
+/** A document or record facts come from: a parish register, a census, a family letter … */
+export interface Source {
+  id: SourceId
+  title: string
+  author?: string
+  /** Publication or record details (book, volume, year). */
+  publication?: string
+  repositoryId?: RepositoryId
+  /** Shelf mark / signature in the repository. */
+  callNumber?: string
+  url?: string
+  notes?: string
+  /** Scans or photos of the source (media library). */
+  mediaIds?: string[]
+}
+
+export const CITATION_QUALITIES = ['primary', 'secondary', 'questionable', 'unreliable'] as const
+export type CitationQuality = (typeof CITATION_QUALITIES)[number]
+
+/** A reference from a fact to a source, stored next to the fact it supports. */
+export interface Citation {
+  id: CitationId
+  sourceId: SourceId
+  /** Page, entry or folio within the source. */
+  page?: string
+  quality?: CitationQuality
+  /** When the record was made or the source was consulted. */
+  date?: FuzzyDate
+  /** A transcription or quotation of the relevant text. */
+  text?: string
+  notes?: string
 }
 
 /** Built-in kinds of life events; `custom` uses `PersonEvent.customType` as its name. */
@@ -73,6 +121,7 @@ export interface PersonEvent {
   /** Short detail, e.g. the occupation, school or regiment. */
   description?: string
   notes?: string
+  citations?: Citation[]
 }
 
 export interface Person {
@@ -86,6 +135,8 @@ export interface Person {
   death?: LifeEvent
   /** Further life events in the order the user arranged them (schema v2). */
   events: PersonEvent[]
+  /** Sources about the person in general (not a single fact). */
+  citations?: Citation[]
   /** `undefined` means "unknown"; inferred from `death` when absent. */
   living?: boolean
   notes?: string
@@ -103,6 +154,7 @@ export interface ParentChildRelationship {
   parentId: PersonId
   childId: PersonId
   kind: ParentChildKind
+  citations?: Citation[]
 }
 
 export type PartnershipKind = 'marriage' | 'partnership' | 'engagement' | 'other'
@@ -115,6 +167,7 @@ export interface PartnershipRelationship {
   kind: PartnershipKind
   start?: LifeEvent
   end?: LifeEvent & { reason?: PartnershipEndReason }
+  citations?: Citation[]
 }
 
 export type Relationship = ParentChildRelationship | PartnershipRelationship
@@ -143,4 +196,7 @@ export interface FamilyTree {
   meta: TreeMeta
   persons: Record<PersonId, Person>
   relationships: Record<RelationshipId, Relationship>
+  /** Sources and repositories of the whole tree (schema v2). */
+  sources: Record<SourceId, Source>
+  repositories: Record<RepositoryId, Repository>
 }

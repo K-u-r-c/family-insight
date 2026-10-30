@@ -2,6 +2,9 @@
 export const MODEL_ERROR_CODES = [
   'person-not-found',
   'event-not-found',
+  'source-not-found',
+  'repository-not-found',
+  'citation-not-found',
   'relationship-not-found',
   'self-relationship',
   'duplicate-relationship',
