@@ -1,0 +1,55 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.viewport {
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-lg);
+}
+
+.viewport:active {
+  cursor: grabbing;
+}
+
+.image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.mask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 999px rgb(0 0 0 / 45%),
+    inset 0 0 0 2px rgb(255 255 255 / 85%);
+}
+
+.zoom {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  width: 280px;
+  color: var(--color-text-muted);
+}
+
+.zoom input {
+  flex: 1;
+  accent-color: var(--color-accent);
+}
+
+.error {
+  color: var(--color-danger);
+}

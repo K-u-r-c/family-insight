@@ -9,6 +9,7 @@ import {
   type FileErrorCode,
   type FileReadResult,
   type FileWriteResult,
+  type PhotoPickResult,
   type UnsavedChoice
 } from '@shared/ipc'
 import { rotateBackups } from './backups'
@@ -17,6 +18,14 @@ import { getSettings } from './settings'
 import { t } from './i18n'
 
 const MAX_FILE_BYTES = 200 * 1024 * 1024
+const MAX_PHOTO_BYTES = 20 * 1024 * 1024
+const PHOTO_TYPES: Record<string, string> = {
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+  gif: 'image/gif'
+}
 
 /** Paths the user picked in a save dialog or opened this session: the only writable ones. */
 const writable = new Set<string>()
@@ -169,6 +178,35 @@ export function registerFileHandlers(): void {
           : false
       )
     )
+  })
+
+  ipcMain.handle(IpcChannel.PhotoPick, async (event): Promise<PhotoPickResult | null> => {
+    const window = BrowserWindow.fromWebContents(event.sender)
+    const options: Electron.OpenDialogOptions = {
+      properties: ['openFile'],
+      filters: [
+        {
+          name: t('photo.filter'),
+          extensions: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'heic', 'heif']
+        }
+      ]
+    }
+    const result = window
+      ? await dialog.showOpenDialog(window, options)
+      : await dialog.showOpenDialog(options)
+    const [path] = result.filePaths
+    if (result.canceled || !path) return null
+    const ext = extname(path).toLowerCase().slice(1)
+    const mime = PHOTO_TYPES[ext]
+    if (!mime) return { ok: false, error: 'unsupported' }
+    try {
+      const stat = await fs.stat(path)
+      if (stat.size > MAX_PHOTO_BYTES) return { ok: false, error: 'too-large' }
+      const data = await fs.readFile(path)
+      return { ok: true, dataUrl: `data:${mime};base64,${data.toString('base64')}` }
+    } catch {
+      return { ok: false, error: 'io' }
+    }
   })
 
   ipcMain.handle(IpcChannel.FileTakePending, () => {

@@ -475,5 +475,25 @@
     "generations_many": "{{count}} pokoleń",
     "generations_other": "{{count}} pokolenia",
     "allGenerations": "Wszystkie pokolenia"
+  },
+  "photo": {
+    "title": "Zdjęcie",
+    "add": "Dodaj zdjęcie…",
+    "change": "Zmień…",
+    "remove": "Usuń",
+    "hint": "JPG, PNG lub WebP do 20 MB – albo upuść obraz na kółko.",
+    "filter": "Obrazy",
+    "cropTitle": "Przytnij zdjęcie",
+    "cropText": "Przeciągnij, aby ustawić twarz, a suwakiem przybliż.",
+    "cropArea": "Obszar przycinania zdjęcia",
+    "zoom": "Przybliżenie",
+    "use": "Użyj zdjęcia",
+    "unreadable": "Nie można odczytać tego obrazu.",
+    "errorTitle": "Nie można użyć tego zdjęcia",
+    "error": {
+      "too-large": "Obraz jest większy niż 20 MB. Wybierz mniejszy.",
+      "unsupported": "Ten format obrazu nie jest obsługiwany. Użyj JPG, PNG lub WebP (zdjęcia HEIC z iPhone'a trzeba najpierw przekonwertować).",
+      "io": "Nie udało się odczytać obrazu."
+    }
   }
 }

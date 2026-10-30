@@ -21,6 +21,7 @@ const api: FamilyInsightApi = {
     ipcRenderer.invoke(IpcChannel.FileWrite, path, content, options),
   showInFolder: (path) => ipcRenderer.invoke(IpcChannel.FileShowInFolder, path),
   filesExist: (paths) => ipcRenderer.invoke(IpcChannel.FileExists, paths),
+  pickPhoto: () => ipcRenderer.invoke(IpcChannel.PhotoPick),
   takePendingFile: () => ipcRenderer.invoke(IpcChannel.FileTakePending),
   onOpenFileRequest: (listener) => subscribe<string>(IpcChannel.FileOpenRequest, listener),
   askUnsaved: (name) => ipcRenderer.invoke(IpcChannel.DialogUnsaved, name),

@@ -15,6 +15,7 @@ export const IpcChannel = {
   FileOpenRequest: 'file:open-request',
   FileShowInFolder: 'file:show-in-folder',
   FileExists: 'file:exists',
+  PhotoPick: 'photo:pick',
   DialogUnsaved: 'dialog:unsaved',
   RecoveryWrite: 'recovery:write',
   RecoveryClear: 'recovery:clear',
@@ -43,6 +44,9 @@ export type FileReadResult =
   | { ok: false; path?: string; error: FileErrorCode }
 
 export type FileWriteResult = { ok: true; path: string } | { ok: false; error: FileErrorCode }
+
+export type PhotoPickResult =
+  { ok: true; dataUrl: string } | { ok: false; error: 'too-large' | 'unsupported' | 'io' }
 
 export type UnsavedChoice = 'save' | 'discard' | 'cancel'
 
@@ -93,6 +97,8 @@ export interface FamilyInsightApi {
   showInFolder(path: string): Promise<void>
   /** Which of the given paths still exist (for the recent files list). */
   filesExist(paths: string[]): Promise<boolean[]>
+  /** Picks an image file; resolves to `null` when cancelled. */
+  pickPhoto(): Promise<PhotoPickResult | null>
   /** A file the OS asked us to open before the UI was ready (double-click, argv). */
   takePendingFile(): Promise<string | null>
   onOpenFileRequest(listener: (path: string) => void): () => void

@@ -1,0 +1,29 @@
+.field {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.drop {
+  padding: 4px;
+  border: 2px dashed transparent;
+  border-radius: 50%;
+  transition: border-color var(--duration-fast) var(--easing);
+}
+
+.over {
+  border-color: var(--color-accent);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.hint {
+  flex-basis: 100%;
+  font-size: var(--text-sm);
+  color: var(--color-text-subtle);
+}

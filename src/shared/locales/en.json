@@ -447,5 +447,25 @@
     "generations_one": "{{count}} generation",
     "generations_other": "{{count}} generations",
     "allGenerations": "All generations"
+  },
+  "photo": {
+    "title": "Photo",
+    "add": "Add photo…",
+    "change": "Change…",
+    "remove": "Remove",
+    "hint": "JPG, PNG or WebP up to 20 MB – or drop an image on the circle.",
+    "filter": "Images",
+    "cropTitle": "Crop the photo",
+    "cropText": "Drag to position the face, use the slider to zoom.",
+    "cropArea": "Photo crop area",
+    "zoom": "Zoom",
+    "use": "Use photo",
+    "unreadable": "This image can't be read.",
+    "errorTitle": "Can't use this photo",
+    "error": {
+      "too-large": "The image is larger than 20 MB. Please choose a smaller one.",
+      "unsupported": "This image format isn't supported. Use JPG, PNG or WebP (HEIC photos from iPhones need converting first).",
+      "io": "The image couldn't be read."
+    }
   }
 }

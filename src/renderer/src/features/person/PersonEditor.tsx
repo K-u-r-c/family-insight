@@ -11,6 +11,7 @@ import { useDocument } from '@renderer/store/document'
 import { useIssueText } from '@renderer/i18n/issues'
 import { CommitTextArea, CommitTextField } from './CommitField'
 import { DateField } from './DateField'
+import { PhotoField } from './PhotoField'
 import { PlaceField } from './PlaceField'
 import styles from './PersonEditor.module.css'
 
@@ -63,6 +64,11 @@ export function PersonEditor({ person }: { person: Person }): React.JSX.Element 
       onSubmit={(e) => e.preventDefault()}
       aria-label={t('person.editTitle')}
     >
+      <fieldset className={styles.group}>
+        <legend className={styles.legend}>{t('photo.title')}</legend>
+        <PhotoField person={person} />
+      </fieldset>
+
       <fieldset className={styles.group}>
         <legend className={styles.legend}>{t('person.name')}</legend>
         <CommitTextField
