@@ -18,8 +18,8 @@ English · [Polski](README.pl.md)
 [CSV format](docs/developer/reference/csv-format.md)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/hero-dark.png" />
-  <img src="docs/images/hero-light.png" alt="Family Insight showing a four-generation family tree with the details of one person" width="900" />
+  <source media="(prefers-color-scheme: dark)" srcset="docs/public/screenshots/en/dark/workspace.webp" />
+  <img src="docs/public/screenshots/en/light/workspace.webp" alt="Family Insight showing a four-generation family tree with the details of one person" width="900" />
 </picture>
 
 </div>
@@ -50,12 +50,12 @@ CSV import and export let you work with Excel, LibreOffice or Google Sheets.
 
 <table>
   <tr>
-    <td><img src="docs/images/welcome-pl.png" alt="Welcome screen in Polish" /></td>
-    <td><img src="docs/images/editor-pl.png" alt="Editing a person in Polish" /></td>
+    <td><img src="docs/public/screenshots/pl/light/welcome.webp" alt="Welcome screen in Polish" /></td>
+    <td><img src="docs/public/screenshots/pl/light/person-editor.webp" alt="Editing a person in Polish" /></td>
   </tr>
   <tr>
-    <td><img src="docs/images/import-csv.png" alt="CSV import preview with column mapping" /></td>
-    <td><img src="docs/images/ancestors-dark-pl.png" alt="Ancestors view in the dark theme" /></td>
+    <td><img src="docs/public/screenshots/en/light/csv-import.webp" alt="CSV import preview with column mapping" /></td>
+    <td><img src="docs/public/screenshots/pl/dark/view-ancestors.webp" alt="Ancestors view in the dark theme" /></td>
   </tr>
 </table>
 

@@ -38,7 +38,8 @@
     "typecheck:docs": "tsc --noEmit -p tsconfig.docs.json",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "docs:screenshots": "npm run build && playwright test -c playwright.screenshots.config.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

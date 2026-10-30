@@ -5,6 +5,12 @@
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "types": ["node"]
   },
-  "include": ["playwright.config.ts", "e2e/**/*", "src/core/**/*"],
+  "include": [
+    "playwright.config.ts",
+    "playwright.screenshots.config.ts",
+    "e2e/**/*",
+    "docs/.screenshots/**/*",
+    "src/core/**/*"
+  ],
   "exclude": ["src/core/**/*.test.ts"]
 }

@@ -98,3 +98,24 @@ deployed to GitHub Pages (<https://k-u-r-c.github.io/family-insight/>).
   between pages.
 - **Legacy paths:** v1.0.0 opens `docs/user-guide.*.md` and `docs/CSV_FORMAT.md` on GitHub from its
   Help menu and CSV dialog, so those files stay as short "moved" pages (excluded from the site).
+
+## Decision: generated documentation screenshots (issue #40)
+
+Every screenshot in the documentation is produced from the real app by
+`npm run docs:screenshots` (Playwright `_electron`, specs in `docs/.screenshots/`), in both
+languages and both themes, into `docs/public/screenshots/<lang>/<theme>/<scene>.webp`, plus a
+size manifest (`docs/.vitepress/screenshots.json`) for the `<Screenshot>` component.
+
+- **One app session per screenshot.** Capturing a hidden Electron window (Playwright's
+  `page.screenshot` or CDP `Page.captureScreenshot`) permanently stops `requestAnimationFrame` in
+  that window, which breaks Playwright's actionability checks and the app's animations. So each
+  scene starts a fresh hidden app, gets it into the right state and captures as its very last step.
+  `webContents.capturePage` fails for hidden windows, and offscreen rendering would need app changes.
+- **WebP straight from Chromium** (`Page.captureScreenshot` with `format: 'webp'`, quality 90): no
+  image libraries or system binaries, about 10–100 kB per image.
+- **Deterministic:** fixed window size (1280 × 800 at scale 1), fixed time zone, fixed sample data;
+  scenes wait for animations to finish instead of disabling them.
+- **Annotations** (numbered rings for tutorials) are injected as a top-layer popover, so they are
+  drawn above open `<dialog>`s, and removed with the session.
+- Screenshots are committed. They are not regenerated in CI because fonts and rendering differ
+  between machines; regenerate them locally after UI changes.

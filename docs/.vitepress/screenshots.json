@@ -1,0 +1,266 @@
+{
+  "about": {
+    "en-light": [547, 437],
+    "en-dark": [547, 437],
+    "pl-light": [547, 456],
+    "pl-dark": [547, 456]
+  },
+  "canvas-controls": {
+    "en-light": [262, 116],
+    "en-dark": [262, 116],
+    "pl-light": [262, 116],
+    "pl-dark": [262, 116]
+  },
+  "card-menu": {
+    "en-light": [355, 388],
+    "en-dark": [355, 388],
+    "pl-light": [373, 388],
+    "pl-dark": [373, 388]
+  },
+  "collapse-branch": {
+    "en-light": [360, 215],
+    "en-dark": [360, 215],
+    "pl-light": [360, 215],
+    "pl-dark": [360, 215]
+  },
+  "csv-export": {
+    "en-light": [547, 405],
+    "en-dark": [547, 405],
+    "pl-light": [547, 405],
+    "pl-dark": [547, 405]
+  },
+  "csv-import": {
+    "en-light": [893, 737],
+    "en-dark": [893, 737],
+    "pl-light": [893, 737],
+    "pl-dark": [893, 737]
+  },
+  "csv-import-columns": {
+    "en-light": [862, 662],
+    "en-dark": [862, 662],
+    "pl-light": [829, 636],
+    "pl-dark": [862, 662]
+  },
+  "csv-import-errors": {
+    "en-light": [893, 755],
+    "en-dark": [893, 755],
+    "pl-light": [893, 755],
+    "pl-dark": [893, 755]
+  },
+  "date-field": {
+    "en-light": [391, 146],
+    "en-dark": [391, 146],
+    "pl-light": [391, 146],
+    "pl-dark": [391, 146]
+  },
+  "delete-confirm": {
+    "en-light": [547, 208],
+    "en-dark": [547, 208],
+    "pl-light": [547, 208],
+    "pl-dark": [547, 208]
+  },
+  "empty-tree": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "export-image": {
+    "en-light": [547, 490],
+    "en-dark": [547, 490],
+    "pl-light": [547, 510],
+    "pl-dark": [547, 510]
+  },
+  "family-section": {
+    "en-light": [395, 720],
+    "en-dark": [395, 720],
+    "pl-light": [395, 720],
+    "pl-dark": [395, 720]
+  },
+  "file-menu": {
+    "en-light": [225, 353],
+    "en-dark": [225, 353],
+    "pl-light": [238, 353],
+    "pl-dark": [238, 353]
+  },
+  "first-person": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "link-existing": {
+    "en-light": [547, 501],
+    "en-dark": [547, 501],
+    "pl-light": [547, 501],
+    "pl-dark": [547, 501]
+  },
+  "new-tree": {
+    "en-light": [547, 295],
+    "en-dark": [547, 295],
+    "pl-light": [547, 295],
+    "pl-dark": [547, 295]
+  },
+  "parent-kind": {
+    "en-light": [373, 282],
+    "en-dark": [373, 282],
+    "pl-light": [373, 282],
+    "pl-dark": [373, 282]
+  },
+  "partnership-dialog": {
+    "en-light": [547, 589],
+    "en-dark": [547, 589],
+    "pl-light": [547, 589],
+    "pl-dark": [547, 589]
+  },
+  "people-sort": {
+    "en-light": [226, 198],
+    "en-dark": [226, 198],
+    "pl-light": [227, 198],
+    "pl-dark": [227, 198]
+  },
+  "person-details": {
+    "en-light": [380, 720],
+    "en-dark": [380, 720],
+    "pl-light": [380, 720],
+    "pl-dark": [380, 720]
+  },
+  "person-editor": {
+    "en-light": [380, 720],
+    "en-dark": [380, 720],
+    "pl-light": [380, 720],
+    "pl-dark": [380, 720]
+  },
+  "photo-crop": {
+    "en-light": [547, 522],
+    "en-dark": [547, 522],
+    "pl-light": [547, 522],
+    "pl-dark": [547, 522]
+  },
+  "recovery": {
+    "en-light": [568, 310],
+    "en-dark": [568, 310],
+    "pl-light": [568, 310],
+    "pl-dark": [568, 310]
+  },
+  "relation-options": {
+    "en-light": [373, 159],
+    "en-dark": [373, 159],
+    "pl-light": [373, 159],
+    "pl-dark": [373, 159]
+  },
+  "remarriage": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "search": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "settings-menu": {
+    "en-light": [219, 437],
+    "en-dark": [219, 437],
+    "pl-light": [219, 437],
+    "pl-dark": [219, 437]
+  },
+  "shortcuts": {
+    "en-light": [893, 529],
+    "en-dark": [893, 529],
+    "pl-light": [893, 529],
+    "pl-dark": [893, 529]
+  },
+  "statistics": {
+    "en-light": [893, 668],
+    "en-dark": [893, 668],
+    "pl-light": [893, 682],
+    "pl-dark": [893, 682]
+  },
+  "timeline": {
+    "en-light": [380, 720],
+    "en-dark": [380, 720],
+    "pl-light": [380, 720],
+    "pl-dark": [380, 720]
+  },
+  "tutorial-father": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "tutorial-result": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "unsaved-status": {
+    "en-light": [174, 37],
+    "en-dark": [174, 37],
+    "pl-light": [185, 37],
+    "pl-dark": [185, 37]
+  },
+  "view-ancestors": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "view-controls": {
+    "en-light": [222, 82],
+    "en-dark": [222, 82],
+    "pl-light": [222, 82],
+    "pl-dark": [222, 82]
+  },
+  "view-descendants": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "view-hourglass": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "welcome": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "welcome-annotated": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "welcome-recent": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "which-parent": {
+    "en-light": [547, 390],
+    "en-dark": [547, 390],
+    "pl-light": [547, 390],
+    "pl-dark": [547, 390]
+  },
+  "workspace": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  },
+  "workspace-tour": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800]
+  }
+}

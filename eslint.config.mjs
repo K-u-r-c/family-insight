@@ -30,6 +30,7 @@ export default tseslint.config(
       '*.config.{ts,mts,mjs}',
       'scripts/**/*.mjs',
       'e2e/**/*.ts',
+      'docs/.screenshots/**/*.ts',
       'docs/.vitepress/config.mts'
     ],
     languageOptions: { globals: globals.node }

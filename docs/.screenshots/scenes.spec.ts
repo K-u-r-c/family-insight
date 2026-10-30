@@ -1,0 +1,700 @@
+/*
+ * Documentation screenshots. Every scene runs in a fresh app session per language and theme,
+ * brings the app into the described state and captures it as its last step.
+ * Regenerate with `npm run docs:screenshots` (add `-- -g <scene>` for a single scene).
+ */
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import type { Locator } from '@playwright/test'
+import { Resvg } from '@resvg/resvg-js'
+import { mockDialogs, tempDir } from '../../e2e/app'
+import { scene, type Session, type ShotOptions } from './shoot'
+
+const ROOT = join(__dirname, '..', '..')
+const FIXTURE = join(ROOT, 'e2e', 'fixtures', 'kowalscy.finsight')
+const SAMPLE_CSV = (lang: string): string =>
+  join(ROOT, 'resources', 'samples', `example-${lang}.csv`)
+/** A fixed moment, so dates shown in dialogs don't change between runs. */
+const FIXED_TIME = '2026-10-29T18:42:00.000Z'
+
+// ---------------------------------------------------------------------------------------------
+// Helpers
+
+function canvas({ page, t }: Session): Locator {
+  return page.getByRole('application', { name: t('tree.canvasLabel') })
+}
+
+function card(s: Session, name: string): Locator {
+  return canvas(s).getByRole('button', { name: new RegExp(`^${name}`) })
+}
+
+/** The details/editor panel on the right. */
+function panel({ page }: Session): Locator {
+  return page
+    .locator('section[aria-label]')
+    .filter({ has: page.getByRole('heading') })
+    .last()
+}
+
+function dialog(s: Session): Locator {
+  return s.page.getByRole('dialog')
+}
+
+function menu(s: Session): Locator {
+  return s.page.getByRole('menu')
+}
+
+/** A dialog on a plain background. */
+function dialogShot(s: Session, extra: ShotOptions = {}): ShotOptions {
+  return { clip: dialog(s), pad: 24, isolate: true, ...extra }
+}
+
+async function openSample(s: Session): Promise<void> {
+  await s.page.getByRole('button', { name: s.t('welcome.trySample') }).click()
+  await canvas(s).waitFor()
+  await s.page.waitForTimeout(600)
+}
+
+async function select(s: Session, name: string): Promise<void> {
+  await card(s, name).click()
+  await s.page.getByRole('heading', { name, exact: true }).waitFor()
+  await s.page.waitForTimeout(500)
+}
+
+/** 100 % zoom, centred on the selected person, so cards are readable. */
+async function zoomToSelected(s: Session): Promise<void> {
+  await s.page.getByTitle(s.t('tree.resetZoom')).click()
+  await s.page.getByRole('button', { name: s.t('tree.centerSelected') }).click()
+  await s.page.waitForTimeout(700)
+}
+
+async function setRoot(s: Session, name: string): Promise<void> {
+  await card(s, name).click({ button: 'right' })
+  const item = menu(s).getByRole('menuitem', { name: s.t('tree.setRoot') })
+  await menu(s).waitFor()
+  if (await item.isVisible()) await item.click()
+  else await s.page.keyboard.press('Escape') // already the root person
+}
+
+async function closePanel(s: Session): Promise<void> {
+  await panel(s)
+    .getByRole('button', { name: s.t('common.close') })
+    .click()
+  await s.page.waitForTimeout(400)
+}
+
+async function menuAction(s: Session, action: string): Promise<void> {
+  await s.app.evaluate(({ BrowserWindow }, a) => {
+    BrowserWindow.getAllWindows()[0]!.webContents.send('menu:action', a)
+  }, action)
+}
+
+/** Moves the pointer away so no hover effect or tooltip ends up in the picture. */
+async function parkMouse(s: Session): Promise<void> {
+  await s.page.mouse.move(1279, 799)
+}
+
+/** A drawn, clearly fictional portrait for the photo cropper. */
+function portrait(): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100">
+    <defs>
+      <radialGradient id="bg" cx="0.5" cy="0.35" r="0.8">
+        <stop offset="0" stop-color="#e9dcc4"/><stop offset="1" stop-color="#9c8566"/>
+      </radialGradient>
+      <linearGradient id="coat" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#4b5a6a"/><stop offset="1" stop-color="#2c3540"/>
+      </linearGradient>
+    </defs>
+    <rect width="900" height="1100" fill="url(#bg)"/>
+    <path d="M150 1100 C170 820 300 740 450 740 C600 740 730 820 750 1100 Z" fill="url(#coat)"/>
+    <path d="M390 740 L450 860 L510 740 Z" fill="#f4efe6"/>
+    <rect x="405" y="640" width="90" height="120" rx="40" fill="#d9b393"/>
+    <ellipse cx="450" cy="520" rx="150" ry="180" fill="#e5c3a3"/>
+    <path d="M300 500 C290 340 380 300 450 300 C540 300 615 350 600 500 C580 420 520 390 450 395 C380 390 320 420 300 500 Z" fill="#6b4a33"/>
+    <ellipse cx="395" cy="525" rx="14" ry="10" fill="#3b2b20"/>
+    <ellipse cx="505" cy="525" rx="14" ry="10" fill="#3b2b20"/>
+    <path d="M405 610 C430 630 470 630 495 610" stroke="#9b5f4a" stroke-width="9" fill="none" stroke-linecap="round"/>
+  </svg>`
+  const file = join(tempDir(), 'portrait.png')
+  writeFileSync(file, new Resvg(svg).render().asPng())
+  return file
+}
+
+// ---------------------------------------------------------------------------------------------
+// Getting started
+
+scene('welcome', async ({ page, t }) => {
+  await page.getByRole('heading', { name: t('welcome.title') }).waitFor()
+})
+
+scene('welcome-annotated', async ({ page, t }) => {
+  await page.getByRole('heading', { name: t('welcome.title') }).waitFor()
+  return {
+    steps: [
+      { target: page.getByRole('button', { name: t('welcome.newTree') }), badge: 'left' },
+      { target: page.getByRole('button', { name: t('welcome.openTree') }), badge: 'left' },
+      { target: page.getByRole('button', { name: t('welcome.importCsv') }), badge: 'left' },
+      { target: page.getByRole('button', { name: t('welcome.trySample') }), badge: 'left' }
+    ]
+  }
+})
+
+scene(
+  'welcome-recent',
+  async ({ page, t }) => {
+    await page.getByRole('heading', { name: t('welcome.recent') }).waitFor()
+  },
+  ({ lang }) => {
+    // A fixed folder, so the paths in the picture are the same on every run.
+    const dir = join(tmpdir(), 'family-insight-docs', 'Documents')
+    mkdirSync(dir, { recursive: true })
+    const existing = lang === 'pl' ? 'Kowalscy' : 'Kowalski family'
+    const missing = lang === 'pl' ? 'Rodzina Nowaków' : 'Nowak family'
+    copyFileSync(FIXTURE, join(dir, `${existing}.finsight`))
+    const ago = (hours: number): string => new Date(Date.now() - hours * 3_600_000).toISOString()
+    return {
+      settings: {
+        recentFiles: [
+          { path: join(dir, `${existing}.finsight`), name: existing, openedAt: ago(2) },
+          { path: join(dir, `${missing}.finsight`), name: missing, openedAt: ago(72) }
+        ]
+      }
+    }
+  }
+)
+
+scene('new-tree', async (s) => {
+  await s.page.getByRole('button', { name: s.t('welcome.newTree') }).click()
+  const d = dialog(s)
+  await d.getByRole('textbox').fill(s.t('welcome.sampleName'))
+  return dialogShot(s, {
+    steps: [
+      { target: d.getByRole('textbox'), badge: 'above' },
+      { target: d.getByRole('button', { name: s.t('welcome.create') }), badge: 'above' }
+    ]
+  })
+})
+
+scene('first-person', async (s) => {
+  const { page, t } = s
+  await page.getByRole('button', { name: t('welcome.newTree') }).click()
+  await dialog(s).getByRole('textbox').fill(t('welcome.sampleName'))
+  await dialog(s)
+    .getByRole('button', { name: t('welcome.create') })
+    .click()
+  const given = page.getByLabel(t('person.givenNames'))
+  await given.waitFor()
+  await given.fill('Anna')
+  const surname = page.getByLabel(t('person.surname'), { exact: true })
+  await surname.fill('Kowalska')
+  const birth = page.getByLabel(t('person.birthDate'))
+  await birth.fill('1990')
+  await birth.blur()
+  return {
+    steps: [
+      { target: given, badge: 'left' },
+      { target: surname, badge: 'left' },
+      { target: birth, badge: 'above' }
+    ]
+  }
+})
+
+/** Fills the open person editor and closes it with Done. */
+async function fillPerson(
+  s: Session,
+  person: { given: string; surname?: string; sex?: 'female' | 'male'; born?: string }
+): Promise<void> {
+  const { page, t } = s
+  await page.getByLabel(t('person.givenNames')).fill(person.given)
+  if (person.surname !== undefined) {
+    await page.getByLabel(t('person.surname'), { exact: true }).fill(person.surname)
+  }
+  if (person.sex) await page.getByRole('radio', { name: t(`sex.${person.sex}`) }).click()
+  if (person.born) await page.getByLabel(t('person.birthDate')).fill(person.born)
+  await page.getByRole('button', { name: t('common.done') }).click()
+  await page.waitForTimeout(400)
+}
+
+async function addRelative(s: Session, role: string): Promise<void> {
+  await panel(s)
+    .getByRole('button', { name: s.t(`relations.add.${role}`), exact: true })
+    .first()
+    .click()
+  await s.page.getByLabel(s.t('person.givenNames')).waitFor()
+  await s.page.waitForTimeout(400)
+}
+
+/** The tutorial from "Your first family tree": you, your parents, your partner and child. */
+async function buildFirstTree(s: Session, until: 'father' | 'done'): Promise<void> {
+  const { page, t } = s
+  await page.getByRole('button', { name: t('welcome.newTree') }).click()
+  await dialog(s)
+    .getByRole('textbox')
+    .fill(s.variant.lang === 'pl' ? 'Moja rodzina' : 'My family')
+  await dialog(s)
+    .getByRole('button', { name: t('welcome.create') })
+    .click()
+  await page.getByLabel(t('person.givenNames')).waitFor()
+  await fillPerson(s, { given: 'Anna', surname: 'Kowalska', sex: 'female', born: '1990' })
+  await addRelative(s, 'father')
+  if (until === 'father') return
+  await fillPerson(s, { given: 'Jan', born: '~1960' })
+  await select(s, 'Anna Kowalska')
+  await addRelative(s, 'mother')
+  await fillPerson(s, { given: 'Maria', surname: 'Kowalska', born: '1962' })
+  await select(s, 'Anna Kowalska')
+  await addRelative(s, 'partner')
+  await fillPerson(s, { given: 'Tomasz', surname: 'Nowak', born: '1988' })
+  await select(s, 'Anna Kowalska')
+  await addRelative(s, 'child')
+  await fillPerson(s, { given: 'Zofia', born: '2020' })
+  await select(s, 'Anna Kowalska')
+}
+
+scene('tutorial-father', async (s) => {
+  await buildFirstTree(s, 'father')
+  await parkMouse(s)
+  return {
+    steps: [
+      { target: s.page.getByLabel(s.t('person.givenNames')), badge: 'left' },
+      { target: s.page.getByLabel(s.t('person.surname'), { exact: true }), badge: 'left' }
+    ]
+  }
+})
+
+scene('tutorial-result', async (s) => {
+  await buildFirstTree(s, 'done')
+  await s.page.getByRole('button', { name: s.t('tree.fit') }).click()
+  await s.page.waitForTimeout(600)
+  await parkMouse(s)
+})
+
+scene('workspace', async (s) => {
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await parkMouse(s)
+})
+
+scene('workspace-tour', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await parkMouse(s)
+  return {
+    steps: [
+      page.getByRole('button', { name: t('menu.file') }),
+      page.getByRole('button', { name: t('workspace.addPerson') }),
+      page.getByRole('radiogroup', { name: t('view.mode') }),
+      page.getByRole('searchbox', { name: t('common.search') }),
+      page.getByRole('listbox', { name: t('people.title') }),
+      panel(s),
+      page.getByRole('img', { name: t('tree.minimap') }),
+      page.getByRole('toolbar', { name: t('tree.zoomControls') })
+    ]
+  }
+})
+
+scene('empty-tree', async (s) => {
+  const { page, t } = s
+  await page.getByRole('button', { name: t('welcome.newTree') }).click()
+  await dialog(s)
+    .getByRole('button', { name: t('welcome.create') })
+    .click()
+  await page.getByLabel(t('person.givenNames')).waitFor()
+  // Delete the automatically added first person to show the empty state.
+  await panel(s)
+    .getByRole('button', { name: t('person.delete') })
+    .click()
+  await dialog(s)
+    .getByRole('button', { name: t('common.delete') })
+    .click()
+  await page.getByRole('button', { name: t('tree.addFirst') }).waitFor()
+  await parkMouse(s)
+})
+
+// ---------------------------------------------------------------------------------------------
+// People and relationships
+
+scene('person-details', async (s) => {
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await parkMouse(s)
+  return { clip: panel(s), pad: 0 }
+})
+
+scene('family-section', async (s) => {
+  await openSample(s)
+  // Married into the family, so her parents are missing and every "add" button shows.
+  await select(s, 'Katarzyna Kowalska')
+  const p = panel(s)
+  const add = (key: string): Locator =>
+    p.getByRole('button', { name: s.t(`relations.add.${key}`), exact: true }).first()
+  await parkMouse(s)
+  return {
+    clip: p,
+    pad: 0,
+    steps: [
+      add('father'),
+      { target: add('mother'), badge: 'right' },
+      { target: add('partner'), badge: 'right' },
+      { target: add('child'), badge: 'right' },
+      {
+        target: p.getByRole('button', { name: s.t('relations.linkExisting') }).first(),
+        badge: 'left'
+      }
+    ]
+  }
+})
+
+scene('link-existing', async (s) => {
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await panel(s)
+    .getByRole('button', { name: s.t('relations.linkExisting') })
+    .first()
+    .click()
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('which-parent', async (s) => {
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await panel(s)
+    .getByRole('button', { name: s.t('relations.add.child'), exact: true })
+    .first()
+    .click()
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('card-menu', async (s) => {
+  await openSample(s)
+  await select(s, 'Ewa Lis')
+  await zoomToSelected(s)
+  await card(s, 'Ewa Lis').click({ button: 'right' })
+  await menu(s).waitFor()
+  return { clip: [card(s, 'Ewa Lis'), menu(s)], pad: 24 }
+})
+
+scene('person-editor', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await panel(s)
+    .getByRole('button', { name: t('common.edit') })
+    .click()
+  await page.getByLabel(t('person.givenNames')).waitFor()
+  await parkMouse(s)
+  return { clip: panel(s), pad: 0 }
+})
+
+scene('date-field', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await panel(s)
+    .getByRole('button', { name: t('common.edit') })
+    .click()
+  const date = page.getByLabel(t('person.birthDate'))
+  await date.fill('~1955')
+  const group = page.getByRole('group', { name: t('person.birth') })
+  return {
+    clip: group,
+    pad: 12,
+    steps: [
+      { target: date, badge: 'above' },
+      { target: page.getByLabel(t('person.dateQualifier')).first(), badge: 'left' }
+    ]
+  }
+})
+
+scene('photo-crop', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await panel(s)
+    .getByRole('button', { name: t('common.edit') })
+    .click()
+  await mockDialogs(s.app, { open: portrait() })
+  await page.getByRole('button', { name: t('photo.add') }).click()
+  await dialog(s).waitFor()
+  return dialogShot(s, { settle: 1200 })
+})
+
+scene('relation-options', async (s) => {
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  const name = 'Magdalena Nowicka'
+  const row = panel(s).getByRole('button', { name, exact: true }).first()
+  await panel(s)
+    .getByRole('button', { name: s.t('relations.options', { name }) })
+    .click()
+  await menu(s).waitFor()
+  return { clip: [row, menu(s)], pad: 16 }
+})
+
+scene('parent-kind', async (s) => {
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  const name = 'Jan Kowalski'
+  const row = panel(s).getByRole('button', { name, exact: true }).first()
+  await panel(s)
+    .getByRole('button', { name: s.t('relations.options', { name }) })
+    .click()
+  await menu(s).waitFor()
+  return { clip: [row, menu(s)], pad: 16 }
+})
+
+scene('remarriage', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  // Piotr's two marriages: his descendants one generation deep, fitted to the window.
+  await setRoot(s, 'Piotr Kowalski')
+  await page.getByRole('radio', { name: t('view.descendants'), exact: true }).click()
+  await page.getByLabel(t('view.depth')).selectOption('1')
+  await page.getByRole('button', { name: t('workspace.hideSidebar') }).click()
+  if (await panel(s).isVisible()) await closePanel(s)
+  await page.waitForTimeout(500)
+  await page.getByRole('button', { name: t('tree.fit') }).click()
+  await page.waitForTimeout(900)
+  await page.waitForTimeout(900)
+  await parkMouse(s)
+})
+
+scene('partnership-dialog', async (s) => {
+  await openSample(s)
+  await select(s, 'Piotr Kowalski')
+  await panel(s)
+    .getByRole('button', { name: s.t('relations.options', { name: 'Katarzyna Kowalska' }) })
+    .click()
+  await menu(s)
+    .getByRole('menuitem', { name: s.t('relations.editPartnership') })
+    .click()
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('delete-confirm', async (s) => {
+  await openSample(s)
+  await select(s, 'Lena Kowalska')
+  await panel(s)
+    .getByRole('button', { name: s.t('person.delete') })
+    .click()
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+// ---------------------------------------------------------------------------------------------
+// Exploring the tree
+
+scene('view-controls', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  const group = page.getByRole('radiogroup', { name: t('view.mode') })
+  const mode = (key: string): Locator => page.getByRole('radio', { name: t(key), exact: true })
+  return {
+    clip: group,
+    pad: 40,
+    steps: ['view.family', 'view.ancestors', 'view.descendants', 'view.hourglass'].map((key) => ({
+      target: mode(key),
+      badge: 'above' as const
+    }))
+  }
+})
+
+// The view follows the root person (🏠) when there is one, otherwise the selected person.
+for (const [mode, person] of [
+  ['ancestors', 'Lena Kowalska'],
+  ['descendants', 'Jan Kowalski'],
+  ['hourglass', 'Jakub Kowalski']
+] as const) {
+  scene(`view-${mode}`, async (s) => {
+    await openSample(s)
+    await setRoot(s, person)
+    await select(s, person)
+    await closePanel(s)
+    await s.page.getByRole('radio', { name: s.t(`view.${mode}`), exact: true }).click()
+    await s.page.waitForTimeout(500)
+    await s.page.getByRole('button', { name: s.t('tree.fit') }).click()
+    await s.page.waitForTimeout(800)
+    await parkMouse(s)
+  })
+}
+
+scene('collapse-branch', async (s) => {
+  await openSample(s)
+  const name = 'Tadeusz Wiśniewski'
+  await select(s, name)
+  await zoomToSelected(s)
+  await card(s, name).hover()
+  const toggle = canvas(s).getByRole('button', { name: s.t('tree.collapse', { name }) })
+  await toggle.waitFor()
+  return { clip: [card(s, name), toggle], pad: 70, steps: [{ target: toggle, badge: 'right' }] }
+})
+
+scene('canvas-controls', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  const controls = page.getByRole('toolbar', { name: t('tree.zoomControls') })
+  const above = (target: Locator): { target: Locator; badge: 'above' } => ({
+    target,
+    badge: 'above'
+  })
+  return {
+    clip: controls,
+    pad: 40,
+    steps: [
+      above(page.getByRole('button', { name: t('tree.zoomOut') })),
+      above(page.getByTitle(t('tree.resetZoom'))),
+      above(page.getByRole('button', { name: t('tree.zoomIn') })),
+      above(page.getByRole('button', { name: t('tree.fit') })),
+      above(page.getByRole('button', { name: t('tree.centerSelected') })),
+      above(page.getByRole('button', { name: t('tree.minimap') }))
+    ]
+  }
+})
+
+scene('search', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await page.getByRole('searchbox', { name: t('common.search') }).fill('lodz')
+  await page.waitForTimeout(600)
+})
+
+scene('people-sort', async (s) => {
+  await openSample(s)
+  const button = s.page.getByRole('button', { name: s.t('people.sort') })
+  await button.click()
+  await menu(s).waitFor()
+  return { clip: [button, menu(s)], pad: 16 }
+})
+
+scene('timeline', async (s) => {
+  await openSample(s)
+  await select(s, 'Anna Kowalska')
+  const life = panel(s).getByRole('heading', { name: s.t('timeline.title') })
+  await life.scrollIntoViewIfNeeded()
+  await parkMouse(s)
+  return { clip: panel(s), pad: 0 }
+})
+
+scene('statistics', async (s) => {
+  await openSample(s)
+  await s.page.getByRole('button', { name: s.t('stats.title') }).click()
+  await dialog(s).waitFor()
+  return dialogShot(s, { settle: 1200 })
+})
+
+scene('shortcuts', async (s) => {
+  await openSample(s)
+  await menuAction(s, 'help:shortcuts')
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('about', async (s) => {
+  await menuAction(s, 'help:about')
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+// ---------------------------------------------------------------------------------------------
+// Files, CSV and printing
+
+scene('file-menu', async (s) => {
+  await openSample(s)
+  const button = s.page.getByRole('button', { name: s.t('menu.file') })
+  await button.click()
+  await menu(s).waitFor()
+  return { clip: [button, menu(s)], pad: 16 }
+})
+
+scene('settings-menu', async (s) => {
+  await openSample(s)
+  const button = s.page.getByRole('button', { name: s.t('settings.title') })
+  await button.click()
+  await menu(s).waitFor()
+  return { clip: [button, menu(s)], pad: 16 }
+})
+
+scene('unsaved-status', async (s) => {
+  await openSample(s)
+  await setRoot(s, 'Lena Kowalska')
+  const status = s.page.getByText(s.t('workspace.unsaved'))
+  await status.waitFor()
+  await parkMouse(s)
+  return {
+    clip: status,
+    pad: 14,
+    steps: [{ target: status, badge: 'left' }]
+  }
+})
+
+scene(
+  'recovery',
+  async (s) => {
+    await dialog(s).waitFor()
+    return dialogShot(s)
+  },
+  {
+    prepare: (userData) => {
+      mkdirSync(join(userData, 'recovery'))
+      const id = '3f2c1a9e-1b7d-4a55-9a51-6f3e0c8d2b11'
+      writeFileSync(
+        join(userData, 'recovery', `${id}.json`),
+        JSON.stringify({
+          id,
+          originalPath: null,
+          name: 'Kowalscy',
+          savedAt: FIXED_TIME,
+          content: readFileSync(FIXTURE, 'utf8')
+        })
+      )
+    }
+  }
+)
+
+scene('csv-import', async (s) => {
+  await mockDialogs(s.app, { open: SAMPLE_CSV(s.variant.lang) })
+  await s.page.getByRole('button', { name: s.t('welcome.importCsv') }).click()
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('csv-import-columns', async (s) => {
+  await mockDialogs(s.app, { open: SAMPLE_CSV(s.variant.lang) })
+  await s.page.getByRole('button', { name: s.t('welcome.importCsv') }).click()
+  const heading = dialog(s).getByRole('heading', { name: s.t('csv.columnsTitle') })
+  await heading.scrollIntoViewIfNeeded()
+  const table = dialog(s).getByRole('table').first()
+  return { clip: [heading, table], pad: 16, isolate: true }
+})
+
+scene('csv-import-errors', async (s) => {
+  const file = join(tempDir(), s.variant.lang === 'pl' ? 'rodzina.csv' : 'family.csv')
+  const csv =
+    s.variant.lang === 'pl'
+      ? 'id;imiona;nazwisko;data_urodzenia;ojciec_id\np1;Jan;Kowalski;1925;\np2;Piotr;Kowalski;1955;p1\np2;Ewa;Lis;12.13.1952;\np4;Marek;Lis;1983;p9\n'
+      : 'id,given_names,surname,birth_date,father_id\np1,Jan,Kowalski,1925,\np2,Piotr,Kowalski,1955,p1\np2,Ewa,Lis,1952-13-12,\np4,Marek,Lis,1983,p9\n'
+  writeFileSync(file, csv)
+  await mockDialogs(s.app, { open: file })
+  await s.page.getByRole('button', { name: s.t('welcome.importCsv') }).click()
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('csv-export', async (s) => {
+  await openSample(s)
+  await menuAction(s, 'file:export-csv')
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('export-image', async (s) => {
+  await openSample(s)
+  await menuAction(s, 'file:export-image')
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})

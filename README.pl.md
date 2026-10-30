@@ -18,8 +18,8 @@
 [Format CSV](docs/developer/reference/csv-format.md)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/hero-dark.png" />
-  <img src="docs/images/hero-light.png" alt="Family Insight z drzewem czterech pokoleń i szczegółami wybranej osoby" width="900" />
+  <source media="(prefers-color-scheme: dark)" srcset="docs/public/screenshots/pl/dark/workspace.webp" />
+  <img src="docs/public/screenshots/pl/light/workspace.webp" alt="Family Insight z drzewem czterech pokoleń i szczegółami wybranej osoby" width="900" />
 </picture>
 
 </div>
