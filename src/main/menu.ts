@@ -1,6 +1,8 @@
 import { app, BrowserWindow, Menu, shell, type MenuItemConstructorOptions } from 'electron'
 import { IpcChannel, type MenuAction, type MenuState } from '@shared/ipc'
+import { requestOpen } from './files'
 import { t } from './i18n'
+import { getSettings, updateSettings } from './settings'
 
 const PROJECT_URL = 'https://github.com/K-u-r-c/family-insight'
 
@@ -30,7 +32,27 @@ function send(action: MenuAction): void {
   BrowserWindow.getFocusedWindow()?.webContents.send(IpcChannel.MenuAction, action)
 }
 
-/** Builds the localized application menu. Call again after the language changes. */
+function recentSubmenu(): MenuItemConstructorOptions[] {
+  const recent = getSettings().recentFiles
+  if (!recent.length) return [{ label: t('menu.noRecent'), enabled: false }]
+  return [
+    ...recent.map((file) => ({
+      label: file.name,
+      sublabel: file.path,
+      click: () => requestOpen(file.path)
+    })),
+    { type: 'separator' as const },
+    {
+      label: t('menu.clearRecent'),
+      click: () => {
+        updateSettings({ recentFiles: [] })
+        app.clearRecentDocuments()
+      }
+    }
+  ]
+}
+
+/** Builds the localized application menu. Call again after the language or recent files change. */
 export function buildMenu(): void {
   const isMac = process.platform === 'darwin'
 
@@ -41,6 +63,10 @@ export function buildMenu(): void {
       submenu: [
         { label: t('menu.newTree'), accelerator: 'CmdOrCtrl+N', click: () => send('file:new') },
         { label: t('menu.open'), accelerator: 'CmdOrCtrl+O', click: () => send('file:open') },
+        {
+          label: t('menu.openRecent'),
+          submenu: recentSubmenu()
+        },
         { type: 'separator' },
         {
           id: 'save',

@@ -11,7 +11,9 @@ import {
   type FileWriteResult,
   type UnsavedChoice
 } from '@shared/ipc'
+import { rotateBackups } from './backups'
 import { writeFileAtomic } from './fsUtils'
+import { getSettings } from './settings'
 import { t } from './i18n'
 
 const MAX_FILE_BYTES = 200 * 1024 * 1024
@@ -51,7 +53,10 @@ export async function readFile(path: string): Promise<FileReadResult> {
     const stat = await fs.stat(full)
     if (stat.size > MAX_FILE_BYTES) return { ok: false, path: full, error: 'too-large' }
     const buffer = await fs.readFile(full)
-    if (extname(full).toLowerCase() === `.${FILE_EXTENSION}`) writable.add(full)
+    if (extname(full).toLowerCase() === `.${FILE_EXTENSION}`) {
+      writable.add(full)
+      app.addRecentDocument(full)
+    }
     const { text, encoding } = decodeText(buffer)
     return { ok: true, path: full, content: text, encoding }
   } catch (error) {
@@ -126,12 +131,21 @@ export function registerFileHandlers(): void {
 
   ipcMain.handle(
     IpcChannel.FileWrite,
-    async (_event, path: unknown, content: unknown): Promise<FileWriteResult> => {
+    async (_event, path: unknown, content: unknown, options: unknown): Promise<FileWriteResult> => {
       if (typeof path !== 'string' || typeof content !== 'string') return { ok: false, error: 'io' }
       const full = resolve(path)
       if (!writable.has(full)) return { ok: false, error: 'permission' }
+      const backup = (options as { backup?: unknown } | undefined)?.backup === true
       try {
+        if (
+          backup &&
+          getSettings().backups &&
+          extname(full).toLowerCase() === `.${FILE_EXTENSION}`
+        ) {
+          await rotateBackups(full).catch((error) => console.warn('Backup failed', error))
+        }
         await writeFileAtomic(full, content)
+        if (extname(full).toLowerCase() === `.${FILE_EXTENSION}`) app.addRecentDocument(full)
         return { ok: true, path: full }
       } catch (error) {
         return { ok: false, error: errorCode(error) }

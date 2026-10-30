@@ -17,7 +17,8 @@ const api: FamilyInsightApi = {
   openFileDialog: (format) => ipcRenderer.invoke(IpcChannel.FileOpenDialog, format),
   readFile: (path) => ipcRenderer.invoke(IpcChannel.FileRead, path),
   saveFileDialog: (format, name) => ipcRenderer.invoke(IpcChannel.FileSaveDialog, format, name),
-  writeFile: (path, content) => ipcRenderer.invoke(IpcChannel.FileWrite, path, content),
+  writeFile: (path, content, options) =>
+    ipcRenderer.invoke(IpcChannel.FileWrite, path, content, options),
   showInFolder: (path) => ipcRenderer.invoke(IpcChannel.FileShowInFolder, path),
   filesExist: (paths) => ipcRenderer.invoke(IpcChannel.FileExists, paths),
   takePendingFile: () => ipcRenderer.invoke(IpcChannel.FileTakePending),
@@ -26,6 +27,11 @@ const api: FamilyInsightApi = {
   onCloseRequest: (listener) => subscribe<void>(IpcChannel.WindowCloseRequest, listener),
   closeWindow: () => ipcRenderer.invoke(IpcChannel.WindowClose),
   getPathForFile: (file) => webUtils.getPathForFile(file),
+  writeRecovery: (id, originalPath, name, content) =>
+    ipcRenderer.invoke(IpcChannel.RecoveryWrite, id, originalPath, name, content),
+  clearRecovery: (id) => ipcRenderer.invoke(IpcChannel.RecoveryClear, id),
+  listRecovery: () => ipcRenderer.invoke(IpcChannel.RecoveryList),
+  readRecovery: (id) => ipcRenderer.invoke(IpcChannel.RecoveryRead, id),
   setMenuState: (state) => ipcRenderer.invoke(IpcChannel.MenuSetState, state),
   onMenuAction: (listener) => subscribe<MenuAction>(IpcChannel.MenuAction, listener)
 }

@@ -8,6 +8,7 @@ import { selectIsDirty, useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
 import { addPersonCommand } from '@renderer/store/commands'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
+import { clearRecovery } from './autosave'
 
 const api = (): typeof window.familyInsight => window.familyInsight
 const t = (key: string, options?: Record<string, unknown>): string =>
@@ -49,7 +50,10 @@ export async function guardUnsaved(): Promise<boolean> {
   if (!selectIsDirty(state) || !state.tree) return true
   const choice = await api().askUnsaved(state.tree.meta.name)
   if (choice === 'cancel') return false
-  if (choice === 'discard') return true
+  if (choice === 'discard') {
+    await clearRecovery()
+    return true
+  }
   return saveTree()
 }
 
@@ -106,7 +110,7 @@ export async function openTreeAt(path: string): Promise<void> {
 async function writeTo(path: string): Promise<boolean> {
   const tree = useDocument.getState().tree
   if (!tree) return false
-  const result = await api().writeFile(path, serializeTree(tree))
+  const result = await api().writeFile(path, serializeTree(tree), { backup: true })
   if (!result.ok) {
     await showFileError(result.error, true)
     return false
@@ -133,5 +137,8 @@ export async function saveTree(): Promise<boolean> {
 
 /** Main asked to close the window: save/discard/cancel, then let it close. */
 export async function handleCloseRequest(): Promise<void> {
-  if (await guardUnsaved()) await api().closeWindow()
+  if (await guardUnsaved()) {
+    await clearRecovery()
+    await api().closeWindow()
+  }
 }

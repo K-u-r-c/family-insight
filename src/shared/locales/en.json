@@ -68,7 +68,10 @@
     "about": "About Family Insight",
     "website": "Project Website",
     "csvFormat": "CSV Format",
-    "csvTemplate": "Download CSV Template…"
+    "csvTemplate": "Download CSV Template…",
+    "openRecent": "Open Recent",
+    "noRecent": "No recent files",
+    "clearRecent": "Clear Recent"
   },
   "sex": {
     "female": "Female",
@@ -420,5 +423,14 @@
     "downloadTemplate": "Download an empty template",
     "templateFileName": "family-template",
     "templateSaved": "Template saved"
+  },
+  "recovery": {
+    "title": "Restore unsaved work?",
+    "text": "Family Insight didn't close properly last time. These trees had changes that weren't saved.",
+    "restore": "Restore",
+    "discardAll": "Discard all",
+    "untitled": "Never saved",
+    "restored": "Restored “{{name}}”. Save it to keep the changes.",
+    "failed": "This copy couldn't be restored."
   }
 }

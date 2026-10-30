@@ -16,6 +16,10 @@ export const IpcChannel = {
   FileShowInFolder: 'file:show-in-folder',
   FileExists: 'file:exists',
   DialogUnsaved: 'dialog:unsaved',
+  RecoveryWrite: 'recovery:write',
+  RecoveryClear: 'recovery:clear',
+  RecoveryList: 'recovery:list',
+  RecoveryRead: 'recovery:read',
   WindowCloseRequest: 'window:close-request',
   WindowClose: 'window:close',
   MenuSetState: 'menu:set-state',
@@ -41,6 +45,13 @@ export type FileReadResult =
 export type FileWriteResult = { ok: true; path: string } | { ok: false; error: FileErrorCode }
 
 export type UnsavedChoice = 'save' | 'discard' | 'cancel'
+
+export interface RecoveryEntry {
+  id: string
+  originalPath: string | null
+  name: string
+  savedAt: string
+}
 
 /** Enabled-state of document-dependent menu items, reported by the renderer. */
 export interface MenuState {
@@ -77,7 +88,8 @@ export interface FamilyInsightApi {
   readFile(path: string): Promise<FileReadResult>
   /** Shows a save dialog; the returned path becomes writable for this session. */
   saveFileDialog(format: FormatId, suggestedName: string): Promise<string | null>
-  writeFile(path: string, content: string): Promise<FileWriteResult>
+  /** `backup`: rotate `.bak1…5` copies first (explicit saves, if enabled in settings). */
+  writeFile(path: string, content: string, options?: { backup?: boolean }): Promise<FileWriteResult>
   showInFolder(path: string): Promise<void>
   /** Which of the given paths still exist (for the recent files list). */
   filesExist(paths: string[]): Promise<boolean[]>
@@ -91,6 +103,16 @@ export interface FamilyInsightApi {
   closeWindow(): Promise<void>
   /** Absolute path of a dropped file (Electron no longer exposes `File.path`). */
   getPathForFile(file: File): string
+  /** Crash-recovery snapshots of unsaved documents. */
+  writeRecovery(
+    id: string,
+    originalPath: string | null,
+    name: string,
+    content: string
+  ): Promise<void>
+  clearRecovery(id: string): Promise<void>
+  listRecovery(): Promise<RecoveryEntry[]>
+  readRecovery(id: string): Promise<{ content: string; originalPath: string | null } | null>
   setMenuState(state: MenuState): Promise<void>
   onMenuAction(listener: (action: MenuAction) => void): () => void
 }

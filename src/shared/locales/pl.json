@@ -68,7 +68,10 @@
     "about": "O programie Family Insight",
     "website": "Strona projektu",
     "csvFormat": "Format CSV",
-    "csvTemplate": "Pobierz szablon CSV…"
+    "csvTemplate": "Pobierz szablon CSV…",
+    "openRecent": "Otwórz ostatnie",
+    "noRecent": "Brak ostatnich plików",
+    "clearRecent": "Wyczyść listę"
   },
   "sex": {
     "female": "Kobieta",
@@ -446,5 +449,14 @@
     "downloadTemplate": "Pobierz pusty szablon",
     "templateFileName": "szablon-rodziny",
     "templateSaved": "Zapisano szablon"
+  },
+  "recovery": {
+    "title": "Przywrócić niezapisaną pracę?",
+    "text": "Family Insight nie został ostatnio poprawnie zamknięty. Te drzewa miały niezapisane zmiany.",
+    "restore": "Przywróć",
+    "discardAll": "Odrzuć wszystkie",
+    "untitled": "Nigdy nie zapisane",
+    "restored": "Przywrócono „{{name}}”. Zapisz je, aby zachować zmiany.",
+    "failed": "Nie udało się przywrócić tej kopii."
   }
 }

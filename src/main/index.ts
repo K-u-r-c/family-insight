@@ -4,6 +4,7 @@ import { resolveLanguage } from '@shared/i18n'
 import { registerBuiltInFormats } from '@core/io/formats'
 import { guardWindowClose, pathFromArgv, registerFileHandlers, requestOpen } from './files'
 import { initMainI18n, setMainLanguage } from './i18n'
+import { registerRecoveryHandlers } from './recovery'
 import { registerIpcHandlers } from './ipc'
 import { buildMenu } from './menu'
 import { flushSettings, loadSettings, onSettingsChanged } from './settings'
@@ -87,11 +88,14 @@ if (!hasLock) {
     onSettingsChanged((next, previous) => {
       if (next.language !== previous.language) {
         void setMainLanguage(resolveLanguage(next.language)).then(buildMenu)
+      } else if (JSON.stringify(next.recentFiles) !== JSON.stringify(previous.recentFiles)) {
+        buildMenu()
       }
     })
     registerIpcHandlers()
     registerBuiltInFormats()
     registerFileHandlers()
+    registerRecoveryHandlers()
     buildMenu()
     createWindow()
 
