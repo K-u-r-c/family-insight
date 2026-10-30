@@ -21,8 +21,10 @@ Electron + React + TypeScript family tree app (EN/PL). Read `docs/ARCHITECTURE.m
 
 ## Working through the backlog
 
-Issues #1–#33 (milestones MVP and v1.0) are the full 1.0 scope, already ordered by
-dependency – implement them in numeric order. #34+ (Backlog) are out of scope for 1.0.
+Issues #1–#33 (milestones MVP and v1.0) were the 1.0 scope (released as v1.0.0).
+Issues #38–#51 (milestone Documentation) are the current scope: the VitePress docs site in
+`docs/` deployed to GitHub Pages, ending with release v1.0.1 – implement them in numeric
+order. #34–#37 (Backlog) are out of scope.
 
 - One issue at a time: implement → `npm run check` + `npm run build` → commit straight to
   `main` with `Closes #N` in the message → push → wait for CI to be green
