@@ -108,16 +108,28 @@
     "pl-dark": [395, 720]
   },
   "file-menu": {
-    "en-light": [225, 425],
-    "en-dark": [225, 425],
-    "pl-light": [238, 425],
-    "pl-dark": [238, 425]
+    "en-light": [225, 488],
+    "en-dark": [225, 488],
+    "pl-light": [238, 488],
+    "pl-dark": [238, 488]
   },
   "first-person": {
     "en-light": [1280, 800],
     "en-dark": [1280, 800],
     "pl-light": [1280, 800],
     "pl-dark": [1280, 800]
+  },
+  "gedcom-export": {
+    "en-light": [547, 407],
+    "en-dark": [547, 407],
+    "pl-light": [547, 427],
+    "pl-dark": [547, 427]
+  },
+  "gedcom-import": {
+    "en-light": [893, 498],
+    "en-dark": [893, 498],
+    "pl-light": [893, 498],
+    "pl-dark": [893, 498]
   },
   "link-existing": {
     "en-light": [547, 501],

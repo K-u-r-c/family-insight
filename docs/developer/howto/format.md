@@ -7,7 +7,8 @@ description: Add an import or export format to Family Insight through the Format
 Formats are pluggable: an adapter in `src/core/io` describes a format, and registering it makes the
 main process accept its extension and the file dialogs offer it. This guide adds a **Markdown
 “family book” export** as a complete, working example (it was compiled and tested while writing
-this page). A GEDCOM importer would follow exactly the same steps.
+this page). The GEDCOM format (`src/core/io/gedcom`, see [GEDCOM](../reference/gedcom)) is registered
+the same way.
 
 ## 1. The adapter interface
 

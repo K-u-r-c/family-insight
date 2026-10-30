@@ -28,6 +28,8 @@ export const IpcChannel = {
   MediaPutThumb: 'media:put-thumb',
   MediaExport: 'media:export',
   MediaOpenExternal: 'media:open-external',
+  MediaImportPaths: 'media:import-paths',
+  FileExportGedcom: 'file:export-gedcom',
   PlaceLookup: 'places:lookup',
   PlaceLookupCancel: 'places:lookup-cancel',
   ExportPdf: 'export:pdf',
@@ -71,6 +73,8 @@ export type FileReadResult =
       encoding: 'utf-8' | 'windows-1250'
       /** Media library holding the file's photos and documents (`.finsight` files only). */
       library?: string
+      /** Raw bytes for formats that decode themselves (GEDCOM: ANSEL, UTF-16, GEDZIP). */
+      bytes?: Uint8Array
     }
   | { ok: false; path?: string; error: FileErrorCode }
 
@@ -125,6 +129,8 @@ export type MenuAction =
   | 'file:save'
   | 'file:save-as'
   | 'file:import-csv'
+  | 'file:import-gedcom'
+  | 'file:export-gedcom'
   | 'file:export-csv'
   | 'file:export-image'
   | 'file:print'
@@ -214,6 +220,28 @@ export interface FamilyInsightApi {
   putThumbnail(library: string, hash: string, data: Uint8Array): Promise<boolean>
   /** Saves a media file to a place the user picks; `false` when cancelled. */
   exportMedia(library: string, hash: string, fileName: string): Promise<boolean>
+  /**
+   * Adds files referenced by a GEDCOM file (paths relative to it, or absolute) to the library;
+   * one result per path.
+   */
+  importMediaFromPaths(
+    library: string,
+    basePath: string,
+    paths: string[]
+  ): Promise<Record<string, MediaPutResult>>
+  /**
+   * Writes a GEDCOM export: `folder` also copies the media files next to it, `gedzip` packs
+   * text and media into one `.gdz` file (`path` from `saveFileDialog`).
+   */
+  exportGedcom(
+    path: string,
+    text: string,
+    media: {
+      mode: 'none' | 'folder' | 'gedzip'
+      library: string | null
+      files: { path: string; hash: string }[]
+    }
+  ): Promise<FileWriteResult>
   /** Opens a media file in the system's default app (via a temporary copy). */
   openMediaExternally(library: string, hash: string, fileName: string): Promise<boolean>
   /** Looks up coordinates of a place name; a newer call with the same id cancels the older. */

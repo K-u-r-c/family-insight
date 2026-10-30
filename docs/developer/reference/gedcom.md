@@ -141,3 +141,25 @@ Sample exports of the sample family are in `docs/public/samples/` (`sample-famil
 `sample-family-7.0.ged`); `samples.test.ts` re-imports them and regenerates them with
 `UPDATE_GEDCOM_SAMPLES=1`. No external GEDCOM validator was available offline; the files were
 checked by re-importing them and against the specification.
+
+## In the app
+
+- The format is registered as `gedcom` (`.ged`, `.gdz`) in `registerBuiltInFormats`, so file
+  dialogs and main accept the extensions; GEDZIP export uses the extra save filter `gedzip`.
+  `.ged` files are associated with the app as a _Viewer_ (they open the import, not as the native
+  format); argv, double-click and drag-and-drop all go to `startGedcomImport`.
+- For `.ged`/`.gdz`, main returns the **raw bytes** (`FileReadResult.bytes`). The import dialog
+  (`features/gedcom/ImportGedcomDialog.tsx`) unzips a GEDZIP, decodes (detected or chosen
+  encoding), parses and maps in the renderer, and shows the version, the program, counts, line
+  warnings, mapping warnings and the grouped unsupported tags. Importing as a new tree or merging
+  (one undoable `mergeTreeCommand`) both load the referenced media first:
+  - from the GEDZIP (`putMedia`), or
+  - by path through main (`importMediaFromPaths`): as written, else the same name next to the
+    `.ged` or in its `media` folder;
+  - then `prepareMediaFiles` makes thumbnails and `attachMedia` links the items; files that
+    weren't found are counted in a toast.
+- The export dialog (`ExportGedcomDialog.tsx`) runs `exportGedcom` in the renderer and hands the
+  text and the list of media to main (`exportGedcom` IPC), which writes the `.ged` plus a `media`
+  folder, or one `.gdz`.
+- e2e: `e2e/gedcom.spec.ts` imports a fixture, exports 7.0, re-imports with the same counts, and
+  opens a damaged file without a crash.

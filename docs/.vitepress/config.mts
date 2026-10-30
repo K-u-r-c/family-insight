@@ -86,6 +86,7 @@ function guideSidebar(locale: Locale): DefaultTheme.SidebarItem[] {
         { text: pl ? 'Zapisywanie i otwieranie' : 'Saving and opening', link: `${p}files` },
         { text: pl ? 'Import z CSV' : 'Import from CSV', link: `${p}csv-import` },
         { text: pl ? 'Eksport do CSV' : 'Export to CSV', link: `${p}csv-export` },
+        { text: 'GEDCOM', link: `${p}gedcom` },
         { text: pl ? 'Obrazy, PDF i druk' : 'Images, PDF and printing', link: `${p}export-print` }
       ]
     },

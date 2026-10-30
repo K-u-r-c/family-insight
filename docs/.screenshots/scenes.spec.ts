@@ -448,6 +448,7 @@ scene('welcome-annotated', async ({ page, t }) => {
       { target: page.getByRole('button', { name: t('welcome.newTree') }), badge: 'left' },
       { target: page.getByRole('button', { name: t('welcome.openTree') }), badge: 'left' },
       { target: page.getByRole('button', { name: t('welcome.importCsv') }), badge: 'left' },
+      { target: page.getByRole('button', { name: t('welcome.importGedcom') }), badge: 'left' },
       { target: page.getByRole('button', { name: t('welcome.trySample') }), badge: 'left' }
     ]
   }
@@ -1158,6 +1159,25 @@ scene('map-offline', async (s) => {
   await notice.waitFor()
   await parkMouse(s)
   return { clip: notice, pad: 24 }
+})
+
+// ---------------------------------------------------------------------------------------------
+// GEDCOM
+
+scene('gedcom-import', async (s) => {
+  const file = join(tempDir(), 'myheritage.ged')
+  copyFileSync(join(__dirname, '../../src/core/io/gedcom/fixtures/myheritage.ged'), file)
+  await mockDialogs(s.app, { open: file })
+  await menuAction(s, 'file:import-gedcom')
+  await dialog(s).waitFor()
+  return dialogShot(s)
+})
+
+scene('gedcom-export', async (s) => {
+  await openSample(s)
+  await menuAction(s, 'file:export-gedcom')
+  await dialog(s).waitFor()
+  return dialogShot(s)
 })
 
 // ---------------------------------------------------------------------------------------------

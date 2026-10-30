@@ -31,8 +31,9 @@ razy ich użyto, a zapis pozostaje szybki nawet wtedy, gdy plik urośnie do sete
 
 ## Czy otworzę drzewo z innego programu genealogicznego (GEDCOM)?
 
-Jeszcze nie – import i eksport GEDCOM są planowane. Dziś możesz przenieść dane przez arkusz:
-wyeksportuj je z innego programu do CSV (albo ułóż w arkuszu) i [zaimportuj CSV](./csv-import).
+Tak. Wyeksportuj plik GEDCOM z innego programu (Gramps, MyHeritage, Ancestry, Legacy …) i użyj
+**☰ → Importuj GEDCOM…** – zobacz [GEDCOM](./gedcom). Tak samo wyeksportujesz swoje drzewo dla
+innych programów. Dane z arkuszy przyjdą przez [CSV](./csv-import).
 
 ## Jak udostępnić drzewo rodzinie?
 

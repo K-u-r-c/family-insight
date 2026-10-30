@@ -20,6 +20,7 @@ const DOCUMENT_ITEMS = [
   'save',
   'save-as',
   'export-csv',
+  'export-gedcom',
   'export-image',
   'print',
   'close',
@@ -133,12 +134,16 @@ export function buildMenu(): void {
         { type: 'separator' },
         {
           label: t('menu.import'),
-          submenu: [item('import-csv', t('menu.importCsvShort'), 'file:import-csv')]
+          submenu: [
+            item('import-csv', t('menu.importCsvShort'), 'file:import-csv'),
+            item('import-gedcom', t('menu.importGedcomShort'), 'file:import-gedcom')
+          ]
         },
         {
           label: t('menu.export'),
           submenu: [
             item('export-csv', t('menu.exportCsvShort'), 'file:export-csv'),
+            item('export-gedcom', t('menu.exportGedcomShort'), 'file:export-gedcom'),
             item('export-image', t('menu.exportImageShort'), 'file:export-image')
           ]
         },

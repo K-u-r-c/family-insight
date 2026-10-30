@@ -5,6 +5,8 @@ export type PeopleSort = 'surname' | 'givenNames' | 'birth'
 export type AppDialog =
   | 'export-csv'
   | 'import-csv'
+  | 'import-gedcom'
+  | 'export-gedcom'
   | 'export-image'
   | 'new-tree'
   | 'stats'

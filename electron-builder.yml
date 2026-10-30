@@ -18,6 +18,11 @@ fileAssociations:
     description: Family Insight family tree
     mimeType: application/x-family-insight
     role: Editor
+  - ext: ged
+    name: GEDCOM file
+    description: GEDCOM family tree (imported by Family Insight)
+    mimeType: application/x-gedcom
+    role: Viewer
 publish:
   provider: github
   owner: K-u-r-c

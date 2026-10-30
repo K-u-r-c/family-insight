@@ -73,8 +73,9 @@ Wersje nie są jeszcze podpisane cyfrowo, dlatego system poprosi o potwierdzenie
 **Gdzie są moje dane?** W zapisanym pliku `.finsight` (czytelny plik JSON). Rób jego kopie jak
 każdego dokumentu. Ustawienia, kopie odzyskiwania i lista ostatnich plików są w profilu użytkownika.
 
-**Czy mogę przenieść drzewo z innego programu?** Wyeksportuj je do CSV (albo przygotuj arkusz
-z [opisanymi kolumnami](https://k-u-r-c.github.io/family-insight/pl/guide/csv-import)) i użyj _Plik → Importuj → CSV_. Obsługa GEDCOM jest planowana.
+**Czy mogę przenieść drzewo z innego programu?** Tak – wyeksportuj tam plik GEDCOM i użyj _Plik →
+Importuj → GEDCOM_ ([poradnik](https://k-u-r-c.github.io/family-insight/pl/guide/gedcom)); arkusze
+przyjdą przez _Plik → Importuj → CSV_.
 
 **Excel pokazuje dziwne znaki / wszystko w jednej kolumnie.** Eksportuj z separatorem _średnik_
 (domyślnym, gdy aplikacja jest po polsku); plik ma znacznik UTF-8 BOM, więc polskie litery

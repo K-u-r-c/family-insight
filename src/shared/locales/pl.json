@@ -16,10 +16,11 @@
     "sampleName": "Przykładowa rodzina",
     "hintNew": "nowe drzewo",
     "hintOpen": "otwórz",
-    "hintDrop": "lub upuść tu plik .finsight albo .csv",
+    "hintDrop": "albo upuść tu plik .finsight, .ged lub .csv",
     "recent": "Ostatnie",
     "missing": "Nie znaleziono pliku",
-    "removeRecent": "Usuń {{name}} z ostatnich plików"
+    "removeRecent": "Usuń {{name}} z ostatnich plików",
+    "importGedcom": "Importuj z GEDCOM…"
   },
   "settings": {
     "language": "Język",
@@ -90,7 +91,11 @@
     "userGuide": "Poradnik",
     "reportBug": "Zgłoś problem…",
     "sources": "Źródła…",
-    "places": "Miejsca…"
+    "places": "Miejsca…",
+    "importGedcom": "Importuj GEDCOM…",
+    "exportGedcom": "Eksportuj GEDCOM…",
+    "importGedcomShort": "GEDCOM…",
+    "exportGedcomShort": "GEDCOM…"
   },
   "sex": {
     "female": "Kobieta",
@@ -303,7 +308,9 @@
       "corrupt-container": "Plik jest uszkodzony i nie można go otworzyć. Spróbuj jednej z kopii zapasowych (.bak1 … .bak5) obok niego.",
       "missing-tree": "Ten plik nie zawiera drzewa genealogicznego."
     },
-    "csvFilter": "Arkusz CSV"
+    "csvFilter": "Arkusz CSV",
+    "gedcomFilter": "Plik GEDCOM",
+    "gedzipFilter": "GEDZIP (GEDCOM 7 z multimediami)"
   },
   "issues": {
     "death-before-birth": "Data śmierci jest wcześniejsza niż data urodzenia.",
@@ -335,7 +342,14 @@
     "dangling-media-removed_one": "Usunięto {{count}} odwołanie do brakującego zdjęcia lub dokumentu. Zapisz drzewo, aby zachować poprawkę.",
     "dangling-media-removed_few": "Usunięto {{count}} odwołania do brakujących zdjęć lub dokumentów. Zapisz drzewo, aby zachować poprawkę.",
     "dangling-media-removed_many": "Usunięto {{count}} odwołań do brakujących zdjęć lub dokumentów. Zapisz drzewo, aby zachować poprawkę.",
-    "dangling-media-removed_other": "Usunięto {{count}} odwołania do brakujących zdjęć lub dokumentów. Zapisz drzewo, aby zachować poprawkę."
+    "dangling-media-removed_other": "Usunięto {{count}} odwołania do brakujących zdjęć lub dokumentów. Zapisz drzewo, aby zachować poprawkę.",
+    "gedcom-dangling-reference": "Odwołanie do {{xref}} nie wskazuje na nic i zostało pominięte.",
+    "gedcom-lossy-date": "Daty „{{date}}” nie da się zapisać dokładnie; zapisano przybliżenie, a oryginał w notatkach.",
+    "gedcom-extra-parents": "{{name}} ma więcej niż dwoje rodziców biologicznych; pozostałych zaimportowano jako przybranych.",
+    "gedcom-ancestry-cycle": "{{name}} byłby własnym przodkiem; powiązanie zamykające krąg pominięto.",
+    "gedcom-too-many-biological-parents": "{{name}} ma więcej niż dwoje rodziców biologicznych.",
+    "gedcom-self-relationship": "Pominięto relację osoby z samą sobą.",
+    "gedcom-duplicate-relationship": "Pominięto powtórzoną relację."
   },
   "relations": {
     "parents": "Rodzice",
@@ -939,5 +953,61 @@
     "consentTitle": "Wczytywać mapy online?",
     "consentText": "Tło mapy jest pobierane z serwerów OpenStreetMap w internecie, gdy korzystasz z mapy. Pobierany jest tylko oglądany obszar – bez imion ani innych danych z drzewa. Fragmenty mapy są przechowywane na tym komputerze przez tydzień. Możesz to w każdej chwili wyłączyć w ustawieniach (⚙ → Wczytuj mapy online).",
     "consentAllow": "Zezwól"
+  },
+  "gedcom": {
+    "importTitle": "Import GEDCOM: {{name}}",
+    "detected": "GEDCOM {{version}} z programu {{program}}",
+    "unknownProgram": "nieznanego",
+    "summary": "Osoby: {{people}}, rodziny: {{families}}, wydarzenia: {{events}}, źródła: {{sources}}, multimedia: {{media}}",
+    "importButton": "Importuj",
+    "importing": "Importuję…",
+    "imported_one": "Zaimportowano {{count}} osobę",
+    "imported_few": "Zaimportowano {{count}} osoby",
+    "imported_many": "Zaimportowano {{count}} osób",
+    "imported_other": "Zaimportowano {{count}} osoby",
+    "mediaMissing_one": "Nie znaleziono {{count}} zdjęcia lub dokumentu wskazanego w pliku.",
+    "mediaMissing_few": "Nie znaleziono {{count}} zdjęć lub dokumentów wskazanych w pliku.",
+    "mediaMissing_many": "Nie znaleziono {{count}} zdjęć lub dokumentów wskazanych w pliku.",
+    "mediaMissing_other": "Nie znaleziono {{count}} zdjęcia lub dokumentu wskazanego w pliku.",
+    "encoding": "Kodowanie znaków",
+    "detectedEncoding": "{{name}} (wykryte)",
+    "encodingHint": "Jeśli litery takie jak ą, ł, ö czy ß wyglądają źle, wybierz inne kodowanie.",
+    "nothing": "W tym pliku nie znaleziono żadnych osób.",
+    "warningsTitle_one": "{{count}} ostrzeżenie",
+    "warningsTitle_few": "{{count}} ostrzeżenia",
+    "warningsTitle_many": "{{count}} ostrzeżeń",
+    "warningsTitle_other": "{{count}} ostrzeżenia",
+    "lineNo": "Wiersz {{line}}:",
+    "line": {
+      "malformed-line": "to nie jest wiersz GEDCOM, pominięto: {{text}}",
+      "level-jump": "zły poziom, dołączono do wiersza wyżej: {{text}}",
+      "orphan-continuation": "kontynuacja bez wiersza, który miałaby kontynuować – pominięto",
+      "missing-head": "plik nie ma nagłówka",
+      "missing-trailer": "plik kończy się bez TRLR"
+    },
+    "unsupportedTitle_one": "{{count}} informacja nie została zaimportowana",
+    "unsupportedTitle_few": "{{count}} informacje nie zostały zaimportowane",
+    "unsupportedTitle_many": "{{count}} informacji nie zostało zaimportowanych",
+    "unsupportedTitle_other": "{{count}} informacji nie zostało zaimportowanych",
+    "unsupportedHint": "Te znaczniki specyficzne dla innych programów nie mają miejsca w Family Insight i zostały pominięte:",
+    "exportTitle": "Eksport GEDCOM",
+    "exportDescription": "GEDCOM to format, który odczytują inne programy genealogiczne.",
+    "exportButton": "Eksportuj…",
+    "version": "Wersja",
+    "version551": "GEDCOM 5.5.1",
+    "version70": "GEDCOM 7.0",
+    "version551Hint": "Odczytuje go niemal każdy program genealogiczny.",
+    "version70Hint": "Najnowsza wersja; obsługuje ją jeszcze mniej programów.",
+    "includeMedia_one": "Dołącz {{count}} zdjęcie lub dokument",
+    "includeMedia_few": "Dołącz {{count}} zdjęcia i dokumenty",
+    "includeMedia_many": "Dołącz {{count}} zdjęć i dokumentów",
+    "includeMedia_other": "Dołącz {{count}} zdjęcia i dokumentu",
+    "mediaFolder": "Zapisane w folderze „media” obok pliku GEDCOM.",
+    "mediaGedzip": "Spakowane razem z danymi GEDCOM w jeden plik .gdz.",
+    "privatize": "Ukryj żyjące osoby",
+    "privatizeHint": "Ich imiona zastąpi „Żyjący”, a szczegóły zostaną pominięte – tak zwykle udostępnia się drzewo.",
+    "notes": "Dołącz notatki",
+    "living": "Żyjący",
+    "exported": "Wyeksportowano do {{path}}"
   }
 }

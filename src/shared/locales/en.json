@@ -16,10 +16,11 @@
     "sampleName": "Sample family",
     "hintNew": "new tree",
     "hintOpen": "open",
-    "hintDrop": "or drop a .finsight or .csv file here",
+    "hintDrop": "or drop a .finsight, .ged or .csv file here",
     "recent": "Recent",
     "missing": "File not found",
-    "removeRecent": "Remove {{name}} from recent files"
+    "removeRecent": "Remove {{name}} from recent files",
+    "importGedcom": "Import from GEDCOM…"
   },
   "settings": {
     "language": "Language",
@@ -90,7 +91,11 @@
     "userGuide": "User Guide",
     "reportBug": "Report a Problem…",
     "sources": "Sources…",
-    "places": "Places…"
+    "places": "Places…",
+    "importGedcom": "Import GEDCOM…",
+    "exportGedcom": "Export GEDCOM…",
+    "importGedcomShort": "GEDCOM…",
+    "exportGedcomShort": "GEDCOM…"
   },
   "sex": {
     "female": "Female",
@@ -289,7 +294,9 @@
       "corrupt-container": "The file is damaged and can't be opened. Try one of its backup copies (.bak1 … .bak5) next to it.",
       "missing-tree": "This file doesn't contain a family tree."
     },
-    "csvFilter": "CSV spreadsheet"
+    "csvFilter": "CSV spreadsheet",
+    "gedcomFilter": "GEDCOM file",
+    "gedzipFilter": "GEDZIP (GEDCOM 7 with media)"
   },
   "issues": {
     "death-before-birth": "The date of death is before the date of birth.",
@@ -317,7 +324,14 @@
     "dangling-citations-removed_one": "{{count}} citation referred to a missing source and was removed. Save the tree to keep the fix.",
     "dangling-citations-removed_other": "{{count}} citations referred to missing sources and were removed. Save the tree to keep the fix.",
     "dangling-media-removed_one": "{{count}} link to a missing photo or document was removed. Save the tree to keep the fix.",
-    "dangling-media-removed_other": "{{count}} links to missing photos or documents were removed. Save the tree to keep the fix."
+    "dangling-media-removed_other": "{{count}} links to missing photos or documents were removed. Save the tree to keep the fix.",
+    "gedcom-dangling-reference": "A reference to {{xref}} points to nothing and was skipped.",
+    "gedcom-lossy-date": "The date “{{date}}” can't be stored exactly; it was approximated and the original kept in the notes.",
+    "gedcom-extra-parents": "{{name}} has more than two birth parents; the others were imported as step-parents.",
+    "gedcom-ancestry-cycle": "{{name}} would be their own ancestor; the link closing the circle was left out.",
+    "gedcom-too-many-biological-parents": "{{name}} has more than two birth parents.",
+    "gedcom-self-relationship": "A relationship of a person with themselves was skipped.",
+    "gedcom-duplicate-relationship": "A duplicate relationship was skipped."
   },
   "relations": {
     "parents": "Parents",
@@ -867,5 +881,51 @@
     "consentTitle": "Load maps online?",
     "consentText": "The map background is downloaded from OpenStreetMap's tile servers on the internet while you use the map. Only the map area you look at is requested – no names or other data from your tree. Tiles are kept on this computer for a week. You can turn this off at any time in the settings (⚙ → Load maps online).",
     "consentAllow": "Allow"
+  },
+  "gedcom": {
+    "importTitle": "Import GEDCOM: {{name}}",
+    "detected": "GEDCOM {{version}} from {{program}}",
+    "unknownProgram": "an unknown program",
+    "summary": "{{people}} people, {{families}} families, {{events}} events, {{sources}} sources, {{media}} media files",
+    "importButton": "Import",
+    "importing": "Importing…",
+    "imported_one": "{{count}} person imported",
+    "imported_other": "{{count}} people imported",
+    "mediaMissing_one": "{{count}} photo or document referenced by the file wasn't found.",
+    "mediaMissing_other": "{{count}} photos or documents referenced by the file weren't found.",
+    "encoding": "Character set",
+    "detectedEncoding": "{{name}} (detected)",
+    "encodingHint": "If letters like ą, ł, ö or ß look wrong, try another character set.",
+    "nothing": "No people were found in this file.",
+    "warningsTitle_one": "{{count}} warning",
+    "warningsTitle_other": "{{count}} warnings",
+    "lineNo": "Line {{line}}:",
+    "line": {
+      "malformed-line": "not a GEDCOM line, skipped: {{text}}",
+      "level-jump": "wrong level, attached to the line above: {{text}}",
+      "orphan-continuation": "continuation without a line to continue, skipped",
+      "missing-head": "the file has no header",
+      "missing-trailer": "the file ends without TRLR"
+    },
+    "unsupportedTitle_one": "{{count}} piece of information not imported",
+    "unsupportedTitle_other": "{{count}} pieces of information not imported",
+    "unsupportedHint": "These program-specific tags have no place in Family Insight and are left out:",
+    "exportTitle": "Export GEDCOM",
+    "exportDescription": "GEDCOM is the format other genealogy programs read.",
+    "exportButton": "Export…",
+    "version": "Version",
+    "version551": "GEDCOM 5.5.1",
+    "version70": "GEDCOM 7.0",
+    "version551Hint": "Read by almost every genealogy program.",
+    "version70Hint": "The newest version; fewer programs read it yet.",
+    "includeMedia_one": "Include {{count}} photo or document",
+    "includeMedia_other": "Include {{count}} photos and documents",
+    "mediaFolder": "Saved in a “media” folder next to the GEDCOM file.",
+    "mediaGedzip": "Packed into one .gdz file together with the GEDCOM data.",
+    "privatize": "Hide living people",
+    "privatizeHint": "Their names become “Living” and their details are left out – usual when sharing a tree.",
+    "notes": "Include notes",
+    "living": "Living",
+    "exported": "Exported to {{path}}"
   }
 }

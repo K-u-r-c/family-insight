@@ -25,7 +25,7 @@ razy go użyto. Family Insight 1.1 otwiera drzewa z wersji 1.0 i zapisuje je w n
 | zapisać                | <kbd>Ctrl</kbd>+<kbd>S</kbd> (<kbd>⌘</kbd>+<kbd>S</kbd>) albo **☰ → Zapisz**                                     |
 | zapisać pod inną nazwą | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> (<kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>S</kbd>) albo **☰ → Zapisz jako…** |
 
-<Screenshot name="file-menu" alt="Menu pliku z poleceniami Nowe drzewo, Otwórz, Zapisz, Zapisz jako, Importuj CSV, Eksportuj CSV, Eksportuj obraz i Drukuj" />
+<Screenshot name="file-menu" alt="Menu pliku z poleceniami Nowe drzewo, Otwórz, Zapisz, Zapisz jako, Importuj CSV, Importuj GEDCOM, Eksportuj CSV, Eksportuj GEDCOM, Eksportuj obraz, Źródła, Miejsca i Drukuj" />
 
 Przy pierwszym zapisie nowego drzewa wskaż folder i nazwę (program podpowiada folder Dokumenty
 i nazwę drzewa). Pasek stanu na dole zawsze pokazuje, czy wszystko jest zapisane:

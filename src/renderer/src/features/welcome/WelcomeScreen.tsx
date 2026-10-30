@@ -5,6 +5,7 @@ import { removeRecentFile } from '@core/settings'
 import { TreeLogo } from '@renderer/components/TreeLogo'
 import { Button, Icon, IconButton, Kbd } from '@renderer/components/ui'
 import { startCsvImport } from '@renderer/features/csv/importFlow'
+import { startGedcomImport } from '@renderer/features/gedcom/importFlow'
 import { SettingsControls } from '@renderer/features/settings/SettingsControls'
 import { formatShortcut } from '@renderer/lib/platform'
 import { cx } from '@renderer/lib/cx'
@@ -68,6 +69,9 @@ export function WelcomeScreen(): React.JSX.Element {
             </Button>
             <Button size="lg" icon={FileUp} block onClick={() => void startCsvImport()}>
               {t('welcome.importCsv')}
+            </Button>
+            <Button size="lg" icon={FileUp} block onClick={() => void startGedcomImport()}>
+              {t('welcome.importGedcom')}
             </Button>
             <Button variant="ghost" icon={Sparkles} block onClick={() => void openSampleTree()}>
               {t('welcome.trySample')}

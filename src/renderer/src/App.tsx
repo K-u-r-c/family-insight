@@ -37,6 +37,9 @@ import { SourcesDialog } from './features/sources/SourcesDialog'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
 import { useAutosave } from './services/autosave'
 import { startCsvImport } from './features/csv/importFlow'
+import { ExportGedcomDialog } from './features/gedcom/ExportGedcomDialog'
+import { ImportGedcomDialog } from './features/gedcom/ImportGedcomDialog'
+import { startGedcomImport } from './features/gedcom/importFlow'
 import { openCsvFormatDocs, saveCsvTemplate } from './features/csv/csvHelp'
 
 const Gallery = lazy(() =>
@@ -65,6 +68,10 @@ export function App(): React.JSX.Element {
       'file:save': () => void saveTree(),
       'file:save-as': () => void saveTreeAs(),
       'file:import-csv': () => void startCsvImport(),
+      'file:import-gedcom': () => void startGedcomImport(),
+      'file:export-gedcom': () => {
+        if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-gedcom')
+      },
       'file:export-image': () => {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-image')
       },
@@ -138,6 +145,10 @@ export function App(): React.JSX.Element {
         <ExportCsvDialog open onClose={() => openDialog(null)} />
       )}
       {dialog === 'import-csv' && <ImportCsvDialog onClose={() => openDialog(null)} />}
+      {dialog === 'import-gedcom' && <ImportGedcomDialog onClose={() => openDialog(null)} />}
+      {dialog === 'export-gedcom' && hasDocument && (
+        <ExportGedcomDialog onClose={() => openDialog(null)} />
+      )}
       {dialog === 'export-image' && hasDocument && (
         <ExportImageDialog onClose={() => openDialog(null)} />
       )}

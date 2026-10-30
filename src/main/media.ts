@@ -1,5 +1,5 @@
 import { promises as fs } from 'node:fs'
-import { basename, extname, join, resolve } from 'node:path'
+import { basename, dirname, extname, isAbsolute, join, resolve } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
 import { emptyMediaStore, hashBytes, type MediaStore } from '@core/file/container'
@@ -46,6 +46,29 @@ function safeName(fileName: unknown, fallback: string): string {
   return name.replace(/[\\/:*?"<>|\x00-\x1f]+/g, '-').slice(0, 150)
 }
 
+/**
+ * Finds a file a GEDCOM references: the path as written (relative to the GEDCOM file or
+ * absolute), else the same name next to the file or in its `media` folder – trees moved from
+ * another computer keep absolute paths that no longer exist.
+ */
+async function locate(dir: string, raw: string): Promise<string | null> {
+  const cleaned = raw
+    .trim()
+    .replace(/^file:\/\//i, '')
+    .replace(/\\/g, '/')
+  const name = basename(cleaned)
+  const candidates = [
+    isAbsolute(cleaned) ? cleaned : resolve(dir, cleaned),
+    join(dir, name),
+    join(dir, 'media', name)
+  ]
+  for (const candidate of candidates) {
+    const stat = await fs.stat(candidate).catch(() => null)
+    if (stat?.isFile()) return candidate
+  }
+  return null
+}
+
 const FILTER_EXTENSIONS = Object.values(MEDIA_TYPES).flatMap((ext) =>
   ext === 'jpg' ? ['jpg', 'jpeg'] : [ext]
 )
@@ -86,6 +109,40 @@ export function registerMediaHandlers(): void {
         }
       }
       return { items }
+    }
+  )
+
+  ipcMain.handle(
+    IpcChannel.MediaImportPaths,
+    async (
+      _e,
+      id: unknown,
+      basePath: unknown,
+      paths: unknown
+    ): Promise<Record<string, MediaPutResult>> => {
+      const store = getLibrary(id)
+      if (!store || typeof basePath !== 'string' || !Array.isArray(paths)) return {}
+      const dir = dirname(resolve(basePath))
+      const out: Record<string, MediaPutResult> = {}
+      for (const raw of paths.slice(0, 5000)) {
+        if (typeof raw !== 'string' || out[raw]) continue
+        const fileName = basename(raw.replace(/\\/g, '/'))
+        const found = await locate(dir, raw)
+        if (!found) {
+          out[raw] = { ok: false, fileName, error: 'io' }
+          continue
+        }
+        try {
+          const stat = await fs.stat(found)
+          out[raw] =
+            stat.size > MAX_MEDIA_BYTES
+              ? { ok: false, fileName, error: 'too-large' }
+              : put(store, new Uint8Array(await fs.readFile(found)), fileName)
+        } catch {
+          out[raw] = { ok: false, fileName, error: 'io' }
+        }
+      }
+      return out
     }
   )
 

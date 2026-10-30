@@ -9,12 +9,13 @@ Chcesz się rozejrzeć, zanim wpiszesz własną rodzinę? Family Insight ma wbud
 
 Na ekranie powitalnym kliknij **Wypróbuj przykładową rodzinę**:
 
-<Screenshot name="welcome-annotated" alt="Ekran powitalny z czterema ponumerowanymi przyciskami: 1 Nowe drzewo rodzinne, 2 Otwórz drzewo, 3 Importuj z CSV, 4 Wypróbuj przykładową rodzinę" />
+<Screenshot name="welcome-annotated" alt="Ekran powitalny z pięcioma ponumerowanymi przyciskami: 1 Nowe drzewo rodzinne, 2 Otwórz drzewo, 3 Importuj z CSV, 4 Importuj z GEDCOM, 5 Wypróbuj przykładową rodzinę" />
 
 1. **Nowe drzewo rodzinne** – zacznij własne drzewo ([Twoje pierwsze drzewo](./first-tree)).
 2. **Otwórz drzewo…** – otwórz zapisany wcześniej plik `.finsight`.
 3. **Importuj z CSV…** – zacznij od arkusza ([Import z CSV](./csv-import)).
-4. **Wypróbuj przykładową rodzinę** – otwórz przykładową rodzinę.
+4. **Importuj z GEDCOM…** – przenieś drzewo z innego programu genealogicznego ([GEDCOM](./gedcom)).
+5. **Wypróbuj przykładową rodzinę** – otwórz przykładową rodzinę.
 
 ## Co w niej jest
 

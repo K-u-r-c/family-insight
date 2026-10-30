@@ -83,8 +83,9 @@ The builds are not code-signed yet, so your system asks you to confirm the first
 **Where is my data stored?** In the `.finsight` file you save — a readable JSON file. Back it up
 like any document. Settings, recovery copies and the recent files list live in your user profile.
 
-**Can I move my tree from another program?** Export it to CSV (or build a sheet with the
-[documented columns](https://k-u-r-c.github.io/family-insight/guide/csv-import)) and use _File → Import → CSV_. GEDCOM support is planned.
+**Can I move my tree from another program?** Yes – export a GEDCOM file there and use _File →
+Import → GEDCOM_ ([guide](https://k-u-r-c.github.io/family-insight/guide/gedcom)); spreadsheets
+come in through _File → Import → CSV_.
 
 **Excel shows strange characters / everything in one column.** Export with the _semicolon_
 separator (the default when the app is in Polish); the file includes a UTF-8 BOM so Polish

@@ -23,6 +23,7 @@ import {
 import { formatShortcut } from '@renderer/lib/platform'
 import { newTree, openTree, saveTree, saveTreeAs } from '@renderer/services/documentFiles'
 import { startCsvImport } from '@renderer/features/csv/importFlow'
+import { startGedcomImport } from '@renderer/features/gedcom/importFlow'
 import { printTree } from '@renderer/features/export/exportImage'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
 
@@ -59,7 +60,9 @@ export function FileMenu(): React.JSX.Element {
     },
     { type: 'separator' },
     { label: t('menu.importCsv'), icon: FileUp, onSelect: () => void startCsvImport() },
+    { label: t('menu.importGedcom'), icon: FileUp, onSelect: () => void startGedcomImport() },
     { label: t('menu.exportCsv'), icon: FileDown, onSelect: () => openDialog('export-csv') },
+    { label: t('menu.exportGedcom'), icon: FileDown, onSelect: () => openDialog('export-gedcom') },
     { label: t('menu.exportImage'), icon: ImageDown, onSelect: () => openDialog('export-image') },
     { type: 'separator' },
     {

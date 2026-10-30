@@ -32,9 +32,9 @@ they are used, and saving stays quick even when the file grows to hundreds of me
 
 ## Can I open a tree from another genealogy program (GEDCOM)?
 
-Not yet – GEDCOM import and export are planned. Today you can move data through a spreadsheet:
-export it from the other program to CSV (or arrange it in a spreadsheet) and
-[import the CSV](./csv-import).
+Yes. Export a GEDCOM file from the other program (Gramps, MyHeritage, Ancestry, Legacy …) and use
+**☰ → Import GEDCOM…** – see [GEDCOM](./gedcom). The same way you can export your tree for other
+programs. Data in spreadsheets can come in through [CSV](./csv-import).
 
 ## How can I share the tree with my family?
 

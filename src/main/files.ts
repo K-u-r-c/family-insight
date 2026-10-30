@@ -1,8 +1,9 @@
 import { promises as fs } from 'node:fs'
-import { extname, resolve } from 'node:path'
+import { dirname, extname, isAbsolute, join, resolve } from 'node:path'
 import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
 import { ContainerError, unpackDocument } from '@core/file/container'
 import { decodeText } from '@core/file/encoding'
+import { writeGedzip } from '@core/io/gedcom/gedzip'
 import { FILE_EXTENSION } from '@core/file/format'
 import { getFormat, listFormats, type FormatAdapter } from '@core/io/registry'
 import {
@@ -43,8 +44,12 @@ function readable(path: string): boolean {
 const EXPORT_ONLY: Record<string, { extensions: string[]; labelKey: string }> = {
   png: { extensions: ['png'], labelKey: 'export.png' },
   svg: { extensions: ['svg'], labelKey: 'export.svg' },
-  pdf: { extensions: ['pdf'], labelKey: 'export.pdf' }
+  pdf: { extensions: ['pdf'], labelKey: 'export.pdf' },
+  gedzip: { extensions: ['gdz'], labelKey: 'files.gedzipFilter' }
 }
+
+/** Formats whose importer decodes the bytes itself (GEDCOM: ANSEL, UTF-16, GEDZIP). */
+const BINARY_IMPORT = new Set(['ged', 'gdz'])
 
 function formatOrNative(id: unknown): FormatAdapter {
   if (typeof id === 'string' && EXPORT_ONLY[id]) {
@@ -91,6 +96,9 @@ export async function readFile(path: string): Promise<FileReadResult> {
         encoding: 'utf-8',
         library: createLibrary(store)
       }
+    }
+    if (BINARY_IMPORT.has(extname(full).toLowerCase().slice(1))) {
+      return { ok: true, path: full, content: '', encoding: 'utf-8', bytes: buffer }
     }
     const { text, encoding } = decodeText(buffer)
     return { ok: true, path: full, content: text, encoding }
@@ -209,6 +217,46 @@ export function registerFileHandlers(): void {
         return { ok: true, path: full }
       } catch (error) {
         if (error instanceof DocumentTooLargeError) return { ok: false, error: 'too-large' }
+        return { ok: false, error: errorCode(error) }
+      }
+    }
+  )
+
+  ipcMain.handle(
+    IpcChannel.FileExportGedcom,
+    async (_event, path: unknown, text: unknown, media: unknown): Promise<FileWriteResult> => {
+      if (typeof path !== 'string' || typeof text !== 'string') return { ok: false, error: 'io' }
+      const full = resolve(path)
+      if (!writable.has(full)) return { ok: false, error: 'permission' }
+      const m = (typeof media === 'object' && media !== null ? media : {}) as Record<
+        string,
+        unknown
+      >
+      const mode = m.mode === 'folder' || m.mode === 'gedzip' ? m.mode : 'none'
+      const store = getLibrary(m.library)
+      const files = (Array.isArray(m.files) ? m.files : [])
+        .filter(
+          (f): f is { path: string; hash: string } =>
+            typeof f?.path === 'string' && typeof f?.hash === 'string'
+        )
+        // Only plain relative paths inside the export folder.
+        .filter(
+          (f) =>
+            !f.path.split('/').some((part) => part === '..' || part === '') && !isAbsolute(f.path)
+        )
+        .map((f) => ({ path: f.path, bytes: store?.media.get(f.hash)?.bytes }))
+        .filter((f): f is { path: string; bytes: Uint8Array } => !!f.bytes)
+      try {
+        if (mode === 'gedzip') {
+          await writeFileAtomic(full, writeGedzip(text, files))
+        } else {
+          await writeFileAtomic(full, text)
+          if (mode === 'folder') {
+            for (const f of files) await writeFileAtomic(join(dirname(full), f.path), f.bytes)
+          }
+        }
+        return { ok: true, path: full }
+      } catch (error) {
         return { ok: false, error: errorCode(error) }
       }
     }

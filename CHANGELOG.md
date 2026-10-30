@@ -29,6 +29,11 @@ All notable changes to this project are documented here. The format follows
   still without a location, PNG export. The map background from OpenStreetMap is optional and off
   until you allow it.
 
+- **GEDCOM import and export** (**File → Import / Export → GEDCOM**, or drop a `.ged` file):
+  GEDCOM 5.5, 5.5.1 and 7.0 including GEDZIP, ANSEL and UTF-16 files, with a preview of what will
+  be imported; export as 5.5.1 or 7.0 with photos (folder or `.gdz`), optionally hiding living
+  people.
+
 ### Changed
 
 - **`.finsight` files are now zip containers** (schema 3). Trees from 1.0 open and are saved in the

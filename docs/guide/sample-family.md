@@ -9,12 +9,13 @@ of **25 people across five generations**.
 
 On the welcome screen, click **Try a sample family**:
 
-<Screenshot name="welcome-annotated" alt="The welcome screen with four numbered buttons: 1 New family tree, 2 Open tree, 3 Import from CSV, 4 Try a sample family" />
+<Screenshot name="welcome-annotated" alt="The welcome screen with five numbered buttons: 1 New family tree, 2 Open tree, 3 Import from CSV, 4 Import from GEDCOM, 5 Try a sample family" />
 
 1. **New family tree** – start your own tree ([Your first family tree](./first-tree)).
 2. **Open tree…** – open a `.finsight` file you saved before.
 3. **Import from CSV…** – start from a spreadsheet ([Import from CSV](./csv-import)).
-4. **Try a sample family** – open the sample family.
+4. **Import from GEDCOM…** – bring a tree from another genealogy program ([GEDCOM](./gedcom)).
+5. **Try a sample family** – open the sample family.
 
 ## What's in it
 

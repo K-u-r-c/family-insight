@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { isImage, MAX_MEDIA_BYTES, type MediaInput } from '@core/model/media'
 import type { FamilyTree, MediaItem, MediaMime, Person } from '@core/model/types'
+import type { LoadedMedia } from '@core/io/gedcom/import'
 import type { MediaPutResult } from '@shared/ipc'
 import { toast } from '@renderer/components/ui'
 import i18n from '@renderer/i18n'
@@ -332,4 +333,50 @@ export async function openMediaExternally(item: MediaItem): Promise<void> {
 export async function exportMediaFile(item: MediaItem): Promise<void> {
   const library = currentLibrary()
   if (library) await api().exportMedia(library, item.hash, item.fileName)
+}
+
+/**
+ * Turns files main added to a library (e.g. the media of a GEDCOM import) into loaded media
+ * with thumbnails and sizes, keyed like `results`. The library need not be the current one.
+ */
+export async function prepareMediaFiles(
+  library: string,
+  results: Record<string, MediaPutResult>
+): Promise<{ loaded: Map<string, LoadedMedia>; failed: string[] }> {
+  const loaded = new Map<string, LoadedMedia>()
+  const failed: string[] = []
+  for (const [key, result] of Object.entries(results)) {
+    if (!result.ok) {
+      failed.push(key)
+      continue
+    }
+    const file: LoadedMedia = {
+      hash: result.hash,
+      mime: result.mime,
+      size: result.size,
+      fileName: result.fileName
+    }
+    if (isImage(result.mime)) {
+      const bytes = await api().getMedia(library, result.hash)
+      const made = bytes && (await makeThumbnail(bytes, result.mime))
+      if (made) {
+        file.width = made.width
+        file.height = made.height
+        await api().putThumbnail(library, result.hash, made.thumb)
+      }
+    }
+    loaded.set(key, file)
+  }
+  return { loaded, failed }
+}
+
+/** Loads thumbnails the library got outside this module (after a merge import). */
+export async function reloadThumbnails(): Promise<void> {
+  const library = currentLibrary()
+  if (!library) return
+  const thumbs = await api().getThumbnails(library)
+  if (currentLibrary() !== library) return
+  for (const [hash, bytes] of Object.entries(thumbs)) {
+    if (!useMedia.getState().thumbs[hash]) addThumb(hash, bytes)
+  }
 }

@@ -24,7 +24,7 @@ by 1.1** – update it on every computer you use (see [Installation](./install#u
 | save                    | <kbd>Ctrl</kbd>+<kbd>S</kbd> (<kbd>⌘</kbd>+<kbd>S</kbd>), or **☰ → Save**                                   |
 | save under another name | <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> (<kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>S</kbd>), or **☰ → Save As…** |
 
-<Screenshot name="file-menu" alt="The file menu with New Tree, Open, Save, Save As, Import CSV, Export CSV, Export Image and Print" />
+<Screenshot name="file-menu" alt="The file menu with New Tree, Open, Save, Save As, Import CSV, Import GEDCOM, Export CSV, Export GEDCOM, Export Image, Sources, Places and Print" />
 
 The first time you save a new tree, choose a folder and a name (the Documents folder and the tree's
 name are suggested). The status bar at the bottom always tells you whether everything is saved:

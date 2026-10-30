@@ -23,6 +23,11 @@ describe('pathFromArgv', () => {
     }
   })
 
+  it('accepts GEDCOM files (they open the import)', () => {
+    expect(pathFromArgv(['app', '/home/a/rodzina.GED'])).toBe('/home/a/rodzina.GED')
+    expect(pathFromArgv(['app', '/home/a/rodzina.gdz'])).toBe('/home/a/rodzina.gdz')
+  })
+
   it('ignores flags, other files and the executable itself', () => {
     expect(pathFromArgv(['tree.finsight'])).toBeNull()
     expect(pathFromArgv(['app', '--inspect', 'notes.txt'])).toBeNull()

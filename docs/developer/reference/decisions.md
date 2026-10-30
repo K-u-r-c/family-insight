@@ -306,3 +306,20 @@ Details:
 - **Export** captures the map area of the window (`capturePng`), so the PNG matches the screen,
   including the attribution.
 - Tests and screenshots use a local tile server (`e2e/tileServer.ts`).
+
+## GEDCOM in pure TypeScript (2026-10, issues #60–#63)
+
+- **Own parser, importer and writer** in `src/core/io/gedcom/` rather than a dependency: the
+  grammar is small, ANSEL and CONC/CONT need careful handling, and owning the mapping lets the
+  import report exactly what it couldn't take over. Everything is pure, so it also runs on mobile.
+- **Never fail an import**: malformed lines, dangling references, cycles, lossy dates and unknown
+  tags are warnings or counts; lossy dates keep their original text in the person's notes.
+- **Bytes go to the renderer** for `.ged`/`.gdz` (`FileReadResult.bytes`), because the encoding
+  can be overridden in the preview and GEDZIP needs unzipping – decoding in main would need a
+  second round trip.
+- **Media of an import** are loaded by main from the paths in the file, falling back to the same
+  file name next to the `.ged` or in its `media` folder (trees from another computer keep absolute
+  paths). Exports write media through main as well (folder or GEDZIP), because the bytes live in
+  the media library there.
+- **Export 5.5.1 by default** (UTF-8): it's what other programs read; 7.0 is an option. Fields
+  GEDCOM can't carry are documented in the reference and checked by a round-trip test.

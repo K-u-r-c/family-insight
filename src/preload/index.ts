@@ -36,6 +36,10 @@ const api: FamilyInsightApi = {
     ipcRenderer.invoke(IpcChannel.MediaPutThumb, library, hash, data),
   exportMedia: (library, hash, fileName) =>
     ipcRenderer.invoke(IpcChannel.MediaExport, library, hash, fileName),
+  importMediaFromPaths: (library, basePath, paths) =>
+    ipcRenderer.invoke(IpcChannel.MediaImportPaths, library, basePath, paths),
+  exportGedcom: (path, text, media) =>
+    ipcRenderer.invoke(IpcChannel.FileExportGedcom, path, text, media),
   openMediaExternally: (library, hash, fileName) =>
     ipcRenderer.invoke(IpcChannel.MediaOpenExternal, library, hash, fileName),
   lookupPlace: (requestId, query) => ipcRenderer.invoke(IpcChannel.PlaceLookup, requestId, query),
