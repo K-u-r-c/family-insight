@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { buildTimeline } from './timeline'
 import { TreeBuilder } from './test/fixtures'
-import { updateRelationship } from './model/operations'
+import { addPersonEvent, updateRelationship } from './model/operations'
 
 const d = (value: string) => ({ value, qualifier: 'exact' as const })
 
@@ -47,5 +47,35 @@ describe('buildTimeline', () => {
     const tree = new TreeBuilder().person('x', 'X').build()
     expect(buildTimeline(tree, 'nope')).toEqual([])
     expect(buildTimeline(tree, 'x')).toEqual([])
+  })
+
+  it('places life events by date, keeps undated ones in order and burial after death', () => {
+    let tree = new TreeBuilder()
+      .person('jan', 'Jan', 'male', {
+        birth: { date: d('1890') },
+        death: { date: d('1950') }
+      })
+      .build()
+    for (const event of [
+      { type: 'burial' as const, date: d('1950-03') },
+      { type: 'military-service' as const, date: d('1914'), endDate: d('1918') },
+      { type: 'baptism' as const, date: d('1890-05') },
+      { type: 'occupation' as const, description: 'Miner' },
+      { type: 'residence' as const, place: 'Łódź' }
+    ]) {
+      tree = addPersonEvent(tree, 'jan', event).tree
+    }
+    const kinds = buildTimeline(tree, 'jan').map((e) =>
+      e.type === 'event' ? e.event.type : e.type
+    )
+    expect(kinds).toEqual([
+      'birth',
+      'baptism',
+      'military-service',
+      'occupation',
+      'residence',
+      'death',
+      'burial'
+    ])
   })
 })

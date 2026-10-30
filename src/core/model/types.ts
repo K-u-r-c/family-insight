@@ -7,7 +7,7 @@
  */
 
 /** Bump when the persisted document shape changes; add a migration in `src/core/file`. */
-export const SCHEMA_VERSION = 1
+export const SCHEMA_VERSION = 2
 
 export type PersonId = string
 export type RelationshipId = string
@@ -31,6 +31,50 @@ export interface LifeEvent {
   place?: string
 }
 
+/** Built-in kinds of life events; `custom` uses `PersonEvent.customType` as its name. */
+export const EVENT_TYPES = [
+  'baptism',
+  'christening',
+  'confirmation',
+  'first-communion',
+  'burial',
+  'cremation',
+  'emigration',
+  'immigration',
+  'naturalization',
+  'residence',
+  'occupation',
+  'education',
+  'graduation',
+  'military-service',
+  'religion',
+  'census',
+  'retirement',
+  'award',
+  'custom'
+] as const
+
+export type EventType = (typeof EVENT_TYPES)[number]
+
+export type PersonEventId = string
+
+/**
+ * A life event besides birth and death (baptism, emigration, military service …). `date` and
+ * `endDate` together describe a period ("1914–1918").
+ */
+export interface PersonEvent {
+  id: PersonEventId
+  type: EventType
+  /** Name of a `custom` event, free text. */
+  customType?: string
+  date?: FuzzyDate
+  endDate?: FuzzyDate
+  place?: string
+  /** Short detail, e.g. the occupation, school or regiment. */
+  description?: string
+  notes?: string
+}
+
 export interface Person {
   id: PersonId
   givenNames: string
@@ -40,6 +84,8 @@ export interface Person {
   sex: Sex
   birth?: LifeEvent
   death?: LifeEvent
+  /** Further life events in the order the user arranged them (schema v2). */
+  events: PersonEvent[]
   /** `undefined` means "unknown"; inferred from `death` when absent. */
   living?: boolean
   notes?: string

@@ -24,7 +24,15 @@ export function PersonPanel(): React.JSX.Element | null {
   const editingId = useWorkspaceUi((s) => s.editingId)
   const setEditing = useWorkspaceUi((s) => s.setEditing)
   const age = useAgeLabel(
-    person ?? { id: '', givenNames: '', surname: '', sex: 'unknown', createdAt: '', updatedAt: '' }
+    person ?? {
+      id: '',
+      givenNames: '',
+      surname: '',
+      sex: 'unknown',
+      events: [],
+      createdAt: '',
+      updatedAt: ''
+    }
   )
   // A new (unnamed) person opens in edit mode and stays there while being named.
   const unnamedId = person && !person.givenNames && !person.surname ? person.id : null

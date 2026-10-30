@@ -251,7 +251,11 @@
     "editRelationship": "Edycja relacji",
     "removeRelationship": "Usunięcie relacji",
     "setRoot": "Ustawienie osoby głównej",
-    "importCsv": "Import CSV"
+    "importCsv": "Import CSV",
+    "addEvent": "Dodanie wydarzenia",
+    "editEvent": "Edycja wydarzenia",
+    "removeEvent": "Usunięcie wydarzenia",
+    "moveEvent": "Przeniesienie wydarzenia"
   },
   "files": {
     "treeFilter": "Drzewo Family Insight",
@@ -294,7 +298,10 @@
     "unknown-column": "Kolumna „{{column}}” nie została rozpoznana i zostanie pominięta.",
     "invalid-date": "„{{value}}” to nie jest rozpoznawalna data; dodano ją do notatek.",
     "invalid-sex": "„{{value}}” to nie jest znana płeć; zaimportowano jako nieznaną.",
-    "invalid-living": "„{{value}}” to nie jest tak/nie; status życia pozostaje nieznany."
+    "invalid-living": "„{{value}}” to nie jest tak/nie; status życia pozostaje nieznany.",
+    "event-before-birth": "Wydarzenie osoby {{name}} ma datę wcześniejszą niż urodzenie.",
+    "event-after-death": "Wydarzenie osoby {{name}} ma datę późniejszą niż śmierć.",
+    "event-end-before-start": "To wydarzenie kończy się przed rozpoczęciem."
   },
   "relations": {
     "parents": "Rodzice",
@@ -366,7 +373,8 @@
       "duplicate-relationship": "Te osoby są już tak powiązane.",
       "duplicate-id": "Osoba o tym identyfikatorze już istnieje.",
       "ancestry-cycle": "Wtedy ktoś byłby swoim własnym przodkiem.",
-      "too-many-biological-parents": "Osoba może mieć najwyżej dwoje rodziców biologicznych. Oznacz jednego jako adopcyjnego, przybranego lub zastępczego."
+      "too-many-biological-parents": "Osoba może mieć najwyżej dwoje rodziców biologicznych. Oznacz jednego jako adopcyjnego, przybranego lub zastępczego.",
+      "event-not-found": "To wydarzenie już nie istnieje."
     }
   },
   "timeline": {
@@ -598,5 +606,28 @@
     "website": "Strona projektu",
     "license": "Licencja MIT",
     "credits": "Zbudowano z użyciem Electron, React, TypeScript, Inter i Source Serif. © 2026 Jakub Kurc i współtwórcy."
+  },
+  "events": {
+    "type": {
+      "baptism": "Chrzest",
+      "christening": "Chrzciny",
+      "confirmation": "Bierzmowanie",
+      "first-communion": "Pierwsza Komunia",
+      "burial": "Pogrzeb",
+      "cremation": "Kremacja",
+      "emigration": "Emigracja",
+      "immigration": "Imigracja",
+      "naturalization": "Naturalizacja",
+      "residence": "Miejsce zamieszkania",
+      "occupation": "Zawód",
+      "education": "Edukacja",
+      "graduation": "Ukończenie szkoły",
+      "military-service": "Służba wojskowa",
+      "religion": "Wyznanie",
+      "census": "Spis ludności",
+      "retirement": "Emerytura",
+      "award": "Odznaczenie",
+      "custom": "Inne wydarzenie"
+    }
   }
 }

@@ -52,7 +52,8 @@ may be given in English **or Polish**; common spellings are recognised too (`fir
 **Parents note:** `father_id`/`mother_id` cover the common case. On export, a parent with sex
 `male` goes to `father_id`, `female` to `mother_id`; parents with `other`/`unknown` sex fill
 whichever slot is free (father first). Only biological parent links are written; adoptive,
-step and foster links, partnership dates and photos exist only in `.finsight` files.
+step and foster links, partnership dates, photos and **life events** (baptism, emigration, …) exist
+only in `.finsight` files – CSV stays one row per person; GEDCOM carries the events.
 
 ## Export details
 

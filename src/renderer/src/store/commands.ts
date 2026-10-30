@@ -2,13 +2,19 @@ import {
   addParentChild,
   addPartnership,
   addPerson,
+  addPersonEvent,
   mergeTrees,
+  movePersonEvent,
   removePerson,
+  removePersonEvent,
   removeRelationship,
   renameTree,
   setRootPerson,
   updatePerson,
+  updatePersonEvent,
   updateRelationship,
+  type PersonEventInput,
+  type PersonEventPatch,
   type PersonInput,
   type PersonPatch,
   type RelationshipPatch
@@ -18,6 +24,8 @@ import type {
   ParentChildKind,
   PartnershipRelationship,
   Person,
+  PersonEvent,
+  PersonEventId,
   PersonId,
   Relationship,
   RelationshipId
@@ -52,6 +60,41 @@ export const updatePersonCommand = (id: PersonId, patch: PersonPatch): Command =
   label: 'history.editPerson',
   coalesceKey: `${id}:${Object.keys(patch).sort().join(',')}`,
   run: (tree) => ({ tree: updatePerson(tree, id, patch), result: undefined })
+})
+
+export const addEventCommand = (
+  personId: PersonId,
+  input: PersonEventInput
+): Command<PersonEvent> => ({
+  label: 'history.addEvent',
+  run: (tree) => {
+    const { tree: next, event } = addPersonEvent(tree, personId, input)
+    return { tree: next, result: event }
+  }
+})
+
+export const updateEventCommand = (
+  personId: PersonId,
+  eventId: PersonEventId,
+  patch: PersonEventPatch
+): Command => ({
+  label: 'history.editEvent',
+  coalesceKey: `${personId}:event:${eventId}:${Object.keys(patch).sort().join(',')}`,
+  run: (tree) => ({ tree: updatePersonEvent(tree, personId, eventId, patch), result: undefined })
+})
+
+export const removeEventCommand = (personId: PersonId, eventId: PersonEventId): Command => ({
+  label: 'history.removeEvent',
+  run: (tree) => ({ tree: removePersonEvent(tree, personId, eventId), result: undefined })
+})
+
+export const moveEventCommand = (
+  personId: PersonId,
+  eventId: PersonEventId,
+  toIndex: number
+): Command => ({
+  label: 'history.moveEvent',
+  run: (tree) => ({ tree: movePersonEvent(tree, personId, eventId, toIndex), result: undefined })
 })
 
 export const removePersonCommand = (id: PersonId): Command => ({

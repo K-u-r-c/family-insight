@@ -283,6 +283,7 @@ export function importCsv(text: string, options: CsvImportOptions = {}): CsvImpo
       givenNames,
       surname,
       sex,
+      events: [],
       createdAt: timestamp,
       updatedAt: timestamp,
       ...(get('birth_surname') ? { birthSurname: get('birth_surname') } : {}),

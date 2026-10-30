@@ -1,4 +1,12 @@
-import { Baby, Cross, Heart, HeartCrack, Sparkles, type LucideIcon } from 'lucide-react'
+import {
+  Baby,
+  CalendarDays,
+  Cross,
+  Heart,
+  HeartCrack,
+  Sparkles,
+  type LucideIcon
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { ageAt } from '@core/date/fuzzyDate'
 import { displayName, isLiving } from '@core/model/tree'
@@ -14,6 +22,7 @@ const ICONS: Record<TimelineEvent['type'], LucideIcon> = {
   partnership: Heart,
   'partnership-end': HeartCrack,
   child: Baby,
+  event: CalendarDays,
   death: Cross
 }
 
@@ -80,6 +89,15 @@ export function PersonDetails({ person }: { person: Person }): React.JSX.Element
             {t('timeline.child')} <Link id={e.childId} />
           </>
         )
+      case 'event':
+        return [
+          e.event.type === 'custom' && e.event.customType
+            ? e.event.customType
+            : t(`events.type.${e.event.type}`),
+          e.event.description
+        ]
+          .filter(Boolean)
+          .join(': ')
     }
   }
 

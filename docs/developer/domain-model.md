@@ -34,6 +34,14 @@ classDiagram
     living?: boolean
     notes?: string
     photo?: data URL
+    events: PersonEvent[]
+  }
+  class PersonEvent {
+    id: string
+    type: baptism | burial | emigration | … | custom
+    customType?: string
+    date?, endDate?: FuzzyDate
+    place?, description?, notes?: string
   }
   class ParentChildRelationship {
     type: "parent-child"
@@ -61,6 +69,7 @@ classDiagram
   FamilyTree --> "*" ParentChildRelationship
   FamilyTree --> "*" PartnershipRelationship
   Person --> LifeEvent
+  Person --> "*" PersonEvent
   PartnershipRelationship --> LifeEvent
   LifeEvent --> FuzzyDate
 ```
@@ -75,6 +84,15 @@ classDiagram
   stored inline so a tree is one self-contained file.
 - Ids are opaque strings (`crypto.randomUUID()`), never shown to users. CSV export assigns
   readable ids `p1`, `p2` … instead.
+
+### Life events
+
+`events` holds further facts – baptism, emigration, military service, occupation … (`EVENT_TYPES`),
+or a `custom` event with its own name. `date` and `endDate` describe a period. They are edited with
+`addPersonEvent`, `updatePersonEvent`, `removePersonEvent` and `movePersonEvent` (not through
+`updatePerson`), appear in the timeline (`buildTimeline`; burial and cremation after death), are
+searchable, and get plausibility warnings (event before birth, after death, end before start).
+Birth and death remain separate fields because the layout, ages and statistics rely on them.
 
 ## Relationships
 

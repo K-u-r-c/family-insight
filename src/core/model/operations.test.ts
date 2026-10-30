@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { isModelError, ModelError } from './errors'
 import {
+  addPersonEvent,
+  movePersonEvent,
+  removePersonEvent,
+  updatePersonEvent,
   addParentChild,
   addPartnership,
   addPerson,
@@ -14,6 +18,7 @@ import {
   updateRelationship
 } from './operations'
 import { createEmptyTree, getChildren, getParents } from './tree'
+import type { FamilyTree } from './types'
 import { NOW, remarriageFixture, TreeBuilder } from '../test/fixtures'
 
 function code(fn: () => unknown): string | undefined {
@@ -39,6 +44,7 @@ describe('addPerson / updatePerson', () => {
       givenNames: 'Jan',
       surname: 'Nowak',
       sex: 'male',
+      events: [],
       createdAt: NOW.toISOString(),
       updatedAt: NOW.toISOString()
     })
@@ -147,5 +153,51 @@ describe('meta', () => {
     const tree = renameTree(remarriageFixture(), 'Kowalscy')
     expect(tree.meta.name).toBe('Kowalscy')
     expect(() => setRootPerson(tree, 'ghost')).toThrow(ModelError)
+  })
+})
+
+describe('life events', () => {
+  const tree0 = (): FamilyTree => new TreeBuilder().person('jan', 'Jan', 'male').build()
+
+  it('adds, edits, moves and removes events immutably', () => {
+    const start = tree0()
+    const a = addPersonEvent(start, 'jan', { type: 'baptism' }, { id: 'e1', now: NOW })
+    expect(start.persons.jan!.events).toEqual([])
+    expect(a.event).toEqual({ id: 'e1', type: 'baptism' })
+    let tree = addPersonEvent(
+      a.tree,
+      'jan',
+      { type: 'emigration', place: 'Hamburg' },
+      { id: 'e2' }
+    ).tree
+    tree = addPersonEvent(
+      tree,
+      'jan',
+      { type: 'custom', customType: 'Pilgrimage' },
+      { id: 'e3' }
+    ).tree
+    tree = updatePersonEvent(tree, 'jan', 'e2', { place: undefined, description: 'to America' })
+    expect(tree.persons.jan!.events[1]).toEqual({
+      id: 'e2',
+      type: 'emigration',
+      description: 'to America'
+    })
+    tree = movePersonEvent(tree, 'jan', 'e3', 0)
+    expect(tree.persons.jan!.events.map((e) => e.id)).toEqual(['e3', 'e1', 'e2'])
+    expect(movePersonEvent(tree, 'jan', 'e3', -5)).toBe(tree)
+    tree = removePersonEvent(tree, 'jan', 'e1')
+    expect(tree.persons.jan!.events.map((e) => e.id)).toEqual(['e3', 'e2'])
+  })
+
+  it('rejects unknown people and events', () => {
+    expect(code(() => addPersonEvent(tree0(), 'ghost', { type: 'burial' }))).toBe(
+      'person-not-found'
+    )
+    expect(code(() => removePersonEvent(tree0(), 'jan', 'nope'))).toBe('event-not-found')
+    expect(code(() => updatePersonEvent(tree0(), 'jan', 'nope', {}))).toBe('event-not-found')
+    const tree = addPersonEvent(tree0(), 'jan', { type: 'burial' }, { id: 'e1' }).tree
+    expect(code(() => addPersonEvent(tree, 'jan', { type: 'burial' }, { id: 'e1' }))).toBe(
+      'duplicate-id'
+    )
   })
 })

@@ -1,3 +1,5 @@
+import { EVENT_TYPES } from '../model/types'
+
 /**
  * Hand-written shape validation for `.finsight` documents (no runtime dependency).
  * Returns human-readable paths of problems; empty array = valid.
@@ -14,6 +16,29 @@ const QUALIFIER = ['exact', 'about', 'before', 'after'] as const
 const PC_KIND = ['biological', 'adoptive', 'step', 'foster'] as const
 const P_KIND = ['marriage', 'partnership', 'engagement', 'other'] as const
 const END_REASON = ['divorce', 'separation', 'death', 'other'] as const
+
+function checkEvents(v: unknown, path: string, errors: string[]): void {
+  if (!Array.isArray(v)) {
+    errors.push(`${path}: expected a list`)
+    return
+  }
+  const ids = new Set<string>()
+  v.forEach((e, i) => {
+    const at = `${path}[${i}]`
+    if (!isObj(e)) {
+      errors.push(`${at}: expected object`)
+      return
+    }
+    if (!isStr(e.id) || ids.has(e.id)) errors.push(`${at}.id: missing or duplicate`)
+    else ids.add(e.id)
+    if (!oneOf(e.type, EVENT_TYPES)) errors.push(`${at}.type: invalid`)
+    checkDate(e.date, `${at}.date`, errors)
+    checkDate(e.endDate, `${at}.endDate`, errors)
+    for (const key of ['customType', 'place', 'description', 'notes'] as const) {
+      if (!optStr(e[key])) errors.push(`${at}.${key}: expected text`)
+    }
+  })
+}
 
 function checkDate(v: unknown, path: string, errors: string[]): void {
   if (v === undefined) return
@@ -78,6 +103,7 @@ export function checkTreeShape(doc: unknown): string[] {
       if (!oneOf(p.sex, SEX)) errors.push(`${path}.sex: invalid`)
       checkEvent(p.birth, `${path}.birth`, errors)
       checkEvent(p.death, `${path}.death`, errors)
+      checkEvents(p.events, `${path}.events`, errors)
       if (p.living !== undefined && typeof p.living !== 'boolean')
         errors.push(`${path}.living: expected boolean`)
       if (!optStr(p.notes)) errors.push(`${path}.notes: expected text`)

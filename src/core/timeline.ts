@@ -5,6 +5,7 @@ import type {
   FuzzyDate,
   PartnershipEndReason,
   PartnershipKind,
+  PersonEvent,
   PersonId
 } from './model/types'
 
@@ -26,18 +27,23 @@ export type TimelineEvent =
       reason?: PartnershipEndReason
     }
   | { type: 'child'; date?: FuzzyDate; place?: string; childId: PersonId }
+  | { type: 'event'; date?: FuzzyDate; place?: string; event: PersonEvent }
 
 const ORDER: Record<TimelineEvent['type'], number> = {
   birth: 0,
   partnership: 1,
   child: 2,
+  event: 2,
   'partnership-end': 3,
   death: 4
 }
 
+/** Events that naturally follow death and are listed after it. */
+const AFTER_DEATH = new Set<PersonEvent['type']>(['burial', 'cremation'])
+
 /**
- * Life events of a person in chronological order. Birth is always first and death last;
- * events without a date keep a natural order between them.
+ * Life events of a person in chronological order. Birth is always first and death last (only
+ * burial and cremation follow it); events without a date keep their natural order.
  */
 export function buildTimeline(tree: FamilyTree, personId: PersonId): TimelineEvent[] {
   const person = tree.persons[personId]
@@ -72,6 +78,11 @@ export function buildTimeline(tree: FamilyTree, personId: PersonId): TimelineEve
         childId: child.id
       })
   }
+  const afterDeath: TimelineEvent[] = []
+  for (const event of person.events) {
+    const entry: TimelineEvent = { type: 'event', date: event.date, place: event.place, event }
+    ;(AFTER_DEATH.has(event.type) ? afterDeath : events).push(entry)
+  }
   events.sort((a, b) => {
     if (a.date && b.date) return compareFuzzyDates(a.date, b.date) || ORDER[a.type] - ORDER[b.type]
     if (a.date || b.date) return a.date ? -1 : 1
@@ -85,5 +96,6 @@ export function buildTimeline(tree: FamilyTree, personId: PersonId): TimelineEve
     person.death?.date || person.death?.place
       ? [{ type: 'death', date: person.death.date, place: person.death.place }]
       : []
-  return [...birth, ...events, ...death]
+  afterDeath.sort((a, b) => compareFuzzyDates(a.date, b.date))
+  return [...birth, ...events, ...death, ...afterDeath]
 }

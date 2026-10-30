@@ -237,7 +237,11 @@
     "editRelationship": "Edit relationship",
     "removeRelationship": "Remove relationship",
     "setRoot": "Set root person",
-    "importCsv": "Import CSV"
+    "importCsv": "Import CSV",
+    "addEvent": "Add event",
+    "editEvent": "Edit event",
+    "removeEvent": "Remove event",
+    "moveEvent": "Move event"
   },
   "files": {
     "treeFilter": "Family Insight tree",
@@ -280,7 +284,10 @@
     "unknown-column": "The column “{{column}}” isn't recognised and will be ignored.",
     "invalid-date": "“{{value}}” isn't a date we understand; it was added to the notes.",
     "invalid-sex": "“{{value}}” isn't a known sex; imported as unknown.",
-    "invalid-living": "“{{value}}” isn't yes/no; the living status is left unknown."
+    "invalid-living": "“{{value}}” isn't yes/no; the living status is left unknown.",
+    "event-before-birth": "An event of {{name}} is dated before their birth.",
+    "event-after-death": "An event of {{name}} is dated after their death.",
+    "event-end-before-start": "This event ends before it starts."
   },
   "relations": {
     "parents": "Parents",
@@ -352,7 +359,8 @@
       "duplicate-relationship": "These people are already related this way.",
       "duplicate-id": "A person with this ID already exists.",
       "ancestry-cycle": "That would make someone their own ancestor.",
-      "too-many-biological-parents": "A person can have at most two biological parents. Mark one as adoptive, step or foster instead."
+      "too-many-biological-parents": "A person can have at most two biological parents. Mark one as adoptive, step or foster instead.",
+      "event-not-found": "This event no longer exists."
     }
   },
   "timeline": {
@@ -560,5 +568,28 @@
     "website": "Website",
     "license": "MIT licence",
     "credits": "Built with Electron, React, TypeScript, Inter and Source Serif. © 2026 Jakub Kurc and contributors."
+  },
+  "events": {
+    "type": {
+      "baptism": "Baptism",
+      "christening": "Christening",
+      "confirmation": "Confirmation",
+      "first-communion": "First Communion",
+      "burial": "Burial",
+      "cremation": "Cremation",
+      "emigration": "Emigration",
+      "immigration": "Immigration",
+      "naturalization": "Naturalization",
+      "residence": "Residence",
+      "occupation": "Occupation",
+      "education": "Education",
+      "graduation": "Graduation",
+      "military-service": "Military service",
+      "religion": "Religion",
+      "census": "Census",
+      "retirement": "Retirement",
+      "award": "Award",
+      "custom": "Other event"
+    }
   }
 }

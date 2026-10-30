@@ -75,14 +75,15 @@ describe('relationship queries', () => {
 })
 
 describe('person helpers', () => {
-  const base = {
+  const base: Person = {
     id: 'p',
     givenNames: ' Jan ',
     surname: 'Kowalski',
     sex: 'male',
+    events: [],
     createdAt: '',
     updatedAt: ''
-  } as const
+  }
 
   it('builds display names', () => {
     expect(displayName(base)).toBe('Jan Kowalski')

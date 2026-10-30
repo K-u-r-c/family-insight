@@ -7,6 +7,8 @@ import type {
   ParentChildRelationship,
   PartnershipRelationship,
   Person,
+  PersonEvent,
+  PersonEventId,
   PersonId,
   Relationship,
   RelationshipId
@@ -22,8 +24,15 @@ export interface OpOptions {
   id?: string
 }
 
-export type PersonInput = Omit<Person, 'id' | 'createdAt' | 'updatedAt'>
-export type PersonPatch = Partial<Omit<Person, 'id' | 'createdAt' | 'updatedAt'>>
+/** New person data; `events` defaults to an empty list. */
+export type PersonInput = Omit<Person, 'id' | 'createdAt' | 'updatedAt' | 'events'> & {
+  events?: PersonEvent[]
+}
+/** Events are changed with the event operations below, not through a person patch. */
+export type PersonPatch = Partial<Omit<Person, 'id' | 'createdAt' | 'updatedAt' | 'events'>>
+/** New event data (the id is generated). */
+export type PersonEventInput = Omit<PersonEvent, 'id'>
+export type PersonEventPatch = Partial<Omit<PersonEvent, 'id'>>
 
 function touch(tree: FamilyTree, timestamp: string): FamilyTree['meta'] {
   return { ...tree.meta, updatedAt: timestamp }
@@ -54,6 +63,7 @@ export function addPerson(
   const timestamp = (options.now ?? new Date()).toISOString()
   const person: Person = compact({
     ...input,
+    events: input.events ?? [],
     id: options.id ?? newId(),
     createdAt: timestamp,
     updatedAt: timestamp
@@ -280,4 +290,85 @@ export function mergeTrees(
 export function renameTree(tree: FamilyTree, name: string, options: OpOptions = {}): FamilyTree {
   const timestamp = (options.now ?? new Date()).toISOString()
   return { ...tree, meta: { ...touch(tree, timestamp), name } }
+}
+
+function requireEvent(person: Person, eventId: PersonEventId): number {
+  const index = person.events.findIndex((e) => e.id === eventId)
+  if (index < 0) throw new ModelError('event-not-found', { id: eventId })
+  return index
+}
+
+function withEvents(
+  tree: FamilyTree,
+  personId: PersonId,
+  events: PersonEvent[],
+  timestamp: string
+): FamilyTree {
+  const person = requirePerson(tree, personId)
+  return {
+    ...tree,
+    meta: touch(tree, timestamp),
+    persons: { ...tree.persons, [personId]: { ...person, events, updatedAt: timestamp } }
+  }
+}
+
+/** Adds a life event at the end of the person's list. */
+export function addPersonEvent(
+  tree: FamilyTree,
+  personId: PersonId,
+  input: PersonEventInput,
+  options: OpOptions = {}
+): { tree: FamilyTree; event: PersonEvent } {
+  const person = requirePerson(tree, personId)
+  const timestamp = (options.now ?? new Date()).toISOString()
+  const event: PersonEvent = compact({ ...input, id: options.id ?? newId() })
+  if (person.events.some((e) => e.id === event.id)) {
+    throw new ModelError('duplicate-id', { id: event.id })
+  }
+  return { event, tree: withEvents(tree, personId, [...person.events, event], timestamp) }
+}
+
+/** Applies a patch to an event; keys explicitly set to `undefined` are removed. */
+export function updatePersonEvent(
+  tree: FamilyTree,
+  personId: PersonId,
+  eventId: PersonEventId,
+  patch: PersonEventPatch,
+  options: OpOptions = {}
+): FamilyTree {
+  const person = requirePerson(tree, personId)
+  const index = requireEvent(person, eventId)
+  const events = [...person.events]
+  events[index] = compact({ ...events[index]!, ...patch, id: eventId })
+  return withEvents(tree, personId, events, (options.now ?? new Date()).toISOString())
+}
+
+export function removePersonEvent(
+  tree: FamilyTree,
+  personId: PersonId,
+  eventId: PersonEventId,
+  options: OpOptions = {}
+): FamilyTree {
+  const person = requirePerson(tree, personId)
+  requireEvent(person, eventId)
+  const events = person.events.filter((e) => e.id !== eventId)
+  return withEvents(tree, personId, events, (options.now ?? new Date()).toISOString())
+}
+
+/** Moves an event to another position in the person's list (clamped to the list). */
+export function movePersonEvent(
+  tree: FamilyTree,
+  personId: PersonId,
+  eventId: PersonEventId,
+  toIndex: number,
+  options: OpOptions = {}
+): FamilyTree {
+  const person = requirePerson(tree, personId)
+  const from = requireEvent(person, eventId)
+  const to = Math.max(0, Math.min(person.events.length - 1, toIndex))
+  if (from === to) return tree
+  const events = [...person.events]
+  const [event] = events.splice(from, 1)
+  events.splice(to, 0, event!)
+  return withEvents(tree, personId, events, (options.now ?? new Date()).toISOString())
 }

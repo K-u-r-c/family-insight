@@ -12,7 +12,8 @@ export function searchableText(person: Person): string {
       person.birth?.place,
       person.death?.place,
       yearOf(person.birth?.date),
-      yearOf(person.death?.date)
+      yearOf(person.death?.date),
+      ...person.events.flatMap((e) => [e.place, e.description, e.customType])
     ]
       .filter((v) => v !== undefined && v !== '')
       .join(' ')

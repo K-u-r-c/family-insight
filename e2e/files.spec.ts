@@ -40,7 +40,7 @@ test('new tree, save as, reopen from argv', async () => {
   const saved = JSON.parse(readFileSync(target, 'utf8'))
   expect(saved).toMatchObject({
     format: 'family-insight',
-    schemaVersion: 1,
+    schemaVersion: 2,
     meta: { name: 'My family' }
   })
   await expect(page.getByText('All changes saved')).toBeVisible()

@@ -3,8 +3,12 @@ import { isModelError } from '@core/model/errors'
 import {
   addParentChildCommand,
   addPartnershipCommand,
+  addEventCommand,
   addPersonCommand,
   composeCommands,
+  moveEventCommand,
+  removeEventCommand,
+  updateEventCommand,
   removePersonCommand,
   updatePersonCommand
 } from './commands'
@@ -97,5 +101,29 @@ describe('document store', () => {
     expect(useDocument.getState().tree!.meta.name).toBe('Kowalscy')
     useDocument.getState().undo()
     expect(useDocument.getState().tree!.meta.name).toBe('Test')
+  })
+
+  it('adds, edits, moves and removes life events as undoable steps', () => {
+    const s = useDocument.getState()
+    const jan = s.dispatch(addPersonCommand(person('Jan')))
+    const events = (): string[] =>
+      useDocument.getState().tree!.persons[jan.id]!.events.map((e) => e.description ?? e.type)
+    const e1 = s.dispatch(addEventCommand(jan.id, { type: 'baptism' }))
+    const e2 = s.dispatch(addEventCommand(jan.id, { type: 'occupation', description: 'Miner' }))
+    expect(events()).toEqual(['baptism', 'Miner'])
+    // Typing in a field coalesces into one undo step.
+    s.dispatch(updateEventCommand(jan.id, e2.id, { description: 'Smith' }))
+    s.dispatch(updateEventCommand(jan.id, e2.id, { description: 'Blacksmith' }))
+    expect(events()).toEqual(['baptism', 'Blacksmith'])
+    useDocument.getState().undo()
+    expect(events()).toEqual(['baptism', 'Miner'])
+    useDocument.getState().redo()
+    s.dispatch(moveEventCommand(jan.id, e2.id, 0))
+    expect(events()).toEqual(['Blacksmith', 'baptism'])
+    s.dispatch(removeEventCommand(jan.id, e1.id))
+    expect(events()).toEqual(['Blacksmith'])
+    useDocument.getState().undo()
+    useDocument.getState().undo()
+    expect(events()).toEqual(['baptism', 'Blacksmith'])
   })
 })

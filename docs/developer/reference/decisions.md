@@ -160,3 +160,19 @@ Findings that changed the site: code blocks use the `github-*-default` Shiki the
 or dark warm background to meet WCAG AA contrast; the search button's “Ctrl K” hint is hidden because
 it was visible text missing from the button's accessible name; diagrams fit the column and have a
 separate “Enlarge” button.
+
+## Life events and schema v2 (2026-10, issue #52)
+
+People get `events: PersonEvent[]` – a typed list (`EVENT_TYPES` plus `custom`) with optional date,
+end date, place, description and notes – while **birth and death stay separate fields**: the layout,
+lifespans, statistics and CSV depend on them, and keeping them avoids touching all of that.
+
+- `events` is required in the stored model (always an array), so code never checks for `undefined`;
+  `addPerson` defaults it to `[]`. Events change only through dedicated operations/commands, so each
+  add, edit, delete or reorder is one undo step (edits of the same field coalesce while typing).
+- It is the first real migration: **schema 2**, `1 → 2` adds `events: []`. A new required field and
+  new values mean older apps must not open the file – they already refuse newer `schemaVersion`s
+  with a clear message (see the file format's forward-compatibility rule).
+- Plausibility checks only warn when dates certainly contradict each other (an earlier year, or both
+  at least month-precise), so `1890` baptism vs `1890-05` birth is no warning.
+- CSV stays one row per person; events are carried by GEDCOM (#60–#63).

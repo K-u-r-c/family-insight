@@ -26,14 +26,20 @@ Electron + React + TypeScript family tree app (EN/PL). Read `docs/developer/arch
 
 ## Working through the backlog
 
-Issues #1–#33 (milestones MVP and v1.0) were the 1.0 scope (released as v1.0.0).
-Issues #38–#51 (milestone Documentation) are the current scope: the VitePress docs site in
-`docs/` deployed to GitHub Pages, ending with release v1.0.1 – implement them in numeric
-order. #34–#37 (Backlog) are out of scope.
+Done: #1–#33 (v1.0.0) and #38–#51 (documentation site, v1.0.1).
+**Current scope: #52–#98** – milestones v1.1 (#52–#67), v1.2 (#68–#81) and v2.0 (#82–#98),
+strictly in issue-number order, each ending with its release (v1.1.0, v1.2.0, v2.0.0).
+Out of scope: #36 (paid code signing) and #99 (store publishing, deferred); #34, #35 and #37
+are superseded by the roadmap issues.
 
-- One issue at a time: implement → `npm run check` + `npm run build` → commit straight to
+- One issue at a time: implement → `npm run check` + `npm run build` (+ `npm run docs:build`
+  when docs change) → update the user guide and affected screenshots → commit straight to
   `main` with `Closes #N` in the message → push → wait for CI to be green
   (`gh run watch`) before starting the next issue. Fix red CI immediately.
+- Once #68 is closed, the UI-text rule and the definition of done cover **every** locale file
+  in `src/shared/locales/`, not only `en.json` and `pl.json`.
+- Once #77 is closed, user-guide updates apply to **every** language of the docs site.
+- Tests never use the network: mock servers (geocoder, map tiles, updates).
 - "Screenshot in the PR" = render the app offscreen (Electron `capturePage`), inspect the
   image yourself in both themes and both languages; no PR needed.
 - Acceptance criteria that need hardware/software unavailable here (Windows, macOS, Excel,

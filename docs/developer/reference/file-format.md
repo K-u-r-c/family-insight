@@ -15,7 +15,7 @@ reading and writing are `parseTree` and `serializeTree` in `src/core/file/format
 ```json
 {
   "format": "family-insight",
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "meta": {
     "name": "Kowalscy",
     "createdAt": "2026-10-29T18:42:00.000Z",
@@ -33,6 +33,15 @@ reading and writing are `parseTree` and `serializeTree` in `src/core/file/format
       "death": { "date": { "value": "2001-06-30", "qualifier": "exact" }, "place": "Łódź" },
       "living": false,
       "notes": "Engineer who built bridges.",
+      "events": [
+        {
+          "id": "7c1d…",
+          "type": "military-service",
+          "date": { "value": "1944", "qualifier": "exact" },
+          "endDate": { "value": "1945", "qualifier": "exact" },
+          "description": "1st Polish Army"
+        }
+      ],
       "createdAt": "2026-10-29T18:42:00.000Z",
       "updatedAt": "2026-10-29T18:42:00.000Z"
     },
@@ -44,6 +53,7 @@ reading and writing are `parseTree` and `serializeTree` in `src/core/file/format
       "sex": "female",
       "birth": { "date": { "value": "1928", "qualifier": "about" }, "place": "Poznań" },
       "photo": "data:image/webp;base64,UklGR…",
+      "events": [],
       "createdAt": "2026-10-29T18:42:00.000Z",
       "updatedAt": "2026-10-29T18:42:00.000Z"
     }
@@ -74,7 +84,7 @@ reading and writing are `parseTree` and `serializeTree` in `src/core/file/format
 | Field           | Type    | Required | Description                                                  |
 | --------------- | ------- | -------- | ------------------------------------------------------------ |
 | `format`        | string  | yes      | Always `"family-insight"`; identifies the file type.         |
-| `schemaVersion` | integer | yes      | Version of this format (currently **1**).                    |
+| `schemaVersion` | integer | yes      | Version of this format (currently **2**).                    |
 | `meta`          | object  | yes      | Tree name, timestamps, root person and view.                 |
 | `persons`       | object  | yes      | People keyed by id; each value's `id` equals its key.        |
 | `relationships` | object  | yes      | Relationships keyed by id; each value's `id` equals its key. |
@@ -91,19 +101,20 @@ reading and writing are `parseTree` and `serializeTree` in `src/core/file/format
 
 ### Person
 
-| Field                    | Type      | Required | Description                                                    |
-| ------------------------ | --------- | -------- | -------------------------------------------------------------- |
-| `id`                     | string    | yes      | Same as the key.                                               |
-| `givenNames`             | string    | yes      | May be empty.                                                  |
-| `surname`                | string    | yes      | May be empty.                                                  |
-| `birthSurname`           | string    | no       | Surname at birth.                                              |
-| `sex`                    | string    | yes      | `female`, `male`, `other` or `unknown`.                        |
-| `birth`                  | LifeEvent | no       | Date and place of birth.                                       |
-| `death`                  | LifeEvent | no       | Date and place of death.                                       |
-| `living`                 | boolean   | no       | Absent = unknown.                                              |
-| `notes`                  | string    | no       | Free text with line breaks.                                    |
-| `photo`                  | string    | no       | Data URL starting with `data:image/` (512 × 512 WebP or JPEG). |
-| `createdAt`, `updatedAt` | string    | yes      | ISO 8601 timestamps.                                           |
+| Field                    | Type          | Required | Description                                                    |
+| ------------------------ | ------------- | -------- | -------------------------------------------------------------- |
+| `id`                     | string        | yes      | Same as the key.                                               |
+| `givenNames`             | string        | yes      | May be empty.                                                  |
+| `surname`                | string        | yes      | May be empty.                                                  |
+| `birthSurname`           | string        | no       | Surname at birth.                                              |
+| `sex`                    | string        | yes      | `female`, `male`, `other` or `unknown`.                        |
+| `birth`                  | LifeEvent     | no       | Date and place of birth.                                       |
+| `death`                  | LifeEvent     | no       | Date and place of death.                                       |
+| `living`                 | boolean       | no       | Absent = unknown.                                              |
+| `notes`                  | string        | no       | Free text with line breaks.                                    |
+| `events`                 | PersonEvent[] | yes (v2) | Further life events, in the order the user arranged them.      |
+| `photo`                  | string        | no       | Data URL starting with `data:image/` (512 × 512 WebP or JPEG). |
+| `createdAt`, `updatedAt` | string        | yes      | ISO 8601 timestamps.                                           |
 
 ### Relationship
 
@@ -127,6 +138,22 @@ Partnership:
 | `kind`       | string           | yes      | `marriage`, `partnership`, `engagement` or `other`.                               |
 | `start`      | LifeEvent        | no       | When and where it started.                                                        |
 | `end`        | LifeEvent        | no       | When it ended, plus optional `reason`: `divorce`, `separation`, `death`, `other`. |
+
+### PersonEvent (since v2)
+
+| Field         | Type      | Required | Description                                                                                                                                                                                                                                                           |
+| ------------- | --------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`          | string    | yes      | Unique within the person.                                                                                                                                                                                                                                             |
+| `type`        | string    | yes      | `baptism`, `christening`, `confirmation`, `first-communion`, `burial`, `cremation`, `emigration`, `immigration`, `naturalization`, `residence`, `occupation`, `education`, `graduation`, `military-service`, `religion`, `census`, `retirement`, `award` or `custom`. |
+| `customType`  | string    | no       | Name of a `custom` event (“Pilgrimage”).                                                                                                                                                                                                                              |
+| `date`        | FuzzyDate | no       | When it happened, or when a period started.                                                                                                                                                                                                                           |
+| `endDate`     | FuzzyDate | no       | End of a period (“1914–1918”).                                                                                                                                                                                                                                        |
+| `place`       | string    | no       |                                                                                                                                                                                                                                                                       |
+| `description` | string    | no       | Short detail: the occupation, school, regiment …                                                                                                                                                                                                                      |
+| `notes`       | string    | no       | Free text.                                                                                                                                                                                                                                                            |
+
+Birth and death stay in `birth` / `death` (they drive the layout, ages and statistics); events are
+additional facts.
 
 ### LifeEvent and FuzzyDate
 
@@ -161,6 +188,16 @@ view is stored in `meta.view`. Main writes the file **atomically** (temporary fi
 saves first copy the previous file to `name.finsight.bak1` and rotate older copies up to `.bak5`.
 
 ## Versioning and migrations
+
+| Version | App versions | Change                                                            |
+| ------- | ------------ | ----------------------------------------------------------------- |
+| 1       | 1.0.x        | First format.                                                     |
+| 2       | 1.1.0 –      | `Person.events` (life events). Migration 1 → 2 adds `events: []`. |
+
+**Forward compatibility:** an app refuses files whose `schemaVersion` is higher than its own with
+“This tree was saved by a newer version of Family Insight” instead of misreading them. Family
+Insight 1.0.x therefore shows that message for files saved by 1.1 (schema 2) – users update to open
+them. Files from older versions always open and are upgraded in memory.
 
 - **Additive, optional fields** (a new optional property) don't change the version.
 - **Anything else** – renaming, restructuring, new required fields, new allowed values that older

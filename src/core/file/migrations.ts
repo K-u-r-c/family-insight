@@ -2,12 +2,22 @@ import { SCHEMA_VERSION } from '../model/types'
 
 type RawDoc = Record<string, unknown>
 
+const isObj = (v: unknown): v is RawDoc => typeof v === 'object' && v !== null && !Array.isArray(v)
+
 /** `MIGRATIONS[n]` upgrades a document from version `n` to `n + 1`. */
 export type Migration = (doc: RawDoc) => RawDoc
 
 export const MIGRATIONS: Record<number, Migration> = {
-  // Example for the future:
-  // 1: (doc) => ({ ...doc, schemaVersion: 2, persons: … }),
+  // v1 → v2: people get a list of life events (baptism, emigration, …).
+  1: (doc) => ({
+    ...doc,
+    persons: Object.fromEntries(
+      Object.entries(isObj(doc.persons) ? doc.persons : {}).map(([id, p]) => [
+        id,
+        isObj(p) && !Array.isArray(p.events) ? { ...p, events: [] } : p
+      ])
+    )
+  })
 }
 
 /** Applies migrations in order until the document reaches `target`. */

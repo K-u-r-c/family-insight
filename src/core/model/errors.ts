@@ -1,6 +1,7 @@
 /** Stable error codes; the UI maps them to translations under `errors.model.<code>`. */
 export const MODEL_ERROR_CODES = [
   'person-not-found',
+  'event-not-found',
   'relationship-not-found',
   'self-relationship',
   'duplicate-relationship',
