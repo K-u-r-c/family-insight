@@ -82,7 +82,9 @@ The renderer never sees the file system. `src/main/files.ts` enforces:
   migrates old versions; files from a newer version are refused instead of being misread.
 - CSV files are parsed by the pure importer, which never executes anything and reports problems
   instead of throwing.
-- The app makes **no network requests** of its own. There is no telemetry and no auto-update yet.
+- The app makes **no network requests** with your data. There is no telemetry. Main checks GitHub
+  for a newer release once a day (`src/main/updater.ts`, switchable in the settings; only the
+  app version is sent, as the User-Agent) and downloads an update only when the user agrees.
   The one exception is the opt-in **place lookup**: off by default (`onlinePlaceLookup`), asked for
   with an explanation on first use, and only on an explicit click. Main (`src/main/geocoder.ts`)
   sends the single place name to OpenStreetMap Nominatim – at most one request per second, an

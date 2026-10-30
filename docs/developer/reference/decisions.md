@@ -323,3 +323,20 @@ Details:
   the media library there.
 - **Export 5.5.1 by default** (UTF-8): it's what other programs read; 7.0 is an option. Fields
   GEDCOM can't carry are documented in the reference and checked by a round-trip test.
+
+## Updates (2026-10, issues #64–#66)
+
+- **electron-updater with the GitHub provider** for builds that can replace themselves: the
+  Windows installer (NSIS) and the AppImage. The release workflow uploads `latest*.yml` and the
+  blockmaps (differential downloads).
+- **"Notify" builds** – the portable exe, the deb package and the unsigned macOS app (Squirrel.Mac
+  requires a Developer ID signature, see #36) – ask the GitHub releases API for the latest version
+  and offer the release page instead of installing.
+- The policy (which build can do what, semver comparison, daily interval, "skip this version") is
+  pure (`src/core/updates.ts`) and unit-tested. Checks run 10 s after start and then when a day has
+  passed; automatic checks fail silently, manual ones report errors. Nothing is downloaded without
+  consent; "Restart now" first goes through the unsaved-changes question, otherwise the update is
+  installed when the app quits.
+- Off in development builds and in automated tests (isolated profile), unless a test sets
+  `FAMILY_INSIGHT_UPDATE_TEST=1` (with `FAMILY_INSIGHT_UPDATE_TARGET` / `FAMILY_INSIGHT_UPDATE_API`
+  to point at local fixtures).

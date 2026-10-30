@@ -15,6 +15,7 @@ import { registerMediaHandlers } from './media'
 import { registerPlaceHandlers } from './places'
 import { registerRecoveryHandlers } from './recovery'
 import { registerTileProtocol, registerTileScheme } from './tiles'
+import { registerUpdateHandlers, scheduleUpdateChecks } from './updater'
 import { registerIpcHandlers } from './ipc'
 import { attachEditContextMenu } from './contextMenu'
 import { buildMenu } from './menu'
@@ -123,9 +124,11 @@ if (!hasLock) {
     registerMediaHandlers()
     registerPlaceHandlers()
     registerTileProtocol()
+    registerUpdateHandlers()
     registerPrintHandlers(isWritable)
     buildMenu()
     createWindow()
+    scheduleUpdateChecks()
 
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) createWindow()

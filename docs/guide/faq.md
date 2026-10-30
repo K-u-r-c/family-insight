@@ -11,7 +11,9 @@ Yes. It's free and open source (MIT licence), without ads, accounts or subscript
 ## Where is my data? Does it go to the internet?
 
 Your tree is in the `.finsight` file you saved – nowhere else. Family Insight works completely
-**offline** and never sends your data anywhere. It only goes online when you ask it to: a link
+**offline** and never sends your data anywhere. Once a day it asks GitHub whether a new version
+is available ([updates](./settings), can be switched off). Otherwise it only goes online when you
+ask it to: a link
 such as **Help → User Guide** opens your web browser, and if you allow
 [online place lookup](./places#lookup), **Look up online** sends the name of that one place – and
 nothing else – to OpenStreetMap; with [online maps](./map#online) allowed, the map downloads its

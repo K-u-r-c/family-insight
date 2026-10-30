@@ -57,6 +57,16 @@ Bytes of photos and documents stay in main, in a library per open document; see
 | `importMediaFromPaths(library, basePath, paths)` | `media:import-paths`    | Adds files a GEDCOM file references to the library; one `MediaPutResult` per path                | Paths relative to `basePath` or absolute, else the same name next to it or in its `media` folder; type by magic bytes; ≤ 25 MB |
 | `openMediaExternally(library, hash, fileName)`   | `media:open-external`   | Writes a temporary copy and opens it with the system's default app; `true` if it opened          | Type by magic bytes; the extension follows the type, not the name                                                              |
 
+## Updates
+
+| Method                     | Channel              | Returns / does                                                                                         | Checks in main                                                                                 |
+| -------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| `checkForUpdates()`        | `updates:check`      | A manual check; resolves to the new `UpdateStatus` (errors reported)                                   | Off in development builds and tests (`FAMILY_INSIGHT_*`) unless `FAMILY_INSIGHT_UPDATE_TEST=1` |
+| `downloadUpdate()`         | `updates:download`   | Downloads the update (`auto` builds) or opens the release page (`notify` builds)                       | Only when an update is available                                                               |
+| `installUpdate()`          | `updates:install`    | Restarts into the downloaded update – call after unsaved changes were dealt with                       | Only when an update is ready                                                                   |
+| `getUpdateStatus()`        | `updates:get-status` | The current `UpdateStatus` (`state`, `support`, `version`, `notes`, `releaseUrl`, `progress`, `error`) | –                                                                                              |
+| `onUpdateStatus(listener)` | `updates:status`     | Subscribes to status changes                                                                           | –                                                                                              |
+
 ## Places
 
 | Method                          | Channel                | Returns / does                                                                                                                                                                                     | Checks in main                                                                                                             |

@@ -74,6 +74,39 @@ describe('settings', () => {
     ).toBe(DEFAULT_TILE_URL)
   })
 
+  it('sanitises the update settings', () => {
+    const base = defaultSettings('en')
+    expect(base.updates).toEqual({ checkAutomatically: true })
+    const ok = sanitizeSettings(
+      {
+        updates: {
+          checkAutomatically: false,
+          lastCheck: '2026-10-30T10:00:00Z',
+          skippedVersion: '1.2.0'
+        }
+      },
+      base,
+      () => true
+    )
+    expect(ok.updates).toEqual({
+      checkAutomatically: false,
+      lastCheck: '2026-10-30T10:00:00Z',
+      skippedVersion: '1.2.0'
+    })
+    const bad = sanitizeSettings(
+      { updates: { checkAutomatically: 'no', lastCheck: 'yesterday', skippedVersion: 'latest' } },
+      ok,
+      () => true
+    )
+    expect(bad.updates).toEqual(ok.updates)
+    expect(sanitizeSettings({ updates: { skippedVersion: null } }, ok, () => true).updates).toEqual(
+      {
+        checkAutomatically: false,
+        lastCheck: '2026-10-30T10:00:00Z'
+      }
+    )
+  })
+
   it('merges patches onto current settings', () => {
     const current = sanitizeSettings(
       { theme: 'dark', autosave: false },

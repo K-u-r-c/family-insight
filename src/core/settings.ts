@@ -2,6 +2,7 @@
  * Application settings shared by main and renderer. Pure helpers so the schema,
  * defaults and sanitising are unit-testable; persistence lives in `src/main/settings.ts`.
  */
+import { isValidVersion } from './updates'
 
 export type ThemePreference = 'system' | 'light' | 'dark'
 export type CsvDelimiter = ',' | ';'
@@ -27,6 +28,14 @@ export interface PanelSettings {
   detailsWidth: number
 }
 
+export interface UpdateSettings {
+  checkAutomatically: boolean
+  /** ISO time of the last successful check. */
+  lastCheck?: string
+  /** Version the user chose to skip. */
+  skippedVersion?: string
+}
+
 export interface Settings {
   version: 1
   language: string
@@ -44,6 +53,7 @@ export interface Settings {
   onlineMaps: boolean
   /** Tile server URL template, e.g. `https://tile.openstreetmap.org/{z}/{x}/{y}.png`. */
   mapTileUrl: string
+  updates: UpdateSettings
   panels: PanelSettings
 }
 
@@ -73,6 +83,7 @@ export function defaultSettings(language: string): Settings {
     onlinePlaceLookup: false,
     onlineMaps: false,
     mapTileUrl: DEFAULT_TILE_URL,
+    updates: { checkAutomatically: true },
     panels: { sidebarOpen: true, sidebarWidth: 280, detailsWidth: 380 }
   }
 }
@@ -97,6 +108,17 @@ export function sanitizeSettings(
   if (typeof src.onlinePlaceLookup === 'boolean') out.onlinePlaceLookup = src.onlinePlaceLookup
   if (typeof src.onlineMaps === 'boolean') out.onlineMaps = src.onlineMaps
   if (isTileUrl(src.mapTileUrl)) out.mapTileUrl = src.mapTileUrl
+  out.updates = { ...fallback.updates }
+  if (isObj(src.updates)) {
+    const u = src.updates
+    if (typeof u.checkAutomatically === 'boolean')
+      out.updates.checkAutomatically = u.checkAutomatically
+    if (typeof u.lastCheck === 'string' && !Number.isNaN(Date.parse(u.lastCheck))) {
+      out.updates.lastCheck = u.lastCheck
+    }
+    if (isValidVersion(u.skippedVersion)) out.updates.skippedVersion = u.skippedVersion
+    else if (u.skippedVersion === null) delete out.updates.skippedVersion
+  }
   if (src.theme === 'system' || src.theme === 'light' || src.theme === 'dark') out.theme = src.theme
   if (src.csvDelimiter === ',' || src.csvDelimiter === ';') out.csvDelimiter = src.csvDelimiter
   if (src.density === 'comfortable' || src.density === 'compact') out.density = src.density

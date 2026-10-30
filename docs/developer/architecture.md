@@ -156,6 +156,9 @@ features go through main:
 
 - **Place lookup** – `lookupPlace` → main checks `onlinePlaceLookup` and queries OpenStreetMap
   Nominatim through a rate-limited, caching `Geocoder` (`src/main/geocoder.ts`).
+- **Updates** – main checks the latest release once a day (`src/main/updater.ts`): electron-updater
+  for builds that can install updates (Windows installer, AppImage), the GitHub releases API for
+  the others; policy helpers in `src/core/updates.ts`.
 - **Map tiles** – Leaflet loads `fi-tile://map/{z}/{x}/{y}.png`; main's protocol handler
   (`src/main/tiles.ts`) checks `onlineMaps` and fetches and caches the tile (`TileService`).
 

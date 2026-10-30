@@ -337,10 +337,17 @@ export function registerFileHandlers(): void {
  * Lets the renderer veto closing (unsaved changes). The first close is cancelled and the
  * renderer is asked; it calls `window:close` when it is safe to close.
  */
+let closeAllowed = false
+
+/** Lets windows close without asking (the renderer already dealt with unsaved changes). */
+export function allowWindowClose(): void {
+  closeAllowed = true
+}
+
 export function guardWindowClose(window: BrowserWindow): void {
   let allowed = false
   window.on('close', (event) => {
-    if (allowed || window.webContents.isCrashed()) return
+    if (allowed || closeAllowed || window.webContents.isCrashed()) return
     event.preventDefault()
     window.webContents.send(IpcChannel.WindowCloseRequest)
   })

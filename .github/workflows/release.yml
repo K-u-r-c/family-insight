@@ -44,6 +44,7 @@ jobs:
             dist/*.AppImage
             dist/*.deb
             dist/latest*.yml
+            dist/*.blockmap
 
   release:
     needs: build

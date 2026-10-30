@@ -1,5 +1,6 @@
 import type { MediaMime } from '@core/model/types'
 import type { Settings } from '@core/settings'
+import type { UpdateSupport } from '@core/updates'
 
 /** IPC channel names. Every channel used between main and renderer is declared here. */
 export const IpcChannel = {
@@ -30,6 +31,11 @@ export const IpcChannel = {
   MediaOpenExternal: 'media:open-external',
   MediaImportPaths: 'media:import-paths',
   FileExportGedcom: 'file:export-gedcom',
+  UpdatesCheck: 'updates:check',
+  UpdatesDownload: 'updates:download',
+  UpdatesInstall: 'updates:install',
+  UpdatesGetStatus: 'updates:get-status',
+  UpdatesStatus: 'updates:status',
   PlaceLookup: 'places:lookup',
   PlaceLookupCancel: 'places:lookup-cancel',
   ExportPdf: 'export:pdf',
@@ -96,6 +102,26 @@ export interface MediaImportResult {
 export type PlaceLookupResult =
   | { ok: true; results: { lat: number; lon: number; displayName: string }[] }
   | { ok: false; error: 'disabled' | 'offline' | 'failed' | 'cancelled' }
+
+export type UpdateState =
+  'idle' | 'checking' | 'available' | 'not-available' | 'downloading' | 'ready' | 'error'
+
+/** What the updater is doing; broadcast on every change (`updates:status`). */
+export interface UpdateStatus {
+  state: UpdateState
+  support: UpdateSupport
+  /** The newer version (available, downloading, ready). */
+  version?: string
+  /** Release notes (Markdown) of the newer version. */
+  notes?: string
+  /** Release page, for builds that can't update themselves. */
+  releaseUrl?: string
+  /** Download progress 0–100. */
+  progress?: number
+  /** The result of a check the user started (shown even when nothing was found). */
+  manual?: boolean
+  error?: string
+}
 
 export interface PdfOptions {
   pageSize: 'A4' | 'A3' | 'Letter'
@@ -247,6 +273,14 @@ export interface FamilyInsightApi {
   /** Looks up coordinates of a place name; a newer call with the same id cancels the older. */
   lookupPlace(requestId: string, query: string): Promise<PlaceLookupResult>
   cancelPlaceLookup(requestId: string): Promise<void>
+  /** Checks for a newer version now (a manual check: errors are reported). */
+  checkForUpdates(): Promise<UpdateStatus>
+  /** Downloads the update (or opens the release page where the app can't update itself). */
+  downloadUpdate(): Promise<void>
+  /** Restarts into the downloaded update; call after unsaved changes were dealt with. */
+  installUpdate(): Promise<void>
+  getUpdateStatus(): Promise<UpdateStatus>
+  onUpdateStatus(listener: (status: UpdateStatus) => void): () => void
   /** A file the OS asked us to open before the UI was ready (double-click, argv). */
   takePendingFile(): Promise<string | null>
   onOpenFileRequest(listener: (path: string) => void): () => void

@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer, webUtils, type IpcRendererEvent } from 'electron'
 import type { Settings } from '@core/settings'
-import { IpcChannel, type FamilyInsightApi, type MenuAction } from '@shared/ipc'
+import { IpcChannel, type FamilyInsightApi, type MenuAction, type UpdateStatus } from '@shared/ipc'
 
 function subscribe<T>(channel: string, listener: (value: T) => void): () => void {
   const handler = (_event: IpcRendererEvent, value: T): void => listener(value)
@@ -42,6 +42,11 @@ const api: FamilyInsightApi = {
     ipcRenderer.invoke(IpcChannel.FileExportGedcom, path, text, media),
   openMediaExternally: (library, hash, fileName) =>
     ipcRenderer.invoke(IpcChannel.MediaOpenExternal, library, hash, fileName),
+  checkForUpdates: () => ipcRenderer.invoke(IpcChannel.UpdatesCheck),
+  downloadUpdate: () => ipcRenderer.invoke(IpcChannel.UpdatesDownload),
+  installUpdate: () => ipcRenderer.invoke(IpcChannel.UpdatesInstall),
+  getUpdateStatus: () => ipcRenderer.invoke(IpcChannel.UpdatesGetStatus),
+  onUpdateStatus: (listener) => subscribe<UpdateStatus>(IpcChannel.UpdatesStatus, listener),
   lookupPlace: (requestId, query) => ipcRenderer.invoke(IpcChannel.PlaceLookup, requestId, query),
   cancelPlaceLookup: (requestId) => ipcRenderer.invoke(IpcChannel.PlaceLookupCancel, requestId),
   exportPdf: (svg, options, path) => ipcRenderer.invoke(IpcChannel.ExportPdf, svg, options, path),

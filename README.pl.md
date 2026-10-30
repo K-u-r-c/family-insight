@@ -81,7 +81,8 @@ przyjdą przez _Plik → Importuj → CSV_.
 (domyślnym, gdy aplikacja jest po polsku); plik ma znacznik UTF-8 BOM, więc polskie litery
 wyświetlają się poprawnie.
 
-**Czy działa bez internetu?** Tak, w pełni. Aplikacja nigdzie nie wysyła Twoich danych; opcjonalne
+**Czy działa bez internetu?** Tak, w pełni. Aplikacja nigdzie nie wysyła Twoich danych; raz
+dziennie sprawdza na GitHubie nowe wersje (można to wyłączyć), a opcjonalne
 wyszukiwanie miejsc (domyślnie wyłączone) wysyła do OpenStreetMap tylko nazwę miejsca, gdy o to
 poprosisz.
 

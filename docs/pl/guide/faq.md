@@ -11,8 +11,9 @@ Tak. Jest darmowy i ma otwarty kod (licencja MIT), bez reklam, kont i subskrypcj
 ## Gdzie są moje dane? Czy trafiają do internetu?
 
 Twoje drzewo jest w zapisanym pliku `.finsight` – i nigdzie indziej. Family Insight działa w pełni
-**bez internetu** i nigdzie nie wysyła Twoich danych. Łączy się z internetem tylko na Twoje
-polecenie: odnośnik, np. **Pomoc → Poradnik**, otwiera przeglądarkę, a jeśli zezwolisz na
+**bez internetu** i nigdzie nie wysyła Twoich danych. Raz dziennie pyta GitHub, czy jest nowa
+wersja ([aktualizacje](./settings), można to wyłączyć). Poza tym łączy się z internetem tylko na
+Twoje polecenie: odnośnik, np. **Pomoc → Poradnik**, otwiera przeglądarkę, a jeśli zezwolisz na
 [wyszukiwanie miejsc online](./places#lookup), **Wyszukaj online** wysyła nazwę tego jednego
 miejsca – i nic więcej – do OpenStreetMap; gdy zezwolisz na [mapy online](./map#online), mapa
 pobiera swoje tło (tylko obszar mapy, nigdy Twoich danych).
