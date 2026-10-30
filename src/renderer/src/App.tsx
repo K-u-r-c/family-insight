@@ -4,7 +4,14 @@ import { useApplyTheme } from './hooks/useApplyTheme'
 import { useGlobalShortcuts } from './hooks/useGlobalShortcuts'
 import { useFileIntegration } from './hooks/useFileIntegration'
 import { useMenuIntegration } from './hooks/useMenuIntegration'
-import { createTree, newTree, openTree, saveTree, saveTreeAs } from './services/documentFiles'
+import {
+  closeTree,
+  createTree,
+  newTree,
+  openTree,
+  saveTree,
+  saveTreeAs
+} from './services/documentFiles'
 import { WelcomeScreen } from './features/welcome/WelcomeScreen'
 import { Workspace } from './features/workspace/Workspace'
 import { useDocument } from './store/document'
@@ -15,6 +22,12 @@ import { NewTreeDialog } from './features/welcome/NewTreeDialog'
 import { ExportImageDialog } from './features/export/ExportImageDialog'
 import { StatsDialog } from './features/stats/StatsDialog'
 import { ShortcutsDialog } from './features/help/ShortcutsDialog'
+import { AboutDialog } from './features/help/AboutDialog'
+import { deletePersonWithConfirm } from './features/person/deletePerson'
+import { fitCurrent, resetZoom, zoomBy } from './features/tree/CanvasControls'
+import { addPersonAndEdit } from './features/workspace/useAddPerson'
+import { useSettings } from './store/settings'
+import { useTreeView } from './store/treeView'
 import { printTree } from './features/export/exportImage'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
 import { useAutosave } from './services/autosave'
@@ -55,6 +68,33 @@ export function App(): React.JSX.Element {
       },
       'help:csv-format': openCsvFormatDocs,
       'help:shortcuts': () => useWorkspaceUi.getState().openDialog('shortcuts'),
+      'help:about': () => useWorkspaceUi.getState().openDialog('about'),
+      'file:close': () => void closeTree(),
+      'edit:add-person': () => addPersonAndEdit(),
+      'edit:delete': () => {
+        const id = useDocument.getState().selectedPersonId
+        if (id) void deletePersonWithConfirm(id)
+      },
+      'edit:find': () => {
+        const search = document.getElementById('workspace-search') as HTMLInputElement | null
+        search?.focus()
+        search?.select()
+      },
+      'view:mode-family': () => useTreeView.getState().setMode('family'),
+      'view:mode-ancestors': () => useTreeView.getState().setMode('ancestors'),
+      'view:mode-descendants': () => useTreeView.getState().setMode('descendants'),
+      'view:mode-hourglass': () => useTreeView.getState().setMode('hourglass'),
+      'view:fit': () => fitCurrent(),
+      'view:zoom-in': () => zoomBy(1.25),
+      'view:zoom-out': () => zoomBy(1 / 1.25),
+      'view:zoom-reset': () => resetZoom(),
+      'view:toggle-sidebar': () => {
+        const { settings, update } = useSettings.getState()
+        void update({ panels: { ...settings.panels, sidebarOpen: !settings.panels.sidebarOpen } })
+      },
+      'view:statistics': () => {
+        if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('stats')
+      },
       'help:csv-template': () => void saveCsvTemplate(),
       'file:export-csv': () => {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-csv')
@@ -87,6 +127,7 @@ export function App(): React.JSX.Element {
       )}
       {dialog === 'stats' && hasDocument && <StatsDialog onClose={() => openDialog(null)} />}
       {dialog === 'shortcuts' && <ShortcutsDialog onClose={() => openDialog(null)} />}
+      {dialog === 'about' && <AboutDialog onClose={() => openDialog(null)} />}
       {dialog === 'new-tree' && (
         <NewTreeDialog
           onClose={() => openDialog(null)}

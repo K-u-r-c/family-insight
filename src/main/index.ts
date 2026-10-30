@@ -13,6 +13,7 @@ import { registerPrintHandlers } from './printing'
 import { initMainI18n, setMainLanguage } from './i18n'
 import { registerRecoveryHandlers } from './recovery'
 import { registerIpcHandlers } from './ipc'
+import { attachEditContextMenu } from './contextMenu'
 import { buildMenu } from './menu'
 import { flushSettings, loadSettings, onSettingsChanged } from './settings'
 import { restoredBounds, trackWindowState, wasMaximized } from './windowState'
@@ -47,6 +48,7 @@ function createWindow(): BrowserWindow {
     window.show()
   })
   trackWindowState(window)
+  attachEditContextMenu(window)
   guardWindowClose(window)
 
   // Open external links in the default browser, never inside the app.
@@ -95,8 +97,11 @@ if (!hasLock) {
     onSettingsChanged((next, previous) => {
       if (next.language !== previous.language) {
         void setMainLanguage(resolveLanguage(next.language)).then(buildMenu)
-      } else if (JSON.stringify(next.recentFiles) !== JSON.stringify(previous.recentFiles)) {
-        buildMenu()
+      } else {
+        // Recent files, theme, panels and minimap are reflected in the menu.
+        const { windowBounds: _a, ...a } = next
+        const { windowBounds: _b, ...b } = previous
+        if (JSON.stringify(a) !== JSON.stringify(b)) buildMenu()
       }
     })
     registerIpcHandlers()

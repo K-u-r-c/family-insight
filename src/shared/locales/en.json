@@ -60,9 +60,6 @@
     "view": "View",
     "reload": "Reload",
     "toggleDevTools": "Toggle Developer Tools",
-    "resetZoom": "Actual Size",
-    "zoomIn": "Zoom In",
-    "zoomOut": "Zoom Out",
     "toggleFullscreen": "Toggle Full Screen",
     "help": "Help",
     "about": "About Family Insight",
@@ -74,7 +71,22 @@
     "clearRecent": "Clear Recent",
     "exportImage": "Export Image…",
     "print": "Print…",
-    "shortcuts": "Keyboard Shortcuts"
+    "shortcuts": "Keyboard Shortcuts",
+    "hide": "Hide Family Insight",
+    "hideOthers": "Hide Others",
+    "showAll": "Show All",
+    "import": "Import",
+    "export": "Export",
+    "importCsvShort": "CSV…",
+    "exportCsvShort": "CSV…",
+    "exportImageShort": "Image (PNG, SVG, PDF)…",
+    "closeTree": "Close Tree",
+    "addPerson": "Add Person",
+    "deletePerson": "Delete Person",
+    "find": "Find…",
+    "showSidebar": "People List",
+    "userGuide": "User Guide",
+    "reportBug": "Report a Problem…"
   },
   "sex": {
     "female": "Female",
@@ -541,5 +553,12 @@
     "partners": "Partners: {{names}}",
     "children": "Children: {{names}}",
     "noRelatives": "No relatives yet."
+  },
+  "about": {
+    "version": "Version {{version}}",
+    "text": "A free, open-source family tree editor. Your data stays on your computer.",
+    "website": "Website",
+    "license": "MIT licence",
+    "credits": "Built with Electron, React, TypeScript, Inter and Source Serif. © 2026 Jakub Kurc and contributors."
   }
 }

@@ -60,9 +60,6 @@
     "view": "Widok",
     "reload": "Odśwież",
     "toggleDevTools": "Narzędzia deweloperskie",
-    "resetZoom": "Rzeczywisty rozmiar",
-    "zoomIn": "Powiększ",
-    "zoomOut": "Pomniejsz",
     "toggleFullscreen": "Pełny ekran",
     "help": "Pomoc",
     "about": "O programie Family Insight",
@@ -74,7 +71,22 @@
     "clearRecent": "Wyczyść listę",
     "exportImage": "Eksportuj obraz…",
     "print": "Drukuj…",
-    "shortcuts": "Skróty klawiszowe"
+    "shortcuts": "Skróty klawiszowe",
+    "hide": "Ukryj Family Insight",
+    "hideOthers": "Ukryj pozostałe",
+    "showAll": "Pokaż wszystko",
+    "import": "Importuj",
+    "export": "Eksportuj",
+    "importCsvShort": "CSV…",
+    "exportCsvShort": "CSV…",
+    "exportImageShort": "Obraz (PNG, SVG, PDF)…",
+    "closeTree": "Zamknij drzewo",
+    "addPerson": "Dodaj osobę",
+    "deletePerson": "Usuń osobę",
+    "find": "Znajdź…",
+    "showSidebar": "Lista osób",
+    "userGuide": "Podręcznik użytkownika",
+    "reportBug": "Zgłoś problem…"
   },
   "sex": {
     "female": "Kobieta",
@@ -579,5 +591,12 @@
     "partners": "Partnerzy: {{names}}",
     "children": "Dzieci: {{names}}",
     "noRelatives": "Brak krewnych."
+  },
+  "about": {
+    "version": "Wersja {{version}}",
+    "text": "Darmowy edytor drzewa genealogicznego o otwartym kodzie. Twoje dane zostają na Twoim komputerze.",
+    "website": "Strona projektu",
+    "license": "Licencja MIT",
+    "credits": "Zbudowano z użyciem Electron, React, TypeScript, Inter i Source Serif. © 2026 Jakub Kurc i współtwórcy."
   }
 }

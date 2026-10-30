@@ -1,6 +1,7 @@
 import { Crosshair, Map as MapIcon, Maximize, Minus, Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import type { Layout } from '@core/layout/layout'
+import { layoutFamily, type Layout } from '@core/layout/layout'
+import { layoutOptions } from './TreeCanvas'
 import { IconButton } from '@renderer/components/ui'
 import { useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
@@ -11,6 +12,13 @@ export function fitAll(layout: Layout | null): void {
   const { size, setViewport } = useTreeView.getState()
   if (!layout || !layout.nodes.length || !size.width) return
   setViewport(fitViewport({ x: 0, y: 0, width: layout.width, height: layout.height }, size), true)
+}
+
+/** Fits the whole current layout (used by the native menu). */
+export function fitCurrent(): void {
+  const tree = useDocument.getState().tree
+  const opts = layoutOptions()
+  if (tree && opts) fitAll(layoutFamily(tree, opts))
 }
 
 export function zoomBy(factor: number): void {

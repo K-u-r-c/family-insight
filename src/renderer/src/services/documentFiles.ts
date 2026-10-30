@@ -136,6 +136,13 @@ export async function saveTree(): Promise<boolean> {
   return filePath ? writeTo(filePath) : saveTreeAs()
 }
 
+/** Closes the open tree (asking to save first) and returns to the welcome screen. */
+export async function closeTree(): Promise<void> {
+  if (!useDocument.getState().tree || !(await guardUnsaved())) return
+  await clearRecovery()
+  useDocument.getState().closeDocument()
+}
+
 /** Main asked to close the window: save/discard/cancel, then let it close. */
 export async function handleCloseRequest(): Promise<void> {
   if (await guardUnsaved()) {

@@ -17,10 +17,13 @@ export function registerIpcHandlers(): void {
 
   ipcMain.handle(IpcChannel.MenuSetState, (_event, state: unknown) => {
     const s = (typeof state === 'object' && state !== null ? state : {}) as Record<string, unknown>
+    const modes = ['family', 'ancestors', 'descendants', 'hourglass'] as const
     setMenuState({
       hasDocument: s.hasDocument === true,
       canUndo: s.canUndo === true,
-      canRedo: s.canRedo === true
+      canRedo: s.canRedo === true,
+      hasSelection: s.hasSelection === true,
+      viewMode: modes.find((m) => m === s.viewMode) ?? 'family'
     })
   })
 

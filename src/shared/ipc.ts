@@ -69,6 +69,8 @@ export interface MenuState {
   hasDocument: boolean
   canUndo: boolean
   canRedo: boolean
+  hasSelection: boolean
+  viewMode: 'family' | 'ancestors' | 'descendants' | 'hourglass'
 }
 
 /** Actions triggered from the native menu and forwarded to the renderer. */
@@ -87,6 +89,22 @@ export type MenuAction =
   | 'help:csv-format'
   | 'help:csv-template'
   | 'help:shortcuts'
+  | 'help:guide'
+  | 'file:close'
+  | 'edit:add-person'
+  | 'edit:delete'
+  | 'edit:find'
+  | 'view:mode-family'
+  | 'view:mode-ancestors'
+  | 'view:mode-descendants'
+  | 'view:mode-hourglass'
+  | 'view:fit'
+  | 'view:zoom-in'
+  | 'view:zoom-out'
+  | 'view:zoom-reset'
+  | 'view:toggle-sidebar'
+  | 'view:toggle-minimap'
+  | 'view:statistics'
 
 /** The API exposed to the renderer as `window.familyInsight` by the preload script. */
 export interface FamilyInsightApi {

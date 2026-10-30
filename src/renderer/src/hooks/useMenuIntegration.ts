@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import type { MenuAction } from '@shared/ipc'
 import { selectCanRedo, selectCanUndo, useDocument } from '@renderer/store/document'
+import { useTreeView } from '@renderer/store/treeView'
 
 export function isTextInput(el: Element | null): boolean {
   if (!el) return false
@@ -23,10 +24,18 @@ export function useMenuIntegration(handlers: Handlers): void {
   const hasDocument = useDocument((s) => s.tree !== null)
   const canUndo = useDocument(selectCanUndo)
   const canRedo = useDocument(selectCanRedo)
+  const hasSelection = useDocument((s) => s.selectedPersonId !== null)
+  const viewMode = useTreeView((s) => s.mode)
 
   useEffect(() => {
-    void window.familyInsight.setMenuState({ hasDocument, canUndo, canRedo })
-  }, [hasDocument, canUndo, canRedo])
+    void window.familyInsight.setMenuState({
+      hasDocument,
+      canUndo,
+      canRedo,
+      hasSelection,
+      viewMode
+    })
+  }, [hasDocument, canUndo, canRedo, hasSelection, viewMode])
 
   useEffect(
     () =>
