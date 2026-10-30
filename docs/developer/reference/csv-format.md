@@ -105,8 +105,7 @@ UTF-8 BOM keeps readable in Excel. Source: `HEADERS`, `SEX_VALUES` and `LIVING_V
 
 Import also accepts the abbreviations `F`, `K`, `W`, `Ж` (female), `M`, `H`, `М` (male), `?`
 (unknown), `yes`, `y`, `t`, `j`, `1` and `no`, `n`, `0`, and other word forms (`feminino`,
-`maschio`, `мужской` …). Dates still use the English and Polish keywords until each language's
-date words land (see [Dates](#dates)).
+`maschio`, `мужской` …). Dates are read in every language too (see [Dates](#dates)).
 
 ## Export details
 
@@ -131,7 +130,11 @@ Dates may be partial and carry a qualifier prefix.
 | `<1890` or `bef 1890` / `przed 1890` | before          |
 | `>1890` or `aft 1890` / `po 1890`    | after           |
 
-Import additionally accepts `12.05.1890`, `12/05/1890` and `05.1890` (day first).
+Import additionally accepts `12.05.1890`, `12/05/1890` and `05.1890` (day first; `05/23/1890` as
+month first when day first is impossible), and month names and qualifiers of all eight languages in
+any grammatical form or as an unambiguous prefix of three letters or more – `12 March 1890`,
+`12 marca 1890`, `12. März 1890`, `1er mars 1890`, `12 de marzo de 1890`, `12 марта 1890 г.`,
+`um 1890`, `vers 1890`, `antes de 1890`, `около 1890` … (tables in `src/core/date/dateLocales.ts`).
 Export always writes the ISO form with the symbolic prefix (`~`, `<`, `>`).
 
 ## Validation on import

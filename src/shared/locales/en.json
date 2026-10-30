@@ -160,8 +160,8 @@
     "deathPlace": "Place of death",
     "notes": "Notes",
     "notesPlaceholder": "Stories, occupation, anything worth remembering…",
-    "dateInvalid": "This doesn't look like a date. Try 1890, 05.1890 or 12.05.1890.",
-    "dateHint": "e.g. 1890, 05.1890, 12.05.1890 or ~1890",
+    "dateInvalid": "This doesn't look like a date. Try 1890, May 1890 or 12 May 1890.",
+    "dateHint": "e.g. 1890, May 1890, 12 May 1890, 1890-05-12 or about 1890",
     "datePlaceholder": "Year or full date",
     "dateQualifier": "Date precision",
     "qualifier": {

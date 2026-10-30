@@ -29,7 +29,8 @@ Każde pole zapisuje się, gdy je opuścisz (<kbd>Tab</kbd> albo kliknięcie gdz
   `Santos Silva`.
 - **Przedrostki** takie jak von, van, de, da, dos czy di są częścią nazwiska (`van der Berg`);
   przy sortowaniu lista je pomija.
-  :::
+
+:::
 
 ## Daty {#dates}
 
@@ -44,9 +45,15 @@ w polu; wiersz pod nim pokazuje, jak Family Insight ją zrozumiał.
 | `05.1890` lub `1890-05`           | miesiąc i rok  | maj 1890     | May 1890     |
 | `12.05.1890` lub `1890-05-12`     | dokładny dzień | 12 maja 1890 | 12 May 1890  |
 | `12/05/1890`                      | dokładny dzień | 12 maja 1890 | 12 May 1890  |
+| `maj 1890`, `maja 1890`           | miesiąc i rok  | maj 1890     | May 1890     |
+| `12 maja 1890`, `12 maj 1890 r.`  | dokładny dzień | 12 maja 1890 | 12 May 1890  |
 | `~1890`, `ok. 1890`, `około 1890` | około          | ok. 1890     | about 1890   |
 | `<1890`, `przed 1890`             | przed          | przed 1890   | before 1890  |
 | `>1890`, `po 1890`                | po             | po 1890      | after 1890   |
+
+Nazwy miesięcy i słowa takie jak _około_ czy _przed_ możesz wpisać w każdym języku programu i w każdej
+formie (`12 marca 1890`, `po maju 1890`, `12 May 1890`, `12. Mai 1890`, `1er mai 1890`,
+`около 1890`), także skrócone (`wrz. 1890`).
 
 Warto wiedzieć:
 

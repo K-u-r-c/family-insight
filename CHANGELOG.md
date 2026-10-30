@@ -11,6 +11,9 @@ All notable changes to this project are documented here. The format follows
 - CSV import reads column names and values in German, French, Spanish, Italian, Portuguese and
   Russian, recognises Cyrillic (Windows-1251) and Western European (Windows-1252) files from older
   Excel versions, and lets you pick another character set in the preview.
+- Dates can be typed with month names in any of the app's languages and forms (`12 marca 1890`,
+  `12. Mai 1890`, `1er mai 1890`, `12 de mayo de 1890`, `12 марта 1890`, `sept. 1890`) and with
+  their words for about, before and after.
 - Search finds German spellings both ways (`mueller` → Müller, `strasse` → Straße) and Cyrillic
   names typed in Latin letters (`ivanov` → Иванов).
 

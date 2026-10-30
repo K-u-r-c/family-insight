@@ -378,3 +378,16 @@ Details:
   which would make "Michael" find "Michał". Highlighting uses the plain fold only.
 - **Surname particles** (von, van, der, de, la, du, da, dos, di, del …) are skipped for sorting
   while a word follows, so "Le" alone stays under L; equal keys fall back to the full surname.
+
+## Dates in every language (2026-10, issue #70)
+
+- **Tables, not code paths**: each language's month forms, qualifier phrases, numeric order and a
+  small `write` function live in `src/core/date/dateLocales.ts`; the parser and formatter in
+  `fuzzyDate.ts` are generic. `write` is a function because prepositions change with the precision
+  (`vor 1890` but `vor dem 12. Mai 1890`, `antes de 1890` but `antes del 12 de mayo`).
+- **The parser reads every language at once** (the issue asks for "the active language plus
+  English"): the month names and qualifiers of the eight languages don't clash, and accepting all of
+  them lets CSV files, which have no language, use any. Month prefixes of 3+ letters are accepted
+  when they name one month in every language (`mar`, `sept.`; `jui` is refused).
+- **`MM/DD/YYYY` only as a fallback** in English (and in CSV, which has no language): when the
+  day-first reading is impossible (`05/23/1890`), never when both readings are valid.

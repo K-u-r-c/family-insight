@@ -44,30 +44,34 @@ English (except an allowlist for names and formats).
 _Ƥşḗŭḓǿ_ (`xx`): English with accents and 40 % longer texts. Use it to find cut-off labels and
 hard-coded text (anything without accents).
 
-## 3. Dates – `src/core/date/fuzzyDate.ts`
+## 3. Dates – `src/core/date/dateLocales.ts`
 
-`formatFuzzyDate` has the month names and the qualifier words per language:
+Each language has an entry in `DATE_LOCALES` (and its code in `DATE_LANGUAGES`):
 
-- extend `DateLanguage` with `'de'`;
-- add `QUALIFIER_LABEL.de` (`{ exact: '', about: 'um ', before: 'vor ', after: 'nach ' }`);
-- add the month names and a branch in `formatFuzzyDate` (Polish needs grammatical cases; most
-  languages just need one list).
+- `months` – the month names by grammatical form: `day` as written in a day date (`12 marca`,
+  `12 марта`), `month` for a month on its own (`marzec 1890`), plus any form other phrases need
+  (Polish `before`/`after`: `przed majem`, `po maju`). `aliases` takes regional spellings
+  (`Jänner`, `setiembre`).
+- `qualifiers` – the phrases people type for _about_, _before_ and _after_, longest form first
+  (`vor dem`, `vor`).
+- `numeric` – the numeric order for editing: `'.'` (`12.05.1890`), `'/'` (`12/05/1890`) or
+  `null` (ISO).
+- `write` – how a date is written, with the right prepositions and articles (`avant le 1er mars`,
+  `12 de mayo de 1890`).
 
-If people write dates in the new language, add its qualifier words to `QUALIFIER_WORDS` in
-`parseFuzzyDate` (`um`, `vor`, `nach`) and cover them in `fuzzyDate.test.ts`. `DateField.tsx` shows
-dates day-first for Polish (`dateToInput`) – decide the input format for your language there.
+The parser accepts every language's words at once (there are no clashes; a test checks that each
+language reads back what it writes). `src/core/date/lifespan.ts` has the born/died abbreviations
+for cards (`b.`, `ur.`, `geb.`). `dateLocales.test.ts` runs every month form, every qualifier and a
+round trip `parse(format(d))` for each language automatically.
 
 ## 4. Language-specific behaviour
 
-Search the code for `'pl'` to find the remaining places (dates and CSV fall back to English until
-the language has its own tables):
-
-| Place                                                                        | What to decide                                                                                                                       |
-| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `src/core/settings.ts`, `src/main/menu.ts`, `src/renderer/src/i18n/index.ts` | default CSV separator for the language (`;` where Excel expects it)                                                                  |
-| `src/core/io/csv/columns.ts`, `export.ts`, `ExportCsvDialog.tsx`             | optional: column names and values in the new language (`HeaderLanguage`); add header aliases so imports with translated headers work |
-| `src/renderer/src/services/sampleTree.ts`, `resources/samples/`              | optional: a sample family in the new language                                                                                        |
-| `src/core/text.ts`                                                           | nothing – sorting uses `Intl.Collator` for the language                                                                              |
+| Place                                                           | What to decide                                                                                                                                    |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/shared/i18n.ts` (`LOCALES`)                                | the CSV delimiter Excel uses in the language (`;` where the decimal separator is a comma)                                                         |
+| `src/core/io/csv/columns.ts`                                    | column names and `sex` / `living` values (`HEADERS`, `SEX_VALUES`, `LIVING_VALUES`) if the language isn't there yet; list them in `csv-format.md` |
+| `src/renderer/src/services/sampleTree.ts`, `resources/samples/` | optional: a sample family in the new language                                                                                                     |
+| `src/core/text.ts`                                              | usually nothing – sorting uses `Intl.Collator`; add search variants if the script needs them (as for Cyrillic)                                    |
 
 ## 5. Installers and desktop integration
 

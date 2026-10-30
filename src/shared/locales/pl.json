@@ -160,8 +160,8 @@
     "deathPlace": "Miejsce śmierci",
     "notes": "Notatki",
     "notesPlaceholder": "Historie, zawód, wszystko, co warto zapamiętać…",
-    "dateInvalid": "To nie wygląda na datę. Spróbuj 1890, 05.1890 lub 12.05.1890.",
-    "dateHint": "np. 1890, 05.1890, 12.05.1890 lub ~1890",
+    "dateInvalid": "To nie wygląda na datę. Spróbuj 1890, maj 1890 lub 12.05.1890.",
+    "dateHint": "np. 1890, maj 1890, 12.05.1890, 12 maja 1890 lub ok. 1890",
     "datePlaceholder": "Rok lub pełna data",
     "dateQualifier": "Dokładność daty",
     "qualifier": {

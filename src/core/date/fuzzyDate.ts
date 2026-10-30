@@ -1,7 +1,7 @@
 import type { DateQualifier, FuzzyDate } from '../model/types'
+import { DATE_LANGUAGES, DATE_LOCALES, type DateLanguage } from './dateLocales'
 
-export const DATE_LANGUAGES = ['en', 'pl'] as const
-export type DateLanguage = (typeof DATE_LANGUAGES)[number]
+export { DATE_LANGUAGES, type DateLanguage } from './dateLocales'
 
 /** The date tables to use for a UI language (English for languages without their own). */
 export function dateLanguage(language: string): DateLanguage {
@@ -10,12 +10,58 @@ export function dateLanguage(language: string): DateLanguage {
     : 'en'
 }
 
-const QUALIFIER_WORDS: [RegExp, DateQualifier][] = [
-  [/^(~|about|abt\.?|circa|ca\.?|c\.|około|okolo|ok\.?)\s*/i, 'about'],
-  [/^(<|before|bef\.?|przed)\s*/i, 'before'],
-  [/^(after|aft\.?|po)\s+/i, 'after'],
-  [/^>\s*/i, 'after']
-]
+/** Lower case without diacritics, so `März`, `marz` and `MÄRZ` read alike (й → и too). */
+const fold = (text: string): string =>
+  text
+    .toLowerCase()
+    .replace(/ł/g, 'l')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+
+const escapeRe = (text: string): string => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+/** Qualifier phrases of every language, longest first, matched at the start of the input. */
+const QUALIFIER_PATTERNS: [RegExp, DateQualifier][] = (() => {
+  const phrases: [string, DateQualifier][] = []
+  for (const locale of Object.values(DATE_LOCALES)) {
+    for (const [q, words] of Object.entries(locale.qualifiers)) {
+      for (const w of words) phrases.push([fold(w), q as DateQualifier])
+    }
+  }
+  phrases.sort((a, b) => b[0].length - a[0].length)
+  return [
+    [/^~\s*/, 'about'],
+    [/^<\s*/, 'before'],
+    [/^>\s*/, 'after'],
+    // A phrase ending in a dot may touch the number ("ok.1890"); words need a space.
+    ...phrases.map(([w, q]): [RegExp, DateQualifier] => [
+      new RegExp(`^${escapeRe(w)}${w.endsWith('.') ? '\\s*' : '\\s+'}`, 'u'),
+      q
+    ])
+  ]
+})()
+
+/** Every month name form of every language (folded) with its number. */
+const MONTH_NAMES: Map<string, number> = (() => {
+  const names = new Map<string, number>()
+  for (const locale of Object.values(DATE_LOCALES)) {
+    for (const list of Object.values(locale.months)) {
+      list.forEach((name, i) => names.set(fold(name), i + 1))
+    }
+    for (const [name, month] of Object.entries(locale.aliases ?? {})) names.set(fold(name), month)
+  }
+  return names
+})()
+
+/** A month from its name, a name form or an unambiguous prefix of 3+ letters (`mar`, `sept.`). */
+function monthFromName(text: string): number | undefined {
+  const name = fold(text).replace(/\.$/, '')
+  const exact = MONTH_NAMES.get(name)
+  if (exact !== undefined || name.length < 3) return exact
+  const months = new Set<number>()
+  for (const [full, month] of MONTH_NAMES) if (full.startsWith(name)) months.add(month)
+  return months.size === 1 ? [...months][0] : undefined
+}
 
 function isLeap(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
@@ -38,15 +84,21 @@ function build(year: number, month?: number, day?: number): string | null {
 
 /**
  * Parses user/CSV input into a FuzzyDate. Accepts ISO prefixes (`1890`, `1890-05`,
- * `1890-05-12`), day-first forms (`12.05.1890`, `05.1890`, `12/05/1890`) and qualifier
- * prefixes (`~`, `<`, `>`, `abt`, `bef`, `aft`, `ok.`, `przed`, `po`).
+ * `1890-05-12`), day-first numbers (`12.05.1890`, `12/05/1890`, `05.1890`), month names in any
+ * supported language and form (`12 March 1890`, `12 marca 1890`, `12. März 1890`,
+ * `1er mars 1890`, `12 de marzo de 1890`, `12 марта 1890 г.`, `March 12, 1890`, `mar 1890`) and
+ * qualifiers (`~`, `<`, `>`, `abt`, `ok.`, `um`, `vers`, `antes de`, `около` …). With English as
+ * the language, `MM/DD/YYYY` is read when day-first can't be a date (`05/23/1890`).
  * Returns `null` for empty or invalid input.
  */
-export function parseFuzzyDate(input: string | null | undefined): FuzzyDate | null {
-  let text = (input ?? '').trim()
+export function parseFuzzyDate(
+  input: string | null | undefined,
+  language?: string
+): FuzzyDate | null {
+  let text = fold((input ?? '').trim()).replace(/\s+/g, ' ')
   if (!text) return null
   let qualifier: DateQualifier = 'exact'
-  for (const [pattern, q] of QUALIFIER_WORDS) {
+  for (const [pattern, q] of QUALIFIER_PATTERNS) {
     const match = pattern.exec(text)
     if (match) {
       qualifier = q
@@ -54,16 +106,44 @@ export function parseFuzzyDate(input: string | null | undefined): FuzzyDate | nu
       break
     }
   }
-  let value: string | null = null
+  // Year words after the number: "1890 r.", "1890 roku", "1900 г.", "1900 года".
+  text = text.replace(/(\d)\s*(r\.?|roku|г\.?|года|год)$/u, '$1').trim()
+  const value = parseValue(text, language)
+  return value ? { value, qualifier } : null
+}
+
+function parseValue(text: string, language?: string): string | null {
   let m: RegExpExecArray | null
   if ((m = /^(\d{3,4})(?:-(\d{1,2})(?:-(\d{1,2}))?)?$/.exec(text))) {
-    value = build(Number(m[1]), m[2] ? Number(m[2]) : undefined, m[3] ? Number(m[3]) : undefined)
-  } else if ((m = /^(\d{1,2})[./-](\d{1,2})[./-](\d{3,4})$/.exec(text))) {
-    value = build(Number(m[3]), Number(m[2]), Number(m[1]))
-  } else if ((m = /^(\d{1,2})[./-](\d{3,4})$/.exec(text))) {
-    value = build(Number(m[2]), Number(m[1]))
+    return build(Number(m[1]), m[2] ? Number(m[2]) : undefined, m[3] ? Number(m[3]) : undefined)
   }
-  return value ? { value, qualifier } : null
+  if ((m = /^(\d{1,2})([./-])(\d{1,2})\2(\d{3,4})$/.exec(text))) {
+    const dayFirst = build(Number(m[4]), Number(m[3]), Number(m[1]))
+    if (dayFirst || m[2] !== '/' || (language !== undefined && dateLanguage(language) !== 'en'))
+      return dayFirst
+    return build(Number(m[4]), Number(m[1]), Number(m[3]))
+  }
+  if ((m = /^(\d{1,2})[./-](\d{3,4})$/.exec(text))) return build(Number(m[2]), Number(m[1]))
+  // Day, month name, year: "12 march 1890", "12. marz 1890", "1er mars", "12 de marzo de 1890".
+  const day = String.raw`(\d{1,2})(?:\.|er|º|°|st|nd|rd|th)?`
+  const name = String.raw`([\p{L}]+\.?)`
+  if (
+    (m = new RegExp(`^${day}\\s*(?:de |of )?${name},? (?:de |del )?(\\d{3,4})$`, 'u').exec(text))
+  ) {
+    const month = monthFromName(m[2]!)
+    return month ? build(Number(m[3]), month, Number(m[1])) : null
+  }
+  // Month name, day, year: "march 12, 1890".
+  if ((m = new RegExp(`^${name} ${day},? (\\d{3,4})$`, 'u').exec(text))) {
+    const month = monthFromName(m[1]!)
+    return month ? build(Number(m[3]), month, Number(m[2])) : null
+  }
+  // Month name and year: "march 1890", "marzec 1890", "mayo de 1890".
+  if ((m = new RegExp(`^${name},? (?:de |del )?(\\d{3,4})$`, 'u').exec(text))) {
+    const month = monthFromName(m[1]!)
+    return month ? build(Number(m[2]), month) : null
+  }
+  return null
 }
 
 const PREFIX: Record<DateQualifier, string> = { exact: '', about: '~', before: '<', after: '>' }
@@ -88,34 +168,22 @@ export function yearOf(date: FuzzyDate | undefined): number | undefined {
   return date ? dateParts(date).year : undefined
 }
 
-// Polish month names by grammatical case (Intl only offers nominative/genitive).
-const PL_MONTHS = {
-  nom: 'styczeń luty marzec kwiecień maj czerwiec lipiec sierpień wrzesień październik listopad grudzień',
-  gen: 'stycznia lutego marca kwietnia maja czerwca lipca sierpnia września października listopada grudnia',
-  ins: 'styczniem lutym marcem kwietniem majem czerwcem lipcem sierpniem wrześniem październikiem listopadem grudniem',
-  loc: 'styczniu lutym marcu kwietniu maju czerwcu lipcu sierpniu wrześniu październiku listopadzie grudniu'
-}
-const EN_MONTHS =
-  'January February March April May June July August September October November December'.split(' ')
-
-const QUALIFIER_LABEL: Record<DateLanguage, Record<DateQualifier, string>> = {
-  en: { exact: '', about: 'about ', before: 'before ', after: 'after ' },
-  pl: { exact: '', about: 'ok. ', before: 'przed ', after: 'po ' }
-}
-
-/** Human-readable date, e.g. EN `about May 1890`, PL `ok. maja 1890`, `12 maja 1890`. */
+/**
+ * Human-readable date in a language, e.g. EN `about May 1890`, PL `ok. maja 1890`,
+ * DE `12. Mai 1890`, FR `1er mai 1890`, ES `12 de mayo de 1890`, RU `около марта 1900`.
+ */
 export function formatFuzzyDate(date: FuzzyDate, language: DateLanguage): string {
-  const { year, month, day } = dateParts(date)
-  const q = QUALIFIER_LABEL[language][date.qualifier]
-  if (month === undefined) return `${q}${year}`
-  const idx = month - 1
-  if (language === 'pl') {
-    if (day !== undefined) return `${q}${day} ${PL_MONTHS.gen.split(' ')[idx]} ${year}`
-    const kase = { exact: 'nom', about: 'gen', before: 'ins', after: 'loc' } as const
-    return `${q}${PL_MONTHS[kase[date.qualifier]].split(' ')[idx]} ${year}`
-  }
-  if (day !== undefined) return `${q}${day} ${EN_MONTHS[idx]} ${year}`
-  return `${q}${EN_MONTHS[idx]} ${year}`
+  const locale = DATE_LOCALES[language]
+  return locale.write({ ...dateParts(date), qualifier: date.qualifier }, locale.months)
+}
+
+/**
+ * Editable text for a date: ISO for English (`1890-05-12`), day first in the language's
+ * numeric style otherwise (`12.05.1890`, `12/05/1890`, `05.1890`).
+ */
+export function dateInputText(date: FuzzyDate, language: DateLanguage): string {
+  const separator = DATE_LOCALES[language].numeric
+  return separator ? date.value.split('-').reverse().join(separator) : date.value
 }
 
 /** Compact form for cards: `~1890`, `<1900`, `1890`. */

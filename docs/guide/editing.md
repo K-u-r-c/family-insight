@@ -29,7 +29,8 @@ undoes what you typed in the current field. Click **Done** to go back to the det
   `Santos Silva`.
 - **Particles** such as von, van, de, da, dos or di belong to the surname (`van der Berg`); for
   sorting, the list skips them.
-  :::
+
+:::
 
 ## Dates {#dates}
 
@@ -44,9 +45,16 @@ the line below it shows how Family Insight understood it.
 | `05.1890` or `1890-05`               | month and year | May 1890         | maj 1890        |
 | `12.05.1890` or `1890-05-12`         | an exact day   | 12 May 1890      | 12 maja 1890    |
 | `12/05/1890`                         | an exact day   | 12 May 1890      | 12 maja 1890    |
+| `May 1890`, `maj 1890`, `mai 1890`   | month and year | May 1890         | maj 1890        |
+| `12 May 1890`, `May 12, 1890`        | an exact day   | 12 May 1890      | 12 maja 1890    |
 | `~1890`, `about 1890`, `ok. 1890`    | about          | about 1890       | ok. 1890        |
 | `<1890`, `before 1890`, `przed 1890` | before         | before 1890      | przed 1890      |
 | `>1890`, `after 1890`, `po 1890`     | after          | after 1890       | po 1890         |
+
+Month names and words such as _about_ and _before_ can be typed in any of the program's languages
+and forms (`12 maja 1890`, `12. Mai 1890`, `1er mai 1890`, `12 de mayo de 1890`, `около 1890`),
+also shortened (`sept. 1890`). With the program in English, `05/23/1890` is read as 23 May when it
+can't be a day-first date.
 
 Good to know:
 

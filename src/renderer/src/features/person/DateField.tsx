@@ -1,6 +1,11 @@
 import { useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { formatFuzzyDate, parseFuzzyDate, type DateLanguage } from '@core/date/fuzzyDate'
+import {
+  dateInputText,
+  formatFuzzyDate,
+  parseFuzzyDate,
+  type DateLanguage
+} from '@core/date/fuzzyDate'
 import type { DateQualifier, FuzzyDate } from '@core/model/types'
 import { useFormat } from '@renderer/i18n/format'
 import styles from './PersonEditor.module.css'
@@ -9,9 +14,7 @@ const QUALIFIERS: DateQualifier[] = ['exact', 'about', 'before', 'after']
 
 /** Editable text for a date in the user's language: `12.05.1890` (PL) / `1890-05-12` (EN). */
 export function dateToInput(date: FuzzyDate | undefined, language: DateLanguage): string {
-  if (!date) return ''
-  if (language !== 'pl') return date.value
-  return date.value.split('-').reverse().join('.')
+  return date ? dateInputText(date, language) : ''
 }
 
 interface DateFieldProps {
@@ -39,7 +42,7 @@ export function DateField({ label, value, onCommit, warning }: DateFieldProps): 
   }
 
   const trimmed = draft.trim()
-  const parsed = trimmed ? parseFuzzyDate(trimmed) : null
+  const parsed = trimmed ? parseFuzzyDate(trimmed, language) : null
   const invalid = trimmed !== '' && parsed === null
   const qualifier = value?.qualifier ?? 'exact'
   // A qualifier typed in the text (`~1890`) wins; otherwise keep the selected one.
