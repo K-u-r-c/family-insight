@@ -10,6 +10,8 @@
     "playwright.screenshots.config.ts",
     "e2e/**/*",
     "docs/.screenshots/**/*",
+    "docs/.test/**/*",
+    "playwright.docs.config.ts",
     "src/core/**/*"
   ],
   "exclude": ["src/core/**/*.test.ts"]

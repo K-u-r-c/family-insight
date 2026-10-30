@@ -18,7 +18,7 @@ above 200 ms locally (1 s on CI). Why a custom engine instead of a graph library
 [decision log](./reference/decisions#layout).
 
 ```mermaid
-flowchart LR
+flowchart TB
   A["1 · Select<br/>who is shown"] --> B["2 · Generations<br/>rows"]
   B --> C["3 · Units<br/>couples & chains"]
   C --> D["4 · Order<br/>barycentre sweeps"]

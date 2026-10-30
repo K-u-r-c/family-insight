@@ -78,14 +78,12 @@ watch(isDark, render)
 
 <template>
   <div class="fi-mermaid">
-    <button
-      v-if="svg"
-      type="button"
-      class="fi-mermaid__open"
-      :aria-label="labels.open"
-      @click="zoom?.showModal()"
-      v-html="svg"
-    />
+    <template v-if="svg">
+      <div class="fi-mermaid__diagram" @click="zoom?.showModal()" v-html="svg" />
+      <button type="button" class="fi-mermaid__open" @click="zoom?.showModal()">
+        {{ labels.open }}
+      </button>
+    </template>
     <pre v-else class="fi-mermaid__source">{{ source }}</pre>
     <dialog ref="zoom" class="fi-mermaid__zoom" @click="zoom?.close()">
       <div class="fi-mermaid__full" :style="{ width: `${naturalWidth}px` }" v-html="svg" />
@@ -103,26 +101,37 @@ watch(isDark, render)
   border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
   background: var(--vp-c-bg-alt);
-  overflow-x: auto;
   text-align: center;
+}
+
+.fi-mermaid__diagram {
+  cursor: zoom-in;
+}
+
+.fi-mermaid__diagram :deep(svg) {
+  max-width: 100%;
+  height: auto;
 }
 
 .fi-mermaid__open {
   display: block;
-  width: 100%;
-  padding: 0;
-  background: none;
-  cursor: zoom-in;
+  margin: 8px 0 0 auto;
+  padding: 2px 10px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-2);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.fi-mermaid__open:hover {
+  color: var(--vp-c-brand-1);
 }
 
 .fi-mermaid__open:focus-visible {
   outline: 3px solid var(--vp-c-brand-1);
-  outline-offset: 4px;
-}
-
-.fi-mermaid__open :deep(svg) {
-  max-width: 100%;
-  height: auto;
+  outline-offset: 2px;
 }
 
 .fi-mermaid__zoom {
@@ -165,5 +174,6 @@ watch(isDark, render)
   color: var(--vp-c-text-3);
   font-size: 13px;
   text-align: left;
+  white-space: pre-wrap;
 }
 </style>

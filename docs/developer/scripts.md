@@ -44,9 +44,10 @@ All scripts are run with `npm run <name>` (`npm test` for `test`).
 
 ## Documentation
 
-| Script             | What it does                                                                          |
-| ------------------ | ------------------------------------------------------------------------------------- |
-| `docs:dev`         | Serves this website with hot reload at `http://localhost:5173/family-insight/`.       |
-| `docs:build`       | Builds the website into `docs/.vitepress/dist` (fails on dead links).                 |
-| `docs:preview`     | Serves the built website.                                                             |
-| `docs:screenshots` | Builds the app and regenerates every documentation screenshot ([how](./screenshots)). |
+| Script             | What it does                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------- |
+| `docs:dev`         | Serves this website with hot reload at `http://localhost:5173/family-insight/`.                     |
+| `docs:build`       | Builds the website into `docs/.vitepress/dist` (fails on dead links).                               |
+| `docs:preview`     | Serves the built website.                                                                           |
+| `docs:test`        | Checks the built website: links and anchors, accessibility in both themes, phone layout and search. |
+| `docs:screenshots` | Builds the app and regenerates every documentation screenshot ([how](./screenshots)).               |

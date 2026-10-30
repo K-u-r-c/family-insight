@@ -26,6 +26,7 @@
   --vp-c-default-2: #e3ddd3;
   --vp-c-default-3: #eeeae3;
   --vp-c-default-soft: rgb(203 195 182 / 22%);
+  --vp-code-block-bg: #ffffff;
 
   --vp-button-brand-bg: #2f7350;
   --vp-button-brand-hover-bg: #275f43;
@@ -67,6 +68,7 @@
   --vp-c-default-2: #38342f;
   --vp-c-default-3: #2c2a26;
   --vp-c-default-soft: rgb(77 72 66 / 30%);
+  --vp-code-block-bg: #1b1a17;
 
   --vp-button-brand-bg: #6cb68a;
   --vp-button-brand-hover-bg: #85c6a0;
@@ -84,6 +86,11 @@
 
   --fi-shadow: 0 18px 48px rgb(0 0 0 / 50%);
   --fi-shadow-sm: 0 1px 2px rgb(0 0 0 / 30%);
+}
+
+/* Code blocks on white need a border to stand out from the warm page. */
+html:not(.dark) .vp-doc div[class*='language-'] {
+  border: 1px solid var(--vp-c-divider);
 }
 
 /* Warm serif headings, like the app's welcome screen. */
@@ -161,4 +168,12 @@
 
 .vp-doc a.fi-button:hover {
   background: var(--vp-button-brand-hover-bg);
+}
+
+/*
+ * The search button's key hint ("Ctrl K") is visible text missing from the button's accessible
+ * name (axe: label-content-name-mismatch). The shortcut still works.
+ */
+.DocSearch-Button-Keys {
+  display: none !important;
 }

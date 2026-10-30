@@ -67,6 +67,16 @@ CI runs the E2E job on Ubuntu with `xvfb-run -a npx playwright test` and
 `ELECTRON_DISABLE_SANDBOX=1`. On failure, traces are uploaded as the `e2e-results` artifact – open
 them with `npx playwright show-trace trace.zip`.
 
+## Documentation tests
+
+`npm run docs:build && npm run docs:test` (`playwright.docs.config.ts`, `docs/.test/site.spec.ts`)
+serves the built website and checks every page: no console errors or failed requests, a title,
+description and previous/next links, every internal link, anchor and image resolves, axe-core finds
+no serious or critical violations in **light and dark** mode, nothing overflows a 375 px phone
+screen, the menu and the search work in both languages, and the English and Polish guides have the
+same pages. It drives the site with the Electron that the app already uses (an offscreen window), so
+no extra browser has to be downloaded; the Docs workflow runs it under xvfb before deploying.
+
 ## Tips
 
 - Prefer **roles and labels** (`getByRole('button', { name: 'Save' })`) over CSS classes – class

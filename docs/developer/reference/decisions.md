@@ -148,3 +148,15 @@ by a markdown-it fence rule for ` ```mermaid ` blocks.
 The user guide is bilingual, but developer pages are English only, like the code, comments and commit
 messages; translating them would double the maintenance for few readers. Polish placeholder pages keep
 the language switcher working and link to the English pages.
+
+## Testing the documentation website (2026-10, issue #50)
+
+`npm run docs:test` checks the built site with Playwright driving **Electron** (an offscreen window,
+`docs/.test/browser.mjs`) instead of Playwright's own Chromium: Electron is already a dependency, so
+nothing else is downloaded locally or in CI. A tiny static server in the test mimics GitHub Pages
+(clean URLs, the `/family-insight/` base). The Docs workflow runs it before every deployment.
+
+Findings that changed the site: code blocks use the `github-*-default` Shiki themes on a white (light)
+or dark warm background to meet WCAG AA contrast; the search button's “Ctrl K” hint is hidden because
+it was visible text missing from the button's accessible name; diagrams fit the column and have a
+separate “Enlarge” button.

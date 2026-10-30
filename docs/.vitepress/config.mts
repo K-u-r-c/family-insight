@@ -105,7 +105,29 @@ export default defineConfig({
   // The legacy files only redirect users of v1.0.0, whose Help menu links to them on GitHub.
   srcExclude: ['user-guide.*.md', 'CSV_FORMAT.md', '.screenshots/**'],
   sitemap: { hostname: SITE_URL },
+  // Open Graph / social preview for every page.
+  transformHead({ pageData, siteData }) {
+    const path = pageData.relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
+    const locale = pageData.relativePath.startsWith('pl/') ? 'pl' : 'root'
+    const title = pageData.title ? `${pageData.title} | Family Insight` : 'Family Insight'
+    const description =
+      (pageData.frontmatter.description as string | undefined) ??
+      siteData.locales[locale]?.description ??
+      siteData.description
+    return [
+      ['meta', { property: 'og:type', content: 'website' }],
+      ['meta', { property: 'og:site_name', content: 'Family Insight' }],
+      ['meta', { property: 'og:title', content: title }],
+      ['meta', { property: 'og:description', content: description }],
+      ['meta', { property: 'og:url', content: `${SITE_URL}${path}` }],
+      ['meta', { property: 'og:image', content: `${SITE_URL}og-image.png` }],
+      ['meta', { property: 'og:locale', content: locale === 'pl' ? 'pl_PL' : 'en_GB' }],
+      ['meta', { name: 'twitter:card', content: 'summary_large_image' }]
+    ]
+  },
   markdown: {
+    // The "default" GitHub themes meet WCAG AA contrast on the site's code backgrounds.
+    theme: { light: 'github-light-default', dark: 'github-dark-default' },
     config: (md) => {
       checkScreenshots(md)
       mermaidFences(md)

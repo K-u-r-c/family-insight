@@ -1,5 +1,6 @@
 ---
 title: Dla programistów
+description: Dokumentacja dla programistów Family Insight jest po angielsku – tutaj znajdziesz odnośniki do najważniejszych stron.
 ---
 
 # Dla programistów
