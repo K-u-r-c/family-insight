@@ -1,121 +1,107 @@
-# Architecture
+---
+description: Architecture of Family Insight – processes, layers, principles and how data flows from a click to the file on disk.
+---
 
+# Architecture overview
+
+Family Insight is an Electron app with three processes and a strict separation between pure domain
+logic and everything that touches the operating system or the screen.
+
+```mermaid
+flowchart TB
+  subgraph main["Main process (Node.js)"]
+    M1["window, native menu<br/>dialogs, printing"]
+    M2["files, settings,<br/>recovery, backups"]
+    M3["IPC handlers<br/>(validate every input)"]
+  end
+  subgraph preload["Preload"]
+    P["window.familyInsight<br/>typed API"]
+  end
+  subgraph renderer["Renderer (sandboxed, React)"]
+    R1["features/<br/>UI"]
+    R2["store/<br/>Zustand + history"]
+    R3["services/<br/>file flows, autosave"]
+  end
+  core["src/core<br/>pure TypeScript domain logic"]
+  disk[("disk:<br/>.finsight, CSV, images")]
+
+  R1 --> R2
+  R2 --> R3
+  R3 -->|"invoke"| P
+  P -->|"ipcRenderer"| M3
+  M3 --> M2
+  M2 --> disk
+  M1 -.->|"menu:action"| P
+  R2 --> core
+  M2 --> core
 ```
-src/
-├── core/        Pure TypeScript domain logic. No Electron, no React, no DOM.
-│   ├── model/   Types (Person, Relationship, FamilyTree) and graph queries/operations
-│   ├── date/    FuzzyDate parsing, formatting, plausibility
-│   ├── file/    .finsight serialisation, schema, migrations, text decoding
-│   ├── io/      Import/export format registry and adapters (CSV, …)
-│   └── layout/  Family graph layout engine
-├── shared/      Code shared by main + renderer: IPC contract, i18n resources/locales
-├── main/        Electron main process: windows, native menu, dialogs, file system, settings
-├── preload/     The only bridge: exposes a typed `window.familyInsight` API via contextBridge
-└── renderer/    React UI (Vite). Talks to the OS only through `window.familyInsight`.
-```
+
+## Layers
+
+| Layer        | Folder             | May use                                      | Never                           |
+| ------------ | ------------------ | -------------------------------------------- | ------------------------------- |
+| Domain       | `src/core`         | plain TypeScript                             | Electron, React, DOM, Node APIs |
+| Shared       | `src/shared`       | core types                                   | process-specific APIs           |
+| Main process | `src/main`         | Node, Electron, core, shared                 | React                           |
+| Preload      | `src/preload`      | `contextBridge`, `ipcRenderer`, shared types | business logic                  |
+| Renderer     | `src/renderer/src` | React, core, shared, `window.familyInsight`  | Node, `fs`, Electron            |
+
+The domain layer – the model, dates, CSV, layout, history, search and statistics – is where most
+logic lives. It is pure and synchronous, so it is easy to test and reuse: the same CSV importer runs
+in the renderer for the preview and could run anywhere else.
 
 ## Principles
 
-1. **Domain logic lives in `src/core`** and is unit-tested with Vitest. UI and main process
-   are thin layers on top. This keeps the app easy to extend (e.g. GEDCOM support is a new
-   module in `core/io`, not a rewrite).
-2. **Security:** `contextIsolation: true`, `nodeIntegration: false`, `sandbox: true`, strict
-   CSP. The renderer never touches the file system; main validates every IPC payload.
-3. **IPC contract** is declared once in `src/shared/ipc.ts` (channel names + `FamilyInsightApi` type)
-   and implemented in `src/main/ipc.ts` and `src/preload/index.ts`.
-4. **i18n:** every user-visible string goes through i18next. Locales live in
-   `src/shared/locales/{en,pl}.json` and are used by both renderer and the native menu.
-   A unit test enforces that both languages have identical keys.
-5. **Theming:** components use CSS variables from `src/renderer/src/styles/tokens.css` only.
-   Light, dark and "follow system" are supported.
-6. **State:** Zustand stores in `src/renderer/src/store`. Document edits go through commands
-   so undo/redo is uniform.
-7. **Extensibility points:** import/export format registry, view modes of the tree, locales
-   (add `xx.json` + register in `src/shared/i18n.ts`).
+1. **Domain logic lives in `src/core`** and is unit-tested with Vitest. The UI and the main process
+   are thin layers on top. New capabilities such as GEDCOM are new modules in `core/io`, not
+   rewrites.
+2. **Security first:** context isolation, sandbox, a strict content security policy and a small,
+   typed IPC surface whose inputs are validated in main. See [Security model](./security).
+3. **One IPC contract:** channel names and the `FamilyInsightApi` type are declared once in
+   `src/shared/ipc.ts` and implemented in `src/main/ipc.ts` and `src/preload/index.ts`.
+4. **Every string is translated:** i18next resources in `src/shared/locales/{en,pl}.json`, used by
+   the renderer and the native menu. See [Internationalisation](./i18n).
+5. **Every colour is a token:** components use the CSS variables from
+   `src/renderer/src/styles/tokens.css`, so light, dark and “follow system” work everywhere.
+6. **Every edit is a command:** document changes go through commands and an immutable history, so
+   undo/redo, autosave and recovery work uniformly. See [State, undo and saving](./state).
+7. **Extension points:** the import/export format registry, view modes and locales. See the
+   [how-to guides](./howto/format).
 
-## Decision: tree rendering and layout (issue #12)
+## From a click to the disk
 
-Options evaluated:
+What happens when the user adds a father in the details panel:
 
-| Option                                  | Multi-partner families                                                                                            | 1 000+ people           | Customisation                       | Bundle / licence         |
-| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------- | ----------------------------------- | ------------------------ |
-| `@xyflow/react` + `elkjs`               | ELK layers well but has no notion of couples; partners and "children under the couple" need heavy post-processing | good                    | high, but its own interaction model | ~450 kB (ELK) / MIT, EPL |
-| Dedicated family-chart libraries        | built-in couples, but limited/rigid for remarriage, adoption and disconnected groups; styling via their DOM       | varies                  | low–medium                          | varies                   |
-| **Custom layout + custom SVG renderer** | designed for couples, remarriage, half-siblings                                                                   | ~30 ms for 1 000 people | full                                | 0 kB / ours              |
+```mermaid
+sequenceDiagram
+  autonumber
+  actor U as User
+  participant UI as FamilySection
+  participant S as useDocument
+  participant A as autosave
+  participant M as main process
+  U->>UI: clicks "+ Father"
+  UI->>S: dispatch(command)
+  S->>S: new immutable tree,<br/>pushHistory
+  S-->>UI: re-render
+  Note over A: 2 s after the last change
+  A->>M: writeFile(path, JSON) via preload
+  M->>M: writable? atomic write
+  M-->>A: ok
+  A->>S: markSaved(tree)
+```
 
-**Chosen: custom.** The layout is a pure function `layoutFamily(tree, options)` in
-`src/core/layout/layout.ts`, unit-tested on fixtures (nuclear family, remarriage with
-half-siblings, adoption, 5-generation pedigree, 1 000 random people).
+- Commands are pure functions `tree → tree` built on `src/core/model/operations.ts`; a model error
+  (for example a cycle) throws and is shown as a toast, leaving the tree untouched.
+- The tree is immutable: unchanged people and relationships are shared between versions, which keeps
+  undo snapshots cheap.
+- Saving serialises the tree with `serializeTree` (`src/core/file`) and writes it atomically in main.
 
-Algorithm:
+## Further reading
 
-1. **Select** people for the view mode (family / ancestors / descendants / hourglass, depth,
-   collapsed branches).
-2. **Generations** by constraint relaxation: a child is below every parent, partners share a
-   row, people without parents are pulled down to just above their highest child.
-3. **Units**: partners on the same row form a chain; a person with several partners sits in
-   the middle with partners split left/right by marriage date.
-4. **Ordering** per row with barycentre sweeps (siblings by birth date); couples are flipped
-   so each partner is on the side of their own parents.
-5. **Coordinates**: alternating passes pull children under their parents' midpoint and
-   couples above their children; each pass solves the row exactly with isotonic regression
-   (pool-adjacent-violators), which preserves order and minimum spacing.
-6. **Edges**: partner lines between neighbours; child lines leave the middle of the partner
-   line (or the parent's bottom), run to a bus halfway between rows and drop to the child.
-
-Disconnected groups are laid out side by side; output is deterministic.
-
-## How to add a file format
-
-Formats are pluggable through `src/core/io/registry.ts`:
-
-1. Implement a `FormatAdapter` in `src/core/io/<format>/` (pure TypeScript):
-   - `id` (used over IPC), `extensions` (first one is used when saving), `labelKey` (i18n key
-     of the file-dialog label) and `kind` (`native` keeps everything, `interchange` may lose
-     information);
-   - `import(content, options)` returning `{ tree, errors, warnings }` with i18n issue codes,
-     and/or `export(tree, options)` returning the file text.
-2. Register it in `registerBuiltInFormats()` (`src/core/io/formats.ts`). The main process
-   then accepts the extension, and `openFileDialog(id)` / `saveFileDialog(id, name)` build the
-   right filters automatically.
-3. Add the label and any issue messages to both locale files, a menu entry if needed, and
-   unit tests including a round trip.
-
-## Decision: documentation website (issue #38)
-
-The documentation lives in `docs/` and is built with **VitePress** into a static site that is
-deployed to GitHub Pages (<https://k-u-r-c.github.io/family-insight/>).
-
-- **Why VitePress:** Markdown first (docs stay readable on GitHub), built-in i18n with a language
-  switcher, local full-text search (no external service), light/dark mode, and a build that fails
-  on dead links. It runs on its own bundled Vite, independent of the app's Vite.
-- **Languages:** the user guide exists in English (`docs/guide/`) and Polish (`docs/pl/guide/`)
-  with identical page slugs, so the language switcher keeps the current page. The developer
-  documentation (`docs/developer/`) is English only, like the code; the Polish locale links to it.
-- **Branding:** `docs/.vitepress/theme/custom.css` maps the app's colour tokens to VitePress
-  variables and uses the app's fonts (Inter, Source Serif 4) and icon.
-- **Links to source code** use absolute GitHub URLs, because VitePress only resolves links
-  between pages.
-- **Legacy paths:** v1.0.0 opens `docs/user-guide.*.md` and `docs/CSV_FORMAT.md` on GitHub from its
-  Help menu and CSV dialog, so those files stay as short "moved" pages (excluded from the site).
-
-## Decision: generated documentation screenshots (issue #40)
-
-Every screenshot in the documentation is produced from the real app by
-`npm run docs:screenshots` (Playwright `_electron`, specs in `docs/.screenshots/`), in both
-languages and both themes, into `docs/public/screenshots/<lang>/<theme>/<scene>.webp`, plus a
-size manifest (`docs/.vitepress/screenshots.json`) for the `<Screenshot>` component.
-
-- **One app session per screenshot.** Capturing a hidden Electron window (Playwright's
-  `page.screenshot` or CDP `Page.captureScreenshot`) permanently stops `requestAnimationFrame` in
-  that window, which breaks Playwright's actionability checks and the app's animations. So each
-  scene starts a fresh hidden app, gets it into the right state and captures as its very last step.
-  `webContents.capturePage` fails for hidden windows, and offscreen rendering would need app changes.
-- **WebP straight from Chromium** (`Page.captureScreenshot` with `format: 'webp'`, quality 90): no
-  image libraries or system binaries, about 10–100 kB per image.
-- **Deterministic:** fixed window size (1280 × 800 at scale 1), fixed time zone, fixed sample data;
-  scenes wait for animations to finish instead of disabling them.
-- **Annotations** (numbered rings for tutorials) are injected as a top-layer popover, so they are
-  drawn above open `<dialog>`s, and removed with the session.
-- Screenshots are committed. They are not regenerated in CI because fonts and rendering differ
-  between machines; regenerate them locally after UI changes.
+- [Security model](./security) – process isolation, the preload API and file access rules
+- [Domain model](./domain-model) – people, relationships and dates
+- [State, undo and saving](./state) – stores, commands, history, autosave and recovery
+- [Tree layout engine](./layout) and [Rendering the tree](./rendering)
+- [Packaging](./packaging) – installers, icons and file associations
+- [Decision log](./reference/decisions) – why things are the way they are

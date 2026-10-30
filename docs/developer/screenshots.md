@@ -30,7 +30,7 @@ registers one test per language and theme. A test:
 
 The capture is always the last step of a session: taking a screenshot of a hidden Electron window
 stops `requestAnimationFrame` in that window for good, which would break any interaction after it
-(see the [decision log](./reference/decisions)).
+(see the [decision log](./reference/decisions#screenshots)).
 
 ## Adding a scene
 

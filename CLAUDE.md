@@ -35,6 +35,6 @@ order. #34–#37 (Backlog) are out of scope.
   fps on specific laptops): verify everything possible on Linux / in CI, then add an issue
   comment stating what could not be verified and why. Never tick such a box falsely and
   never stall on it.
-- Make technical decisions autonomously; record significant ones in `docs/developer/architecture.md`.
+- Make technical decisions autonomously; record significant ones in `docs/developer/reference/decisions.md`.
 - macOS/Windows builds can only be verified in GitHub Actions: use
   `gh workflow run release.yml` (workflow_dispatch builds all OSes without publishing).

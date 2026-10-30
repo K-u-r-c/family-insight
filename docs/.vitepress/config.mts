@@ -13,6 +13,18 @@ const SCREENSHOTS = new Set(
 )
 
 /** Fails the build when a page uses a <Screenshot> that `npm run docs:screenshots` doesn't make. */
+/** Renders ```mermaid blocks with the <Mermaid> component (drawn in the browser). */
+function mermaidFences(md: MarkdownRenderer): void {
+  const fence = md.renderer.rules.fence!
+  md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+    const token = tokens[idx]!
+    if (token.info.trim() === 'mermaid') {
+      return `<Mermaid code="${encodeURIComponent(token.content)}" />`
+    }
+    return fence(tokens, idx, options, env, self)
+  }
+}
+
 function checkScreenshots(md: MarkdownRenderer): void {
   md.core.ruler.push('fi-screenshots', (state) => {
     const texts = state.tokens.flatMap((t) => [
@@ -93,7 +105,12 @@ export default defineConfig({
   // The legacy files only redirect users of v1.0.0, whose Help menu links to them on GitHub.
   srcExclude: ['user-guide.*.md', 'CSV_FORMAT.md', '.screenshots/**'],
   sitemap: { hostname: SITE_URL },
-  markdown: { config: checkScreenshots },
+  markdown: {
+    config: (md) => {
+      checkScreenshots(md)
+      mermaidFences(md)
+    }
+  },
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/family-insight/logo.svg' }],
     ['meta', { name: 'theme-color', content: '#2f7350' }]
