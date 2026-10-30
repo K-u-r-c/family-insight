@@ -1,0 +1,46 @@
+0 HEAD
+1 SOUR MYHERITAGE
+2 NAME MyHeritage Family Tree Builder
+2 VERS 5.5.1
+1 DEST MYHERITAGE
+1 DATE 30 OCT 2026
+1 CHAR UTF-8
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 _PROJECT_GUID 3B5C0E7F1A
+0 @I1@ INDI
+1 _UPD 30 OCT 2026 10:00:00 GMT -0000
+1 NAME Wojciech /Nowicki/
+2 GIVN Wojciech
+2 SURN Nowicki
+1 SEX M
+1 BIRT
+2 DATE 12 MAR 1890
+2 PLAC Kraków
+1 EVEN 1914-1918
+2 TYPE Military service
+2 PLAC Galicja
+1 EVEN
+2 TYPE Pielgrzymka
+2 DATE 1933
+2 PLAC Częstochowa
+1 RIN MH:I1
+1 _UID 5D2E0E0A
+1 OBJE
+2 FORM jpg
+2 FILE photos/wojciech.jpg
+2 TITL Wojciech w mundurze
+1 FAMS @F1@
+0 @I2@ INDI
+1 NAME Helena /Wiśniewska/
+2 _MARNM Nowicka
+1 SEX F
+1 FAMS @F1@
+0 @F1@ FAM
+1 RIN MH:F1
+1 HUSB @I1@
+1 WIFE @I2@
+1 MARR
+2 DATE INT 1919 (around Easter)
+0 TRLR

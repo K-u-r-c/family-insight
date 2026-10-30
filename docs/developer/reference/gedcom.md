@@ -57,3 +57,43 @@ _ż_. The user can override the detected encoding in the import dialog.
 
 GEDCOM 7 can be packed as a `.gdz` zip with `gedcom.ged` and the media files it references by
 relative path; `readGedzip` returns both (using the container's zip reader).
+
+## Import mapping – `import.ts`, `dates.ts`
+
+`importGedcom(document)` turns the record tree into a `FamilyTree` plus a summary (people, families,
+events, sources, media, the exporting program, unsupported tags grouped as `INDI._APID: 12`) and
+warnings. Nothing is fatal.
+
+| GEDCOM                                                                                                                 | Family Insight                                                                                                                                 |
+| ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `INDI.NAME` `Given /Surname/`, `GIVN`, `SURN`                                                                          | `givenNames`, `surname`                                                                                                                        |
+| second `NAME` with `TYPE married`, or `_MARNM`                                                                         | `surname` = married name, `birthSurname` = the birth name                                                                                      |
+| `SEX` `M`/`F`/`X`/`U`                                                                                                  | `sex` male/female/other/unknown                                                                                                                |
+| `BIRT`, `DEAT` (`DEAT Y` = deceased) with `DATE`, `PLAC`, `SOUR`                                                       | `birth`, `death`, `living: false`                                                                                                              |
+| `BAPM` `CHR` `CONF` `FCOM` `BURI` `CREM` `EMIG` `IMMI` `NATU` `RESI` `OCCU` `EDUC` `GRAD` `RELI` `CENS` `RETI` `_MILT` | life events; the value (e.g. the occupation) becomes the description                                                                           |
+| `EVEN`/`FACT` with `TYPE`                                                                                              | a built-in event when the type matches (military service, award), otherwise a custom event named by `TYPE`                                     |
+| `NOTE` (inline, `@N@` records), `SNOTE` (7.0)                                                                          | `notes`                                                                                                                                        |
+| `SOUR @S@` with `PAGE`, `QUAY` 0–3, `DATA.TEXT`, `DATA.DATE`, `NOTE`                                                   | citations next to the fact (`QUAY` 3 primary, 2 secondary, 1 questionable, 0 unreliable); inline `SOUR text` creates a source with that title  |
+| `SOUR` record: `TITL`, `AUTH`, `PUBL`, `REPO @R@` + `CALN`, `NOTE`, `TEXT`                                             | source                                                                                                                                         |
+| `REPO`: `NAME`, `ADDR`, `WWW`, `NOTE`                                                                                  | repository                                                                                                                                     |
+| `OBJE` (inline or record) with `FILE`, `TITL`                                                                          | a media reference for the caller to load (`attachMedia`); the people or sources referencing it get it in their gallery                         |
+| `PLAC` with `MAP.LATI`/`LONG` (`N50.06`, `E19.94`)                                                                     | place text + gazetteer coordinates                                                                                                             |
+| `FAM` `HUSB`/`WIFE`                                                                                                    | partnership: `MARR` → marriage (start), only `ENGA` → engagement, otherwise partnership; `DIV` → end reason divorce, `ANUL` → end reason other |
+| `FAM.CHIL` + `INDI.FAMC.PEDI` birth/adopted/foster/sealing, or `CHIL._FREL`/`_MREL` (Ancestry)                         | parent–child links: biological/adoptive/foster (sealing → biological), `Step` → step                                                           |
+
+**Dates** (`parseGedcomDate`): `4 NOV 1925`, `NOV 1925`, `1925` → exact; `ABT`/`CAL`/`EST` →
+about; `BEF`/`AFT` → before/after; `FROM … TO …` → start and end (lossless for life events);
+`BET … AND …` → after the first and before the second date. Approximations are reported as
+**lossy** and the original text is kept in the person's notes (`GEDCOM: BIRT: @#DJULIAN@ 12 MAR
+1702`): dual years (`1700/01` → 1700), other calendars (`@#DJULIAN@`, kept as written), `INT …
+(phrase)`, phrases without a date, open periods (`FROM 1914`). Birth and death hold one date, so a
+range there keeps its start.
+
+**Integrity:** references to records that don't exist are warnings (`gedcom-dangling-reference`
+with the xref); a child with more than two biological parents keeps the first two, the others
+become step-parents (`gedcom-extra-parents`); a link closing an ancestry cycle is dropped
+(`gedcom-ancestry-cycle`). The result always passes `validateTree`.
+
+**Fixtures** in `src/core/io/gedcom/fixtures/` are synthetic files in the style of Gramps,
+Ancestry, MyHeritage, FamilySearch and GEDCOM 7 exports (plus an ANSEL file built in the test) –
+no real people's data.
