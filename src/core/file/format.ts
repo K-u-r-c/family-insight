@@ -3,6 +3,7 @@ import { validateTree } from '../model/validate'
 import { hasErrors, type Issue } from '../issues'
 import { repairSourceReferences } from '../model/sources'
 import { repairMediaReferences } from '../model/media'
+import { normalizePlaceKeys } from '../model/places'
 import { migrate, type MigrationContext } from './migrations'
 import { checkTreeShape } from './schema'
 
@@ -24,7 +25,7 @@ export class FileParseError extends Error {
 
 /** Serialises a tree to the `.finsight` JSON text (stable key order, 2-space indent). */
 export function serializeTree(tree: FamilyTree): string {
-  const { schemaVersion, meta, persons, relationships, sources, repositories, media } = tree
+  const { schemaVersion, meta, persons, relationships, sources, repositories, media, places } = tree
   return `${JSON.stringify(
     {
       format: FORMAT_ID,
@@ -34,7 +35,8 @@ export function serializeTree(tree: FamilyTree): string {
       relationships,
       sources,
       repositories,
-      media
+      media,
+      places
     },
     null,
     2
@@ -85,12 +87,14 @@ export function parseTreeWithWarnings(text: string): ParsedTree {
   // Development builds of schema 2 had no sources yet.
   migrated.sources ??= {}
   migrated.repositories ??= {}
+  // Development builds of schema 3 had no gazetteer yet.
+  migrated.places ??= {}
   const shapeErrors = checkTreeShape(migrated)
   if (shapeErrors.length) throw new FileParseError('invalid-data', shapeErrors)
   const loaded = { ...(migrated as unknown as FamilyTree & { format?: string }) }
   delete loaded.format
   const warnings: Issue[] = []
-  const { tree: sourced, removedCitations } = repairSourceReferences(loaded)
+  const { tree: sourced, removedCitations } = repairSourceReferences(normalizePlaceKeys(loaded))
   if (removedCitations) {
     warnings.push({
       severity: 'warning',

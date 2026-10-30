@@ -12,6 +12,7 @@ import {
 import { registerPrintHandlers } from './printing'
 import { initMainI18n, setMainLanguage } from './i18n'
 import { registerMediaHandlers } from './media'
+import { registerPlaceHandlers } from './places'
 import { registerRecoveryHandlers } from './recovery'
 import { registerIpcHandlers } from './ipc'
 import { attachEditContextMenu } from './contextMenu'
@@ -118,6 +119,7 @@ if (!hasLock) {
     registerFileHandlers()
     registerRecoveryHandlers()
     registerMediaHandlers()
+    registerPlaceHandlers()
     registerPrintHandlers(isWritable)
     buildMenu()
     createWindow()

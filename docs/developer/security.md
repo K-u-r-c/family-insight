@@ -81,7 +81,12 @@ The renderer never sees the file system. `src/main/files.ts` enforces:
   migrates old versions; files from a newer version are refused instead of being misread.
 - CSV files are parsed by the pure importer, which never executes anything and reports problems
   instead of throwing.
-- The app makes **no network requests**. There is no telemetry and no auto-update yet.
+- The app makes **no network requests** of its own. There is no telemetry and no auto-update yet.
+  The one exception is the opt-in **place lookup**: off by default (`onlinePlaceLookup`), asked for
+  with an explanation on first use, and only on an explicit click. Main (`src/main/geocoder.ts`)
+  sends the single place name to OpenStreetMap Nominatim – at most one request per second, an
+  identifying User-Agent, answers cached in `userData/place-lookup-cache.json`. The renderer never
+  talks to the network; the CSP is unchanged.
 
 ## When you add a feature
 

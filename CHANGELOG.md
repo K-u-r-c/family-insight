@@ -20,6 +20,10 @@ All notable changes to this project are documented here. The format follows
   once inside the `.finsight` file, however often they are used; saving stays fast for trees of
   hundreds of megabytes.
 
+- **Places** – a list of all places with how often they are used (**Edit → Places…**), locations
+  entered by hand or looked up online (optional, off by default: only the place name is sent to
+  OpenStreetMap), and merging of different spellings.
+
 ### Changed
 
 - **`.finsight` files are now zip containers** (schema 3). Trees from 1.0 open and are saved in the

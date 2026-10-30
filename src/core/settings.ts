@@ -38,6 +38,8 @@ export interface Settings {
   showMinimap: boolean
   autosave: boolean
   backups: boolean
+  /** Send place names to OpenStreetMap Nominatim to find coordinates (opt-in). */
+  onlinePlaceLookup: boolean
   panels: PanelSettings
 }
 
@@ -54,6 +56,7 @@ export function defaultSettings(language: string): Settings {
     showMinimap: true,
     autosave: true,
     backups: true,
+    onlinePlaceLookup: false,
     panels: { sidebarOpen: true, sidebarWidth: 280, detailsWidth: 380 }
   }
 }
@@ -75,6 +78,7 @@ export function sanitizeSettings(
   const src = isObj(raw) ? raw : {}
   const out: Settings = { ...fallback, panels: { ...fallback.panels } }
   if (isLanguage(src.language)) out.language = src.language as string
+  if (typeof src.onlinePlaceLookup === 'boolean') out.onlinePlaceLookup = src.onlinePlaceLookup
   if (src.theme === 'system' || src.theme === 'light' || src.theme === 'dark') out.theme = src.theme
   if (src.csvDelimiter === ',' || src.csvDelimiter === ';') out.csvDelimiter = src.csvDelimiter
   if (src.density === 'comfortable' || src.density === 'compact') out.density = src.density

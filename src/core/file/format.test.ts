@@ -6,6 +6,7 @@ import { remarriageFixture } from '../test/fixtures'
 import { addPersonEvent, updatePerson } from '../model/operations'
 import { SCHEMA_VERSION } from '../model/types'
 import { addMedia, setPortrait } from '../model/media'
+import { setPlace } from '../model/places'
 import { hashBytes } from './container'
 
 function code(fn: () => unknown): string | undefined {
@@ -255,6 +256,31 @@ describe('schema v3: media library', () => {
     expect(warnings).toEqual([
       { severity: 'warning', code: 'dangling-media-removed', params: { count: 2 } }
     ])
+  })
+})
+
+describe('schema v3: places', () => {
+  it('migrates older files to an empty gazetteer and round-trips coordinates', () => {
+    expect(parseTree(asVersion1(remarriageFixture())).places).toEqual({})
+    const tree = setPlace(remarriageFixture(), 'Kraków', {
+      lat: 50.06,
+      lon: 19.94,
+      source: 'geocoded',
+      displayName: 'Kraków, Poland'
+    })
+    expect(parseTree(serializeTree(tree))).toEqual(tree)
+  })
+
+  it('validates coordinates', () => {
+    const bad = (place: unknown): string | undefined => {
+      const doc = JSON.parse(serializeTree(remarriageFixture()))
+      doc.places = { krakow: place }
+      return code(() => parseTree(JSON.stringify(doc)))
+    }
+    expect(bad({ lat: 50, lon: 20, source: 'manual' })).toBeUndefined()
+    expect(bad({ lat: 95, lon: 20, source: 'manual' })).toBe('invalid-data')
+    expect(bad({ lat: 50, lon: '20', source: 'manual' })).toBe('invalid-data')
+    expect(bad({ lat: 50, lon: 20, source: 'guess' })).toBe('invalid-data')
   })
 })
 

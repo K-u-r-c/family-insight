@@ -11,6 +11,7 @@ export type AppDialog =
   | 'shortcuts'
   | 'about'
   | 'sources'
+  | 'places'
   | null
 
 /** Transient UI state of the workspace (not part of the document, not undoable). */

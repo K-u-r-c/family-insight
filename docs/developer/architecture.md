@@ -11,7 +11,7 @@ logic and everything that touches the operating system or the screen.
 flowchart TB
   subgraph main["Main process (Node.js)"]
     M1["window, native menu<br/>dialogs, printing"]
-    M2["files, settings,<br/>recovery, backups,<br/>media libraries"]
+    M2["files, settings,<br/>recovery, backups,<br/>media libraries,<br/>place lookup"]
     M3["IPC handlers<br/>(validate every input)"]
   end
   subgraph preload["Preload"]
@@ -146,6 +146,14 @@ flowchart LR
   JSON snapshot; restoring loads them into a new library.
 - The container code, hashing (`@noble/hashes`) and media model are pure TypeScript in `src/core`, so
   a platform without a main process can host the library itself.
+
+## Places and the network
+
+People's places are free text; coordinates come from the tree's gazetteer (`tree.places`,
+`src/core/model/places.ts`). The only network access of the app is the opt-in place lookup: the
+renderer asks main (`lookupPlace`), main checks the `onlinePlaceLookup` setting and queries
+OpenStreetMap Nominatim through a rate-limited, caching `Geocoder` (`src/main/geocoder.ts`). See
+the [decision log](./reference/decisions#places-gazetteer-and-opt-in-lookup-2026-10-issue-58).
 
 ## Further reading
 

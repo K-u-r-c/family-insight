@@ -25,6 +25,7 @@ const DOCUMENT_ITEMS = [
   'add-person',
   'find',
   'sources',
+  'places',
   'statistics',
   'fit',
   'zoom-in',
@@ -163,7 +164,8 @@ export function buildMenu(): void {
         item('delete', t('menu.deletePerson'), 'edit:delete'),
         { type: 'separator' },
         item('find', t('menu.find'), 'edit:find', 'CmdOrCtrl+F'),
-        item('sources', t('menu.sources'), 'edit:sources')
+        item('sources', t('menu.sources'), 'edit:sources'),
+        item('places', t('menu.places'), 'edit:places')
       ]
     },
     {

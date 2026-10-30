@@ -32,6 +32,7 @@ import { printTree } from './features/export/exportImage'
 import { MediaDetailsDialog } from './features/media/MediaDetailsDialog'
 import { MediaViewer } from './features/media/MediaViewer'
 import { CitationsDialog } from './features/sources/CitationsDialog'
+import { PlacesDialog } from './features/places/PlacesDialog'
 import { SourcesDialog } from './features/sources/SourcesDialog'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
 import { useAutosave } from './services/autosave'
@@ -81,6 +82,9 @@ export function App(): React.JSX.Element {
       },
       'edit:sources': () => {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openSources()
+      },
+      'edit:places': () => {
+        if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('places')
       },
       'edit:find': () => {
         const search = document.getElementById('workspace-search') as HTMLInputElement | null
@@ -137,6 +141,7 @@ export function App(): React.JSX.Element {
       {dialog === 'shortcuts' && <ShortcutsDialog onClose={() => openDialog(null)} />}
       {dialog === 'about' && <AboutDialog onClose={() => openDialog(null)} />}
       {dialog === 'sources' && hasDocument && <SourcesDialog onClose={() => openDialog(null)} />}
+      {dialog === 'places' && hasDocument && <PlacesDialog onClose={() => openDialog(null)} />}
       {citing && hasDocument && (
         <CitationsDialog
           target={citing}

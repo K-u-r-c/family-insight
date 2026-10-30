@@ -30,7 +30,8 @@
     "densityOption": {
       "comfortable": "Comfortable",
       "compact": "Compact"
-    }
+    },
+    "onlinePlaceLookup": "Look up places online"
   },
   "language": {
     "en": "English",
@@ -87,7 +88,8 @@
     "showSidebar": "People List",
     "userGuide": "User Guide",
     "reportBug": "Report a Problem…",
-    "sources": "Sources…"
+    "sources": "Sources…",
+    "places": "Places…"
   },
   "sex": {
     "female": "Female",
@@ -257,7 +259,10 @@
     "removeMedia": "Delete media",
     "setPortrait": "Change photo",
     "removePortrait": "Remove photo",
-    "moveMedia": "Move media"
+    "moveMedia": "Move media",
+    "setPlace": "Set location",
+    "clearPlace": "Remove location",
+    "mergePlaces": "Merge places"
   },
   "files": {
     "treeFilter": "Family Insight tree",
@@ -769,5 +774,50 @@
       "io": "“{{name}}” couldn't be read.",
       "open": "The file couldn't be opened in another app."
     }
+  },
+  "places": {
+    "title": "Places",
+    "description_one": "{{count}} place in your tree, {{located}} with a location.",
+    "description_other": "{{count}} places in your tree, {{located}} with a location.",
+    "search": "Search places",
+    "used_one": "used once",
+    "used_other": "used {{count}} times",
+    "located": "on the map",
+    "notLocated": "no location",
+    "empty": "No places yet. Places appear here as soon as you enter them for births, deaths, events or marriages.",
+    "pickTitle": "Choose a place",
+    "pickText": "Give places a location so they can be shown on the map, or merge different spellings of the same place.",
+    "spellings": "Also written as {{list}}",
+    "usedBy_one": "Used once: {{people}}",
+    "usedBy_other": "Used {{count}} times: {{people}}",
+    "andMore": "and {{count}} more",
+    "location": "Location",
+    "noLocation": "No location yet. Look it up online or enter the coordinates.",
+    "manual": "entered by you",
+    "geocoded": "found online",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "invalid": "Latitude must be between −90 and 90, longitude between −180 and 180 (e.g. 50.0619 and 19.9369).",
+    "save": "Save location",
+    "lookup": "Look up online",
+    "searching": "Searching…",
+    "clear": "Remove location",
+    "results": "Search results",
+    "noResults": "Nothing found. Try a different spelling, or enter the coordinates.",
+    "attribution": "Search by OpenStreetMap Nominatim, data",
+    "error": {
+      "disabled": "Online place lookup is turned off in the settings.",
+      "offline": "No internet connection. You can enter the coordinates instead.",
+      "failed": "The lookup service didn't answer. Try again later.",
+      "cancelled": "The lookup was cancelled."
+    },
+    "merge": "Merge with another place",
+    "mergeText": "For different spellings of the same place (Krakow, Cracow): every fact gets the chosen spelling and one location.",
+    "mergeInto": "Merge into",
+    "choose": "Choose a place…",
+    "mergeButton": "Merge",
+    "consentTitle": "Look up places online?",
+    "consentText": "To find coordinates, Family Insight sends the place name – and nothing else – to OpenStreetMap Nominatim, a free service on the internet. Answers are kept on this computer. You can turn this off at any time in the settings (⚙ → Look up places online).",
+    "consentAllow": "Allow"
   }
 }

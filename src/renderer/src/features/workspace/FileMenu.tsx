@@ -5,6 +5,7 @@ import {
   FolderOpen,
   ImageDown,
   Library,
+  MapPin,
   Menu as MenuIcon,
   Plus,
   Printer,
@@ -66,6 +67,7 @@ export function FileMenu(): React.JSX.Element {
       icon: Library,
       onSelect: () => useWorkspaceUi.getState().openSources()
     },
+    { label: t('menu.places'), icon: MapPin, onSelect: () => openDialog('places') },
     { type: 'separator' },
     {
       label: t('menu.print'),

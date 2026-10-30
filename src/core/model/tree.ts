@@ -16,7 +16,8 @@ export function createEmptyTree(name: string, now: Date = new Date()): FamilyTre
     relationships: {},
     sources: {},
     repositories: {},
-    media: {}
+    media: {},
+    places: {}
   }
 }
 

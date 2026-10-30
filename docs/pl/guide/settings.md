@@ -8,12 +8,13 @@ Kliknij przycisk **Ustawienia** (⚙) po prawej stronie paska narzędzi:
 
 <Screenshot name="settings-menu" alt="Menu ustawień z sekcjami Motyw (Systemowy, Jasny, Ciemny), Język (English, Polski), Karty (Wygodne, Kompaktowe) i Zapisuj automatycznie" />
 
-| Ustawienie                | Opcje                            | Co robi                                                                            |
-| ------------------------- | -------------------------------- | ---------------------------------------------------------------------------------- |
-| **Motyw**                 | Systemowy, Jasny, Ciemny         | Kolory programu. **Systemowy** podąża za jasnym lub ciemnym trybem komputera.      |
-| **Język**                 | English, Polski                  | Język całego programu, także paska menu i okien dialogowych. Zmienia się od razu.  |
-| **Karty**                 | Wygodne, Kompaktowe              | Wielkość kart w drzewie. Kompaktowe mieszczą więcej osób na ekranie i na papierze. |
-| **Zapisuj automatycznie** | włączone (domyślnie) / wyłączone | [Autozapis](./files#autosave) drzew, które mają już plik.                          |
+| Ustawienie                  | Opcje                            | Co robi                                                                                                                              |
+| --------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Motyw**                   | Systemowy, Jasny, Ciemny         | Kolory programu. **Systemowy** podąża za jasnym lub ciemnym trybem komputera.                                                        |
+| **Język**                   | English, Polski                  | Język całego programu, także paska menu i okien dialogowych. Zmienia się od razu.                                                    |
+| **Karty**                   | Wygodne, Kompaktowe              | Wielkość kart w drzewie. Kompaktowe mieszczą więcej osób na ekranie i na papierze.                                                   |
+| **Zapisuj automatycznie**   | włączone (domyślnie) / wyłączone | [Autozapis](./files#autosave) drzew, które mają już plik.                                                                            |
+| **Wyszukuj miejsca online** | wyłączone (domyślnie) / włączone | Pozwala przyciskowi **Wyszukaj online** wysłać nazwę miejsca do OpenStreetMap, aby znaleźć współrzędne ([Miejsca](./places#lookup)). |
 
 Motyw i język zmienisz też na ekranie powitalnym (prawy górny róg) i w menu **Widok** na pasku
 menu. Menu **Widok** pozwala też pokazać lub ukryć listę osób i mapę przeglądową.

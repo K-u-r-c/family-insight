@@ -151,6 +151,7 @@ The code is in `src/core/file/zip.ts` (a minimal zip reader/writer on top of
 | `sources`       | object  | yes (v2) | Sources keyed by id (since v2).                              |
 | `repositories`  | object  | yes (v2) | Repositories keyed by id (since v2).                         |
 | `media`         | object  | yes (v3) | Media library: photos and documents keyed by id (since v3).  |
+| `places`        | object  | yes (v3) | Coordinates by normalised place name (since v3).             |
 
 ### `meta`
 
@@ -248,6 +249,13 @@ The type is detected from the file's first bytes, never from its name; one file 
 `dangling-media-removed`, the document is marked as changed). A media item whose bytes are missing
 from the container stays in the document and the user is told how many files are missing.
 
+### Places (since v3)
+
+`places` maps a **normalised place name** (`placeKey`: lower case, no diacritics, single spaces –
+`"krakow"` for _Kraków_) to `{ lat, lon, source, displayName? }`: latitude −90…90, longitude
+−180…180, `source` `manual` or `geocoded`, `displayName` the name the lookup service returned. The
+facts keep their free-text places; keys are re-normalised on load.
+
 ### LifeEvent and FuzzyDate
 
 ```json
@@ -289,11 +297,11 @@ copy) and rotate older copies up to `.bak5`.
 
 ## Versioning and migrations
 
-| Version | App versions | Change                                                                                                                                                                                                                              |
-| ------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1       | 1.0.x        | First format.                                                                                                                                                                                                                       |
-| 2       | –            | `Person.events` (life events), `sources`, `repositories` and citations. Migration 1 → 2 adds `events: []`, `sources: {}`, `repositories: {}`. Development builds only.                                                              |
-| 3       | 1.1.0 –      | Zip container and media library (`media`, `portraitMediaId`, `mediaIds`). Migration 2 → 3 adds `media: {}` and moves each `photo` data URL into the library: the bytes become a container entry, the person gets `portraitMediaId`. |
+| Version | App versions | Change                                                                                                                                                                                                                                                                             |
+| ------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | 1.0.x        | First format.                                                                                                                                                                                                                                                                      |
+| 2       | –            | `Person.events` (life events), `sources`, `repositories` and citations. Migration 1 → 2 adds `events: []`, `sources: {}`, `repositories: {}`. Development builds only.                                                                                                             |
+| 3       | 1.1.0 –      | Zip container, media library (`media`, `portraitMediaId`, `mediaIds`) and place coordinates (`places`). Migration 2 → 3 adds `media: {}` and `places: {}` and moves each `photo` data URL into the library: the bytes become a container entry, the person gets `portraitMediaId`. |
 
 Migrations may move bytes out of the JSON: they receive a context whose `media` map collects them
 by hash, and `parseTreeWithWarnings` returns it so the renderer can add them to the library.

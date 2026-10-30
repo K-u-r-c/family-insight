@@ -24,6 +24,28 @@ function checkIds(v: unknown, path: string, errors: string[]): void {
   }
 }
 
+function checkPlaces(doc: Obj, errors: string[]): void {
+  if (!isObj(doc.places)) {
+    errors.push('places: expected object')
+    return
+  }
+  for (const [key, p] of Object.entries(doc.places)) {
+    const path = `places.${key}`
+    if (
+      !isObj(p) ||
+      typeof p.lat !== 'number' ||
+      !(Math.abs(p.lat) <= 90) ||
+      typeof p.lon !== 'number' ||
+      !(Math.abs(p.lon) <= 180)
+    ) {
+      errors.push(`${path}: needs lat (−90…90) and lon (−180…180)`)
+      continue
+    }
+    if (!oneOf(p.source, ['manual', 'geocoded'])) errors.push(`${path}.source: invalid`)
+    if (!optStr(p.displayName)) errors.push(`${path}.displayName: expected text`)
+  }
+}
+
 function checkMedia(doc: Obj, errors: string[]): void {
   if (!isObj(doc.media)) {
     errors.push('media: expected object')
@@ -241,5 +263,6 @@ export function checkTreeShape(doc: unknown): string[] {
   }
   checkSources(doc, errors)
   checkMedia(doc, errors)
+  checkPlaces(doc, errors)
   return errors
 }

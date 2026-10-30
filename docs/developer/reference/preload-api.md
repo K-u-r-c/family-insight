@@ -54,6 +54,13 @@ Bytes of photos and documents stay in main, in a library per open document; see
 | `exportMedia(library, hash, fileName)`         | `media:export`          | Save dialog, then writes the file; `false` if cancelled                                          | Name reduced to a safe base name                                             |
 | `openMediaExternally(library, hash, fileName)` | `media:open-external`   | Writes a temporary copy and opens it with the system's default app; `true` if it opened          | Type by magic bytes; the extension follows the type, not the name            |
 
+## Places
+
+| Method                          | Channel                | Returns / does                                                                                                                                                                                     | Checks in main                                                                                                             |
+| ------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `lookupPlace(requestId, query)` | `places:lookup`        | `PlaceLookupResult`: up to 5 `{ lat, lon, displayName }` from OpenStreetMap Nominatim, or an error (`disabled`, `offline`, `failed`, `cancelled`). A newer call with the same id cancels the older | Refused unless the `onlinePlaceLookup` setting is on; id `[a-zA-Z0-9-]{1,64}`; query ≤ 200 characters; 1 request/s, cached |
+| `cancelPlaceLookup(requestId)`  | `places:lookup-cancel` | Cancels a pending lookup                                                                                                                                                                           | –                                                                                                                          |
+
 ## Window and unsaved changes
 
 | Method                      | Channel                      | Returns / does                                                               | Checks in main               |

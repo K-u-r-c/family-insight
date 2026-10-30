@@ -48,6 +48,11 @@ export function SettingsMenu(): React.JSX.Element {
       label: t('settings.autosave'),
       checked: settings.autosave,
       onSelect: () => void update({ autosave: !settings.autosave })
+    },
+    {
+      label: t('settings.onlinePlaceLookup'),
+      checked: settings.onlinePlaceLookup,
+      onSelect: () => void update({ onlinePlaceLookup: !settings.onlinePlaceLookup })
     }
   ]
 

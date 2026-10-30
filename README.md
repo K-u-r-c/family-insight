@@ -90,7 +90,8 @@ like any document. Settings, recovery copies and the recent files list live in y
 separator (the default when the app is in Polish); the file includes a UTF-8 BOM so Polish
 letters display correctly.
 
-**Does it work offline?** Yes, completely. The app never sends your data anywhere.
+**Does it work offline?** Yes, completely. The app never sends your data anywhere; the optional
+place lookup (off by default) sends just the name of a place to OpenStreetMap when you ask it to.
 
 ## Development
 

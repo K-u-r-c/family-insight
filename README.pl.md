@@ -80,7 +80,9 @@ z [opisanymi kolumnami](https://k-u-r-c.github.io/family-insight/pl/guide/csv-im
 (domyślnym, gdy aplikacja jest po polsku); plik ma znacznik UTF-8 BOM, więc polskie litery
 wyświetlają się poprawnie.
 
-**Czy działa bez internetu?** Tak, w pełni. Aplikacja nigdzie nie wysyła Twoich danych.
+**Czy działa bez internetu?** Tak, w pełni. Aplikacja nigdzie nie wysyła Twoich danych; opcjonalne
+wyszukiwanie miejsc (domyślnie wyłączone) wysyła do OpenStreetMap tylko nazwę miejsca, gdy o to
+poprosisz.
 
 ## Rozwój
 

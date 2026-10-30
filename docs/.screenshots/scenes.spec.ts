@@ -1012,6 +1012,62 @@ scene('source-scans', async (s) => {
 })
 
 // ---------------------------------------------------------------------------------------------
+// Places
+
+/** Gives a few places of the sample family coordinates (the rest stay without). */
+async function locateSamplePlaces(s: Session): Promise<void> {
+  await s.page.evaluate(() => {
+    const store = (
+      window as unknown as {
+        __familyInsight: { useDocument: { getState: () => { dispatch: (cmd: unknown) => void } } }
+      }
+    ).__familyInsight.useDocument
+    store.getState().dispatch({
+      label: 'history.setPlace',
+      run: (tree: { places: object }) => ({
+        tree: {
+          ...tree,
+          places: {
+            ...tree.places,
+            lodz: { lat: 51.7592, lon: 19.456, source: 'geocoded', displayName: 'Łódź, Poland' },
+            warszawa: { lat: 52.2297, lon: 21.0118, source: 'manual' }
+          }
+        },
+        result: undefined
+      })
+    })
+  })
+}
+
+scene('places-manager', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await locateSamplePlaces(s)
+  await menuAction(s, 'edit:places')
+  await dialog(s).waitFor()
+  await dialog(s).getByRole('button', { name: /^Łódź/ }).click()
+  return dialogShot(s, {
+    steps: [{ target: dialog(s).getByRole('button', { name: t('places.lookup') }), badge: 'right' }]
+  })
+})
+
+scene('places-consent', async (s) => {
+  const { page, t } = s
+  await openSample(s)
+  await menuAction(s, 'edit:places')
+  await dialog(s).waitFor()
+  await dialog(s).getByRole('button', { name: /^Łódź/ }).click()
+  await dialog(s)
+    .getByRole('button', { name: t('places.lookup') })
+    .click()
+  const question = page
+    .getByRole('alertdialog')
+    .or(page.getByRole('dialog', { name: t('places.consentTitle') }))
+  await question.first().waitFor()
+  return { clip: question.first(), pad: 24, settle: 600 }
+})
+
+// ---------------------------------------------------------------------------------------------
 // Exploring the tree
 
 scene('view-controls', async (s) => {

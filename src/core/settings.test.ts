@@ -47,6 +47,17 @@ describe('settings', () => {
     expect(s).not.toHaveProperty('evil')
   })
 
+  it('keeps online place lookup off unless explicitly allowed', () => {
+    const base = defaultSettings('en')
+    expect(base.onlinePlaceLookup).toBe(false)
+    expect(sanitizeSettings({ onlinePlaceLookup: 'yes' }, base, () => true).onlinePlaceLookup).toBe(
+      false
+    )
+    expect(sanitizeSettings({ onlinePlaceLookup: true }, base, () => true).onlinePlaceLookup).toBe(
+      true
+    )
+  })
+
   it('merges patches onto current settings', () => {
     const current = sanitizeSettings(
       { theme: 'dark', autosave: false },

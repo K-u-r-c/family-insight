@@ -108,10 +108,10 @@
     "pl-dark": [395, 720]
   },
   "file-menu": {
-    "en-light": [225, 393],
-    "en-dark": [225, 393],
-    "pl-light": [238, 393],
-    "pl-dark": [238, 393]
+    "en-light": [225, 425],
+    "en-dark": [225, 425],
+    "pl-light": [238, 425],
+    "pl-dark": [238, 425]
   },
   "first-person": {
     "en-light": [1280, 800],
@@ -185,6 +185,18 @@
     "pl-light": [547, 522],
     "pl-dark": [547, 522]
   },
+  "places-consent": {
+    "en-light": [547, 269],
+    "en-dark": [547, 269],
+    "pl-light": [547, 289],
+    "pl-dark": [547, 289]
+  },
+  "places-manager": {
+    "en-light": [893, 682],
+    "en-dark": [928, 708],
+    "pl-light": [928, 708],
+    "pl-dark": [928, 708]
+  },
   "recovery": {
     "en-light": [568, 310],
     "en-dark": [568, 310],
@@ -210,10 +222,10 @@
     "pl-dark": [1280, 800]
   },
   "settings-menu": {
-    "en-light": [219, 437],
-    "en-dark": [219, 437],
-    "pl-light": [219, 437],
-    "pl-dark": [219, 437]
+    "en-light": [219, 469],
+    "en-dark": [219, 469],
+    "pl-light": [219, 469],
+    "pl-dark": [219, 469]
   },
   "shortcuts": {
     "en-light": [893, 529],

@@ -265,3 +265,21 @@ Details:
 - **Performance:** cards only ever show thumbnails, and the canvas renders only visible cards. With
   1 022 people with portraits, zoomed out to 15 % (≈200 cards on screen), panning keeps 60 fps
   (p95 frame 16.7 ms, worst 17.7 ms) on the development machine – `npm run test:perf`.
+
+## Places: gazetteer and opt-in lookup (2026-10, issue #58)
+
+- **Places stay free text.** Coordinates live in a tree-level gazetteer `places`, keyed by
+  `placeKey(name)` (case, spaces and diacritics folded – the same folding as search), so existing
+  facts need no change and "Kraków"/"Krakow" share a location. Merging spellings rewrites the
+  strings (one undoable command) and keeps one entry. Folded into the unreleased **schema 3**;
+  development files of schema 3 without `places` are normalised on load.
+- **Geocoder: OpenStreetMap Nominatim**, called by the main process (`src/main/geocoder.ts`), never
+  by the renderer, so the CSP doesn't change. Its usage policy is followed: at most one request per
+  second (queued), an identifying User-Agent, results cached on disk (2 000 entries), only on an
+  explicit click per place – no bulk or background lookups. Alternatives (Photon, commercial APIs)
+  were not needed: the volume is a few lookups per user, and Nominatim needs no API key.
+- **Opt-in:** the setting `onlinePlaceLookup` is off by default; the first **Look up online** asks
+  with an explanation of exactly what is sent (the place name only). Main checks the setting again
+  for every request, so a compromised renderer can't bypass it. Everything works offline without it.
+- **Tests never use the network:** the geocoder takes its URL from `FAMILY_INSIGHT_GEOCODER_URL`;
+  unit and e2e tests run a local HTTP server.

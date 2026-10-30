@@ -114,6 +114,16 @@ export interface MediaItem {
   height?: number
 }
 
+/** Coordinates of a place name (gazetteer entry, schema v3). */
+export interface Place {
+  lat: number
+  lon: number
+  /** Set by the user, or found by the online place lookup. */
+  source: 'manual' | 'geocoded'
+  /** The name the lookup service gave, e.g. "Kraków, Lesser Poland, Poland". */
+  displayName?: string
+}
+
 /** Built-in kinds of life events; `custom` uses `PersonEvent.customType` as its name. */
 export const EVENT_TYPES = [
   'baptism',
@@ -238,4 +248,9 @@ export interface FamilyTree {
   repositories: Record<RepositoryId, Repository>
   /** Media library: photos and scanned documents (schema v3). */
   media: Record<MediaId, MediaItem>
+  /**
+   * Gazetteer: coordinates by normalised place name (`placeKey`), so free-text places get a
+   * location without changing the facts (schema v3).
+   */
+  places: Record<string, Place>
 }

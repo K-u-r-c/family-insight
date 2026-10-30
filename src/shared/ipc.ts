@@ -28,6 +28,8 @@ export const IpcChannel = {
   MediaPutThumb: 'media:put-thumb',
   MediaExport: 'media:export',
   MediaOpenExternal: 'media:open-external',
+  PlaceLookup: 'places:lookup',
+  PlaceLookupCancel: 'places:lookup-cancel',
   ExportPdf: 'export:pdf',
   Print: 'export:print',
   DialogUnsaved: 'dialog:unsaved',
@@ -85,6 +87,11 @@ export interface MediaImportResult {
   items: MediaPutResult[]
 }
 
+/** Online place lookup (OpenStreetMap Nominatim, only when the user allowed it). */
+export type PlaceLookupResult =
+  | { ok: true; results: { lat: number; lon: number; displayName: string }[] }
+  | { ok: false; error: 'disabled' | 'offline' | 'failed' | 'cancelled' }
+
 export interface PdfOptions {
   pageSize: 'A4' | 'A3' | 'Letter'
   landscape: boolean
@@ -130,6 +137,7 @@ export type MenuAction =
   | 'edit:delete'
   | 'edit:find'
   | 'edit:sources'
+  | 'edit:places'
   | 'view:mode-family'
   | 'view:mode-ancestors'
   | 'view:mode-descendants'
@@ -199,6 +207,9 @@ export interface FamilyInsightApi {
   exportMedia(library: string, hash: string, fileName: string): Promise<boolean>
   /** Opens a media file in the system's default app (via a temporary copy). */
   openMediaExternally(library: string, hash: string, fileName: string): Promise<boolean>
+  /** Looks up coordinates of a place name; a newer call with the same id cancels the older. */
+  lookupPlace(requestId: string, query: string): Promise<PlaceLookupResult>
+  cancelPlaceLookup(requestId: string): Promise<void>
   /** A file the OS asked us to open before the UI was ready (double-click, argv). */
   takePendingFile(): Promise<string | null>
   onOpenFileRequest(listener: (path: string) => void): () => void

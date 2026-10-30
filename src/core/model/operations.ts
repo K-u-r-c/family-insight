@@ -300,7 +300,9 @@ export function mergeTrees(
     relationships: { ...tree.relationships, ...other.relationships },
     sources: { ...tree.sources, ...other.sources },
     repositories: { ...tree.repositories, ...other.repositories },
-    media: { ...tree.media, ...other.media }
+    media: { ...tree.media, ...other.media },
+    // Coordinates already in the tree win over the imported ones.
+    places: { ...other.places, ...tree.places }
   }
 }
 

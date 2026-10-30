@@ -50,6 +50,7 @@ import {
   type MediaInput,
   type MediaPatch
 } from '@core/model/media'
+import { mergePlaces, setPlace } from '@core/model/places'
 import type {
   Citation,
   CitationId,
@@ -62,6 +63,7 @@ import type {
   PersonEvent,
   PersonEventId,
   PersonId,
+  Place,
   Relationship,
   RelationshipId,
   Repository,
@@ -353,6 +355,17 @@ export const movePersonMediaCommand = (
 export const setMediaPeopleCommand = (mediaId: MediaId, personIds: PersonId[]): Command => ({
   label: 'history.editMedia',
   run: (tree) => ({ tree: setMediaPeople(tree, mediaId, personIds), result: undefined })
+})
+
+export const setPlaceCommand = (name: string, place: Place | undefined): Command => ({
+  label: place ? 'history.setPlace' : 'history.clearPlace',
+  run: (tree) => ({ tree: setPlace(tree, name, place), result: undefined })
+})
+
+/** Rewrites every fact at one of `names` to the place `target` (one spelling, one location). */
+export const mergePlacesCommand = (names: string[], target: string): Command => ({
+  label: 'history.mergePlaces',
+  run: (tree) => ({ tree: mergePlaces(tree, names, target), result: undefined })
 })
 
 /** Runs several steps as a single undoable command (e.g. "add father" = person + link). */

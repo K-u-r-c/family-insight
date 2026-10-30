@@ -43,8 +43,9 @@ export const MIGRATIONS: Record<number, Migration> = {
       ])
     )
   }),
-  // v2 → v3: the tree gets a media library; portraits move from `photo` data URLs into it
-  // (`portraitMediaId`), their bytes go to the container.
+  // v2 → v3: the tree gets a media library and a gazetteer of place coordinates; portraits
+  // move from `photo` data URLs into the library (`portraitMediaId`), their bytes go to the
+  // container.
   2: (doc, context) => {
     const media: RawDoc = isObj(doc.media) ? { ...doc.media } : {}
     const persons = Object.fromEntries(
@@ -67,7 +68,7 @@ export const MIGRATIONS: Record<number, Migration> = {
         return [id, { ...rest, portraitMediaId: mediaId }]
       })
     )
-    return { ...doc, persons, media }
+    return { ...doc, persons, media, places: isObj(doc.places) ? doc.places : {} }
   }
 }
 

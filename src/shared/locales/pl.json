@@ -30,7 +30,8 @@
     "densityOption": {
       "comfortable": "Wygodne",
       "compact": "Kompaktowe"
-    }
+    },
+    "onlinePlaceLookup": "Wyszukuj miejsca online"
   },
   "language": {
     "en": "English",
@@ -87,7 +88,8 @@
     "showSidebar": "Lista osób",
     "userGuide": "Poradnik",
     "reportBug": "Zgłoś problem…",
-    "sources": "Źródła…"
+    "sources": "Źródła…",
+    "places": "Miejsca…"
   },
   "sex": {
     "female": "Kobieta",
@@ -271,7 +273,10 @@
     "removeMedia": "Usunięcie multimediów",
     "setPortrait": "Zmiana zdjęcia",
     "removePortrait": "Usunięcie zdjęcia",
-    "moveMedia": "Przeniesienie multimediów"
+    "moveMedia": "Przeniesienie multimediów",
+    "setPlace": "Ustawienie położenia",
+    "clearPlace": "Usunięcie położenia",
+    "mergePlaces": "Scalenie miejsc"
   },
   "files": {
     "treeFilter": "Drzewo Family Insight",
@@ -827,5 +832,56 @@
       "io": "Nie udało się odczytać „{{name}}”.",
       "open": "Nie udało się otworzyć pliku w innym programie."
     }
+  },
+  "places": {
+    "title": "Miejsca",
+    "description_one": "{{count}} miejsce w drzewie, {{located}} z położeniem.",
+    "description_few": "{{count}} miejsca w drzewie, {{located}} z położeniem.",
+    "description_many": "{{count}} miejsc w drzewie, {{located}} z położeniem.",
+    "description_other": "{{count}} miejsca w drzewie, {{located}} z położeniem.",
+    "search": "Szukaj miejsc",
+    "used_one": "użyte raz",
+    "used_few": "użyte {{count}} razy",
+    "used_many": "użyte {{count}} razy",
+    "used_other": "użyte {{count}} razy",
+    "located": "na mapie",
+    "notLocated": "bez położenia",
+    "empty": "Nie ma jeszcze miejsc. Pojawią się tu, gdy wpiszesz je przy urodzeniu, śmierci, wydarzeniach lub ślubach.",
+    "pickTitle": "Wybierz miejsce",
+    "pickText": "Nadaj miejscom położenie, aby pokazać je na mapie, albo scal różne zapisy tego samego miejsca.",
+    "spellings": "Zapisywane też jako {{list}}",
+    "usedBy_one": "Użyte raz: {{people}}",
+    "usedBy_few": "Użyte {{count}} razy: {{people}}",
+    "usedBy_many": "Użyte {{count}} razy: {{people}}",
+    "usedBy_other": "Użyte {{count}} razy: {{people}}",
+    "andMore": "i {{count}} innych",
+    "location": "Położenie",
+    "noLocation": "Brak położenia. Wyszukaj je online albo wpisz współrzędne.",
+    "manual": "wpisane przez Ciebie",
+    "geocoded": "znalezione online",
+    "latitude": "Szerokość geograficzna",
+    "longitude": "Długość geograficzna",
+    "invalid": "Szerokość musi być między −90 a 90, długość między −180 a 180 (np. 50,0619 i 19,9369).",
+    "save": "Zapisz położenie",
+    "lookup": "Wyszukaj online",
+    "searching": "Szukam…",
+    "clear": "Usuń położenie",
+    "results": "Wyniki wyszukiwania",
+    "noResults": "Nic nie znaleziono. Spróbuj innego zapisu albo wpisz współrzędne.",
+    "attribution": "Wyszukiwanie: OpenStreetMap Nominatim, dane",
+    "error": {
+      "disabled": "Wyszukiwanie miejsc online jest wyłączone w ustawieniach.",
+      "offline": "Brak połączenia z internetem. Możesz wpisać współrzędne ręcznie.",
+      "failed": "Usługa wyszukiwania nie odpowiedziała. Spróbuj później.",
+      "cancelled": "Wyszukiwanie przerwano."
+    },
+    "merge": "Scal z innym miejscem",
+    "mergeText": "Dla różnych zapisów tego samego miejsca (Krakow, Cracow): każdy fakt dostanie wybrany zapis i jedno położenie.",
+    "mergeInto": "Scal z",
+    "choose": "Wybierz miejsce…",
+    "mergeButton": "Scal",
+    "consentTitle": "Wyszukiwać miejsca online?",
+    "consentText": "Aby znaleźć współrzędne, Family Insight wysyła nazwę miejsca – i nic więcej – do OpenStreetMap Nominatim, bezpłatnej usługi w internecie. Odpowiedzi są przechowywane na tym komputerze. Możesz to w każdej chwili wyłączyć w ustawieniach (⚙ → Wyszukuj miejsca online).",
+    "consentAllow": "Zezwól"
   }
 }

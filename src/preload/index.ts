@@ -38,6 +38,8 @@ const api: FamilyInsightApi = {
     ipcRenderer.invoke(IpcChannel.MediaExport, library, hash, fileName),
   openMediaExternally: (library, hash, fileName) =>
     ipcRenderer.invoke(IpcChannel.MediaOpenExternal, library, hash, fileName),
+  lookupPlace: (requestId, query) => ipcRenderer.invoke(IpcChannel.PlaceLookup, requestId, query),
+  cancelPlaceLookup: (requestId) => ipcRenderer.invoke(IpcChannel.PlaceLookupCancel, requestId),
   exportPdf: (svg, options, path) => ipcRenderer.invoke(IpcChannel.ExportPdf, svg, options, path),
   print: (svg, options) => ipcRenderer.invoke(IpcChannel.Print, svg, options),
   takePendingFile: () => ipcRenderer.invoke(IpcChannel.FileTakePending),

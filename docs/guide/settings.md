@@ -8,12 +8,13 @@ Click the **Settings** button (⚙) on the right of the toolbar:
 
 <Screenshot name="settings-menu" alt="The settings menu with Theme (System, Light, Dark), Language (English, Polski), Cards (Comfortable, Compact) and Save automatically" />
 
-| Setting                | Choices              | What it does                                                                                   |
-| ---------------------- | -------------------- | ---------------------------------------------------------------------------------------------- |
-| **Theme**              | System, Light, Dark  | The colours of the program. **System** follows the light or dark mode of your computer.        |
-| **Language**           | English, Polski      | The language of the whole program, including the menu bar and dialogs. It changes immediately. |
-| **Cards**              | Comfortable, Compact | The size of the cards in the tree. Compact cards fit more people on the screen and on paper.   |
-| **Save automatically** | on (default) / off   | [Autosave](./files#autosave) of trees that already have a file.                                |
+| Setting                   | Choices              | What it does                                                                                                    |
+| ------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Theme**                 | System, Light, Dark  | The colours of the program. **System** follows the light or dark mode of your computer.                         |
+| **Language**              | English, Polski      | The language of the whole program, including the menu bar and dialogs. It changes immediately.                  |
+| **Cards**                 | Comfortable, Compact | The size of the cards in the tree. Compact cards fit more people on the screen and on paper.                    |
+| **Save automatically**    | on (default) / off   | [Autosave](./files#autosave) of trees that already have a file.                                                 |
+| **Look up places online** | off (default) / on   | Lets **Look up online** send a place name to OpenStreetMap to find its coordinates ([Places](./places#lookup)). |
 
 The theme and the language can also be changed on the welcome screen (top-right corner) and in the
 **View** menu of the menu bar. The **View** menu also shows or hides the list of people and the
