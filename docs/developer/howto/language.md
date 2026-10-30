@@ -11,10 +11,11 @@ Translators are very welcome. The example adds **German** (`de`); replace it wit
 
 1. Copy `src/shared/locales/en.json` to `src/shared/locales/de.json` and translate every value. Keep
    the keys and the `{{placeholders}}` unchanged.
-2. Plurals: provide the forms your language needs ([CLDR plural rules](https://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html)) – German needs `_one` and `_other`,
-   like English; Polish needs `_one`, `_few`, `_many`, `_other`.
-3. Add the language's own name under `language.de` in **every** locale file (`"de": "Deutsch"`), so it
-   appears in the language menus.
+2. Plurals: provide exactly the forms your language needs – the tests read them from
+   `Intl.PluralRules` (German `_one`, `_other`; Polish and Russian `_one`, `_few`, `_many`,
+   `_other`; French, Spanish, Italian and Portuguese also `_many`, used for large round numbers).
+3. Use the approved terms from the [glossary for translators](../i18n-glossary) and add your column
+   there.
 
 Follow the [style guide](../i18n#style-guide): short, friendly, the same terms everywhere.
 
@@ -25,18 +26,23 @@ import de from './locales/de.json'
 
 export const SUPPORTED_LANGUAGES = ['en', 'pl', 'de'] as const
 
-export const resources = {
-  en: { translation: en },
-  pl: { translation: pl },
-  de: { translation: de }
-} as const
+export const LOCALES: Record<Language, LocaleInfo> = {
+  // …
+  de: { code: 'de', nativeName: 'Deutsch', translation: de, csvDelimiter: ';' }
+}
 ```
 
-`resolveLanguage` maps system locales such as `de-AT` to `de` automatically. The welcome screen,
-the ⚙ menu and **View → Language** list every supported language.
+`nativeName` is how the language pickers (welcome screen, ⚙ menu, **View → Language**) show it –
+always in the language itself. `csvDelimiter` is the default CSV separator (`;` where Excel uses a
+decimal comma). `resolveLanguage` maps system locales such as `de-AT` to `de` automatically.
 
-In `src/shared/i18n.test.ts`, add the plural forms to `REQUIRED_PLURALS`
-(`de: ['one', 'other']`) and extend the key-parity checks to the new file.
+`src/shared/i18n.test.ts` checks every registered language: the same keys as English, the plural
+forms the language needs, the same placeholders per message, no empty texts and nothing left in
+English (except an allowlist for names and formats).
+
+**Pseudo-locale:** in development (`npm run dev`, or `FAMILY_INSIGHT_PSEUDO=1`) the pickers offer
+_Ƥşḗŭḓǿ_ (`xx`): English with accents and 40 % longer texts. Use it to find cut-off labels and
+hard-coded text (anything without accents).
 
 ## 3. Dates – `src/core/date/fuzzyDate.ts`
 
@@ -53,7 +59,8 @@ dates day-first for Polish (`dateToInput`) – decide the input format for your 
 
 ## 4. Language-specific behaviour
 
-Search the code for `'pl'` to find the remaining places:
+Search the code for `'pl'` to find the remaining places (dates and CSV fall back to English until
+the language has its own tables):
 
 | Place                                                                        | What to decide                                                                                                                       |
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |

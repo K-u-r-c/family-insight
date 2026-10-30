@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { enablePseudoLocale } from '@shared/i18n'
 import { initI18n } from './i18n'
 import { applyTheme } from './hooks/useApplyTheme'
 import { useDocument } from './store/document'
@@ -13,6 +14,7 @@ import { App } from './App'
 Object.assign(window, { __familyInsight: { useDocument, useSettings, useTreeView } })
 
 async function bootstrap(): Promise<void> {
+  if ((await window.familyInsight.getAppInfo()).pseudoLocale) enablePseudoLocale()
   const settings = await initSettings()
   applyTheme(settings.theme)
   await initI18n(settings.language)

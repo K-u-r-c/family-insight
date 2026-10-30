@@ -1,6 +1,6 @@
-import { Monitor, Moon, Sun } from 'lucide-react'
+import { Languages, Monitor, Moon, Sun } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { SUPPORTED_LANGUAGES, type Language } from '@shared/i18n'
+import { languageOptions } from '@shared/i18n'
 import { SegmentedControl } from '@renderer/components/ui'
 import { changeLanguage } from '@renderer/i18n'
 import type { ThemePreference } from '@core/settings'
@@ -27,12 +27,20 @@ export function SettingsControls(): React.JSX.Element {
         }))}
         onChange={setTheme}
       />
-      <SegmentedControl
-        label={t('settings.language')}
-        value={i18n.language as Language}
-        options={SUPPORTED_LANGUAGES.map((value) => ({ value, label: t(`language.${value}`) }))}
-        onChange={(lang) => void changeLanguage(lang)}
-      />
+      <label className={styles.language}>
+        <Languages size={16} aria-hidden="true" />
+        <select
+          aria-label={t('settings.language')}
+          value={i18n.language}
+          onChange={(e) => void changeLanguage(e.target.value)}
+        >
+          {languageOptions().map(({ value, label }) => (
+            <option key={value} value={value} lang={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </label>
     </div>
   )
 }

@@ -1,13 +1,16 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { formatFuzzyDate, type DateLanguage } from '@core/date/fuzzyDate'
+import { dateLanguage, formatFuzzyDate, type DateLanguage } from '@core/date/fuzzyDate'
 import { lifespanLabel } from '@core/date/lifespan'
 import type { FuzzyDate, Person } from '@core/model/types'
 import { compareText, formatFileSize, formatList, formatNumber } from '@core/text'
-import { resolveLanguage } from '@shared/i18n'
+import { intlLanguage, resolveLanguage } from '@shared/i18n'
 
 export interface Formatters {
-  language: DateLanguage
+  /** Language for `Intl` (sorting, numbers, lists). */
+  language: string
+  /** Language of the date tables (parsing and formatting fuzzy dates). */
+  dateLanguage: DateLanguage
   date: (date: FuzzyDate | undefined) => string
   lifespan: (person: Person) => string
   list: (items: string[]) => string
@@ -19,17 +22,18 @@ export interface Formatters {
 /** Locale-aware formatters bound to the current UI language. */
 export function useFormat(): Formatters {
   const { i18n } = useTranslation()
-  const language = resolveLanguage(i18n.language)
-  return useMemo(
-    () => ({
+  const language = intlLanguage(resolveLanguage(i18n.language))
+  return useMemo(() => {
+    const dates = dateLanguage(language)
+    return {
       language,
-      date: (date) => (date ? formatFuzzyDate(date, language) : ''),
-      lifespan: (person) => lifespanLabel(person, language),
+      dateLanguage: dates,
+      date: (date) => (date ? formatFuzzyDate(date, dates) : ''),
+      lifespan: (person) => lifespanLabel(person, dates),
       list: (items) => formatList(items, language),
       number: (value) => formatNumber(value, language),
       fileSize: (bytes) => formatFileSize(bytes, language),
       compare: (a, b) => compareText(a, b, language)
-    }),
-    [language]
-  )
+    }
+  }, [language])
 }

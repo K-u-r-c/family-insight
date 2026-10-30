@@ -54,7 +54,7 @@ test('import CSV: preview, blocking errors, then a valid Polish file', async () 
   await mockDialogs(app, { open: good })
   await page.getByRole('button', { name: 'Importuj z CSV…' }).click()
   await expect(page.getByText('Wykryto: separator średnik ( ; ), kodowanie UTF-8.')).toBeVisible()
-  await expect(page.getByText('Osoby: 3, relacje: 3')).toBeVisible()
+  await expect(page.getByText('3 osoby, 3 relacje')).toBeVisible()
   await expect(
     page.getByText('Kolumna „rozmiar_buta” nie została rozpoznana i zostanie pominięta.')
   ).toBeVisible()
@@ -82,7 +82,7 @@ test('bundled Polish sample imports cleanly and a template can be downloaded', a
     save: template
   })
   await page.getByRole('button', { name: 'Importuj z CSV…' }).click()
-  await expect(page.getByText('Osoby: 25, relacje: 39')).toBeVisible()
+  await expect(page.getByText('25 osób, 39 relacji')).toBeVisible()
   await expect(page.getByText(/ostrzeż/)).toBeHidden()
   await page.getByRole('button', { name: 'Pobierz pusty szablon' }).click()
   await expect.poll(() => existsSync(template)).toBe(true)

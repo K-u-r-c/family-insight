@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { FileDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { exportCsv, type Delimiter } from '@core/io/csv/export'
-import type { HeaderLanguage } from '@core/io/csv/columns'
-import { resolveLanguage } from '@shared/i18n'
+import { headerLanguage as headerLanguageFor, type HeaderLanguage } from '@core/io/csv/columns'
+import { LOCALES, resolveLanguage } from '@shared/i18n'
 import { alertDialog, Button, Dialog, SegmentedControl, toast } from '@renderer/components/ui'
 import { useDocument } from '@renderer/store/document'
 import { useSettings } from '@renderer/store/settings'
@@ -22,7 +22,7 @@ export function ExportCsvDialog({
   const update = useSettings((s) => s.update)
   const [delimiter, setDelimiter] = useState<Delimiter>(settings.csvDelimiter)
   const [headerLanguage, setHeaderLanguage] = useState<HeaderLanguage>(
-    resolveLanguage(i18n.language)
+    headerLanguageFor(resolveLanguage(i18n.language))
   )
   const [busy, setBusy] = useState(false)
 
@@ -98,10 +98,10 @@ export function ExportCsvDialog({
             label={t('csv.headerLanguage')}
             value={headerLanguage}
             onChange={setHeaderLanguage}
-            options={[
-              { value: 'en', label: t('language.en') },
-              { value: 'pl', label: t('language.pl') }
-            ]}
+            options={(['en', 'pl'] as const).map((value) => ({
+              value,
+              label: LOCALES[value].nativeName
+            }))}
           />
         </div>
       </div>

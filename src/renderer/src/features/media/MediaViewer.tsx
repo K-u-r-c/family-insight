@@ -78,7 +78,7 @@ function ViewerDialog({
   }, [])
 
   const meta = [
-    items.length > 1 ? t('media.position', { index: index + 1, count: items.length }) : '',
+    items.length > 1 ? t('media.position', { index: index + 1, total: items.length }) : '',
     item.date ? format.date(item.date) : '',
     item.place ?? ''
   ]

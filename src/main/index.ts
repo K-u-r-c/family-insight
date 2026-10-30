@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 import { app, BrowserWindow, shell } from 'electron'
-import { resolveLanguage } from '@shared/i18n'
+import { enablePseudoLocale, resolveLanguage } from '@shared/i18n'
 import { registerBuiltInFormats } from '@core/io/formats'
 import {
   guardWindowClose,
@@ -27,6 +27,10 @@ if (process.env['FAMILY_INSIGHT_USER_DATA']) {
   app.setPath('userData', process.env['FAMILY_INSIGHT_USER_DATA'])
 }
 const HIDDEN = process.env['FAMILY_INSIGHT_HIDDEN'] === '1'
+// The pseudo-locale exists in development (electron-vite dev server) or on request.
+if (process.env['ELECTRON_RENDERER_URL'] || process.env['FAMILY_INSIGHT_PSEUDO'] === '1') {
+  enablePseudoLocale()
+}
 registerTileScheme()
 
 function windowIcon(): string {

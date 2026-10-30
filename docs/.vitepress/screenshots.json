@@ -48,8 +48,8 @@
     "pl-dark": [893, 737]
   },
   "csv-import-columns": {
-    "en-light": [862, 662],
-    "en-dark": [862, 662],
+    "en-light": [829, 636],
+    "en-dark": [829, 636],
     "pl-light": [862, 662],
     "pl-dark": [829, 636]
   },
@@ -216,10 +216,10 @@
     "pl-dark": [547, 289]
   },
   "places-manager": {
-    "en-light": [893, 682],
-    "en-dark": [893, 682],
+    "en-light": [928, 708],
+    "en-dark": [928, 708],
     "pl-light": [928, 708],
-    "pl-dark": [928, 708]
+    "pl-dark": [893, 682]
   },
   "recovery": {
     "en-light": [568, 310],

@@ -340,3 +340,23 @@ Details:
 - Off in development builds and in automated tests (isolated profile), unless a test sets
   `FAMILY_INSIGHT_UPDATE_TEST=1` (with `FAMILY_INSIGHT_UPDATE_TARGET` / `FAMILY_INSIGHT_UPDATE_API`
   to point at local fixtures).
+
+## Internationalisation for more languages (2026-10, issue #68)
+
+- **One locale registry** (`LOCALES` in `src/shared/i18n.ts`) holds each language's dictionary,
+  its name in itself and its Excel CSV delimiter; the menu, the pickers and the CSV dialogs read
+  it, so a new language is one JSON file plus one registry entry.
+- **Plural forms come from the platform**: the locale test asks `Intl.PluralRules` which
+  categories a language needs (Polish and Russian: one/few/many/other; French, Spanish, Italian
+  and Portuguese: one/many/other) instead of keeping our own table. Every `{{count}}` message is a
+  plural key; summaries such as "3 people, 1 family" are joined from `counts.*` messages instead of
+  one sentence with several numbers.
+- **Untranslated check with an allowlist**: a text identical to English fails unless it has no
+  words or is listed as `key` (format names) or `lang:key` (a word that is the same in that
+  language).
+- **Pseudo-locale `xx`** (accented, 40 % longer) exists only in development builds or with
+  `FAMILY_INSIGHT_PSEUDO=1`; it is generated from `en.json` at start, never shipped as a file, and
+  formats dates and numbers as English. `PSEUDO_SHOTS=1` renders the screenshot scenes in it.
+- **Fonts in exported SVG/PDF**: the export embeds the subsets of Inter and Source Serif 4 that
+  cover the tree's text (Latin, Latin Extended, Cyrillic), so the file looks the same without the
+  fonts installed.

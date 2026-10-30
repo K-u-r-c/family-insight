@@ -1,4 +1,5 @@
 import { layoutFamily } from '@core/layout/layout'
+import { dateLanguage } from '@core/date/fuzzyDate'
 import { resolveLanguage } from '@shared/i18n'
 import type { PdfOptions } from '@shared/ipc'
 import i18n from '@renderer/i18n'
@@ -6,6 +7,7 @@ import { layoutOptions } from '@renderer/features/tree/TreeCanvas'
 import { useDocument } from '@renderer/store/document'
 import { useTreeView } from '@renderer/store/treeView'
 import { portraitDataUrl } from '@renderer/services/media'
+import { embedFonts } from './fonts'
 import { buildTreeSvg, canvasMeasure, type TreeSvg } from './treeSvg'
 
 export type ImageFormat = 'png' | 'svg' | 'pdf'
@@ -25,7 +27,7 @@ export function currentTreeSvg(options: ImageExportOptions): TreeSvg | null {
   const opts = layoutOptions()
   if (!tree || !opts) return null
   const layout = layoutFamily(tree, opts)
-  const language = resolveLanguage(i18n.language)
+  const language = dateLanguage(resolveLanguage(i18n.language))
   const { viewport, size } = useTreeView.getState()
   const crop =
     options.scope === 'visible' && size.width
@@ -47,6 +49,12 @@ export function currentTreeSvg(options: ImageExportOptions): TreeSvg | null {
     bornLabel: (surname) => t('tree.born', { surname }),
     portrait: (person) => portraitDataUrl(tree, person)
   })
+}
+
+/** The tree as SVG for export: with the fonts embedded, so it looks the same everywhere. */
+export async function exportableTreeSvg(options: ImageExportOptions): Promise<TreeSvg | null> {
+  const result = currentTreeSvg(options)
+  return result && { ...result, svg: await embedFonts(result.svg) }
 }
 
 /** Rasterises SVG markup to a base64 PNG at the given scale. */
@@ -78,6 +86,6 @@ export async function svgToPngBase64(
 export async function printTree(
   options: PdfOptions = { pageSize: 'A4', landscape: true }
 ): Promise<void> {
-  const result = currentTreeSvg({ scope: 'all', withTitle: true })
+  const result = await exportableTreeSvg({ scope: 'all', withTitle: true })
   if (result) await window.familyInsight.print(result.svg, options)
 }

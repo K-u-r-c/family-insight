@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The language is chosen from a list that shows every language in its own name – ready for more
+  languages.
+- Counts read correctly in every language ("1 family", "2 sources" …).
+- Exported images and PDFs embed the app's fonts, so they look the same on every computer.
+
 ## [1.1.0] - 2026-10-30
 
 ### Added

@@ -1,12 +1,12 @@
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { resources } from '@shared/i18n'
+import { i18nResources } from '@shared/i18n'
 
 /** Initialises i18next synchronously for component tests. */
-export function setupI18n(language: 'en' | 'pl' = 'en'): typeof i18next {
+export function setupI18n(language = 'en'): typeof i18next {
   if (!i18next.isInitialized) {
     void i18next.use(initReactI18next).init({
-      resources,
+      resources: i18nResources(),
       lng: language,
       fallbackLng: 'en',
       initAsync: false,

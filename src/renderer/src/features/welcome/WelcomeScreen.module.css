@@ -85,6 +85,13 @@
   color: var(--color-text-subtle);
 }
 
+.hint {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  white-space: nowrap;
+}
+
 .recent {
   padding: var(--space-4);
   background: var(--color-surface);

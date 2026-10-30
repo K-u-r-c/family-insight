@@ -28,7 +28,10 @@ test.describe('smoke', () => {
   test('1. launches in English and switches to Polish', async () => {
     const { app, page } = await launch({ language: 'en' })
     await expect(page.getByRole('heading', { name: 'Welcome to Family Insight' })).toBeVisible()
-    await page.getByRole('radio', { name: 'Polski' }).click()
+    const picker = page.getByRole('combobox', { name: 'Language' })
+    // Every language is listed in its own name.
+    await expect(picker.getByRole('option')).toHaveText(['English', 'Polski'])
+    await picker.selectOption('pl')
     await expect(page.getByRole('heading', { name: 'Witaj w Family Insight' })).toBeVisible()
     await closeApp(app)
   })

@@ -12,7 +12,12 @@ import {
 } from '@renderer/components/ui'
 import { useDocument } from '@renderer/store/document'
 import styles from '@renderer/features/csv/CsvDialogs.module.css'
-import { currentTreeSvg, svgToPngBase64, type ExportScope, type ImageFormat } from './exportImage'
+import {
+  exportableTreeSvg,
+  svgToPngBase64,
+  type ExportScope,
+  type ImageFormat
+} from './exportImage'
 
 /** Export the tree view as PNG, SVG or PDF. */
 export function ExportImageDialog({ onClose }: { onClose: () => void }): React.JSX.Element {
@@ -27,7 +32,7 @@ export function ExportImageDialog({ onClose }: { onClose: () => void }): React.J
 
   const run = async (): Promise<void> => {
     const tree = useDocument.getState().tree
-    const image = currentTreeSvg({ scope, withTitle })
+    const image = await exportableTreeSvg({ scope, withTitle })
     if (!tree || !image) return
     setBusy(true)
     try {

@@ -12,7 +12,8 @@ Electron + React + TypeScript family tree app (EN/PL). Read `docs/developer/arch
 ## Rules
 
 - Domain logic in `src/core` (pure TS, no Electron/React imports) with Vitest tests.
-- Never hard-code UI text: add keys to **both** `src/shared/locales/en.json` and `pl.json`.
+- Never hard-code UI text: add keys to **every** locale file in `src/shared/locales/` (plural forms
+  per language; `src/shared/i18n.test.ts` checks keys, plurals and placeholders).
 - Never hard-code colours: use CSS variables from `src/renderer/src/styles/tokens.css`.
 - Renderer never accesses Node/fs; add IPC in `src/shared/ipc.ts` → `src/main/ipc.ts` →
   `src/preload/index.ts`, and validate input in main.
@@ -36,8 +37,6 @@ are superseded by the roadmap issues.
   when docs change) → update the user guide and affected screenshots → commit straight to
   `main` with `Closes #N` in the message → push → wait for CI to be green
   (`gh run watch`) before starting the next issue. Fix red CI immediately.
-- Once #68 is closed, the UI-text rule and the definition of done cover **every** locale file
-  in `src/shared/locales/`, not only `en.json` and `pl.json`.
 - Once #77 is closed, user-guide updates apply to **every** language of the docs site.
 - Tests never use the network: mock servers (geocoder, map tiles, updates).
 - "Screenshot in the PR" = render the app offscreen (Electron `capturePage`), inspect the

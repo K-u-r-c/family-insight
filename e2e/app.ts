@@ -11,7 +11,7 @@ export interface Launched {
 }
 
 interface LaunchOptions {
-  language?: 'en' | 'pl'
+  language?: string
   theme?: 'light' | 'dark'
   args?: string[]
   userData?: string

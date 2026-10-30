@@ -18,7 +18,7 @@ test('GEDCOM: import a file, export it as 7.0, re-import with the same counts', 
     const dialog = page.getByRole('dialog', { name: 'Import GEDCOM: gramps' })
     await expect(dialog.getByText('GEDCOM 5.5.1 from Gramps')).toBeVisible()
     await expect(
-      dialog.getByText('4 people, 1 families, 2 events, 1 sources, 0 media files')
+      dialog.getByText('4 people, 1 family, 2 events, 1 source, 0 media files')
     ).toBeVisible()
     await dialog.getByRole('button', { name: 'Import', exact: true }).click()
     await expect(page.getByText('4 people imported')).toBeVisible()
@@ -46,7 +46,7 @@ test('GEDCOM: import a file, export it as 7.0, re-import with the same counts', 
     const again = page.getByRole('dialog', { name: 'Import GEDCOM: export' })
     await expect(again.getByText('GEDCOM 7.0 from Family Insight')).toBeVisible()
     await expect(
-      again.getByText('4 people, 1 families, 2 events, 1 sources, 0 media files')
+      again.getByText('4 people, 1 family, 2 events, 1 source, 0 media files')
     ).toBeVisible()
     await again.getByRole('button', { name: 'Import', exact: true }).click()
     await expect(page.getByText('4 people imported')).toBeVisible()

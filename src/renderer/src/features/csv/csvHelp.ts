@@ -1,4 +1,5 @@
 import { csvTemplate } from '@core/io/csv/template'
+import { headerLanguage } from '@core/io/csv/columns'
 import { resolveLanguage } from '@shared/i18n'
 import { guideUrl } from '@shared/links'
 import { toast } from '@renderer/components/ui'
@@ -11,7 +12,7 @@ export function openCsvFormatDocs(): void {
 
 /** Saves an empty CSV with headers in the current UI language. */
 export async function saveCsvTemplate(): Promise<void> {
-  const language = resolveLanguage(i18n.language)
+  const language = headerLanguage(resolveLanguage(i18n.language))
   const name = i18n.t('csv.templateFileName' as never) as unknown as string
   const path = await window.familyInsight.saveFileDialog('csv', name)
   if (!path) return

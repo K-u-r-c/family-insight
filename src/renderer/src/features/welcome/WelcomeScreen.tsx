@@ -78,8 +78,13 @@ export function WelcomeScreen(): React.JSX.Element {
             </Button>
           </div>
           <p className={styles.hints}>
-            <Kbd>{formatShortcut('Mod+N')}</Kbd> {t('welcome.hintNew')} ·{' '}
-            <Kbd>{formatShortcut('Mod+O')}</Kbd> {t('welcome.hintOpen')} · {t('welcome.hintDrop')}
+            <span className={styles.hint}>
+              <Kbd>{formatShortcut('Mod+N')}</Kbd> {t('welcome.hintNew')} ·
+            </span>
+            <span className={styles.hint}>
+              <Kbd>{formatShortcut('Mod+O')}</Kbd> {t('welcome.hintOpen')} ·
+            </span>
+            <span>{t('welcome.hintDrop')}</span>
           </p>
         </section>
 

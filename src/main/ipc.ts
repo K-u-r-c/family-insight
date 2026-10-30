@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
+import { isPseudoEnabled } from '@shared/i18n'
 import { IpcChannel, type AppInfo } from '@shared/ipc'
 import { setMenuState } from './menu'
 import { getSettings, updateSettings } from './settings'
@@ -8,7 +9,8 @@ export function registerIpcHandlers(): void {
     name: app.getName(),
     version: app.getVersion(),
     platform: process.platform,
-    locale: app.getLocale()
+    locale: app.getLocale(),
+    pseudoLocale: isPseudoEnabled()
   }))
 
   ipcMain.handle(IpcChannel.SettingsGet, () => getSettings())

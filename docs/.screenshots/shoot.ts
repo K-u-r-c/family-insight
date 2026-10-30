@@ -3,31 +3,42 @@ import { join } from 'node:path'
 import type { ElectronApplication, Locator, Page } from '@playwright/test'
 import en from '../../src/shared/locales/en.json'
 import pl from '../../src/shared/locales/pl.json'
+import { pseudoLocalize } from '../../src/shared/pseudo'
 import { test } from '@playwright/test'
 import { closeApp, launch, type Launched } from '../../e2e/app'
 
-export type Lang = 'en' | 'pl'
+export type Lang = 'en' | 'pl' | 'xx'
 export type Theme = 'light' | 'dark'
 export interface Variant {
   lang: Lang
   theme: Theme
 }
 
-export const VARIANTS: Variant[] = [
-  { lang: 'en', theme: 'light' },
-  { lang: 'en', theme: 'dark' },
-  { lang: 'pl', theme: 'light' },
-  { lang: 'pl', theme: 'dark' }
-]
+/**
+ * `PSEUDO_SHOTS=1` renders every scene in the development pseudo-locale instead (accented,
+ * 40 % longer texts) into `test-results/pseudo/` – a layout check, not documentation.
+ */
+const PSEUDO = process.env.PSEUDO_SHOTS === '1'
+
+export const VARIANTS: Variant[] = PSEUDO
+  ? [{ lang: 'xx', theme: 'light' }]
+  : [
+      { lang: 'en', theme: 'light' },
+      { lang: 'en', theme: 'dark' },
+      { lang: 'pl', theme: 'light' },
+      { lang: 'pl', theme: 'dark' }
+    ]
 
 /** Window content size of every screenshot session. */
 export const WINDOW = { width: 1280, height: 800 }
-const OUT_DIR = join(__dirname, '..', 'public', 'screenshots')
+const OUT_DIR = PSEUDO
+  ? join(__dirname, '..', '..', 'test-results', 'pseudo')
+  : join(__dirname, '..', 'public', 'screenshots')
 const MANIFEST = join(__dirname, '..', '.vitepress', 'screenshots.json')
 /** Annotation colour: high contrast on both themes and distinct from the app's palette. */
 const MARK = '#e8590c'
 
-const LOCALES: Record<Lang, unknown> = { en, pl }
+const LOCALES: Record<Lang, unknown> = { en, pl, xx: pseudoLocalize(en) }
 
 /** Translates like the app (i18next keys, `{{var}}` interpolation, `_one/_other` plurals). */
 export function translate(
@@ -89,7 +100,8 @@ export async function start(variant: Variant, options: StartOptions = {}): Promi
     language: variant.lang,
     theme: variant.theme,
     userData,
-    args: ['--force-device-scale-factor=1', ...(options.args ?? [])]
+    args: ['--force-device-scale-factor=1', ...(options.args ?? [])],
+    env: PSEUDO ? { FAMILY_INSIGHT_PSEUDO: '1' } : undefined
   })
   await resize(launched.app)
   return { ...launched, variant, t: (key, vars) => translate(variant.lang, key, vars) }
@@ -249,6 +261,7 @@ async function drawMarks(page: Page, marks: Mark[]): Promise<void> {
 type Manifest = Record<string, Record<string, [number, number]>>
 
 function record(name: string, variant: Variant, width: number, height: number): void {
+  if (PSEUDO) return
   let manifest: Manifest = {}
   try {
     manifest = JSON.parse(readFileSync(MANIFEST, 'utf8')) as Manifest

@@ -1,6 +1,14 @@
 import type { DateQualifier, FuzzyDate } from '../model/types'
 
-export type DateLanguage = 'en' | 'pl'
+export const DATE_LANGUAGES = ['en', 'pl'] as const
+export type DateLanguage = (typeof DATE_LANGUAGES)[number]
+
+/** The date tables to use for a UI language (English for languages without their own). */
+export function dateLanguage(language: string): DateLanguage {
+  return (DATE_LANGUAGES as readonly string[]).includes(language)
+    ? (language as DateLanguage)
+    : 'en'
+}
 
 const QUALIFIER_WORDS: [RegExp, DateQualifier][] = [
   [/^(~|about|abt\.?|circa|ca\.?|c\.|około|okolo|ok\.?)\s*/i, 'about'],

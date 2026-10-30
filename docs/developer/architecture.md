@@ -59,7 +59,7 @@ in the renderer for the preview and could run anywhere else.
    typed IPC surface whose inputs are validated in main. See [Security model](./security).
 3. **One IPC contract:** channel names and the `FamilyInsightApi` type are declared once in
    `src/shared/ipc.ts` and implemented in `src/main/ipc.ts` and `src/preload/index.ts`.
-4. **Every string is translated:** i18next resources in `src/shared/locales/{en,pl}.json`, used by
+4. **Every string is translated:** i18next resources in `src/shared/locales/*.json`, used by
    the renderer and the native menu. See [Internationalisation](./i18n).
 5. **Every colour is a token:** components use the CSS variables from
    `src/renderer/src/styles/tokens.css`, so light, dark and “follow system” work everywhere.

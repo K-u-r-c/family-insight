@@ -23,6 +23,7 @@ export const developerSidebar: DefaultTheme.SidebarItem[] = [
       { text: 'Tree layout engine', link: '/developer/layout' },
       { text: 'Rendering the tree', link: '/developer/rendering' },
       { text: 'Internationalisation', link: '/developer/i18n' },
+      { text: 'Glossary for translators', link: '/developer/i18n-glossary' },
       { text: 'Packaging', link: '/developer/packaging' }
     ]
   },

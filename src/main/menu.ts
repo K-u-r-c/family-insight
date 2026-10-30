@@ -1,5 +1,5 @@
 import { app, BrowserWindow, Menu, shell, type MenuItemConstructorOptions } from 'electron'
-import { SUPPORTED_LANGUAGES, type Language } from '@shared/i18n'
+import { csvDelimiterFor, languageOptions } from '@shared/i18n'
 import { IpcChannel, type MenuAction, type MenuState } from '@shared/ipc'
 import { guideUrl, ISSUES_URL, PROJECT_URL } from '@shared/links'
 import { requestOpen } from './files'
@@ -227,11 +227,11 @@ export function buildMenu(): void {
         },
         {
           label: t('settings.language'),
-          submenu: SUPPORTED_LANGUAGES.map((language: Language) => ({
-            label: t(`language.${language}`),
+          submenu: languageOptions().map(({ value, label }) => ({
+            label,
             type: 'radio' as const,
-            checked: settings.language === language,
-            click: () => updateSettings({ language, csvDelimiter: language === 'pl' ? ';' : ',' })
+            checked: settings.language === value,
+            click: () => updateSettings({ language: value, csvDelimiter: csvDelimiterFor(value) })
           }))
         },
         { label: t('menu.toggleFullscreen'), role: 'togglefullscreen' },

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Settings2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { ThemePreference } from '@core/settings'
-import { SUPPORTED_LANGUAGES } from '@shared/i18n'
+import { languageOptions } from '@shared/i18n'
 import {
   anchorBelow,
   IconButton,
@@ -37,10 +37,10 @@ export function SettingsMenu(): React.JSX.Element {
     })),
     { type: 'separator' },
     { type: 'heading', label: t('settings.language') },
-    ...SUPPORTED_LANGUAGES.map((lang) => ({
-      label: t(`language.${lang}`),
-      checked: i18n.language === lang,
-      onSelect: () => void changeLanguage(lang)
+    ...languageOptions().map(({ value, label }) => ({
+      label,
+      checked: i18n.language === value,
+      onSelect: () => void changeLanguage(value)
     })),
     { type: 'separator' },
     { type: 'heading', label: t('settings.density') },

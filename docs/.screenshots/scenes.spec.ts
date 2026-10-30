@@ -15,7 +15,13 @@ import { scene, type Session, type ShotOptions, type StartOptions } from './shoo
 const ROOT = join(__dirname, '..', '..')
 const FIXTURE = join(ROOT, 'e2e', 'fixtures', 'kowalscy.finsight')
 const SAMPLE_CSV = (lang: string): string =>
-  join(ROOT, 'resources', 'samples', `example-${lang}.csv`)
+  join(ROOT, 'resources', 'samples', `example-${lang === 'pl' ? 'pl' : 'en'}.csv`)
+/**
+ * Matches an accessible name that starts with `text` (the app may append a date). The padding
+ * the pseudo-locale adds at the end of a message is dropped, since the app's text continues there.
+ */
+const startsWith = (text: string): RegExp =>
+  new RegExp(`^${text.replace(/ ·+$/, '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`)
 /** A fixed moment, so dates shown in dialogs don't change between runs. */
 const FIXED_TIME = '2026-10-29T18:42:00.000Z'
 
@@ -880,9 +886,7 @@ scene('citations-dialog', async (s) => {
     .click()
   await panel(s)
     .getByRole('button', {
-      name: new RegExp(
-        `^${t('sources.citeTitle', { fact: 'Jan Kowalski – ' + t('timeline.birth') })}`
-      )
+      name: startsWith(t('sources.citeTitle', { fact: 'Jan Kowalski – ' + t('timeline.birth') }))
     })
     .click()
   await dialog(s).waitFor()
@@ -898,9 +902,7 @@ scene('cite-buttons', async (s) => {
     .getByRole('button', { name: t('common.edit') })
     .click()
   const birth = panel(s).getByRole('button', {
-    name: new RegExp(
-      `^${t('sources.citeTitle', { fact: 'Jan Kowalski – ' + t('timeline.birth') })}`
-    )
+    name: startsWith(t('sources.citeTitle', { fact: 'Jan Kowalski – ' + t('timeline.birth') }))
   })
   await birth.scrollIntoViewIfNeeded()
   await parkMouse(s)
@@ -1155,7 +1157,7 @@ scene('map-offline', async (s) => {
   await openSample(s)
   await locateAllSamplePlaces(s)
   await openMap(s)
-  const notice = page.getByRole('status').filter({ hasText: 'OpenStreetMap' })
+  const notice = page.getByRole('status').filter({ hasText: s.t('map.offline') })
   await notice.waitFor()
   await parkMouse(s)
   return { clip: notice, pad: 24 }

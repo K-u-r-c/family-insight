@@ -27,7 +27,7 @@ interface DateFieldProps {
  */
 export function DateField({ label, value, onCommit, warning }: DateFieldProps): React.JSX.Element {
   const { t } = useTranslation()
-  const { language } = useFormat()
+  const { dateLanguage: language } = useFormat()
   const id = useId()
   const initial = dateToInput(value, language)
   const [draft, setDraft] = useState(initial)

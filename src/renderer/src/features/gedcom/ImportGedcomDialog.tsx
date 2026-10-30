@@ -118,13 +118,13 @@ export function ImportGedcomDialog({ onClose }: { onClose: () => void }): React.
       footer={
         <>
           <span className={styles.summary} role="status">
-            {t('gedcom.summary', {
-              people: summary.people,
-              families: summary.families,
-              events: summary.events,
-              sources: summary.sources,
-              media: summary.media
-            })}
+            {[
+              t('counts.people', { count: summary.people }),
+              t('counts.families', { count: summary.families }),
+              t('counts.events', { count: summary.events }),
+              t('counts.sources', { count: summary.sources }),
+              t('counts.mediaFiles', { count: summary.media })
+            ].join(', ')}
           </span>
           <Button onClick={onClose}>{t('common.cancel')}</Button>
           <Button variant="primary" disabled={blocked} onClick={() => void run()}>

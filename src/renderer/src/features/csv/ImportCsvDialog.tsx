@@ -101,10 +101,10 @@ export function ImportCsvDialog({ onClose }: { onClose: () => void }): React.JSX
             </button>
           </span>
           <span className={styles.summary} role="status">
-            {t('csv.summary', {
-              people: result.stats.people,
-              relationships: result.stats.relationships
-            })}
+            {[
+              t('counts.people', { count: result.stats.people }),
+              t('counts.relationships', { count: result.stats.relationships })
+            ].join(', ')}
           </span>
           <Button onClick={onClose}>{t('common.cancel')}</Button>
           <Button variant="primary" disabled={blocked} onClick={() => void run()}>

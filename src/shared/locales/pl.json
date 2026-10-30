@@ -35,10 +35,6 @@
     "onlinePlaceLookup": "Wyszukuj miejsca online",
     "onlineMaps": "Wczytuj mapy online"
   },
-  "language": {
-    "en": "English",
-    "pl": "Polski"
-  },
   "theme": {
     "system": "Systemowy",
     "light": "Jasny",
@@ -472,7 +468,6 @@
     "more_few": "…i jeszcze {{count}}",
     "more_many": "…i jeszcze {{count}}",
     "more_other": "…i jeszcze {{count}}",
-    "summary": "Osoby: {{people}}, relacje: {{relationships}}",
     "target": "Importuj do",
     "targetNew": "Nowego drzewa",
     "targetMerge": "Bieżącego drzewa",
@@ -809,7 +804,7 @@
     "moveLater": "Przesuń później",
     "removeFrom": "Usuń z galerii: {{name}}",
     "removed": "Usunięto „{{title}}”",
-    "position": "{{index}} z {{count}}",
+    "position": "{{index}} z {{total}}",
     "openExternally": "Otwórz w innym programie",
     "export": "Zapisz kopię…",
     "previous": "Poprzedni",
@@ -870,7 +865,6 @@
     "usedBy_few": "Użyte {{count}} razy: {{people}}",
     "usedBy_many": "Użyte {{count}} razy: {{people}}",
     "usedBy_other": "Użyte {{count}} razy: {{people}}",
-    "andMore": "i {{count}} innych",
     "location": "Położenie",
     "noLocation": "Brak położenia. Wyszukaj je online albo wpisz współrzędne.",
     "manual": "wpisane przez Ciebie",
@@ -898,7 +892,11 @@
     "mergeButton": "Scal",
     "consentTitle": "Wyszukiwać miejsca online?",
     "consentText": "Aby znaleźć współrzędne, Family Insight wysyła nazwę miejsca – i nic więcej – do OpenStreetMap Nominatim, bezpłatnej usługi w internecie. Odpowiedzi są przechowywane na tym komputerze. Możesz to w każdej chwili wyłączyć w ustawieniach (⚙ → Wyszukuj miejsca online).",
-    "consentAllow": "Zezwól"
+    "consentAllow": "Zezwól",
+    "andMore_one": "i {{count}} inna osoba",
+    "andMore_few": "i {{count}} inne osoby",
+    "andMore_many": "i {{count}} innych osób",
+    "andMore_other": "i {{count}} innej osoby"
   },
   "map": {
     "title": "Mapa",
@@ -959,7 +957,6 @@
     "importTitle": "Import GEDCOM: {{name}}",
     "detected": "GEDCOM {{version}} z programu {{program}}",
     "unknownProgram": "nieznanego",
-    "summary": "Osoby: {{people}}, rodziny: {{families}}, wydarzenia: {{events}}, źródła: {{sources}}, multimedia: {{media}}",
     "importButton": "Importuj",
     "importing": "Importuję…",
     "imported_one": "Zaimportowano {{count}} osobę",
@@ -1034,5 +1031,31 @@
     "upToDate": "Family Insight {{version}} to najnowsza wersja.",
     "errorTitle": "Nie udało się sprawdzić aktualizacji",
     "checkFailed": "Nie można połączyć się z serwerem aktualizacji. Sprawdź połączenie z internetem i spróbuj ponownie."
+  },
+  "counts": {
+    "people_one": "{{count}} osoba",
+    "people_few": "{{count}} osoby",
+    "people_many": "{{count}} osób",
+    "people_other": "{{count}} osoby",
+    "relationships_one": "{{count}} relacja",
+    "relationships_few": "{{count}} relacje",
+    "relationships_many": "{{count}} relacji",
+    "relationships_other": "{{count}} relacji",
+    "families_one": "{{count}} rodzina",
+    "families_few": "{{count}} rodziny",
+    "families_many": "{{count}} rodzin",
+    "families_other": "{{count}} rodziny",
+    "events_one": "{{count}} wydarzenie",
+    "events_few": "{{count}} wydarzenia",
+    "events_many": "{{count}} wydarzeń",
+    "events_other": "{{count}} wydarzenia",
+    "sources_one": "{{count}} źródło",
+    "sources_few": "{{count}} źródła",
+    "sources_many": "{{count}} źródeł",
+    "sources_other": "{{count}} źródła",
+    "mediaFiles_one": "{{count}} plik multimediów",
+    "mediaFiles_few": "{{count}} pliki multimediów",
+    "mediaFiles_many": "{{count}} plików multimediów",
+    "mediaFiles_other": "{{count}} pliku multimediów"
   }
 }

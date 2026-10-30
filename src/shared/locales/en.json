@@ -35,10 +35,6 @@
     "onlinePlaceLookup": "Look up places online",
     "onlineMaps": "Load maps online"
   },
-  "language": {
-    "en": "English",
-    "pl": "Polski"
-  },
   "theme": {
     "system": "System",
     "light": "Light",
@@ -450,7 +446,6 @@
     "row": "Row {{row}}:",
     "more_one": "…and {{count}} more",
     "more_other": "…and {{count}} more",
-    "summary": "{{people}} people, {{relationships}} relationships",
     "target": "Import into",
     "targetNew": "A new tree",
     "targetMerge": "The current tree",
@@ -753,7 +748,7 @@
     "moveLater": "Move later",
     "removeFrom": "Remove from {{name}}",
     "removed": "“{{title}}” removed",
-    "position": "{{index}} of {{count}}",
+    "position": "{{index}} of {{total}}",
     "openExternally": "Open in another app",
     "export": "Save a copy…",
     "previous": "Previous",
@@ -806,7 +801,6 @@
     "spellings": "Also written as {{list}}",
     "usedBy_one": "Used once: {{people}}",
     "usedBy_other": "Used {{count}} times: {{people}}",
-    "andMore": "and {{count}} more",
     "location": "Location",
     "noLocation": "No location yet. Look it up online or enter the coordinates.",
     "manual": "entered by you",
@@ -834,7 +828,9 @@
     "mergeButton": "Merge",
     "consentTitle": "Look up places online?",
     "consentText": "To find coordinates, Family Insight sends the place name – and nothing else – to OpenStreetMap Nominatim, a free service on the internet. Answers are kept on this computer. You can turn this off at any time in the settings (⚙ → Look up places online).",
-    "consentAllow": "Allow"
+    "consentAllow": "Allow",
+    "andMore_one": "and {{count}} more",
+    "andMore_other": "and {{count}} more"
   },
   "map": {
     "title": "Map",
@@ -887,7 +883,6 @@
     "importTitle": "Import GEDCOM: {{name}}",
     "detected": "GEDCOM {{version}} from {{program}}",
     "unknownProgram": "an unknown program",
-    "summary": "{{people}} people, {{families}} families, {{events}} events, {{sources}} sources, {{media}} media files",
     "importButton": "Import",
     "importing": "Importing…",
     "imported_one": "{{count}} person imported",
@@ -952,5 +947,19 @@
     "upToDate": "Family Insight {{version}} is the newest version.",
     "errorTitle": "Couldn't check for updates",
     "checkFailed": "The update server couldn't be reached. Check your internet connection and try again."
+  },
+  "counts": {
+    "people_one": "{{count}} person",
+    "people_other": "{{count}} people",
+    "relationships_one": "{{count}} relationship",
+    "relationships_other": "{{count}} relationships",
+    "families_one": "{{count}} family",
+    "families_other": "{{count}} families",
+    "events_one": "{{count}} event",
+    "events_other": "{{count}} events",
+    "sources_one": "{{count}} source",
+    "sources_other": "{{count}} sources",
+    "mediaFiles_one": "{{count}} media file",
+    "mediaFiles_other": "{{count}} media files"
   }
 }

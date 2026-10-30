@@ -1,11 +1,11 @@
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { DEFAULT_LANGUAGE, resources, resolveLanguage, type Language } from '@shared/i18n'
+import { csvDelimiterFor, DEFAULT_LANGUAGE, i18nResources, resolveLanguage } from '@shared/i18n'
 import { useSettings } from '@renderer/store/settings'
 
 export async function initI18n(language: string): Promise<void> {
   await i18next.use(initReactI18next).init({
-    resources,
+    resources: i18nResources(),
     lng: resolveLanguage(language),
     fallbackLng: DEFAULT_LANGUAGE,
     interpolation: { escapeValue: false }
@@ -23,10 +23,10 @@ export async function initI18n(language: string): Promise<void> {
 }
 
 /** Switches the UI language; main persists it and re-localises the native menu. */
-export async function changeLanguage(language: Language): Promise<void> {
+export async function changeLanguage(language: string): Promise<void> {
   await i18next.changeLanguage(language)
-  // Sensible CSV default for the language (Polish Excel expects semicolons).
-  await useSettings.getState().update({ language, csvDelimiter: language === 'pl' ? ';' : ',' })
+  // Sensible CSV default for the language (Excel in decimal-comma locales expects semicolons).
+  await useSettings.getState().update({ language, csvDelimiter: csvDelimiterFor(language) })
 }
 
 export default i18next

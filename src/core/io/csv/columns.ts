@@ -19,6 +19,10 @@ export const CSV_COLUMNS = [
 export type CsvColumn = (typeof CSV_COLUMNS)[number]
 export type HeaderLanguage = 'en' | 'pl'
 
+/** Header language for a UI language (English where there is no own header set yet). */
+export const headerLanguage = (language: string): HeaderLanguage =>
+  language === 'pl' ? 'pl' : 'en'
+
 /** Polish header written on export (ASCII, so it survives any spreadsheet). */
 export const POLISH_HEADERS: Record<CsvColumn, string> = {
   id: 'id',

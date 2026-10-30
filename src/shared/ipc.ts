@@ -57,6 +57,8 @@ export interface AppInfo {
   version: string
   platform: string
   locale: string
+  /** The development pseudo-locale is available. */
+  pseudoLocale: boolean
 }
 
 /** Id of a registered format (see `src/core/io/registry.ts`), e.g. `finsight` or `csv`. */
