@@ -86,6 +86,7 @@ export type MenuAction =
   | 'help:about'
   | 'help:csv-format'
   | 'help:csv-template'
+  | 'help:shortcuts'
 
 /** The API exposed to the renderer as `window.familyInsight` by the preload script. */
 export interface FamilyInsightApi {

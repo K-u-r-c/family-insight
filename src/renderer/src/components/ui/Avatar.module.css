@@ -16,25 +16,25 @@
 }
 
 .female {
-  color: var(--color-female);
+  color: var(--color-female-text);
   background: var(--color-female-soft);
 }
 
 .male {
-  color: var(--color-male);
+  color: var(--color-male-text);
   background: var(--color-male-soft);
 }
 
 .other {
-  color: var(--color-other);
+  color: var(--color-other-text);
   background: var(--color-other-soft);
 }
 
 .unknown {
-  color: var(--color-unknown);
+  color: var(--color-unknown-text);
   background: var(--color-unknown-soft);
 }
 
 .deceased {
-  filter: saturate(0.6);
+  box-shadow: inset 0 0 0 1.5px var(--color-border-strong);
 }

@@ -41,6 +41,16 @@ export function Workspace(): React.JSX.Element {
 
   return (
     <div className={styles.root}>
+      <a
+        href="#tree"
+        className={styles.skip}
+        onClick={(e) => {
+          e.preventDefault()
+          document.querySelector<HTMLElement>('[role="application"]')?.focus()
+        }}
+      >
+        {t('a11y.skipToTree')}
+      </a>
       <Toolbar
         onAddPerson={addPerson}
         canUndo={canUndo}

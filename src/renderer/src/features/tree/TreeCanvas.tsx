@@ -3,6 +3,7 @@ import { Home, Pencil, Sprout, Trash2, UserPlus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { layoutFamily, type Layout } from '@core/layout/layout'
 import { searchPersons } from '@core/search'
+import { displayName, getChildren, getParents, getPartners } from '@core/model/tree'
 import { Button, EmptyState, Menu, type MenuAnchor, type MenuEntry } from '@renderer/components/ui'
 import { deletePersonWithConfirm } from '@renderer/features/person/deletePerson'
 import { addNewRelative, runCommand } from '@renderer/features/person/relationActions'
@@ -100,6 +101,27 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
   const ref = useRef<HTMLDivElement>(null)
   const [menu, setMenu] = useState<{ anchor: MenuAnchor; entries: MenuEntry[] } | null>(null)
   const [panning, setPanning] = useState(false)
+  // Screen reader summary of the person reached with the arrow keys.
+  const [announcement, setAnnouncement] = useState('')
+  const describePerson = (id: string): string => {
+    const names = (people: { givenNames: string; surname: string }[]): string =>
+      people.map((p) => displayName(p) || t('person.unnamed')).join(', ')
+    const person = tree.persons[id]
+    if (!person) return ''
+    const parts = [
+      getParents(tree, id).length ? t('a11y.parents', { names: names(getParents(tree, id)) }) : '',
+      getPartners(tree, id).length
+        ? t('a11y.partners', { names: names(getPartners(tree, id)) })
+        : '',
+      getChildren(tree, id).length
+        ? t('a11y.children', { names: names(getChildren(tree, id)) })
+        : ''
+    ].filter(Boolean)
+    return t('a11y.selected', {
+      name: displayName(person) || t('person.unnamed'),
+      relatives: parts.length ? parts.join('. ') : t('a11y.noRelatives')
+    })
+  }
 
   const count = Object.keys(tree.persons).length
   const positions = useMemo(() => new Map(layout?.nodes.map((n) => [n.id, n]) ?? []), [layout])
@@ -301,6 +323,7 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
         : (tree.meta.rootPersonId ?? layout.nodes[0]?.id ?? null)
       if (next) {
         select(next)
+        setAnnouncement(describePerson(next))
         requestAnimationFrame(() =>
           ref.current
             ?.querySelector<HTMLElement>(`[data-person-id="${CSS.escape(next)}"] button`)
@@ -427,6 +450,9 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
       </div>
       {showMinimap && layout && layout.nodes.length > 1 && <Minimap layout={layout} />}
       <CanvasControls layout={layout} />
+      <div className="visually-hidden" aria-live="polite" role="status">
+        {announcement}
+      </div>
       <Menu
         anchor={menu?.anchor ?? null}
         entries={menu?.entries ?? []}

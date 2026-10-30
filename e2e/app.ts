@@ -11,6 +11,7 @@ export interface Launched {
 
 interface LaunchOptions {
   language?: 'en' | 'pl'
+  theme?: 'light' | 'dark'
   args?: string[]
   userData?: string
 }
@@ -21,7 +22,7 @@ export async function launch(options: LaunchOptions = {}): Promise<Launched> {
   if (!options.userData) {
     writeFileSync(
       join(userData, 'settings.json'),
-      JSON.stringify({ language: options.language ?? 'en', theme: 'light' })
+      JSON.stringify({ language: options.language ?? 'en', theme: options.theme ?? 'light' })
     )
   }
   const app = await electron.launch({

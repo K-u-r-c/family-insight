@@ -14,6 +14,7 @@ import { ImportCsvDialog } from './features/csv/ImportCsvDialog'
 import { NewTreeDialog } from './features/welcome/NewTreeDialog'
 import { ExportImageDialog } from './features/export/ExportImageDialog'
 import { StatsDialog } from './features/stats/StatsDialog'
+import { ShortcutsDialog } from './features/help/ShortcutsDialog'
 import { printTree } from './features/export/exportImage'
 import { RecoveryDialog } from './features/welcome/RecoveryDialog'
 import { useAutosave } from './services/autosave'
@@ -53,6 +54,7 @@ export function App(): React.JSX.Element {
         if (useDocument.getState().tree) void printTree()
       },
       'help:csv-format': openCsvFormatDocs,
+      'help:shortcuts': () => useWorkspaceUi.getState().openDialog('shortcuts'),
       'help:csv-template': () => void saveCsvTemplate(),
       'file:export-csv': () => {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-csv')
@@ -84,6 +86,7 @@ export function App(): React.JSX.Element {
         <ExportImageDialog onClose={() => openDialog(null)} />
       )}
       {dialog === 'stats' && hasDocument && <StatsDialog onClose={() => openDialog(null)} />}
+      {dialog === 'shortcuts' && <ShortcutsDialog onClose={() => openDialog(null)} />}
       {dialog === 'new-tree' && (
         <NewTreeDialog
           onClose={() => openDialog(null)}

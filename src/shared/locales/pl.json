@@ -73,7 +73,8 @@
     "noRecent": "Brak ostatnich plików",
     "clearRecent": "Wyczyść listę",
     "exportImage": "Eksportuj obraz…",
-    "print": "Drukuj…"
+    "print": "Drukuj…",
+    "shortcuts": "Skróty klawiszowe"
   },
   "sex": {
     "female": "Kobieta",
@@ -555,5 +556,28 @@
     "todoDone": "Wszyscy mają daty i rodziców. Świetna robota!",
     "noDates": "brak dat",
     "noParents": "brak rodziców"
+  },
+  "shortcuts": {
+    "title": "Skróty klawiszowe",
+    "files": "Pliki",
+    "editing": "Edycja",
+    "tree": "Drzewo",
+    "general": "Ogólne",
+    "editSelected": "Edytuj wybraną osobę",
+    "cancel": "Anuluj / zamknij / odznacz",
+    "toParent": "Przejdź do rodzica",
+    "toChild": "Przejdź do dziecka",
+    "sideways": "Przejdź do partnera lub rodzeństwa",
+    "zoom": "Powiększ / pomniejsz",
+    "search": "Szukaj osób",
+    "thisHelp": "Pokaż tę pomoc"
+  },
+  "a11y": {
+    "skipToTree": "Przejdź do drzewa",
+    "selected": "{{name}}. {{relatives}}",
+    "parents": "Rodzice: {{names}}",
+    "partners": "Partnerzy: {{names}}",
+    "children": "Dzieci: {{names}}",
+    "noRelatives": "Brak krewnych."
   }
 }

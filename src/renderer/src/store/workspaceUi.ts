@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 
 export type PeopleSort = 'surname' | 'givenNames' | 'birth'
-export type AppDialog = 'export-csv' | 'import-csv' | 'export-image' | 'new-tree' | 'stats' | null
+export type AppDialog =
+  'export-csv' | 'import-csv' | 'export-image' | 'new-tree' | 'stats' | 'shortcuts' | null
 
 /** Transient UI state of the workspace (not part of the document, not undoable). */
 interface WorkspaceUiState {

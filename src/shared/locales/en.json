@@ -73,7 +73,8 @@
     "noRecent": "No recent files",
     "clearRecent": "Clear Recent",
     "exportImage": "Export Image…",
-    "print": "Print…"
+    "print": "Print…",
+    "shortcuts": "Keyboard Shortcuts"
   },
   "sex": {
     "female": "Female",
@@ -517,5 +518,28 @@
     "todoDone": "Everyone has dates and parents. Nice work!",
     "noDates": "no dates",
     "noParents": "no parents"
+  },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "files": "Files",
+    "editing": "Editing",
+    "tree": "Family tree",
+    "general": "General",
+    "editSelected": "Edit the selected person",
+    "cancel": "Cancel / close / deselect",
+    "toParent": "Go to a parent",
+    "toChild": "Go to a child",
+    "sideways": "Go to a partner or sibling",
+    "zoom": "Zoom in / out",
+    "search": "Search people",
+    "thisHelp": "Show this help"
+  },
+  "a11y": {
+    "skipToTree": "Skip to the family tree",
+    "selected": "{{name}}. {{relatives}}",
+    "parents": "Parents: {{names}}",
+    "partners": "Partners: {{names}}",
+    "children": "Children: {{names}}",
+    "noRelatives": "No relatives yet."
   }
 }

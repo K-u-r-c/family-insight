@@ -142,6 +142,8 @@ export function buildMenu(): void {
     {
       label: t('menu.help'),
       submenu: [
+        { label: t('menu.shortcuts'), accelerator: 'F1', click: () => send('help:shortcuts') },
+        { type: 'separator' },
         { label: t('menu.csvFormat'), click: () => send('help:csv-format') },
         { label: t('menu.csvTemplate'), click: () => send('help:csv-template') },
         { type: 'separator' },

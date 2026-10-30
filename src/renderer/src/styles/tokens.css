@@ -60,7 +60,7 @@
   --color-border-strong: #cbc3b6;
   --color-text: #23201c;
   --color-text-muted: #665e54;
-  --color-text-subtle: #8a8277;
+  --color-text-subtle: #706858;
   --color-accent: #2f7350;
   --color-accent-hover: #275f43;
   --color-accent-soft: #e2efe7;
@@ -81,6 +81,11 @@
   --color-other-soft: #eee7f6;
   --color-unknown: #7d766c;
   --color-unknown-soft: #ece9e4;
+  /* Text on the soft sex colours (avatars): ≥ 4.5:1. */
+  --color-female-text: #9b3556;
+  --color-male-text: #2c568f;
+  --color-other-text: #5f3f8c;
+  --color-unknown-text: #5c554c;
   --color-edge: #b5ac9f;
   --color-highlight: #f2c94c;
   --shadow-sm: 0 1px 2px rgb(35 32 28 / 6%), 0 1px 3px rgb(35 32 28 / 7%);
@@ -104,7 +109,7 @@
   --color-border-strong: #4d4842;
   --color-text: #f2eee8;
   --color-text-muted: #b0a89d;
-  --color-text-subtle: #8d857a;
+  --color-text-subtle: #9a9084;
   --color-accent: #6cb68a;
   --color-accent-hover: #85c6a0;
   --color-accent-soft: #233729;
@@ -125,6 +130,10 @@
   --color-other-soft: #312840;
   --color-unknown: #a59d92;
   --color-unknown-soft: #302d29;
+  --color-female-text: #f4b3c6;
+  --color-male-text: #a9c4ee;
+  --color-other-text: #cfbbee;
+  --color-unknown-text: #c4bdb3;
   --color-edge: #5d5750;
   --color-highlight: #d9ad2b;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 30%);
@@ -148,7 +157,7 @@
     --color-border-strong: #4d4842;
     --color-text: #f2eee8;
     --color-text-muted: #b0a89d;
-    --color-text-subtle: #8d857a;
+    --color-text-subtle: #9a9084;
     --color-accent: #6cb68a;
     --color-accent-hover: #85c6a0;
     --color-accent-soft: #233729;
@@ -169,6 +178,10 @@
     --color-other-soft: #312840;
     --color-unknown: #a59d92;
     --color-unknown-soft: #302d29;
+    --color-female-text: #f4b3c6;
+    --color-male-text: #a9c4ee;
+    --color-other-text: #cfbbee;
+    --color-unknown-text: #c4bdb3;
     --color-edge: #5d5750;
     --color-highlight: #d9ad2b;
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 30%);
