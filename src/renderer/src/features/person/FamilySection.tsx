@@ -141,7 +141,7 @@ function Group({
           ))}
         </ul>
       )}
-      <div className={styles.actions}>
+      <div className={styles.actions} data-tour={linkRole === 'parent' ? 'add-parent' : undefined}>
         {actions.map((a) => (
           <Button
             key={a.role}

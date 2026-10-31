@@ -14,6 +14,8 @@ interface LaunchOptions {
   language?: string
   theme?: 'light' | 'dark'
   style?: 'modern' | 'tapestry'
+  /** A first launch: the guided tour is offered (otherwise it counts as seen). */
+  firstRun?: boolean
   args?: string[]
   userData?: string
   /** Show the window (frame timing needs a visible window). */
@@ -31,7 +33,8 @@ export async function launch(options: LaunchOptions = {}): Promise<Launched> {
       JSON.stringify({
         language: options.language ?? 'en',
         theme: options.theme ?? 'light',
-        style: options.style ?? 'modern'
+        style: options.style ?? 'modern',
+        tours: options.firstRun ? [] : ['first-run']
       })
     )
   }

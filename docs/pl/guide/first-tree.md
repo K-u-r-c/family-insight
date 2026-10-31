@@ -7,6 +7,10 @@ description: Samouczek krok po kroku – utwórz drzewo z sobą, rodzicami, part
 W około dziesięć minut zbudujesz małe drzewo trzech pokoleń – siebie, rodziców, partnera
 i dziecko – dodasz zdjęcie i zapiszesz plik. Wpisuj swoją rodzinę albo postępuj według przykładu.
 
+::: tip Wolisz, żeby ktoś Ci pokazał?
+Wbudowany [przewodnik](./main-window#guided-tour) przeprowadzi Cię przez te kroki w samym programie.
+:::
+
 ## 1. Utwórz drzewo
 
 Na ekranie powitalnym kliknij **Nowe drzewo rodzinne**. Nadaj drzewu nazwę – np. nazwisko rodziny

@@ -50,6 +50,14 @@ information about the program.
 
 ## Guided tour {#guided-tour}
 
-Choose **Help → Show guided tour** in the menu bar. A short tour points at the most important parts of the window one after another; you can use the program while it runs. Move with **Next** and **Back** (or the ← → keys) and press <kbd>Esc</kbd> to skip it. Finished or skipped tours are not offered again – **Settings → Reset tips and guided tours** brings them back.
+The first time you start Family Insight, the welcome screen offers a **guided tour** – click **Show me around**:
 
-<Screenshot name="guided-tour" alt="The guided tour pointing at the Add person button, with a popover: Step 1 of 4, Add people, and the buttons Skip tour, Back and Next" />
+<Screenshot name="tour-offer" alt="The welcome screen with the offer: New here? A short guided tour helps you build your first tree, step by step – Show me around, Not now" />
+
+The tour builds your first tree with you: it points at one thing at a time and moves on by itself when you have done it – start a tree, add yourself, look at the details, add a parent – and then shows how to move around the tree, the views, search and saving. You can use the program normally while it runs. Move with **Next** and **Back** (or the ← → keys) and press <kbd>Esc</kbd> to skip it.
+
+<Screenshot name="guided-tour" alt="The guided tour after creating a tree: the name fields of the first person are highlighted, with the step Add yourself, step 2 of 8" />
+
+<Screenshot name="tour-add-parent" alt="The guided tour pointing at the Father and Mother buttons in the details panel, with the step Add a parent" />
+
+Start it again any time with **Help → Show guided tour** in the menu bar. Finished or skipped tours are not offered again – **Settings → Reset tips and guided tours** brings them back.

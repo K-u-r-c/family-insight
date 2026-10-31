@@ -71,7 +71,7 @@ export function PersonEditor({ person }: { person: Person }): React.JSX.Element 
         <PhotoField person={person} />
       </fieldset>
 
-      <fieldset className={styles.group}>
+      <fieldset className={styles.group} data-tour="person-name">
         <legend className={styles.legend}>
           {t('person.name')} <CiteButton target={{ kind: 'person', personId: person.id }} />
         </legend>

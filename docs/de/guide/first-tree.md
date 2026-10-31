@@ -8,6 +8,10 @@ In etwa zehn Minuten bauen Sie einen kleinen Stammbaum über drei Generationen a
 Ihre Eltern, Ihr Partner oder Ihre Partnerin und Ihr Kind –, fügen ein Foto hinzu und speichern ihn.
 Nehmen Sie Ihre eigene Familie oder folgen Sie dem Beispiel.
 
+::: tip Lieber gezeigt bekommen?
+Die eingebaute [geführte Tour](./main-window#guided-tour) führt Sie im Programm durch diese Schritte.
+:::
+
 ## 1. Stammbaum erstellen
 
 Klicken Sie auf dem Startbildschirm auf **Neuer Stammbaum**. Geben Sie Ihrem Stammbaum einen Namen

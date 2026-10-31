@@ -54,6 +54,14 @@ plus l’aide, les raccourcis clavier et des informations sur le logiciel.
 
 ## Visite guidée {#guided-tour}
 
-Choisissez **Aide → Afficher la visite guidée** dans la barre de menus. Une courte visite montre l’une après l’autre les parties les plus importantes de la fenêtre ; vous pouvez utiliser le logiciel pendant ce temps. Avancez avec **Suivant** et **Précédent** (ou les touches ← →) et appuyez sur <kbd>Esc</kbd> pour la passer. Les visites terminées ou passées ne sont plus proposées – **Paramètres → Réinitialiser les astuces et les visites guidées** les fait revenir.
+Au premier démarrage, l’écran d’accueil propose une **visite guidée** – cliquez sur **Faites-moi visiter** :
 
-<Screenshot name="guided-tour" alt="La visite guidée montrant le bouton Ajouter une personne, avec une bulle : Étape 1 sur 4, Ajouter des personnes, et les boutons Passer la visite, Précédent et Suivant" />
+<Screenshot name="tour-offer" alt="L’écran d’accueil avec la proposition : Première visite ? Une courte visite guidée vous aide à créer votre premier arbre, étape par étape – Faites-moi visiter, Pas maintenant" />
+
+La visite crée avec vous votre premier arbre : elle montre une chose à la fois et avance toute seule quand c’est fait – commencer un arbre, vous ajouter, regarder les détails, ajouter un parent – puis montre comment se déplacer dans l’arbre, les vues, la recherche et l’enregistrement. Vous pouvez utiliser le logiciel pendant ce temps. Avancez avec **Suivant** et **Précédent** (ou les touches ← →) et appuyez sur <kbd>Esc</kbd> pour la passer.
+
+<Screenshot name="guided-tour" alt="La visite guidée après la création d’un arbre : les champs du nom de la première personne sont mis en évidence, avec l’étape Vous ajouter, étape 2 sur 8" />
+
+<Screenshot name="tour-add-parent" alt="La visite guidée montrant les boutons Père et Mère dans le panneau des détails, avec l’étape Ajouter un parent" />
+
+Relancez-la à tout moment avec **Aide → Afficher la visite guidée** dans la barre de menus. Les visites terminées ou passées ne sont plus proposées – **Paramètres → Réinitialiser les astuces et les visites guidées** les fait revenir.

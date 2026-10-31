@@ -1047,22 +1047,44 @@
     "skip": "Salta la visita",
     "close": "Chiudi la visita guidata",
     "reset": "Ripristina suggerimenti e visite guidate",
-    "basics": {
-      "add": {
-        "title": "Aggiungi persone",
-        "body": "Comincia da te o da qualcuno che conosci: clicca qui, scrivi il nome e salva. I parenti si aggiungono poi dalla scheda di una persona."
+    "offer": {
+      "title": "Prima volta qui?",
+      "body": "Una breve visita guidata ti aiuta a creare il tuo primo albero, passo dopo passo.",
+      "start": "Mostrami come funziona",
+      "later": "Non ora"
+    },
+    "firstRun": {
+      "start": {
+        "title": "Inizia il tuo albero",
+        "body": "Clicca su Nuovo albero genealogico, dagli un nome e crealo. Vuoi solo dare un'occhiata? Prova una famiglia di esempio."
+      },
+      "yourself": {
+        "title": "Aggiungi te stesso",
+        "body": "Scrivi nomi e cognome, poi premi Invio o clicca su Fatto. Date, luoghi e una foto possono arrivare dopo."
+      },
+      "details": {
+        "title": "Tutto su una persona",
+        "body": "Il pannello dei dettagli mostra la persona selezionata: date, luoghi, eventi, fonti e foto. Modifica riapre il modulo."
+      },
+      "parent": {
+        "title": "Aggiungi un genitore",
+        "body": "Clicca su Padre o Madre, scrivi il nome e premi Invio. Partner, figli e fratelli si aggiungono allo stesso modo."
+      },
+      "canvas": {
+        "title": "Muoviti nell'albero",
+        "body": "Trascina lo sfondo per spostare l'albero e usa la rotellina per lo zoom. Questi pulsanti ingrandiscono, mostrano tutto l'albero e centrano la persona selezionata; le frecce passano da un parente all'altro."
       },
       "views": {
         "title": "Scegli cosa vedere",
-        "body": "Mostra tutta la famiglia o solo gli antenati, i discendenti o entrambi (clessidra) di una persona."
+        "body": "Mostra tutta la famiglia o solo gli antenati, i discendenti o entrambi (clessidra) di una persona. Il − sotto una scheda chiude un ramo."
       },
       "search": {
         "title": "Trova chiunque",
-        "body": "Scrivi un nome, un luogo o un anno: l’albero evidenzia le persone che corrispondono."
+        "body": "Scrivi un nome, un luogo o un anno per evidenziare le persone. La lista a sinistra mostra tutti e Statistiche riassume la famiglia."
       },
-      "settings": {
-        "title": "Su misura per te",
-        "body": "Qui trovi tema, stile Arazzo, lingua, dimensione delle schede e salvataggio automatico. La visita guidata si riavvia dal menu Aiuto."
+      "save": {
+        "title": "Al sicuro",
+        "body": "Salva l'albero da questo menu: poi si salva da solo e tiene copie di sicurezza. Aiuto → Mostra la visita guidata riapre questa visita."
       }
     }
   }

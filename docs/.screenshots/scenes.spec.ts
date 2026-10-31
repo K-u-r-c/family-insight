@@ -1407,13 +1407,53 @@ scene(
   { settings: { style: 'tapestry' } }
 )
 
-scene('guided-tour', async (s) => {
-  await openSample(s)
-  await s.app.evaluate(({ Menu }) => Menu.getApplicationMenu()!.getMenuItemById('tour')!.click())
-  await s.page.locator('[data-tour-overlay] [role="dialog"]').waitFor()
-  await s.page.waitForTimeout(800)
+/** A fresh profile: the welcome screen offers the guided tour. */
+const firstRun = { settings: { tours: [] } }
+
+async function tourStep(s: Session, title: string): Promise<void> {
+  await s.page.getByRole('dialog', { name: title }).waitFor()
+  await s.page.waitForTimeout(900)
   await parkMouse(s)
-})
+}
+
+scene(
+  'tour-offer',
+  async (s) => {
+    const offer = s.page.getByRole('region', { name: s.t('tour.offer.title') })
+    await offer.waitFor()
+    await s.page.waitForTimeout(600)
+    return { clip: [s.page.getByRole('heading', { level: 1 }), offer], pad: 24 }
+  },
+  firstRun
+)
+
+scene(
+  'guided-tour',
+  async (s) => {
+    await s.page.getByRole('button', { name: s.t('tour.offer.start') }).click()
+    await s.page.getByRole('button', { name: s.t('welcome.newTree') }).click()
+    await s.page.getByRole('button', { name: s.t('welcome.create') }).click()
+    await tourStep(s, s.t('tour.firstRun.yourself.title'))
+  },
+  firstRun
+)
+
+scene(
+  'tour-add-parent',
+  async (s) => {
+    const { page, t } = s
+    await page.getByRole('button', { name: t('tour.offer.start') }).click()
+    await page.getByRole('button', { name: t('welcome.newTree') }).click()
+    await page.getByRole('button', { name: t('welcome.create') }).click()
+    await page.locator('#person-given-names').fill(s.variant.lang === 'ru' ? 'Анна' : 'Anna')
+    await page.locator('#person-given-names').press('Tab')
+    await page.getByRole('button', { name: t('common.done') }).click()
+    await page.getByRole('dialog', { name: t('tour.firstRun.details.title') }).waitFor()
+    await page.getByRole('button', { name: t('tour.next') }).click()
+    await tourStep(s, t('tour.firstRun.parent.title'))
+  },
+  firstRun
+)
 
 scene('unsaved-status', async (s) => {
   await openSample(s)

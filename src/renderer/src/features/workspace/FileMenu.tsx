@@ -87,6 +87,7 @@ export function FileMenu(): React.JSX.Element {
     <>
       <IconButton
         icon={MenuIcon}
+        data-tour="file-menu"
         label={t('menu.file')}
         aria-haspopup="menu"
         aria-expanded={anchor !== null}

@@ -1095,22 +1095,44 @@
     "skip": "Pomiń przewodnik",
     "close": "Zamknij przewodnik",
     "reset": "Przywróć wskazówki i przewodniki",
-    "basics": {
-      "add": {
-        "title": "Dodawaj osoby",
-        "body": "Zacznij od siebie albo kogokolwiek, kogo znasz: kliknij tutaj, wpisz imię i zapisz. Krewnych dodasz potem z karty osoby."
+    "offer": {
+      "title": "Pierwszy raz tutaj?",
+      "body": "Krótki przewodnik pomoże Ci krok po kroku zbudować pierwsze drzewo.",
+      "start": "Pokaż mi, jak to działa",
+      "later": "Nie teraz"
+    },
+    "firstRun": {
+      "start": {
+        "title": "Zacznij swoje drzewo",
+        "body": "Kliknij Nowe drzewo rodzinne, nadaj mu nazwę i utwórz je. Chcesz tylko się rozejrzeć? Wypróbuj przykładową rodzinę."
+      },
+      "yourself": {
+        "title": "Dodaj siebie",
+        "body": "Wpisz imiona i nazwisko, potem naciśnij Enter albo kliknij Gotowe. Daty, miejsca i zdjęcie możesz dodać później."
+      },
+      "details": {
+        "title": "Wszystko o osobie",
+        "body": "Panel szczegółów pokazuje zaznaczoną osobę: daty, miejsca, wydarzenia, źródła i zdjęcia. Edytuj ponownie otwiera formularz."
+      },
+      "parent": {
+        "title": "Dodaj rodzica",
+        "body": "Kliknij Ojciec albo Matka, wpisz imię i naciśnij Enter. Partnerów, dzieci i rodzeństwo dodajesz tak samo."
+      },
+      "canvas": {
+        "title": "Poruszaj się po drzewie",
+        "body": "Przeciągnij tło, żeby przesunąć drzewo, a kółkiem myszy przybliżaj. Te przyciski przybliżają, dopasowują całe drzewo i wyśrodkowują zaznaczoną osobę; strzałki przechodzą między krewnymi."
       },
       "views": {
         "title": "Wybierz, co widzisz",
-        "body": "Pokaż całą rodzinę albo tylko przodków, potomków lub jedno i drugie (klepsydra) wybranej osoby."
+        "body": "Pokaż całą rodzinę albo tylko przodków, potomków lub jedno i drugie (klepsydra) wybranej osoby. Przycisk − pod kartą zwija gałąź."
       },
       "search": {
         "title": "Znajdź każdego",
-        "body": "Wpisz imię, miejsce lub rok – drzewo wyróżni pasujące osoby."
+        "body": "Wpisz imię, miejsce lub rok, żeby wyróżnić osoby. Lista po lewej pokazuje wszystkich, a Statystyki podsumowują rodzinę."
       },
-      "settings": {
-        "title": "Dopasuj program",
-        "body": "Tu są motyw, styl Gobelin, język, wielkość kart i autozapis. Przewodnik uruchomisz ponownie z menu Pomoc."
+      "save": {
+        "title": "Zadbaj o zapis",
+        "body": "Zapisz drzewo z tego menu – potem zapisuje się samo i tworzy kopie zapasowe. Pomoc → Pokaż przewodnik przywraca ten przewodnik."
       }
     }
   }

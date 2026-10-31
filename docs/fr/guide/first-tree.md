@@ -8,6 +8,10 @@ En une dizaine de minutes, vous allez construire un petit arbre sur trois géné
 parents, votre conjoint et votre enfant –, ajouter une photo et l’enregistrer. Utilisez votre
 propre famille ou suivez l’exemple.
 
+::: tip Vous préférez être guidé ?
+La [visite guidée](./main-window#guided-tour) intégrée vous accompagne dans ces étapes, directement dans le logiciel.
+:::
+
 ## 1. Créer l’arbre
 
 Sur l’écran d’accueil, cliquez sur **Nouvel arbre généalogique**. Donnez un nom à votre arbre – par

@@ -8,6 +8,10 @@ Em cerca de dez minutos, você vai montar uma pequena árvore de três geraçõe
 o seu parceiro ou parceira e o seu filho –, adicionar uma foto e salvar tudo. Use a sua própria
 família ou siga o exemplo.
 
+::: tip Prefere que lhe mostrem?
+A [visita guiada](./main-window#guided-tour) integrada acompanha você nestes passos dentro do programa.
+:::
+
 ## 1. Crie a árvore
 
 Na tela de boas-vindas, clique em **Nova árvore genealógica**. Dê um nome à árvore – por exemplo,

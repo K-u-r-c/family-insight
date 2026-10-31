@@ -7,6 +7,10 @@ description: A step-by-step tutorial – create a family tree with you, your par
 In about ten minutes you will build a small tree of three generations – you, your parents, your
 partner and your child – add a photo and save it. Use your own family or follow the example.
 
+::: tip Prefer to be shown?
+The built-in [guided tour](./main-window#guided-tour) walks you through these steps inside the program.
+:::
+
 ## 1. Create the tree
 
 On the welcome screen click **New family tree**. Give your tree a name – for example your family

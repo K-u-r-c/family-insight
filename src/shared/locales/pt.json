@@ -1047,22 +1047,44 @@
     "skip": "Pular a visita",
     "close": "Fechar a visita guiada",
     "reset": "Redefinir dicas e visitas guiadas",
-    "basics": {
-      "add": {
-        "title": "Adicione pessoas",
-        "body": "Comece por você ou por alguém que você conhece: clique aqui, digite o nome e salve. Os parentes são adicionados depois pelo cartão de uma pessoa."
+    "offer": {
+      "title": "Primeira vez aqui?",
+      "body": "Uma visita guiada curta ajuda você a criar sua primeira árvore, passo a passo.",
+      "start": "Mostre-me como funciona",
+      "later": "Agora não"
+    },
+    "firstRun": {
+      "start": {
+        "title": "Comece sua árvore",
+        "body": "Clique em Nova árvore genealógica, dê um nome a ela e crie. Só quer dar uma olhada? Experimente uma família de exemplo."
+      },
+      "yourself": {
+        "title": "Adicione você",
+        "body": "Digite seus nomes e sobrenome e pressione Enter ou clique em Concluído. Datas, lugares e uma foto podem vir depois."
+      },
+      "details": {
+        "title": "Tudo sobre uma pessoa",
+        "body": "O painel de detalhes mostra a pessoa selecionada: datas, lugares, eventos, fontes e fotos. Editar abre o formulário de novo."
+      },
+      "parent": {
+        "title": "Adicione um pai ou uma mãe",
+        "body": "Clique em Pai ou Mãe, digite o nome e pressione Enter. Parceiros, filhos e irmãos são adicionados do mesmo jeito."
+      },
+      "canvas": {
+        "title": "Navegue pela árvore",
+        "body": "Arraste o fundo para mover a árvore e use a roda do mouse para o zoom. Estes botões aproximam, mostram a árvore inteira e centralizam a pessoa selecionada; as setas passam de um parente a outro."
       },
       "views": {
         "title": "Escolha o que ver",
-        "body": "Mostre a família inteira ou só os antepassados, os descendentes ou ambos (ampulheta) de uma pessoa."
+        "body": "Mostre a família inteira ou só os antepassados, os descendentes ou ambos (ampulheta) de uma pessoa. O − abaixo de um cartão recolhe um ramo."
       },
       "search": {
         "title": "Encontre qualquer pessoa",
-        "body": "Digite um nome, um lugar ou um ano; a árvore destaca as pessoas encontradas."
+        "body": "Digite um nome, um lugar ou um ano para destacar pessoas. A lista à esquerda mostra todos, e Estatísticas resume a família."
       },
-      "settings": {
-        "title": "Do seu jeito",
-        "body": "Aqui ficam o tema, o estilo Tapeçaria, o idioma, o tamanho dos cartões e o salvamento automático. A visita guiada pode ser reaberta pelo menu Ajuda."
+      "save": {
+        "title": "Guarde com segurança",
+        "body": "Salve sua árvore por este menu; depois ela é salva sozinha e mantém cópias de segurança. Ajuda → Mostrar a visita guiada traz esta visita de volta."
       }
     }
   }

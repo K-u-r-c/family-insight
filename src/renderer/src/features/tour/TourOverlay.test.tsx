@@ -13,17 +13,17 @@ afterEach(() => {
   useTour.setState({ position: null })
 })
 
-/** A toolbar with the first target of the basics tour at a known place. */
+/** The first target of the first-run tour (the welcome screen’s New family tree) at a known place. */
 function renderWithTarget(): HTMLElement {
   const { container } = render(
     <>
-      <button type="button" data-tour="add-person">
-        Add person
+      <button type="button" data-tour="new-tree">
+        New family tree
       </button>
       <TourOverlay />
     </>
   )
-  const target = container.querySelector<HTMLElement>('[data-tour="add-person"]')!
+  const target = container.querySelector<HTMLElement>('[data-tour="new-tree"]')!
   target.getBoundingClientRect = () =>
     ({
       x: 100,
@@ -57,11 +57,11 @@ describe('TourOverlay', () => {
   it('shows the step in a labelled popover that takes the focus, and spotlights the target', () => {
     vi.useFakeTimers()
     renderWithTarget()
-    act(() => useTour.getState().start('basics'))
+    act(() => useTour.getState().start('first-run'))
     act(() => vi.advanceTimersByTime(250))
-    const dialog = screen.getByRole('dialog', { name: 'Add people' })
+    const dialog = screen.getByRole('dialog', { name: 'Start your tree' })
     expect(document.activeElement).toBe(dialog)
-    expect(dialog.textContent).toContain('Step 1 of 4')
+    expect(dialog.textContent).toContain('Step 1 of 8')
     // The dim layer has a hole around the target (8 px padding).
     const paths = document.querySelectorAll('[data-tour-overlay] > svg path')
     expect(paths[0]!.getAttribute('d')).toContain('M102 32')
@@ -72,28 +72,28 @@ describe('TourOverlay', () => {
 
   it('moves with the arrow keys and the buttons, and is remembered when finished', async () => {
     renderWithTarget()
-    act(() => useTour.getState().start('basics'))
+    act(() => useTour.getState().start('first-run'))
     const dialog = (): HTMLElement => screen.getByRole('dialog')
     fireEvent.keyDown(dialog(), { key: 'ArrowRight' })
-    expect(dialog().textContent).toContain('Step 2 of 4')
+    expect(dialog().textContent).toContain('Step 2 of 8')
     fireEvent.keyDown(dialog(), { key: 'ArrowLeft' })
-    expect(dialog().textContent).toContain('Step 1 of 4')
+    expect(dialog().textContent).toContain('Step 1 of 8')
     expect(screen.getByRole('button', { name: 'Back' })).toHaveProperty('disabled', true)
-    for (let i = 0; i < 3; i++) fireEvent.click(screen.getByRole('button', { name: 'Next' }))
-    expect(dialog().textContent).toContain('Step 4 of 4')
+    for (let i = 0; i < 7; i++) fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+    expect(dialog().textContent).toContain('Step 8 of 8')
     await act(async () => fireEvent.click(screen.getByRole('button', { name: 'Done' })))
     expect(screen.queryByRole('dialog')).toBeNull()
-    expect(updates).toEqual([{ tours: ['basics'] }])
+    expect(updates).toEqual([{ tours: ['first-run'] }])
   })
 
   it('is skipped with Esc or the close button, and shows centred without a target', async () => {
     render(<TourOverlay />)
-    act(() => useTour.getState().start('basics'))
+    act(() => useTour.getState().start('first-run'))
     expect(document.querySelectorAll('[data-tour-overlay] > svg path')).toHaveLength(1)
     await act(async () => fireEvent.keyDown(window, { key: 'Escape' }))
     expect(screen.queryByRole('dialog')).toBeNull()
-    expect(updates).toEqual([{ tours: ['basics'] }])
-    act(() => useTour.getState().start('basics'))
+    expect(updates).toEqual([{ tours: ['first-run'] }])
+    act(() => useTour.getState().start('first-run'))
     await act(async () =>
       fireEvent.click(screen.getByRole('button', { name: 'Close the guided tour' }))
     )

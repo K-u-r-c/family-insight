@@ -52,6 +52,14 @@ o programie.
 
 ## Przewodnik {#guided-tour}
 
-Wybierz **Pomoc → Pokaż przewodnik** na pasku menu. Krótki przewodnik wskazuje po kolei najważniejsze części okna; w trakcie możesz normalnie korzystać z programu. Przechodź przyciskami **Dalej** i **Wstecz** (albo klawiszami ← →), a <kbd>Esc</kbd> go pomija. Ukończone lub pominięte przewodniki nie pojawiają się ponownie – **Ustawienia → Przywróć wskazówki i przewodniki** przywraca je.
+Przy pierwszym uruchomieniu Family Insight ekran powitalny proponuje **przewodnik** – kliknij **Pokaż mi, jak to działa**:
 
-<Screenshot name="guided-tour" alt="Przewodnik wskazujący przycisk Dodaj osobę, z okienkiem: Krok 1 z 4, Dodawaj osoby, i przyciskami Pomiń przewodnik, Wstecz i Dalej" />
+<Screenshot name="tour-offer" alt="Ekran powitalny z propozycją: Pierwszy raz tutaj? Krótki przewodnik pomoże Ci krok po kroku zbudować pierwsze drzewo – Pokaż mi, jak to działa, Nie teraz" />
+
+Przewodnik buduje z Tobą pierwsze drzewo: wskazuje jedną rzecz naraz i sam przechodzi dalej, gdy ją zrobisz – utwórz drzewo, dodaj siebie, obejrzyj szczegóły, dodaj rodzica – a potem pokazuje poruszanie się po drzewie, widoki, wyszukiwanie i zapis. W trakcie możesz normalnie korzystać z programu. Przechodź przyciskami **Dalej** i **Wstecz** (albo klawiszami ← →), a <kbd>Esc</kbd> go pomija.
+
+<Screenshot name="guided-tour" alt="Przewodnik po utworzeniu drzewa: podświetlone pola imienia pierwszej osoby i krok Dodaj siebie, krok 2 z 8" />
+
+<Screenshot name="tour-add-parent" alt="Przewodnik wskazujący przyciski Ojciec i Matka w panelu szczegółów, z krokiem Dodaj rodzica" />
+
+Uruchomisz go ponownie w każdej chwili przez **Pomoc → Pokaż przewodnik** na pasku menu. Ukończone lub pominięte przewodniki nie pojawiają się same – **Ustawienia → Przywróć wskazówki i przewodniki** przywraca je.

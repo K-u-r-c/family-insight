@@ -542,3 +542,17 @@ later without changing anything else.
   shows the step centred. Modal dialogs are avoided as targets (native top layer).
 - Finished and skipped tours are remembered in `settings.tours` (sanitised: unique short strings,
   at most 50); a settings item clears them.
+
+## First-run tour (2026-10, issue #109)
+
+- **One tour, offered once**: the welcome screen offers `first-run` while it is not in
+  `settings.tours`; **Help → Show guided tour** always starts it. It replaced the window-only tour
+  from #108 – its last steps cover the same ground.
+- **Doing advances the tour**: steps wait for a tree, a named person, a parent link (and the form
+  being closed), so the user builds a real tree; steps that are already done advance by
+  themselves, which also makes the tour useful with a tree open. A step the user goes **back** to
+  does not bounce forward until **Next** (`manual` position).
+- **Test profiles count the tour as seen** (`tours: ['first-run']` in e2e and screenshot runs),
+  unless a test asks for a first launch (`firstRun: true`) – so the offer does not appear in every
+  test and picture.
+- Upgrading users see the offer once on the welcome screen (it is an offer, not a forced tour).

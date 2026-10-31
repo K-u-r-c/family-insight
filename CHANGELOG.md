@@ -15,8 +15,10 @@ All notable changes to this project are documented here. The format follows
   **Settings → Style** or **View → Style**.
 - Images, PDFs and prints in either style: the export dialog has a **Style** choice, so a tree can
   be printed on parchment with framed medallions whichever style the window shows.
-- **Guided tour** (**Help → Show guided tour**): a short tour points at the main parts of the window
-  one after another; Esc skips it, and **Settings → Reset tips and guided tours** shows it again.
+- **Guided tour**: on the first start the welcome screen offers a tour that builds your first tree
+  with you – start a tree, add yourself and a parent – and then shows moving around, views, search
+  and saving. It moves on by itself when a step is done; Esc skips it, **Help → Show guided tour**
+  starts it again and **Settings → Reset tips and guided tours** offers it again.
 
 ## [1.2.1] - 2026-10-31
 

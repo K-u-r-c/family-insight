@@ -54,6 +54,14 @@ Befehle sowie Hilfe, Tastenkürzel und Informationen über das Programm.
 
 ## Geführte Tour {#guided-tour}
 
-Wählen Sie **Hilfe → Geführte Tour anzeigen** in der Menüleiste. Eine kurze Tour zeigt nacheinander auf die wichtigsten Teile des Fensters; Sie können das Programm dabei normal benutzen. Mit **Weiter** und **Zurück** (oder den Tasten ← →) bewegen Sie sich, <kbd>Esc</kbd> überspringt die Tour. Beendete oder übersprungene Touren werden nicht erneut angeboten – **Einstellungen → Tipps und geführte Touren zurücksetzen** holt sie zurück.
+Beim ersten Start bietet der Willkommensbildschirm eine **geführte Tour** an – klicken Sie auf **Zeig mir, wie es geht**:
 
-<Screenshot name="guided-tour" alt="Die geführte Tour zeigt auf die Schaltfläche Person hinzufügen, mit einem Hinweisfenster: Schritt 1 von 4, Personen hinzufügen, und den Schaltflächen Tour überspringen, Zurück und Weiter" />
+<Screenshot name="tour-offer" alt="Der Willkommensbildschirm mit dem Angebot: Neu hier? Eine kurze geführte Tour hilft Ihnen, Schritt für Schritt Ihren ersten Stammbaum anzulegen – Zeig mir, wie es geht, Nicht jetzt" />
+
+Die Tour legt mit Ihnen den ersten Stammbaum an: Sie zeigt auf eine Sache nach der anderen und geht von selbst weiter, wenn Sie sie erledigt haben – Stammbaum beginnen, sich selbst eintragen, die Details ansehen, einen Elternteil hinzufügen – und zeigt dann, wie Sie sich im Stammbaum bewegen, die Ansichten, die Suche und das Speichern. Sie können das Programm dabei normal benutzen. Mit **Weiter** und **Zurück** (oder den Tasten ← →) bewegen Sie sich, <kbd>Esc</kbd> überspringt die Tour.
+
+<Screenshot name="guided-tour" alt="Die geführte Tour nach dem Anlegen eines Stammbaums: die Namensfelder der ersten Person sind hervorgehoben, mit dem Schritt Sich selbst eintragen, Schritt 2 von 8" />
+
+<Screenshot name="tour-add-parent" alt="Die geführte Tour zeigt auf die Schaltflächen Vater und Mutter im Detailbereich, mit dem Schritt Einen Elternteil hinzufügen" />
+
+Jederzeit wieder starten mit **Hilfe → Geführte Tour anzeigen** in der Menüleiste. Beendete oder übersprungene Touren werden nicht erneut angeboten – **Einstellungen → Tipps und geführte Touren zurücksetzen** holt sie zurück.

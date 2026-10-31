@@ -101,7 +101,12 @@ export async function start(variant: Variant, options: StartOptions = {}): Promi
     userData = mkdtempSync(join(tmpdir(), 'fi-shots-'))
     writeFileSync(
       join(userData, 'settings.json'),
-      JSON.stringify({ language: variant.lang, theme: variant.theme, ...options.settings })
+      JSON.stringify({
+        language: variant.lang,
+        theme: variant.theme,
+        tours: ['first-run'],
+        ...options.settings
+      })
     )
     options.prepare?.(userData)
   }

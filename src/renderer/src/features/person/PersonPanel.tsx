@@ -50,6 +50,7 @@ export function PersonPanel(): React.JSX.Element | null {
 
   return (
     <Panel
+      tour="person-panel"
       label={name}
       title={editing ? t('person.editTitle') : t('person.details')}
       onClose={() => select(null)}

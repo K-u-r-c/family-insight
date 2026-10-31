@@ -52,6 +52,14 @@ atalhos de teclado e de informações sobre o programa.
 
 ## Visita guiada {#guided-tour}
 
-Escolha **Ajuda → Mostrar a visita guiada** na barra de menus. Uma visita curta aponta, uma após a outra, as partes mais importantes da janela; enquanto isso você pode usar o programa normalmente. Avance com **Próximo** e **Voltar** (ou as teclas ← →) e pressione <kbd>Esc</kbd> para pulá-la. Visitas concluídas ou puladas não são oferecidas de novo – **Configurações → Redefinir dicas e visitas guiadas** as traz de volta.
+Na primeira vez que você abre o Family Insight, a tela de boas-vindas oferece uma **visita guiada** – clique em **Mostre-me como funciona**:
 
-<Screenshot name="guided-tour" alt="A visita guiada apontando o botão Adicionar pessoa, com uma janela: Passo 1 de 4, Adicione pessoas, e os botões Pular a visita, Voltar e Próximo" />
+<Screenshot name="tour-offer" alt="A tela de boas-vindas com a oferta: Primeira vez aqui? Uma visita guiada curta ajuda você a criar sua primeira árvore, passo a passo – Mostre-me como funciona, Agora não" />
+
+A visita cria com você sua primeira árvore: aponta uma coisa de cada vez e avança sozinha quando você a fez – começar uma árvore, adicionar você, ver os detalhes, adicionar um pai ou uma mãe – e depois mostra como navegar pela árvore, as visualizações, a busca e o salvamento. Enquanto isso você pode usar o programa normalmente. Avance com **Próximo** e **Voltar** (ou as teclas ← →) e pressione <kbd>Esc</kbd> para pulá-la.
+
+<Screenshot name="guided-tour" alt="A visita guiada depois de criar uma árvore: os campos do nome da primeira pessoa estão destacados, com o passo Adicione você, passo 2 de 8" />
+
+<Screenshot name="tour-add-parent" alt="A visita guiada apontando os botões Pai e Mãe no painel de detalhes, com o passo Adicione um pai ou uma mãe" />
+
+Abra-a de novo quando quiser com **Ajuda → Mostrar a visita guiada** na barra de menus. Visitas concluídas ou puladas não são oferecidas de novo – **Configurações → Redefinir dicas e visitas guiadas** as traz de volta.

@@ -1047,22 +1047,44 @@
     "skip": "Saltar la visita",
     "close": "Cerrar la visita guiada",
     "reset": "Restablecer consejos y visitas guiadas",
-    "basics": {
-      "add": {
-        "title": "Añada personas",
-        "body": "Empiece por usted o por alguien que conozca: haga clic aquí, escriba el nombre y guarde. Los familiares se añaden después desde la tarjeta de una persona."
+    "offer": {
+      "title": "¿Es su primera vez?",
+      "body": "Una breve visita guiada le ayuda a crear su primer árbol paso a paso.",
+      "start": "Enséñeme cómo funciona",
+      "later": "Ahora no"
+    },
+    "firstRun": {
+      "start": {
+        "title": "Empiece su árbol",
+        "body": "Haga clic en Nuevo árbol genealógico, póngale un nombre y créelo. ¿Solo quiere echar un vistazo? Pruebe con una familia de ejemplo."
+      },
+      "yourself": {
+        "title": "Añádase usted",
+        "body": "Escriba sus nombres y apellidos y pulse Intro o haga clic en Listo. Las fechas, los lugares y una foto pueden esperar."
+      },
+      "details": {
+        "title": "Todo sobre una persona",
+        "body": "El panel de detalles muestra a la persona seleccionada: fechas, lugares, acontecimientos, fuentes y fotos. Editar vuelve a abrir el formulario."
+      },
+      "parent": {
+        "title": "Añada un padre o una madre",
+        "body": "Haga clic en Padre o Madre, escriba el nombre y pulse Intro. Las parejas, los hijos y los hermanos se añaden igual."
+      },
+      "canvas": {
+        "title": "Muévase por el árbol",
+        "body": "Arrastre el fondo para mover el árbol y use la rueda para acercar. Estos botones acercan, muestran todo el árbol y centran a la persona seleccionada; las flechas pasan de un familiar a otro."
       },
       "views": {
         "title": "Elija qué ver",
-        "body": "Muestre toda la familia o solo los antepasados, los descendientes o ambos (reloj de arena) de una persona."
+        "body": "Muestre toda la familia o solo los antepasados, los descendientes o ambos (reloj de arena) de una persona. El − bajo una tarjeta pliega una rama."
       },
       "search": {
         "title": "Encuentre a cualquiera",
-        "body": "Escriba un nombre, un lugar o un año; el árbol resalta a las personas que coinciden."
+        "body": "Escriba un nombre, un lugar o un año para resaltar personas. La lista de la izquierda muestra a todos y Estadísticas resume la familia."
       },
-      "settings": {
-        "title": "A su gusto",
-        "body": "Aquí están el tema, el estilo Tapiz, el idioma, el tamaño de las tarjetas y el guardado automático. La visita guiada se vuelve a abrir desde el menú Ayuda."
+      "save": {
+        "title": "Guárdelo bien",
+        "body": "Guarde su árbol desde este menú; después se guarda solo y hace copias de seguridad. Ayuda → Mostrar la visita guiada vuelve a abrir esta visita."
       }
     }
   }

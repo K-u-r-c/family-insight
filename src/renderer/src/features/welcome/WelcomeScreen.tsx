@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Clock, FileUp, FolderOpen, Plus, Sparkles, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { markTourSeen } from '@core/tour'
 import { removeRecentFile } from '@core/settings'
 import { TreeLogo } from '@renderer/components/TreeLogo'
 import { Button, Icon, IconButton, Kbd, Ornaments } from '@renderer/components/ui'
 import { startCsvImport } from '@renderer/features/csv/importFlow'
 import { startGedcomImport } from '@renderer/features/gedcom/importFlow'
 import { SettingsControls } from '@renderer/features/settings/SettingsControls'
+import { useTour } from '@renderer/features/tour/tourStore'
+import { FIRST_RUN } from '@renderer/features/tour/tours'
 import { formatShortcut } from '@renderer/lib/platform'
 import { cx } from '@renderer/lib/cx'
 import { newTree, openTree, openTreeAt } from '@renderer/services/documentFiles'
@@ -28,6 +31,37 @@ function useRelativeTime(): (iso: string) => string {
     if (Math.abs(days) < 30) return rtf.format(days, 'day')
     return new Date(iso).toLocaleDateString(i18n.language)
   }
+}
+
+/** First launch: offers the guided tour that builds the first tree. */
+function TourOffer(): React.JSX.Element | null {
+  const { t } = useTranslation()
+  const seen = useSettings((s) => s.settings.tours.includes(FIRST_RUN))
+  const running = useTour((s) => s.position !== null)
+  if (seen || running) return null
+  return (
+    <section className={styles.offer} aria-labelledby="tour-offer-title">
+      <h2 id="tour-offer-title" className={styles.offerTitle}>
+        {t('tour.offer.title')}
+      </h2>
+      <p className={styles.offerBody}>{t('tour.offer.body')}</p>
+      <div className={styles.offerActions}>
+        <Button variant="primary" size="sm" onClick={() => useTour.getState().start(FIRST_RUN)}>
+          {t('tour.offer.start')}
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            const { settings, update } = useSettings.getState()
+            void update({ tours: markTourSeen(settings.tours, FIRST_RUN) })
+          }}
+        >
+          {t('tour.offer.later')}
+        </Button>
+      </div>
+    </section>
+  )
 }
 
 export function WelcomeScreen(): React.JSX.Element {
@@ -61,8 +95,16 @@ export function WelcomeScreen(): React.JSX.Element {
           <TreeLogo className={styles.logo} />
           <h1 className={styles.title}>{t('welcome.title')}</h1>
           <p className={styles.subtitle}>{t('welcome.subtitle')}</p>
+          <TourOffer />
           <div className={styles.actions}>
-            <Button variant="primary" size="lg" icon={Plus} block onClick={() => void newTree()}>
+            <Button
+              variant="primary"
+              size="lg"
+              icon={Plus}
+              block
+              onClick={() => void newTree()}
+              data-tour="new-tree"
+            >
               {t('welcome.newTree')}
             </Button>
             <Button size="lg" icon={FolderOpen} block onClick={() => void openTree()}>

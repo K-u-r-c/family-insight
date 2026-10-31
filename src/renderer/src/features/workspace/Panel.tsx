@@ -10,13 +10,22 @@ interface PanelProps {
   onClose?: () => void
   children: ReactNode
   label?: string
+  /** Target for the guided tour. */
+  tour?: string
 }
 
 /** Side panel chrome: header with title/actions and a scrollable body. */
-export function Panel({ title, actions, onClose, children, label }: PanelProps): React.JSX.Element {
+export function Panel({
+  title,
+  actions,
+  onClose,
+  children,
+  label,
+  tour
+}: PanelProps): React.JSX.Element {
   const { t } = useTranslation()
   return (
-    <section className={styles.panel} aria-label={label}>
+    <section className={styles.panel} aria-label={label} data-tour={tour}>
       <header className={styles.header}>
         <h2 className={styles.title}>{title}</h2>
         {actions}

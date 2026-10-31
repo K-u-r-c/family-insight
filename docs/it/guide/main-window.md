@@ -51,6 +51,14 @@ scorciatoie da tastiera e le informazioni sul programma.
 
 ## Visita guidata {#guided-tour}
 
-Scegli **Aiuto → Mostra la visita guidata** nella barra dei menu. Una breve visita indica una dopo l'altra le parti più importanti della finestra; nel frattempo puoi usare il programma normalmente. Muoviti con **Avanti** e **Indietro** (o i tasti ← →) e premi <kbd>Esc</kbd> per saltarla. Le visite finite o saltate non vengono riproposte: **Impostazioni → Ripristina suggerimenti e visite guidate** le fa tornare.
+Al primo avvio la schermata di benvenuto propone una **visita guidata**: clicca su **Mostrami come funziona**.
 
-<Screenshot name="guided-tour" alt="La visita guidata che indica il pulsante Aggiungi persona, con un riquadro: Passo 1 di 4, Aggiungi persone, e i pulsanti Salta la visita, Indietro e Avanti" />
+<Screenshot name="tour-offer" alt="La schermata di benvenuto con la proposta: Prima volta qui? Una breve visita guidata ti aiuta a creare il tuo primo albero, passo dopo passo – Mostrami come funziona, Non ora" />
+
+La visita crea con te il tuo primo albero: indica una cosa alla volta e va avanti da sola quando l'hai fatta – iniziare un albero, aggiungere te stesso, guardare i dettagli, aggiungere un genitore – e poi mostra come muoversi nell'albero, le viste, la ricerca e il salvataggio. Nel frattempo puoi usare il programma normalmente. Muoviti con **Avanti** e **Indietro** (o i tasti ← →) e premi <kbd>Esc</kbd> per saltarla.
+
+<Screenshot name="guided-tour" alt="La visita guidata dopo la creazione di un albero: sono evidenziati i campi del nome della prima persona, con il passo Aggiungi te stesso, passo 2 di 8" />
+
+<Screenshot name="tour-add-parent" alt="La visita guidata che indica i pulsanti Padre e Madre nel pannello dei dettagli, con il passo Aggiungi un genitore" />
+
+Riavviala quando vuoi con **Aiuto → Mostra la visita guidata** nella barra dei menu. Le visite finite o saltate non vengono riproposte: **Impostazioni → Ripristina suggerimenti e visite guidate** le fa tornare.

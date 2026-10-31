@@ -52,6 +52,14 @@ de la ayuda, los atajos de teclado y la información sobre el programa.
 
 ## Visita guiada {#guided-tour}
 
-Elija **Ayuda → Mostrar la visita guiada** en la barra de menús. Una visita breve señala una tras otra las partes más importantes de la ventana; mientras tanto puede usar el programa con normalidad. Avance con **Siguiente** y **Atrás** (o las teclas ← →) y pulse <kbd>Esc</kbd> para saltarla. Las visitas terminadas o saltadas no se vuelven a ofrecer: **Configuración → Restablecer consejos y visitas guiadas** las recupera.
+La primera vez que abre Family Insight, la pantalla de bienvenida ofrece una **visita guiada**: haga clic en **Enséñeme cómo funciona**.
 
-<Screenshot name="guided-tour" alt="La visita guiada señalando el botón Añadir persona, con una ventana: Paso 1 de 4, Añada personas, y los botones Saltar la visita, Atrás y Siguiente" />
+<Screenshot name="tour-offer" alt="La pantalla de bienvenida con la oferta: ¿Es su primera vez? Una breve visita guiada le ayuda a crear su primer árbol paso a paso – Enséñeme cómo funciona, Ahora no" />
+
+La visita crea con usted su primer árbol: señala una cosa cada vez y avanza sola cuando la ha hecho –empezar un árbol, añadirse usted, ver los detalles, añadir un padre o una madre– y después muestra cómo moverse por el árbol, las vistas, la búsqueda y el guardado. Mientras tanto puede usar el programa con normalidad. Avance con **Siguiente** y **Atrás** (o las teclas ← →) y pulse <kbd>Esc</kbd> para saltarla.
+
+<Screenshot name="guided-tour" alt="La visita guiada tras crear un árbol: se resaltan los campos del nombre de la primera persona, con el paso Añádase usted, paso 2 de 8" />
+
+<Screenshot name="tour-add-parent" alt="La visita guiada señalando los botones Padre y Madre del panel de detalles, con el paso Añada un padre o una madre" />
+
+Vuelva a abrirla cuando quiera con **Ayuda → Mostrar la visita guiada** en la barra de menús. Las visitas terminadas o saltadas no se vuelven a ofrecer: **Configuración → Restablecer consejos y visitas guiadas** las recupera.

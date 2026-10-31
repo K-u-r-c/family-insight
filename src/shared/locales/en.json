@@ -999,22 +999,44 @@
     "skip": "Skip tour",
     "close": "Close the guided tour",
     "reset": "Reset tips and guided tours",
-    "basics": {
-      "add": {
-        "title": "Add people",
-        "body": "Start with yourself or anyone you know: click here, type the name and save. Relatives are added from a person’s card later."
+    "offer": {
+      "title": "New here?",
+      "body": "A short guided tour helps you build your first tree, step by step.",
+      "start": "Show me around",
+      "later": "Not now"
+    },
+    "firstRun": {
+      "start": {
+        "title": "Start your tree",
+        "body": "Click New family tree, give it a name and create it. Only want to look around? Try a sample family instead."
+      },
+      "yourself": {
+        "title": "Add yourself",
+        "body": "Type your given names and surname, then press Enter or click Done. Dates, places and a photo can come later."
+      },
+      "details": {
+        "title": "Everything about a person",
+        "body": "The details panel shows the selected person: dates, places, life events, sources and photos. Edit opens the form again."
+      },
+      "parent": {
+        "title": "Add a parent",
+        "body": "Click Father or Mother, type the name and press Enter. Partners, children and siblings are added the same way."
+      },
+      "canvas": {
+        "title": "Move around the tree",
+        "body": "Drag the background to move and scroll to zoom. These buttons zoom, fit the whole tree and centre the selected person; the arrow keys walk between relatives."
       },
       "views": {
         "title": "Choose what you see",
-        "body": "Show the whole family, or only someone’s ancestors, descendants or both (hourglass)."
+        "body": "Show the whole family, or only someone’s ancestors, descendants or both (hourglass). The − under a card folds a branch away."
       },
       "search": {
         "title": "Find anyone",
-        "body": "Type a name, a place or a year; the tree highlights the people who match."
+        "body": "Type a name, place or year to highlight people. The list on the left shows everyone, and Statistics sums up the family."
       },
-      "settings": {
-        "title": "Make it yours",
-        "body": "Theme, the Tapestry style, language, card size and autosave live here. The guided tour can be started again from the Help menu."
+      "save": {
+        "title": "Keep it safe",
+        "body": "Save your tree from this menu; after that it saves automatically and keeps backups. Help → Show guided tour brings this tour back."
       }
     }
   }

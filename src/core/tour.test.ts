@@ -15,13 +15,16 @@ describe('guided tours', () => {
   it('goes forward and back, and finishes after the last step', () => {
     let pos = startTour('basics')
     expect(pos).toEqual({ tourId: 'basics', index: 0 })
-    expect(advanceTour(steps, pos, { type: 'back' })).toEqual({ kind: 'step', position: pos })
+    expect(advanceTour(steps, pos, { type: 'back' })).toEqual({
+      kind: 'step',
+      position: { ...pos, manual: true }
+    })
     const next = advanceTour(steps, pos, { type: 'next' })
     expect(next).toEqual({ kind: 'step', position: { tourId: 'basics', index: 1 } })
     pos = { tourId: 'basics', index: 2 }
     expect(advanceTour(steps, pos, { type: 'back' })).toEqual({
       kind: 'step',
-      position: { tourId: 'basics', index: 1 }
+      position: { tourId: 'basics', index: 1, manual: true }
     })
     expect(advanceTour(steps, pos, { type: 'next' })).toEqual({ kind: 'done', tourId: 'basics' })
   })
@@ -40,6 +43,20 @@ describe('guided tours', () => {
     expect(
       advanceTour(steps, { tourId: 'basics', index: 0 }, { type: 'check', context: { people: 9 } })
     ).toEqual({ kind: 'step', position: { tourId: 'basics', index: 0 } })
+  })
+
+  it('does not bounce forward from a step the user went back to', () => {
+    const back = advanceTour(steps, { tourId: 'basics', index: 2 }, { type: 'back' })
+    expect(back.kind).toBe('step')
+    const pos = (back as { position: { tourId: string; index: number } }).position
+    expect(advanceTour(steps, pos, { type: 'check', context: { people: 5 } })).toEqual({
+      kind: 'step',
+      position: pos
+    })
+    expect(advanceTour(steps, pos, { type: 'next' })).toEqual({
+      kind: 'step',
+      position: { tourId: 'basics', index: 2 }
+    })
   })
 
   it('can be skipped at any step', () => {

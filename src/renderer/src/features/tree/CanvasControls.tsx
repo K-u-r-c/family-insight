@@ -57,7 +57,11 @@ export function CanvasControls({ layout }: { layout: Layout | null }): React.JSX
   const update = useSettings((s) => s.update)
 
   return (
-    <div className={styles.controls} onPointerDown={(e) => e.stopPropagation()}>
+    <div
+      className={styles.controls}
+      data-tour="canvas-controls"
+      onPointerDown={(e) => e.stopPropagation()}
+    >
       <div className={styles.group} role="toolbar" aria-label={t('tree.zoomControls')}>
         <IconButton
           icon={Minus}

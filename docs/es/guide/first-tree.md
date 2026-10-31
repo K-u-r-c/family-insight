@@ -7,6 +7,10 @@ description: Un tutorial paso a paso para crear un árbol genealógico con usted
 En unos diez minutos creará un pequeño árbol de tres generaciones (usted, sus padres, su pareja y
 su hijo), añadirá una foto y lo guardará. Use su propia familia o siga el ejemplo.
 
+::: tip ¿Prefiere que se lo enseñen?
+La [visita guiada](./main-window#guided-tour) integrada le acompaña en estos pasos dentro del programa.
+:::
+
 ## 1. Cree el árbol
 
 En la pantalla de bienvenida, haga clic en **Nuevo árbol genealógico**. Póngale un nombre (por

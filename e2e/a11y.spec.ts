@@ -94,12 +94,12 @@ for (const [theme, style] of [
 
 for (const theme of ['light', 'dark'] as const) {
   test(`no serious accessibility violations with the guided tour open (${theme})`, async () => {
-    const file = join(tempDir(), 'kowalscy.finsight')
-    copyFileSync(join(__dirname, 'fixtures', 'kowalscy.finsight'), file)
-    const { app, page } = await launch({ args: [file], theme })
-    await expect(page.locator('[data-person-id]').first()).toBeVisible()
-    await app.evaluate(({ Menu }) => Menu.getApplicationMenu()!.getMenuItemById('tour')!.click())
-    await expect(page.getByRole('dialog', { name: 'Add people' })).toBeVisible()
+    // The first-launch offer on the welcome screen, then a step of the tour.
+    const { app, page } = await launch({ theme, firstRun: true })
+    await expect(page.getByRole('button', { name: 'Show me around' })).toBeVisible()
+    expect(await seriousViolations(page)).toEqual([])
+    await page.getByRole('button', { name: 'Show me around' }).click()
+    await expect(page.getByRole('dialog', { name: 'Start your tree' })).toBeVisible()
     expect(await seriousViolations(page)).toEqual([])
     await closeApp(app)
   })

@@ -14,6 +14,8 @@ export interface TourStep<Context = unknown> {
 export interface TourPosition {
   tourId: string
   index: number
+  /** Reached by going back: the step's condition does not move it on until "Next". */
+  manual?: boolean
 }
 
 export type TourResult =
@@ -38,20 +40,29 @@ export function advanceTour<Context>(
   position: TourPosition,
   event: TourEvent<Context>
 ): TourResult {
-  const at = (index: number): TourResult =>
+  const at = (index: number, manual = false): TourResult =>
     index >= steps.length
       ? { kind: 'done', tourId: position.tourId }
-      : { kind: 'step', position: { tourId: position.tourId, index: Math.max(0, index) } }
+      : {
+          kind: 'step',
+          position: {
+            tourId: position.tourId,
+            index: Math.max(0, index),
+            ...(manual ? { manual } : {})
+          }
+        }
   switch (event.type) {
     case 'next':
       return at(position.index + 1)
     case 'back':
-      return at(position.index - 1)
+      return at(position.index - 1, true)
     case 'skip':
       return { kind: 'skipped', tourId: position.tourId }
     case 'check': {
       const step = steps[position.index]
-      return step?.waitFor?.(event.context) ? at(position.index + 1) : { kind: 'step', position }
+      return !position.manual && step?.waitFor?.(event.context)
+        ? at(position.index + 1)
+        : { kind: 'step', position }
     }
   }
 }

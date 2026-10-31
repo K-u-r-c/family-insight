@@ -1047,22 +1047,44 @@
     "skip": "Passer la visite",
     "close": "Fermer la visite guidée",
     "reset": "Réinitialiser les astuces et les visites guidées",
-    "basics": {
-      "add": {
-        "title": "Ajouter des personnes",
-        "body": "Commencez par vous-même ou par quelqu’un que vous connaissez : cliquez ici, saisissez le nom et enregistrez. Les proches s’ajoutent ensuite depuis la carte d’une personne."
+    "offer": {
+      "title": "Première visite ?",
+      "body": "Une courte visite guidée vous aide à créer votre premier arbre, étape par étape.",
+      "start": "Faites-moi visiter",
+      "later": "Pas maintenant"
+    },
+    "firstRun": {
+      "start": {
+        "title": "Commencer votre arbre",
+        "body": "Cliquez sur Nouvel arbre généalogique, donnez-lui un nom et créez-le. Vous voulez seulement regarder ? Essayez plutôt une famille d’exemple."
+      },
+      "yourself": {
+        "title": "Vous ajouter",
+        "body": "Saisissez vos prénoms et votre nom, puis appuyez sur Entrée ou cliquez sur Terminé. Les dates, les lieux et une photo pourront venir plus tard."
+      },
+      "details": {
+        "title": "Tout sur une personne",
+        "body": "Le panneau des détails montre la personne sélectionnée : dates, lieux, événements, sources et photos. Modifier rouvre le formulaire."
+      },
+      "parent": {
+        "title": "Ajouter un parent",
+        "body": "Cliquez sur Père ou Mère, saisissez le nom et appuyez sur Entrée. Conjoints, enfants et frères et sœurs s’ajoutent de la même façon."
+      },
+      "canvas": {
+        "title": "Se déplacer dans l’arbre",
+        "body": "Faites glisser le fond pour déplacer l’arbre et utilisez la molette pour zoomer. Ces boutons zooment, affichent tout l’arbre et centrent la personne sélectionnée ; les flèches passent d’un proche à l’autre."
       },
       "views": {
         "title": "Choisir ce que vous voyez",
-        "body": "Affichez toute la famille, ou seulement les ascendants, les descendants ou les deux (sablier) d’une personne."
+        "body": "Affichez toute la famille, ou seulement les ascendants, les descendants ou les deux (sablier) d’une personne. Le − sous une carte replie une branche."
       },
       "search": {
         "title": "Retrouver chacun",
-        "body": "Tapez un nom, un lieu ou une année ; l’arbre met en évidence les personnes trouvées."
+        "body": "Tapez un nom, un lieu ou une année pour mettre des personnes en évidence. La liste à gauche montre tout le monde, et Statistiques résume la famille."
       },
-      "settings": {
-        "title": "À votre goût",
-        "body": "Le thème, le style Tapisserie, la langue, la taille des cartes et l’enregistrement automatique sont ici. La visite guidée se relance depuis le menu Aide."
+      "save": {
+        "title": "Le garder en sécurité",
+        "body": "Enregistrez votre arbre depuis ce menu ; ensuite il s’enregistre tout seul et garde des sauvegardes. Aide → Afficher la visite guidée relance cette visite."
       }
     }
   }
