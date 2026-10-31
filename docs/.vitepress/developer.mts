@@ -45,6 +45,7 @@ export const developerSidebar: DefaultTheme.SidebarItem[] = [
     items: [
       { text: 'CSV format', link: '/developer/reference/csv-format' },
       { text: 'GEDCOM', link: '/developer/reference/gedcom' },
+      { text: 'Relationship calculator', link: '/developer/reference/kinship' },
       { text: '.finsight file format', link: '/developer/reference/file-format' },
       { text: 'Preload API', link: '/developer/reference/preload-api' },
       { text: 'Decision log', link: '/developer/reference/decisions' }
