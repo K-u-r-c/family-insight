@@ -1,8 +1,8 @@
 /*
  * Quality checks for the built documentation website (`npm run docs:build && npm run docs:test`):
  * every page loads cleanly, links/anchors/images resolve, no serious accessibility violations in
- * light and dark mode, no horizontal overflow on phones, search works in both languages and the
- * English and Polish guides have the same pages.
+ * light and dark mode, no horizontal overflow on phones, search works in every language and the
+ * guides of all languages have the same pages.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { createServer, type Server } from 'node:http'

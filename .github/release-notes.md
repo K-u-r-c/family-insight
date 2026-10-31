@@ -1,23 +1,22 @@
-## Family Insight 1.1.0 🌳
+## Family Insight 1.2.0 🌳
 
-A beautiful, simple family tree editor for Windows, macOS and Linux — in English and Polish.
-Piękny i prosty program do tworzenia drzewa genealogicznego — po polsku i po angielsku.
+A beautiful, simple family tree editor for Windows, macOS and Linux — now in eight languages.
+Piękny i prosty program do tworzenia drzewa genealogicznego — teraz w ośmiu językach.
 
-**New in 1.1 / Nowości:**
+**New in 1.2 / Nowości:**
 
-- **Life events** – baptism, emigration, military service, occupation … / **wydarzenia** – chrzest,
-  emigracja, służba wojskowa, zawód …
-- **Sources and citations** / **źródła i cytowania**
-- **Photos and documents** with a viewer and PDFs / **zdjęcia i dokumenty** z podglądem i plikami PDF
-- **Places and a map** of where your family lived / **miejsca i mapa**, gdzie żyła rodzina
-- **GEDCOM import and export** (5.5.1, 7.0) – move trees from Gramps, MyHeritage, Ancestry … /
-  **import i eksport GEDCOM** – przenosiny z innych programów
-- **Automatic updates** / **automatyczne aktualizacje**
+- **Six new languages** – Deutsch, Français, Español, Italiano, Português, Русский: the app, the
+  installer and the [user guide](https://k-u-r-c.github.io/family-insight/) / **sześć nowych
+  języków** – aplikacja, instalator i poradnik
+- **Relationship calculator** – “first cousin once removed”, “brat stryjeczny”, “Großtante” – with
+  the path highlighted on the tree / **kalkulator pokrewieństwa** ze ścieżką na drzewie
+- **Dates and CSV in every language** – month names (`12 marca 1890`, `12. Mai 1890`), column
+  names, and older Excel files (Windows-1250/1251/1252) / **daty i CSV w każdym języku**
+- **Smarter search and sorting** – `mueller` finds Müller, `ivanov` finds Иванов, “van der Berg” is
+  sorted under B / **lepsze wyszukiwanie i sortowanie**
 
-> **Compatibility / zgodność:** 1.1 opens trees from 1.0 and saves them in a new format (a package
-> with photos inside). **Family Insight 1.0 can't open files saved by 1.1** – update every computer
-> you use. / 1.1 otwiera drzewa z 1.0 i zapisuje je w nowym formacie. **Wersja 1.0 nie otworzy
-> plików zapisanych w 1.1** – zaktualizuj program na każdym komputerze.
+> **Compatibility / zgodność:** 1.2 uses the same file format as 1.1 – trees open in both. / 1.2
+> używa tego samego formatu plików co 1.1 – drzewa otwierają się w obu wersjach.
 
 📖 **Documentation / dokumentacja:** <https://k-u-r-c.github.io/family-insight/>
 

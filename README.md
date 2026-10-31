@@ -42,10 +42,12 @@ CSV import and export let you work with Excel, LibreOffice or Google Sheets.
   places, and a to-do list of missing data.
 - **Fast search** that ignores diacritics (`lodz` finds `Łódź`).
 - **Safe by default** – undo/redo, autosave, crash recovery and rotating backups.
-- **CSV import & export** – Excel-friendly (UTF-8 with BOM, `,` or `;`), English or Polish column
-  names, a preview with clear error messages before anything is imported.
+- **CSV import & export** – Excel-friendly (UTF-8 with BOM, `,` or `;`), column names in any of
+  the app's languages, a preview with clear error messages before anything is imported.
 - **Print and export images** – PNG, SVG or PDF of the whole tree or the visible area.
-- **English and Polish**, light and dark theme, accessible (keyboard, screen readers, WCAG AA).
+- **Eight languages** – English, Polish, German, French, Spanish, Italian, Portuguese and Russian
+  (app, CSV columns, dates and the user guide); light and dark theme; accessible (keyboard, screen
+  readers, WCAG AA).
 
 <table>
   <tr>

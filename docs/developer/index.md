@@ -17,7 +17,7 @@ use the program.)
 | UI            | **React 19**, CSS modules with design tokens, **lucide-react** icons                              |
 | State         | **Zustand 5** stores, command pattern for undo/redo                                               |
 | Language      | **TypeScript 6.0** (strict)                                                                       |
-| Translations  | **i18next 26** + **react-i18next 17** (English and Polish)                                        |
+| Translations  | **i18next 26** + **react-i18next 17** (eight languages)                                           |
 | Tests         | **Vitest 5** (unit, jsdom + Testing Library), **Playwright 1.64** (E2E on the real app), axe-core |
 | Documentation | **VitePress 1.6**, deployed to GitHub Pages                                                       |
 

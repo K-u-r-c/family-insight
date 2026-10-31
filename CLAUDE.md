@@ -1,6 +1,6 @@
 # Family Insight – notes for AI assistants
 
-Electron + React + TypeScript family tree app (EN/PL). Read `docs/developer/architecture.md` first.
+Electron + React + TypeScript family tree app (eight UI languages). Read `docs/developer/architecture.md` first.
 
 ## Commands
 
@@ -28,10 +28,11 @@ Electron + React + TypeScript family tree app (EN/PL). Read `docs/developer/arch
 ## Working through the backlog
 
 Done: #1–#33 (v1.0.0) and #38–#51 (documentation site, v1.0.1).
-**Current scope: #52–#98** – milestones v1.1 (#52–#67), v1.2 (#68–#81) and v2.0 (#82–#98),
-strictly in issue-number order, each ending with its release (v1.1.0, v1.2.0, v2.0.0).
-Out of scope: #36 (paid code signing) and #99 (store publishing, deferred); #34, #35 and #37
-are superseded by the roadmap issues.
+**Current scope: #52–#81** – milestones v1.1 (#52–#67) and v1.2 (#68–#81), strictly in issue-number
+order, each ending with its release (v1.1.0, v1.2.0).
+Out of scope: the mobile apps (#82–#98, moved to the Backlog milestone on 2026-10-31 – planned for
+the future), #36 (paid code signing) and #99 (store publishing, deferred); #34, #35 and #37 are
+superseded by the roadmap issues.
 
 - One issue at a time: implement → `npm run check` + `npm run build` (+ `npm run docs:build`
   when docs change) → update the user guide and affected screenshots → commit straight to

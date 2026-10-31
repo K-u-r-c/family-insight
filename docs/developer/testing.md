@@ -18,8 +18,8 @@ npx vitest run src/core/search.test.ts   # one file
   search, stats and more. Shared fixtures (for example a sample tree) are in `src/core/test`.
 - React components run in **jsdom** with Testing Library (`src/renderer/src/test` holds the
   setup).
-- `src/shared/i18n.test.ts` checks that English and Polish have the same keys, the required plural
-  forms, and that every model error code has a translation.
+- `src/shared/i18n.test.ts` checks that every locale has the same keys as English, the required
+  plural forms of each language, no untranslated strings, and that every model error code has a translation.
 
 ## End-to-end tests (Playwright)
 
@@ -73,8 +73,8 @@ them with `npx playwright show-trace trace.zip`.
 serves the built website and checks every page: no console errors or failed requests, a title,
 description and previous/next links, every internal link, anchor and image resolves, axe-core finds
 no serious or critical violations in **light and dark** mode, nothing overflows a 375 px phone
-screen, the menu and the search work in both languages, and the English and Polish guides have the
-same pages. It drives the site with the Electron that the app already uses (an offscreen window), so
+screen, the menu and the search work in every language, and the guides of all languages have the same
+pages. It drives the site with the Electron that the app already uses (an offscreen window), so
 no extra browser has to be downloaded; the Docs workflow runs it under xvfb before deploying.
 
 ## Tips

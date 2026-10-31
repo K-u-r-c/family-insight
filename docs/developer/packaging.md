@@ -22,9 +22,9 @@ installer (`-setup.exe`), the portable build (`-portable.exe`) and the DMG (`-ma
 
 | OS      | Targets                     | Notes                                                                                                                                             |
 | ------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Windows | NSIS (x64), portable (x64)  | Assisted installer (`oneClick: false`), per-user (no admin), choice of folder, Start menu and desktop shortcuts, installer in English and Polish. |
+| Windows | NSIS (x64), portable (x64)  | Assisted installer (`oneClick: false`), per-user (no admin), choice of folder, Start menu and desktop shortcuts, installer in all app languages.  |
 | macOS   | DMG (x64 and arm64)         | Category Lifestyle, custom DMG background, **ad-hoc signed** (`identity: '-'`) so Apple Silicon runs it; hardened runtime off until notarisation. |
-| Linux   | AppImage (x64), deb (amd64) | Category Office, executable `family-insight`, desktop entry with EN/PL comments and keywords; the deb declares its library dependencies.          |
+| Linux   | AppImage (x64), deb (amd64) | Category Office, executable `family-insight`, desktop entry with translated comments and keywords; the deb declares its library dependencies.     |
 
 The app id is `io.github.kurc.familyinsight` and the product name **Family Insight** (which is also
 the name of the settings folder).

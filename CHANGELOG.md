@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-31
+
 ### Added
 
 - **Relationship calculator** (toolbar, **View → Relationship calculator…** or a card's
@@ -15,7 +17,9 @@ All notable changes to this project are documented here. The format follows
   highlights. The details of every person say how they are related to the root person.
 - The user guide on the website in all eight languages; **Help → User Guide** opens it in the
   app's language.
-- User interface in **German** (Deutsch), **French** (Français), **Spanish** (Español), **Italian** (Italiano), **Portuguese** (Português) and **Russian** (Русский).
+- User interface in **German** (Deutsch), **French** (Français), **Spanish** (Español),
+  **Italian** (Italiano), **Portuguese** (Português) and **Russian** (Русский), with installers and
+  desktop entries in those languages.
 - CSV import reads column names and values in German, French, Spanish, Italian, Portuguese and
   Russian, recognises Cyrillic (Windows-1251) and Western European (Windows-1252) files from older
   Excel versions, and lets you pick another character set in the preview.
@@ -29,7 +33,6 @@ All notable changes to this project are documented here. The format follows
 
 - Surname particles (von, van, de, da, dos, di …) no longer count for sorting: "van der Berg" is
   listed under B.
-
 - The language is chosen from a list that shows every language in its own name – ready for more
   languages.
 - Counts read correctly in every language ("1 family", "2 sources" …).
@@ -127,7 +130,8 @@ First public release.
   Intel, ad-hoc signed), Linux (AppImage, deb with `.finsight` file association); app icon.
 - Documentation: README and user guide in English and Polish, CSV and file format specs.
 
-[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/K-u-r-c/family-insight/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/K-u-r-c/family-insight/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/K-u-r-c/family-insight/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/K-u-r-c/family-insight/releases/tag/v1.0.0

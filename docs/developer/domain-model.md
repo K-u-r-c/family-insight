@@ -162,8 +162,8 @@ Queries live in `src/core/model/tree.ts`: `getParents`, `getChildren`, `getPartn
 `src/core/date/fuzzyDate.ts` implements genealogical dates:
 
 - `parseFuzzyDate(text)` accepts ISO prefixes (`1890`, `1890-05`, `1890-05-12`), day-first forms
-  (`12.05.1890`, `05.1890`, `12/05/1890`) and qualifier prefixes in English and Polish (`~`, `abt`,
-  `ok.`, `<`, `bef`, `przed`, `>`, `aft`, `po`); it returns `null` for invalid input.
+  (`12.05.1890`, `05.1890`, `12/05/1890`) month names and qualifiers in all eight languages (`~`, `abt`,
+  `ok.`, `<`, `bef`, `przed`, `>`, `aft`, `po`, `vers`, `etwa` …, see `dateLocales.ts`); it returns `null` for invalid input.
 - `formatFuzzyDate(date, language)` produces “about May 1890” or “ok. maja 1890” – with the correct
   Polish grammatical case for each qualifier.
 - `compareFuzzyDates` sorts chronologically, `ageAt` computes completed years and whether the result

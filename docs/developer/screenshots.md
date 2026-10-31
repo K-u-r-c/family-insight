@@ -5,7 +5,7 @@ description: How the documentation screenshots are generated from the real app, 
 # Updating screenshots
 
 Every picture of the app in this documentation is generated from the real program – never edited
-by hand – in **English and Polish** and in the **light and dark** theme.
+by hand – in **every app language** and in the **light and dark** theme.
 
 ```sh
 npm run docs:screenshots                 # build the app and regenerate everything (~25 min)
