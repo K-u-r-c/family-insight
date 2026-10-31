@@ -37,7 +37,8 @@ test.describe('smoke', () => {
       'Français',
       'Español',
       'Italiano',
-      'Português'
+      'Português',
+      'Русский'
     ])
     await picker.selectOption('pl')
     await expect(page.getByRole('heading', { name: 'Witaj w Family Insight' })).toBeVisible()

@@ -151,6 +151,18 @@ describe('GEDCOM encodings', () => {
     expect(decodeGedcom(polish).text).toContain('Łucja /Gąska/')
   })
 
+  it('decodes Russian files declared as WINDOWS-1251 or ANSI (the code page of the writer)', () => {
+    const cp1251 = new TextDecoder('windows-1251')
+    const table: Record<string, number> = {}
+    for (let b = 0x80; b < 256; b++) table[cp1251.decode(Uint8Array.of(b))] = b
+    const body = '0 @I1@ INDI\n1 NAME Иван Петрович /Иванов/\n1 BIRT\n2 PLAC Москва\n0 TRLR\n'
+    for (const declared of ['WINDOWS-1251', 'ANSI']) {
+      const bytes = singleByte(`${HEAD(declared)}${body}`, table)
+      expect(decodeGedcom(bytes).detected.encoding, declared).toBe('windows-1251')
+      expect(decodeGedcom(bytes).text).toContain('Иван Петрович /Иванов/')
+    }
+  })
+
   it('trusts the content when a file declares ANSEL but is UTF-8, and defaults sensibly', () => {
     const mislabelled = enc.encode(`${HEAD('ANSEL')}0 @I1@ INDI\n1 NAME Łucja /Gąska/\n0 TRLR\n`)
     expect(detectGedcomEncoding(mislabelled)).toMatchObject({ encoding: 'utf-8', by: 'content' })

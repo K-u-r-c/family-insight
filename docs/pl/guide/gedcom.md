@@ -17,7 +17,7 @@ ekranie powitalnym) lub po prostu upuść plik `.ged` na okno. Otworzy się podg
 
 - Okno pokazuje **wersję** i **program**, który zapisał plik, oraz ile zawiera osób, rodzin,
   wydarzeń, źródeł i zdjęć.
-- **Kodowanie znaków** – wykrywane automatycznie (UTF-8, UTF-16, ANSEL, ANSI, Windows-1250). Jeśli
+- **Kodowanie znaków** – wykrywane automatycznie (UTF-8, UTF-16, ANSEL, ANSI, Windows-1250, Windows-1251). Jeśli
   litery takie jak _ą_, _ł_, _ö_ czy _ß_ wyglądają źle, wybierz inne.
 - **Ostrzeżenia** wyjaśniają, czego nie dało się przenieść dokładnie – np. daty typu
   _BET 1850 AND 1855_ albo daty w kalendarzu juliańskim. Oryginalny zapis trafia do notatek osoby,

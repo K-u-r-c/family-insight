@@ -29,7 +29,8 @@ const ENCODING_LABEL: Record<GedcomEncoding, string> = {
   ansel: 'ANSEL',
   ascii: 'ASCII',
   'windows-1252': 'ANSI (Windows-1252)',
-  'windows-1250': 'Windows-1250'
+  'windows-1250': 'Windows-1250',
+  'windows-1251': 'Windows-1251'
 }
 
 /** Preview of a GEDCOM import: version, encoding, summary, warnings, new tree or merge. */

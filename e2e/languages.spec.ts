@@ -32,6 +32,12 @@ const LANGUAGES: { code: string; name: string; welcome: string; menu: string[] }
     name: 'Português',
     welcome: 'Boas-vindas ao Family Insight',
     menu: ['Arquivo', 'Editar', 'Exibir', 'Ajuda']
+  },
+  {
+    code: 'ru',
+    name: 'Русский',
+    welcome: 'Добро пожаловать в Family Insight',
+    menu: ['Файл', 'Правка', 'Вид', 'Справка']
   }
 ]
 

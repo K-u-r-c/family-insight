@@ -37,7 +37,7 @@ interface MenuProps {
 /** Popover menu (dropdowns and context menus) with full keyboard support. */
 export function Menu({ anchor, entries, onClose, label }: MenuProps): React.JSX.Element | null {
   const ref = useRef<HTMLDivElement>(null)
-  const [pos, setPos] = useState<{ left: number; top: number } | null>(null)
+  const [pos, setPos] = useState<{ left: number; top: number; maxHeight?: number } | null>(null)
 
   useLayoutEffect(() => {
     if (!anchor || !ref.current) return
@@ -45,8 +45,14 @@ export function Menu({ anchor, entries, onClose, label }: MenuProps): React.JSX.
     let left = anchor.alignRight ? anchor.x - width : anchor.x
     let top = anchor.y
     left = Math.max(8, Math.min(left, window.innerWidth - width - 8))
-    if (top + height > window.innerHeight - 8) top = Math.max(8, anchor.y - height)
-    setPos({ left, top })
+    let maxHeight: number | undefined
+    if (top + height > window.innerHeight - 8) {
+      // Open upwards if it fits there; otherwise as high as possible, scrolling when even the
+      // whole window is too short (a long settings menu in a small window).
+      top = Math.max(8, anchor.y - height)
+      if (top + height > window.innerHeight - 8) maxHeight = window.innerHeight - 8 - top
+    }
+    setPos({ left, top, maxHeight })
     ref.current.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus()
   }, [anchor])
 

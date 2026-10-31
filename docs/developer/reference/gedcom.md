@@ -1,5 +1,5 @@
 ---
-description: How Family Insight reads and writes GEDCOM – line grammar, record tree, character sets (ANSEL, UTF-16, ANSI), versions and GEDZIP.
+description: How Family Insight reads and writes GEDCOM – line grammar, record tree, character sets (ANSEL, UTF-16, ANSI, Windows-125x), versions and GEDZIP.
 ---
 
 # GEDCOM
@@ -42,10 +42,12 @@ flowchart LR
 
 1. a **byte-order mark** (UTF-8, UTF-16 LE/BE), or UTF-16 recognised by its zero bytes;
 2. GEDCOM **7.0** is always UTF-8;
-3. the `1 CHAR` declaration: `UTF-8`, `UNICODE` (UTF-16), `ANSEL`, `ASCII`, `ANSI`/`IBMPC`/
-   `WINDOWS-1252` (Windows-1252) and `WINDOWS-1250`/`CP1250` (Central European exports) – except
-   when a file declares an 8-bit set but its content is valid multi-byte UTF-8, which several
-   programs do;
+3. the `1 CHAR` declaration: `UTF-8`, `UNICODE` (UTF-16), `ANSEL`, `ASCII`, `IBMPC`/
+   `WINDOWS-1252` (Windows-1252), `WINDOWS-1250`/`CP1250` (Central European exports) and
+   `WINDOWS-1251`/`CP1251` (Cyrillic). `ANSI` means the writer's Windows code page, so the letters
+   decide between 1250, 1251 and 1252 (the CSV heuristic, `decodeText`). A file that declares an
+   8-bit set but whose content is valid multi-byte UTF-8 is read as UTF-8, as several programs do
+   this;
 4. valid UTF-8 content; otherwise ANSEL (the 5.5 default).
 
 **ANSEL** (ANSI Z39.47) is decoded by `decodeAnsel`: bytes 0xA1–0xCF are letters and symbols

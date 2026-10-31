@@ -1,3 +1,4 @@
+import { decodeText } from '../../file/encoding'
 import { decodeAnsel } from './ansel'
 
 /** Character sets GEDCOM files come in. */
@@ -8,7 +9,8 @@ export const GEDCOM_ENCODINGS = [
   'ansel',
   'ascii',
   'windows-1252',
-  'windows-1250'
+  'windows-1250',
+  'windows-1251'
 ] as const
 export type GedcomEncoding = (typeof GEDCOM_ENCODINGS)[number]
 
@@ -39,11 +41,10 @@ function fromDeclaration(value: string, utf16: GedcomEncoding): GedcomEncoding |
   if (v === 'UNICODE' || v === 'UTF-16') return utf16
   if (v === 'ANSEL') return 'ansel'
   if (v === 'ASCII') return 'ascii'
-  if (
-    ['ANSI', 'WINDOWS-1252', 'CP1252', 'IBMPC', 'IBM-WINDOWS', 'LATIN1', 'ISO-8859-1'].includes(v)
-  )
+  if (['WINDOWS-1252', 'CP1252', 'IBMPC', 'IBM-WINDOWS', 'LATIN1', 'ISO-8859-1'].includes(v))
     return 'windows-1252'
   if (['WINDOWS-1250', 'CP1250', 'ISO-8859-2'].includes(v)) return 'windows-1250'
+  if (['WINDOWS-1251', 'CP1251'].includes(v)) return 'windows-1251'
   return undefined
 }
 
@@ -70,6 +71,13 @@ export function detectGedcomEncoding(bytes: Uint8Array): DetectedEncoding {
       return { encoding: 'utf-8', declared, by: 'content' }
     }
     if (encoding) return { encoding, declared, by: 'declaration' }
+    // "ANSI" is the writer's Windows code page: tell 1250, 1251 and 1252 apart by the letters.
+    if (declared.trim().toUpperCase() === 'ANSI' && !isValidUtf8(bytes)) {
+      return { encoding: decodeText(bytes).encoding as GedcomEncoding, declared, by: 'content' }
+    }
+    if (declared.trim().toUpperCase() === 'ANSI') {
+      return { encoding: 'windows-1252', declared, by: 'declaration' }
+    }
   }
   if (isValidUtf8(bytes))
     return { encoding: 'utf-8', declared, by: declared ? 'content' : 'default' }

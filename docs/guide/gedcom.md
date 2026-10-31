@@ -17,7 +17,7 @@ welcome screen), or simply drop a `.ged` file onto the window. A preview opens:
 
 - The window shows the **version** and the **program** that wrote the file, and how many people,
   families, events, sources and photos it contains.
-- **Character set** – detected automatically (UTF-8, UTF-16, ANSEL, ANSI, Windows-1250). If letters
+- **Character set** – detected automatically (UTF-8, UTF-16, ANSEL, ANSI, Windows-1250, Windows-1251). If letters
   such as _ą_, _ł_, _ö_ or _ß_ look wrong in the result, choose another one.
 - **Warnings** explain what couldn't be taken over exactly – for example a date like
   _BET 1850 AND 1855_ or a date in the Julian calendar. The original text is kept in the person's

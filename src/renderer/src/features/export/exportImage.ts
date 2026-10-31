@@ -57,6 +57,38 @@ export async function exportableTreeSvg(options: ImageExportOptions): Promise<Tr
   return result && { ...result, svg: await embedFonts(result.svg) }
 }
 
+/** A small rendering of the image, to tell whether it changed. */
+function thumbnail(img: HTMLImageElement, width: number, height: number): string {
+  const canvas = document.createElement('canvas')
+  canvas.width = 320
+  canvas.height = Math.max(1, Math.round((320 * height) / width))
+  const ctx = canvas.getContext('2d')!
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+  return canvas.toDataURL()
+}
+
+/**
+ * Waits until an SVG image has drawn its text: the browser loads the fonts embedded in an SVG
+ * image only after `decode()` and leaves text invisible until then. The image is drawn small
+ * until it changes (fonts arrived) and then stops changing – at most `timeout` ms.
+ */
+async function fontsRendered(
+  img: HTMLImageElement,
+  width: number,
+  height: number,
+  timeout = 3000
+): Promise<void> {
+  const start = performance.now()
+  const first = thumbnail(img, width, height)
+  let previous = first
+  while (performance.now() - start < timeout) {
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    const current = thumbnail(img, width, height)
+    if (current !== first && current === previous) return
+    previous = current
+  }
+}
+
 /** Rasterises SVG markup to a base64 PNG at the given scale. */
 export async function svgToPngBase64(
   { svg, width, height }: TreeSvg,
@@ -68,6 +100,7 @@ export async function svgToPngBase64(
   try {
     img.src = url
     await img.decode()
+    await fontsRendered(img, width, height)
     const canvas = document.createElement('canvas')
     // Browsers cap canvas size; shrink the scale for huge trees.
     const max = 16384

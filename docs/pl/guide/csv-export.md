@@ -6,7 +6,7 @@ description: Eksport drzewa do arkusza CSV, który poprawnie otworzy się w Exce
 
 Wybierz **☰ → Eksportuj CSV…** (albo **Plik → Eksportuj → CSV…** w pasku menu):
 
-<Screenshot name="csv-export" alt="Okno Eksport do CSV z separatorem kolumn (przecinek lub średnik) i nazwami kolumn (English, Polski, Deutsch, Français, Español, Italiano lub Português)" />
+<Screenshot name="csv-export" alt="Okno Eksport do CSV z separatorem kolumn (przecinek lub średnik) i nazwami kolumn (English, Polski, Deutsch, Français, Español, Italiano, Português lub Русский)" />
 
 1. **Separator kolumn** – **Średnik** dla Excela z ustawieniami regionalnymi, w których przecinek
    jest separatorem dziesiętnym (polskimi, niemieckimi, francuskimi, hiszpańskimi, włoskimi,
