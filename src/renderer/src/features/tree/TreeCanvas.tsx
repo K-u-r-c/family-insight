@@ -28,7 +28,7 @@ import {
   zoomViewport
 } from '@renderer/store/treeView'
 import { useWorkspaceUi } from '@renderer/store/workspaceUi'
-import { CanvasControls, fitAll, resetZoom, zoomBy } from './CanvasControls'
+import { CanvasControls, fitAll, resetZoom, TITLE_GAP, zoomBy } from './CanvasControls'
 import { EdgesLayer } from './EdgesLayer'
 import { Minimap } from './Minimap'
 import { PersonCard } from './PersonCard'
@@ -470,10 +470,13 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
       aria-roledescription={t('tree.canvasRole')}
       tabIndex={0}
       onKeyDown={onKeyDown}
-      style={{
-        backgroundPosition: `${viewport.x}px ${viewport.y}px`,
-        backgroundSize: `${22 * viewport.k}px ${22 * viewport.k}px`
-      }}
+      style={
+        {
+          '--pan-x': `${viewport.x}px`,
+          '--pan-y': `${viewport.y}px`,
+          '--grid': `${22 * viewport.k}px`
+        } as React.CSSProperties
+      }
     >
       <div
         className={styles.world}
@@ -486,6 +489,15 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
         data-animate={animate || undefined}
         style={{ transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.k})` }}
       >
+        {layout && style === 'tapestry' && layout.nodes.length > 0 && (
+          <div
+            className={styles.titleCartouche}
+            style={{ left: layout.width / 2, top: -TITLE_GAP }}
+            aria-hidden="true"
+          >
+            {tree.meta.name}
+          </div>
+        )}
         {layout && (
           <EdgesLayer
             edges={layout.edges}

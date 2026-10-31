@@ -69,6 +69,14 @@ for (const [theme, style] of [
     expect(await seriousViolations(second.page)).toEqual([])
     await second.page.keyboard.press('Escape')
 
+    // The map view (offline: no tiles, markers and the side panel).
+    await second.page.getByRole('radio', { name: 'Map' }).click()
+    await expect(
+      second.page.getByRole('complementary', { name: 'Map filters and places' })
+    ).toBeVisible()
+    expect(await seriousViolations(second.page)).toEqual([])
+    await second.page.getByRole('radio', { name: 'Tree' }).click()
+
     // The relationship calculator, its person picker and the path on the tree.
     await second.page.getByRole('button', { name: 'Relationship calculator' }).click()
     const calculator = second.page.getByRole('dialog', { name: 'Relationship calculator' })

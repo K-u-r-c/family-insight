@@ -8,10 +8,18 @@ import { useSettings } from '@renderer/store/settings'
 import { centerViewport, fitViewport, useTreeView, zoomViewport } from '@renderer/store/treeView'
 import styles from './CanvasControls.module.css'
 
+/** Space above the tree for the Tapestry title cartouche (its bottom sits `TITLE_GAP` above). */
+export const TITLE_GAP = 48
+const TITLE_SPACE = 150
+
 export function fitAll(layout: Layout | null): void {
   const { size, setViewport } = useTreeView.getState()
   if (!layout || !layout.nodes.length || !size.width) return
-  setViewport(fitViewport({ x: 0, y: 0, width: layout.width, height: layout.height }, size), true)
+  const top = useSettings.getState().settings.style === 'tapestry' ? TITLE_SPACE : 0
+  setViewport(
+    fitViewport({ x: 0, y: -top, width: layout.width, height: layout.height + top }, size),
+    true
+  )
 }
 
 /** Fits the whole current layout (used by the native menu). */

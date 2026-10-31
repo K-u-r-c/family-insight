@@ -899,6 +899,24 @@
     "ru-light": [893, 755],
     "ru-dark": [893, 755]
   },
+  "tapestry-tree": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800],
+    "de-light": [1280, 800],
+    "de-dark": [1280, 800],
+    "fr-light": [1280, 800],
+    "fr-dark": [1280, 800],
+    "es-light": [1280, 800],
+    "es-dark": [1280, 800],
+    "it-light": [1280, 800],
+    "it-dark": [1280, 800],
+    "pt-light": [1280, 800],
+    "pt-dark": [1280, 800],
+    "ru-light": [1280, 800],
+    "ru-dark": [1280, 800]
+  },
   "timeline": {
     "en-light": [380, 720],
     "en-dark": [380, 720],

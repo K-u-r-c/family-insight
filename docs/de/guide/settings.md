@@ -21,6 +21,8 @@ Klicken Sie rechts in der Symbolleiste auf die Schaltfläche **Einstellungen** (
 
 Den Stil können Sie auch in der Menüleiste ändern: **Ansicht → Stil**. Im Stil Gobelin erscheinen die Personen im Stammbaum als gerahmte Medaillons mit dem Porträt über dem Namen, Partner sind durch einen kleinen Knoten verbunden und die Linien sehen aus wie Goldfaden.
 
+<Screenshot name="tapestry-tree" alt="Die Beispielfamilie im Stil Gobelin: der Familienname in einem gerahmten Titel über dem Stammbaum, die Personen als gerahmte Medaillons, verbunden durch Goldfaden" />
+
 Design und Sprache lassen sich auch auf dem Startbildschirm (rechte obere Ecke) und in der
 Menüleiste im Menü **Ansicht** ändern. Im Menü **Ansicht** blenden Sie außerdem die Personenliste
 und die Übersichtskarte ein oder aus.

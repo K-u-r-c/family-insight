@@ -21,6 +21,8 @@ Cliquez sur le bouton **Paramètres** (⚙) à droite de la barre d’outils :
 
 Le style se change aussi dans la barre de menus : **Affichage → Style**. Avec le style Tapisserie, les personnes de l’arbre sont des médaillons encadrés avec le portrait au-dessus du nom, les conjoints sont reliés par un petit nœud et les lignes ressemblent à du fil d’or.
 
+<Screenshot name="tapestry-tree" alt="La famille d’exemple dans le style Tapisserie : le nom de famille dans un titre encadré au-dessus de l’arbre, les personnes en médaillons encadrés reliés par un fil d’or" />
+
 Le thème et la langue peuvent aussi être changés sur l’écran d’accueil (coin supérieur droit) et
 dans le menu **Affichage** de la barre de menus. Le menu **Affichage** permet aussi d’afficher ou de
 masquer la liste des personnes et la carte d’ensemble.

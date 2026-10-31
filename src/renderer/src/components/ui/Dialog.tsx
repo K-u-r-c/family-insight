@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { X, type LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Ornaments } from './Ornaments'
 import { cx } from '@renderer/lib/cx'
 import { IconButton } from './Button'
 import { Icon } from './Icon'
@@ -79,6 +80,7 @@ export function Dialog({
       onPointerDown={(e) => e.stopPropagation()}
       onPointerUp={(e) => e.stopPropagation()}
     >
+      <Ornaments />
       <div className={styles.header}>
         {icon && (
           <div className={cx(styles.icon, tone === 'danger' ? styles.iconDanger : styles.iconInfo)}>

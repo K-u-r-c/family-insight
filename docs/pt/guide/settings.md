@@ -21,6 +21,8 @@ Clique no botão **Configurações** (⚙) à direita da barra de ferramentas:
 
 O estilo também pode ser mudado na barra de menus: **Exibir → Estilo**. No estilo Tapeçaria, as pessoas da árvore são medalhões emoldurados com o retrato acima do nome, os parceiros são unidos por um pequeno nó e as linhas parecem fios de ouro.
 
+<Screenshot name="tapestry-tree" alt="A família de exemplo no estilo Tapeçaria: o sobrenome num título emoldurado acima da árvore, as pessoas como medalhões emoldurados unidos por fios de ouro" />
+
 O tema e o idioma também podem ser mudados na tela de boas-vindas (canto superior direito) e no
 menu **Exibir** da barra de menus. O menu **Exibir** também mostra ou oculta a lista de pessoas e o
 mapa geral.

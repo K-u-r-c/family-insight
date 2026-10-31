@@ -35,6 +35,10 @@ flowchart TB
   and `EdgesLayer` gets `tapestry`: corners round with a 24 px radius, solid lines get a thin
   sheen on the gold thread and neighbouring partners a small knot. Card sizes per style and
   density come from `cardSizes()` in `TreeCanvas.tsx`, so the layout engine needs no special case.
+- Tapestry also draws a **woven background** (a masked `::before` that pans and zooms via the
+  `--pan-x`, `--pan-y` and `--grid` custom properties the canvas sets), a **title cartouche** with
+  the tree's name above the tree, and corner **ornaments** in dialogs and on the welcome screen
+  (`Ornaments`). Forced-colours mode hides the decorations.
 - Only cards inside the visible area (plus a 300 px margin) are rendered, which keeps 1 000-person
   trees smooth.
 - Layout changes (view mode, collapsing, new people) animate with CSS transitions; with

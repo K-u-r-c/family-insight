@@ -501,3 +501,16 @@ later without changing anything else.
 - **Dark thread is bronze, highlight is gold**: with gold as both the accent and the thread, the
   highlighted lines were hard to tell apart; the dark variant's thread became `#8a7440`.
 - Measured with the manual 1 000-portrait pan check: 60 fps average in both styles (p95 16.8 ms).
+
+## Tapestry decorations (2026-10, issue #106)
+
+- **Our own SVGs, coloured by CSS**: a corner vine, a scroll flourish and a woven-thread tile
+  (`src/renderer/src/assets/ornaments/`, 2.2 kB together) are used as CSS **masks** over
+  `--color-edge`/`--color-canvas-dot`, so one file serves both variants and follows the theme.
+- **Cloth that moves with the tree**: the canvas passes pan and zoom as custom properties
+  (`--pan-x`, `--pan-y`, `--grid`); the modern dot grid and the Tapestry weave (a masked
+  `::before`) both use them, and a static vignette sits on the canvas background.
+- **Title cartouche** with the tree's name above the tree (Tapestry only, decorative and
+  `aria-hidden` – the name is in the toolbar); "fit to window" leaves room for it.
+- **Ornaments component** (`components/ui/Ornaments.tsx`) for the corners of dialogs and the
+  welcome screen; hidden in other styles and in forced-colours mode, never takes pointer events.

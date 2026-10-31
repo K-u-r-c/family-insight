@@ -10,7 +10,9 @@ All notable changes to this project are documented here. The format follows
 
 - **Styles**: besides the modern look, the new **Tapestry** style makes the app look like an old
   family tapestry – parchment and ink in the light theme, dark green and gold in the dark theme,
-  with classic serif type. Switch it in **Settings → Style** or **View → Style**.
+  with classic serif type: people as framed medallions joined by gold thread, the tree's name in a
+  framed title, woven cloth behind the tree and ornaments in the corners. Switch it in
+  **Settings → Style** or **View → Style**.
 
 ## [1.2.1] - 2026-10-31
 

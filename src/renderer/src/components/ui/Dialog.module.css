@@ -92,3 +92,19 @@
     opacity: 0;
   }
 }
+
+/* Tapestry: a gold double frame; the corner ornaments sit inside it. */
+:global(:root[data-style='tapestry']) .dialog {
+  border-color: var(--color-edge);
+  box-shadow:
+    inset 0 0 0 4px var(--color-surface-raised),
+    inset 0 0 0 5px var(--color-edge),
+    var(--shadow-lg);
+}
+
+:global(:root[data-style='tapestry']) .header,
+:global(:root[data-style='tapestry']) .body,
+:global(:root[data-style='tapestry']) .footer {
+  position: relative;
+  z-index: 1;
+}

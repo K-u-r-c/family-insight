@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Family Insight Tapestry ornament: top-left corner with a vine (original artwork, MIT). -->
+  <path d="M3 61V12a9 9 0 0 1 9-9h49"/>
+  <path d="M8 61V17a9 9 0 0 1 9-9h44" stroke-width="0.9"/>
+  <path d="M15 34c0-11 8-19 19-19"/>
+  <path d="M15 34c0 5 2 8 6 10"/>
+  <path d="M34 15c5 0 8 2 10 6"/>
+  <circle cx="15" cy="15" r="3.2" fill="#000" stroke="none"/>
+  <path d="M20 27c3-7 10-10 16-7c-5 1-9 4-10 9c-2-1-4-1-6-2z" fill="#000" stroke="none"/>
+  <path d="M23 50c-4-3-5-8-2-12c3 4 4 8 2 12z" fill="#000" stroke="none"/>
+  <path d="M50 23c-3-4-8-5-12-2c4 3 8 4 12 2z" fill="#000" stroke="none"/>
+</svg>

@@ -1396,6 +1396,17 @@ scene('settings-menu', async (s) => {
   return { clip: [button, menu(s)], pad: 16 }
 })
 
+scene(
+  'tapestry-tree',
+  async (s) => {
+    await openSample(s)
+    await s.page.getByRole('button', { name: s.t('tree.fit') }).click()
+    await s.page.waitForTimeout(1200)
+    await parkMouse(s)
+  },
+  { settings: { style: 'tapestry' } }
+)
+
 scene('unsaved-status', async (s) => {
   await openSample(s)
   await setRoot(s, 'Lena Kowalska')

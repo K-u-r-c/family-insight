@@ -21,6 +21,8 @@ Kliknij przycisk **Ustawienia** (⚙) po prawej stronie paska narzędzi:
 
 Styl można też zmienić na pasku menu: **Widok → Styl**. W stylu Gobelin osoby na drzewie są oprawionymi medalionami z portretem nad imieniem, partnerów łączy mały węzeł, a linie wyglądają jak złota nić.
 
+<Screenshot name="tapestry-tree" alt="Przykładowa rodzina w stylu Gobelin: nazwisko rodu w ozdobnej ramce nad drzewem, osoby jako oprawione medaliony połączone złotą nicią" />
+
 Motyw i język zmienisz też na ekranie powitalnym (prawy górny róg) i w menu **Widok** na pasku
 menu. Menu **Widok** pozwala też pokazać lub ukryć listę osób i mapę przeglądową.
 

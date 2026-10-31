@@ -1,0 +1,56 @@
+.ornaments {
+  display: none;
+}
+
+:global(:root[data-style='tapestry']) .ornaments {
+  --size: 44px;
+  --inset: 8px;
+
+  position: absolute;
+  inset: var(--inset);
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+}
+
+:global(:root[data-style='tapestry']) .lg {
+  --size: 76px;
+  --inset: 14px;
+}
+
+.ornaments > span {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  background: var(--color-edge);
+  mask: url('../../assets/ornaments/corner.svg') no-repeat center / contain;
+}
+
+.ornaments > span:nth-child(1) {
+  top: 0;
+  left: 0;
+}
+
+.ornaments > span:nth-child(2) {
+  top: 0;
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.ornaments > span:nth-child(3) {
+  bottom: 0;
+  left: 0;
+  transform: scaleY(-1);
+}
+
+.ornaments > span:nth-child(4) {
+  right: 0;
+  bottom: 0;
+  transform: scale(-1);
+}
+
+@media (forced-colors: active) {
+  :global(:root[data-style='tapestry']) .ornaments {
+    display: none;
+  }
+}

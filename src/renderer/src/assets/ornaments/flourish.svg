@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 40" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Family Insight Tapestry ornament: a scroll flourish pointing left (original artwork, MIT). -->
+  <path d="M79 20H44"/>
+  <path d="M44 20c-7 0-11-4-11-9s4-8 8-8 6 3 6 6-2 5-5 5"/>
+  <path d="M44 20c-7 0-11 4-11 9s4 8 8 8 6-3 6-6-2-5-5-5"/>
+  <path d="M33 20H7"/>
+  <path d="M19 19c-3-5-1-10 5-12c0 5-2 9-5 12z" fill="#000" stroke="none"/>
+  <path d="M19 21c-3 5-1 10 5 12c0-5-2-9-5-12z" fill="#000" stroke="none"/>
+  <circle cx="4.5" cy="20" r="2.6" fill="#000" stroke="none"/>
+</svg>

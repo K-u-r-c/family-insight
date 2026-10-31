@@ -3,7 +3,7 @@ import { Clock, FileUp, FolderOpen, Plus, Sparkles, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { removeRecentFile } from '@core/settings'
 import { TreeLogo } from '@renderer/components/TreeLogo'
-import { Button, Icon, IconButton, Kbd } from '@renderer/components/ui'
+import { Button, Icon, IconButton, Kbd, Ornaments } from '@renderer/components/ui'
 import { startCsvImport } from '@renderer/features/csv/importFlow'
 import { startGedcomImport } from '@renderer/features/gedcom/importFlow'
 import { SettingsControls } from '@renderer/features/settings/SettingsControls'
@@ -51,6 +51,7 @@ export function WelcomeScreen(): React.JSX.Element {
 
   return (
     <main className={styles.screen}>
+      <Ornaments size="lg" />
       <div className={styles.toolbar}>
         <SettingsControls />
       </div>

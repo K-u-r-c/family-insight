@@ -21,6 +21,8 @@ Haga clic en el botón **Configuración** (⚙), a la derecha de la barra de her
 
 El estilo también se puede cambiar en la barra de menús: **Ver → Estilo**. En el estilo Tapiz, las personas del árbol son medallones enmarcados con el retrato sobre el nombre, las parejas se unen con un pequeño nudo y las líneas parecen hilo de oro.
 
+<Screenshot name="tapestry-tree" alt="La familia de ejemplo en el estilo Tapiz: el apellido en un título enmarcado sobre el árbol y las personas como medallones enmarcados unidos por hilo de oro" />
+
 El tema y el idioma también se pueden cambiar en la pantalla de bienvenida (esquina superior
 derecha) y en el menú **Ver** de la barra de menús. El menú **Ver** también muestra u oculta la
 lista de personas y el mapa general.
