@@ -34,8 +34,10 @@ export interface LayoutOptions {
   nodeHeight?: number
   /** Horizontal gap between partners. */
   partnerGap?: number
-  /** Horizontal gap between unrelated neighbours. */
+  /** Horizontal gap between siblings (neighbours that share a parent). */
   siblingGap?: number
+  /** Horizontal gap between neighbours from different families (default 2.5 × `siblingGap`). */
+  familyGap?: number
   /** Vertical gap between generations. */
   generationGap?: number
   /** Gap between disconnected groups of people. */
@@ -89,6 +91,8 @@ const DEFAULTS = {
   generationGap: 84,
   componentGap: 120
 }
+
+type Sizes = typeof DEFAULTS & { familyGap: number }
 
 interface Graph {
   people: Person[]
@@ -389,8 +393,8 @@ interface Unit {
   width: number
 }
 
-/** Pool-adjacent-violators: x_i ≥ x_{i-1} + minDist_i, minimising Σ (x_i - target_i)². */
-function placeRow(targets: number[], gaps: number[]): number[] {
+/** Pool-adjacent-violators: x_i ≥ x_{i-1} + minDist_i, minimising Σ w_i (x_i - target_i)². */
+function placeRow(targets: number[], gaps: number[], weights?: number[]): number[] {
   const n = targets.length
   // Shift into a space where the constraint is y_i ≥ y_{i-1}.
   const offset: number[] = new Array(n)
@@ -401,7 +405,8 @@ function placeRow(targets: number[], gaps: number[]): number[] {
   }
   const blocks: { start: number; end: number; sum: number; count: number }[] = []
   for (let i = 0; i < n; i++) {
-    blocks.push({ start: i, end: i, sum: targets[i]! - offset[i]!, count: 1 })
+    const w = weights?.[i] ?? 1
+    blocks.push({ start: i, end: i, sum: w * (targets[i]! - offset[i]!), count: w })
     while (blocks.length > 1) {
       const last = blocks[blocks.length - 1]!
       const prev = blocks[blocks.length - 2]!
@@ -431,7 +436,7 @@ interface ComponentLayout {
 function layoutComponent(
   g: Graph,
   comp: PersonId[],
-  o: typeof DEFAULTS,
+  o: Sizes,
   focusId?: PersonId
 ): ComponentLayout {
   const gen = assignGenerations(g, comp)
@@ -452,89 +457,187 @@ function layoutComponent(
   const rows: Unit[][] = Array.from({ length: maxGen + 1 }, () => [])
   for (const u of units) rows[u.gen]!.push(u)
 
-  // Initial order: DFS from the focus (or the oldest person) so families stay together.
-  const visit = new Map<PersonId, number>()
-  const startId =
-    focusId && comp.includes(focusId)
-      ? focusId
-      : comp.slice().sort((a, b) => gen.get(a)! - gen.get(b)!)[0]!
-  const stack = [startId]
-  while (stack.length) {
-    const id = stack.pop()!
-    if (visit.has(id)) continue
-    visit.set(id, visit.size)
-    const next = [
-      ...(g.partners.get(id) ?? []).map((r) => partnerOf(r, id)),
-      ...(g.children.get(id) ?? []).map((r) => r.childId),
-      ...(g.parents.get(id) ?? []).map((r) => r.parentId)
-    ]
-    for (let i = next.length - 1; i >= 0; i--) if (!visit.has(next[i]!)) stack.push(next[i]!)
-  }
-  for (const row of rows) {
-    row.sort(
-      (a, b) =>
-        Math.min(...a.members.map((m) => visit.get(m)!)) -
-        Math.min(...b.members.map((m) => visit.get(m)!))
-    )
-    row.forEach((u, i) => (u.order = i))
-  }
-
   const memberOffset = (u: Unit, id: PersonId): number =>
     u.members.indexOf(id) * (o.nodeWidth + o.partnerGap) + o.nodeWidth / 2 - u.width / 2
   const birthRank = new Map(g.people.map((p, i) => [p.id, i]))
   const unitBirth = (u: Unit): number => Math.min(...u.members.map((m) => birthRank.get(m)!))
-
-  // Barycentre ordering sweeps (by order index).
   const position = (id: PersonId): number => {
     const u = unitOf.get(id)!
     return u.order + u.members.indexOf(id) / (u.members.length + 1)
   }
-  // An odd number of sweeps so the last one orders children by their parents.
-  for (let sweep = 0; sweep < 7; sweep++) {
-    const down = sweep % 2 === 0
-    const range = down ? [...rows.keys()].slice(1) : [...rows.keys()].reverse().slice(1)
-    for (const r of range) {
-      const row = rows[r]!
-      const key = new Map<Unit, number>()
-      for (const u of row) {
-        const neighbours = u.members
-          .flatMap((m) =>
-            down
-              ? (g.parents.get(m) ?? []).map((x) => x.parentId)
-              : (g.children.get(m) ?? []).map((x) => x.childId)
-          )
-          .filter((n) => gen.get(n) === r + (down ? -1 : 1))
-        key.set(
-          u,
-          neighbours.length
-            ? neighbours.reduce((s, n) => s + position(n), 0) / neighbours.length
-            : u.order
-        )
-      }
-      row.sort((a, b) => key.get(a)! - key.get(b)! || unitBirth(a) - unitBirth(b))
+  /** People linked to `id` as parent or child in the row `dir` (−1 above, +1 below). */
+  const linked = (id: PersonId, dir: -1 | 1): PersonId[] => {
+    const row = gen.get(id)! + dir
+    const ids =
+      dir < 0
+        ? (g.parents.get(id) ?? []).map((x) => x.parentId)
+        : (g.children.get(id) ?? []).map((x) => x.childId)
+    return ids.filter((n) => gen.get(n) === row)
+  }
+
+  // Initial order: DFS from a start person so families stay together.
+  const initialOrder = (startId: PersonId): void => {
+    const visit = new Map<PersonId, number>()
+    const stack = [startId]
+    while (stack.length) {
+      const id = stack.pop()!
+      if (visit.has(id)) continue
+      visit.set(id, visit.size)
+      const next = [
+        ...(g.partners.get(id) ?? []).map((r) => partnerOf(r, id)),
+        ...(g.children.get(id) ?? []).map((r) => r.childId),
+        ...(g.parents.get(id) ?? []).map((r) => r.parentId)
+      ]
+      for (let i = next.length - 1; i >= 0; i--) if (!visit.has(next[i]!)) stack.push(next[i]!)
+    }
+    for (const row of rows) {
+      row.sort(
+        (a, b) =>
+          Math.min(...a.members.map((m) => visit.get(m)!)) -
+          Math.min(...b.members.map((m) => visit.get(m)!))
+      )
       row.forEach((u, i) => (u.order = i))
-      // Flip couples so each partner is on the side of their own parents.
-      for (const u of row) {
-        if (u.members.length < 2) continue
-        const bary = (m: PersonId): number | undefined => {
-          const ps = (g.parents.get(m) ?? [])
-            .map((x) => x.parentId)
-            .filter((n) => gen.get(n) === u.gen - 1)
-          return ps.length ? ps.reduce((s, n) => s + position(n), 0) / ps.length : undefined
+    }
+  }
+
+  // Barycentre ordering sweeps (by order index); an odd number so the last one orders children
+  // by their parents.
+  const sweeps = (): void => {
+    for (let sweep = 0; sweep < 7; sweep++) {
+      const down = sweep % 2 === 0
+      const range = down ? [...rows.keys()].slice(1) : [...rows.keys()].reverse().slice(1)
+      for (const r of range) {
+        const row = rows[r]!
+        const key = new Map<Unit, number>()
+        for (const u of row) {
+          const neighbours = u.members.flatMap((m) => linked(m, down ? -1 : 1))
+          key.set(
+            u,
+            neighbours.length
+              ? neighbours.reduce((s, n) => s + position(n), 0) / neighbours.length
+              : u.order
+          )
         }
-        const first = bary(u.members[0]!)
-        const last = bary(u.members[u.members.length - 1]!)
-        if (first !== undefined && last !== undefined && first > last) u.members.reverse()
-        else if (first !== undefined && last === undefined && first > u.order + 0.5)
-          u.members.reverse()
-        else if (last !== undefined && first === undefined && last < u.order - 0.5)
-          u.members.reverse()
+        row.sort((a, b) => key.get(a)! - key.get(b)! || unitBirth(a) - unitBirth(b))
+        row.forEach((u, i) => (u.order = i))
+        // Flip couples so each partner is on the side of their own parents.
+        for (const u of row) {
+          if (u.members.length < 2) continue
+          const bary = (m: PersonId): number | undefined => {
+            const ps = linked(m, -1)
+            return ps.length ? ps.reduce((s, n) => s + position(n), 0) / ps.length : undefined
+          }
+          const first = bary(u.members[0]!)
+          const last = bary(u.members[u.members.length - 1]!)
+          if (first !== undefined && last !== undefined && first > last) u.members.reverse()
+          else if (first !== undefined && last === undefined && first > u.order + 0.5)
+            u.members.reverse()
+          else if (last !== undefined && first === undefined && last < u.order - 0.5)
+            u.members.reverse()
+        }
       }
     }
   }
 
-  // Coordinates: start packed, then alternate pulling towards parents and children.
-  const gapBetween = (a: Unit, b: Unit): number => a.width / 2 + b.width / 2 + o.siblingGap
+  /** Crossings between the links of two neighbours `a` (left) and `b` (right) of one row. */
+  const pairCrossings = (a: Unit, b: Unit): number => {
+    let count = 0
+    for (const dir of [-1, 1] as const) {
+      const pa = a.members.flatMap((m) => linked(m, dir).map(position))
+      const pb = b.members.flatMap((m) => linked(m, dir).map(position))
+      for (const x of pa) for (const y of pb) if (x > y) count++
+    }
+    return count
+  }
+  // Swap neighbours while that removes crossings (the "transpose" step of Sugiyama layouts).
+  const transpose = (): void => {
+    for (let pass = 0; pass < 6; pass++) {
+      let improved = false
+      for (const row of rows) {
+        for (let i = 0; i + 1 < row.length; i++) {
+          const a = row[i]!
+          const b = row[i + 1]!
+          if (pairCrossings(b, a) < pairCrossings(a, b)) {
+            row[i] = b
+            row[i + 1] = a
+            a.order = i + 1
+            b.order = i
+            improved = true
+          }
+        }
+      }
+      if (!improved) break
+    }
+  }
+  const crossings = (): number => {
+    let count = 0
+    for (let r = 0; r < maxGen; r++) {
+      const links: [number, number][] = []
+      for (const u of rows[r]!) {
+        for (const m of u.members)
+          for (const c of linked(m, 1)) links.push([position(m), position(c)])
+      }
+      for (let i = 0; i < links.length; i++) {
+        for (let j = i + 1; j < links.length; j++) {
+          if ((links[i]![0] - links[j]![0]) * (links[i]![1] - links[j]![1]) < 0) count++
+        }
+      }
+    }
+    return count
+  }
+
+  // Try a few start people (the focus or the oldest person first, then other founders and the
+  // youngest generation) and keep the order with the fewest crossings.
+  const byGen = comp.slice().sort((a, b) => gen.get(a)! - gen.get(b)!)
+  const starts: PersonId[] = []
+  const addStart = (id: PersonId | undefined): void => {
+    if (id !== undefined && !starts.some((s) => unitOf.get(s) === unitOf.get(id))) starts.push(id)
+  }
+  addStart(focusId && comp.includes(focusId) ? focusId : byGen[0])
+  const tries = comp.length > 400 ? 2 : 8
+  for (const id of byGen) if (!(g.parents.get(id) ?? []).length) addStart(id)
+  addStart(byGen[byGen.length - 1])
+  const originalMembers = new Map(units.map((u) => [u, u.members.slice()]))
+  let best: { rows: Unit[][]; members: Map<Unit, PersonId[]>; crossings: number } | undefined
+  for (const startId of starts.slice(0, tries)) {
+    for (const u of units) u.members = originalMembers.get(u)!.slice()
+    initialOrder(startId)
+    sweeps()
+    transpose()
+    const c = crossings()
+    if (!best || c < best.crossings) {
+      best = {
+        rows: rows.map((row) => row.slice()),
+        members: new Map(units.map((u) => [u, u.members.slice()])),
+        crossings: c
+      }
+    }
+    if (c === 0) break
+  }
+  for (let r = 0; r < rows.length; r++) {
+    rows[r] = best!.rows[r]!
+    rows[r]!.forEach((u, i) => (u.order = i))
+  }
+  for (const u of units) u.members = best!.members.get(u)!
+
+  // Coordinates: start packed, then minimise Σ (child − parent)² over all parent → child links
+  // row by row (block coordinate descent, each row solved exactly by isotonic regression).
+  // Neighbours from different families get `familyGap`, siblings and partners stay close.
+  const parentsOf = new Map<Unit, Set<PersonId>>()
+  for (const u of units) {
+    const set = new Set<PersonId>()
+    for (const m of u.members) {
+      for (const r of g.parents.get(m) ?? []) if (gen.get(r.parentId)! < u.gen) set.add(r.parentId)
+    }
+    parentsOf.set(u, set)
+  }
+  const related = (a: Unit, b: Unit): boolean => {
+    const pa = parentsOf.get(a)!
+    for (const p of parentsOf.get(b)!) if (pa.has(p)) return true
+    return false
+  }
+  const gapBetween = (a: Unit, b: Unit): number =>
+    a.width / 2 + b.width / 2 + (related(a, b) ? o.siblingGap : o.familyGap)
   for (const row of rows) {
     let x = 0
     row.forEach((u, i) => {
@@ -546,42 +649,46 @@ function layoutComponent(
     const u = unitOf.get(id)!
     return u.x + memberOffset(u, id)
   }
-  const desiredFromParents = (u: Unit): number | undefined => {
-    const wants: number[] = []
+  /** Where the unit's links want it (mean over links) and how many links pull. */
+  const desired = (u: Unit, up: boolean, down: boolean): [number, number] | undefined => {
+    let sum = 0
+    let count = 0
     for (const m of u.members) {
-      const ps = (g.parents.get(m) ?? []).map((r) => r.parentId).filter((p) => gen.get(p)! < u.gen)
-      if (!ps.length) continue
-      const anchor = ps.reduce((s, p) => s + center(p), 0) / ps.length
-      wants.push(anchor - memberOffset(u, m))
+      const offset = memberOffset(u, m)
+      if (up) {
+        for (const r of g.parents.get(m) ?? []) {
+          if (gen.get(r.parentId)! >= u.gen) continue
+          sum += center(r.parentId) - offset
+          count++
+        }
+      }
+      if (down) {
+        for (const r of g.children.get(m) ?? []) {
+          if (gen.get(r.childId)! <= u.gen) continue
+          sum += center(r.childId) - offset
+          count++
+        }
+      }
     }
-    return wants.length ? wants.reduce((a, b) => a + b, 0) / wants.length : undefined
+    return count ? [sum / count, count] : undefined
   }
-  const desiredFromChildren = (u: Unit): number | undefined => {
-    const wants: number[] = []
-    for (const m of u.members) {
-      const cs = (g.children.get(m) ?? []).map((r) => r.childId).filter((c) => gen.get(c)! > u.gen)
-      if (!cs.length) continue
-      const anchor = cs.reduce((s, c) => s + center(c), 0) / cs.length
-      wants.push(anchor - memberOffset(u, m))
-    }
-    return wants.length ? wants.reduce((a, b) => a + b, 0) / wants.length : undefined
-  }
-  const relax = (row: Unit[], desired: (u: Unit) => number | undefined, weight: number): void => {
+  const relax = (row: Unit[], up: boolean, down: boolean): void => {
     if (!row.length) return
-    const targets = row.map((u) => {
-      const d = desired(u)
-      return d === undefined ? u.x : u.x + (d - u.x) * weight
-    })
+    const targets: number[] = []
+    const weights: number[] = []
+    for (const u of row) {
+      const d = desired(u, up, down)
+      targets.push(d ? d[0] : u.x)
+      weights.push(d ? d[1] : 0.01)
+    }
     const gaps = row.map((u, i) => (i === 0 ? 0 : gapBetween(row[i - 1]!, u)))
-    const xs = placeRow(targets, gaps)
+    const xs = placeRow(targets, gaps, weights)
     row.forEach((u, i) => (u.x = xs[i]!))
   }
-  for (let iter = 0; iter < 24; iter++) {
-    for (let r = 1; r <= maxGen; r++) relax(rows[r]!, desiredFromParents, 1)
-    for (let r = maxGen - 1; r >= 0; r--) relax(rows[r]!, desiredFromChildren, 1)
+  for (let iter = 0; iter < 40; iter++) {
+    for (let r = 1; r <= maxGen; r++) relax(rows[r]!, true, true)
+    for (let r = maxGen - 1; r >= 0; r--) relax(rows[r]!, true, true)
   }
-  // Final pass: children centred under their parents wherever space allows.
-  for (let r = 1; r <= maxGen; r++) relax(rows[r]!, desiredFromParents, 1)
 
   const centers = new Map<PersonId, number>()
   let minX = Infinity
@@ -599,10 +706,11 @@ function layoutComponent(
 
 /** Computes positions for every visible person and routes the connecting lines. */
 export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Layout {
-  const o = {
+  const sized = {
     ...DEFAULTS,
     ...Object.fromEntries(Object.entries(options).filter(([, v]) => typeof v === 'number'))
   }
+  const o: Sizes = { ...sized, familyGap: options.familyGap ?? Math.round(sized.siblingGap * 2.5) }
   const ids = selectPeople(tree, options)
   if (!ids.size) return { nodes: [], edges: [], width: 0, height: 0 }
   const g = buildGraph(tree, ids)

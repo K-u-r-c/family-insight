@@ -446,3 +446,18 @@ later without changing anything else.
   the previous relaxation is kept for it.
 - **Regression fixture** `twoFamiliesFixture` (`src/core/layout/fixtures.ts`) reproduces the shape
   of the user's tree that showed the bug, with invented names; real trees are never committed.
+
+## Family groups in the layout (2026-10, issue #101)
+
+- **Fewest crossings over a few starts**: the barycentre sweeps depend on the depth-first start
+  order, which mattered when two families meet (a couple ended up between a man and his
+  half-siblings). The engine tries the focus/oldest person, other founders and the youngest
+  generation (8 starts, 2 above 400 people), adds a transpose step and keeps the order with the
+  fewest crossings – still deterministic and well inside the 1 000-person budget.
+- **One objective for coordinates**: rows minimise Σ (child − parent)² over parent → child links
+  (weighted isotonic regression per row, sweeping down and up) instead of alternating "children
+  under parents" and "parents over children" passes, which kept overwriting each other.
+- **`familyGap` = 2.5 × `siblingGap`** between neighbours that share no parent; siblings and
+  partners stay close. On the reported tree the width grew from 4 904 to 4 985 px (+1.6 %), the
+  longest sideways child line fell from 1 265 to 809 px, and the total sideways line length from
+  13 096 to 8 522 px.

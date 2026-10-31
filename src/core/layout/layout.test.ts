@@ -330,6 +330,148 @@ describe('generations across families (#100)', () => {
   })
 })
 
+describe('family groups (#101)', () => {
+  const SIZES = {
+    nodeWidth: 220,
+    nodeHeight: 64,
+    partnerGap: 28,
+    siblingGap: 32,
+    generationGap: 76
+  }
+  const FAMILY_GAP = 80 // 2.5 × siblingGap
+
+  /** Parents (in the row above) of everyone in a run of partners. */
+  function parentsOfRun(tree: FamilyTree, l: Layout, run: LayoutNode[]): Set<string> {
+    const gen = new Map(l.nodes.map((n) => [n.id, n.generation]))
+    const out = new Set<string>()
+    for (const n of run) {
+      for (const r of Object.values(tree.relationships)) {
+        if (
+          r.type === 'parent-child' &&
+          r.childId === n.id &&
+          gen.get(r.parentId) === n.generation - 1
+        )
+          out.add(r.parentId)
+      }
+    }
+    return out
+  }
+  /** Gaps between neighbouring units (runs of partners) on every row, with whether they share a parent. */
+  function unitGaps(
+    tree: FamilyTree,
+    l: Layout
+  ): { gap: number; related: boolean; pair: string }[] {
+    const partners = new Set(
+      Object.values(tree.relationships)
+        .filter((r) => r.type === 'partnership')
+        .flatMap((r) => [
+          `${r.partnerIds[0]}|${r.partnerIds[1]}`,
+          `${r.partnerIds[1]}|${r.partnerIds[0]}`
+        ])
+    )
+    const rows = new Map<number, LayoutNode[]>()
+    for (const n of l.nodes) rows.set(n.y, [...(rows.get(n.y) ?? []), n])
+    const out: { gap: number; related: boolean; pair: string }[] = []
+    for (const row of rows.values()) {
+      row.sort((a, b) => a.x - b.x)
+      const runs: LayoutNode[][] = []
+      for (const n of row) {
+        const last = runs[runs.length - 1]
+        const prev = last?.[last.length - 1]
+        if (
+          prev &&
+          partners.has(`${prev.id}|${n.id}`) &&
+          n.x - (prev.x + prev.width) <= SIZES.partnerGap + 1
+        )
+          last!.push(n)
+        else runs.push([n])
+      }
+      for (let i = 1; i < runs.length; i++) {
+        const a = runs[i - 1]!
+        const b = runs[i]!
+        const pa = parentsOfRun(tree, l, a)
+        const related = [...parentsOfRun(tree, l, b)].some((p) => pa.has(p))
+        const left = a[a.length - 1]!
+        out.push({
+          gap: b[0]!.x - (left.x + left.width),
+          related,
+          pair: `${left.id} / ${b[0]!.id}`
+        })
+      }
+    }
+    return out
+  }
+  /** Sibling groups whose span does not overlap their parents' span. */
+  function groupsAway(tree: FamilyTree, l: Layout): string[] {
+    const pos = new Map(l.nodes.map((n) => [n.id, n]))
+    const groups = new Map<string, string[]>()
+    for (const n of l.nodes) {
+      const ps = Object.values(tree.relationships)
+        .filter((r) => r.type === 'parent-child' && r.childId === n.id && pos.has(r.parentId))
+        .map((r) => (r as { parentId: string }).parentId)
+        .sort()
+      if (ps.length) groups.set(ps.join('+'), [...(groups.get(ps.join('+')) ?? []), n.id])
+    }
+    const out: string[] = []
+    for (const [key, kids] of groups) {
+      const span = (ids: string[]): [number, number] => [
+        Math.min(...ids.map((id) => pos.get(id)!.x)),
+        Math.max(...ids.map((id) => pos.get(id)!.x + pos.get(id)!.width))
+      ]
+      const [k1, k2] = span(kids)
+      const [p1, p2] = span(key.split('+'))
+      if (k2 < p1 || k1 > p2) out.push(`${key} → ${kids.join(',')}`)
+    }
+    return out
+  }
+
+  it('separates families by familyGap and keeps siblings at siblingGap', () => {
+    for (const tree of [twoFamiliesFixture(), remarriageFixture(), randomTree(300, 7)]) {
+      const l = layoutFamily(tree, SIZES)
+      const gaps = unitGaps(tree, l)
+      for (const g of gaps) {
+        expect(g.gap + 0.5, g.pair).toBeGreaterThanOrEqual(
+          g.related ? SIZES.siblingGap : FAMILY_GAP
+        )
+      }
+      // Some siblings are packed tightly (the gap is not just inflated everywhere).
+      expect(gaps.some((g) => g.related && Math.abs(g.gap - SIZES.siblingGap) < 1)).toBe(true)
+      assertNoOverlap(l)
+    }
+  })
+
+  it('derives familyGap from siblingGap and accepts an explicit value', () => {
+    const tree = twoFamiliesFixture()
+    const wide = layoutFamily(tree, { ...SIZES, familyGap: 200 })
+    for (const g of unitGaps(tree, wide))
+      if (!g.related) expect(g.gap + 0.5).toBeGreaterThanOrEqual(200)
+  })
+
+  it('keeps sibling groups under their parents', () => {
+    const tree = twoFamiliesFixture()
+    const l = layoutFamily(tree, SIZES)
+    // Only the child pulled between both of his parents' families and his wife's may drift.
+    expect(groupsAway(tree, l).length).toBeLessThanOrEqual(1)
+    const sample = layoutFamily(remarriageFixture(), SIZES)
+    expect(groupsAway(remarriageFixture(), sample)).toEqual([])
+  })
+
+  it('does not put a child under a neighbouring couple (the reported case)', () => {
+    const tree = twoFamiliesFixture()
+    const l = layoutFamily(tree, SIZES)
+    const child = node(l, 'halfUncleChild2')
+    const span = (ids: string[]): [number, number] => [
+      Math.min(...ids.map((id) => node(l, id).x)),
+      Math.max(...ids.map((id) => node(l, id).x + node(l, id).width))
+    ]
+    const [n1, n2] = span(['mgf', 'mgm'])
+    expect(cx(child) < n1 || cx(child) > n2).toBe(true)
+    const [k1, k2] = span(['halfUncleChild1', 'halfUncleChild2', 'halfUncleChild3'])
+    const [p1, p2] = span(['halfUncle', 'halfUncleWife'])
+    expect(k2 >= p1 && k1 <= p2).toBe(true)
+  })
+})
+
 /**
  * Seeded families whose founders live in different generations; people only marry within their
  * own (true) generation – into another family or someone from outside – so an exact layering

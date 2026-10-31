@@ -70,15 +70,31 @@ order the relationships started:
 Units in each row are ordered with **barycentre sweeps**: going down and up the rows several times,
 each unit moves towards the average position of its relatives in the neighbouring row. Siblings keep
 their birth order, and couples are flipped when that puts each partner on the side of their own
-parents. This minimises crossing lines.
+parents. A **transpose** step then swaps neighbours while that removes crossing lines.
+
+The sweeps start from a depth-first order, and the start person matters when two families meet. The
+engine therefore tries a few starts and keeps the order with the **fewest crossings**: the focus or
+oldest person, other founders (people without parents) and the youngest generation. Small
+components try up to eight starts, components over 400 people two.
 
 ## 5. Coordinates
 
-Alternating passes pull **children under the midpoint of their parents** and **couples above the
-middle of their children**. Each pass solves one row exactly with **isotonic regression**
-(the pool-adjacent-violators algorithm): it finds the positions closest to the desired ones that keep
-the order from step 4 and the minimum spacing between cards. Disconnected groups are laid out side by
-side with `componentGap` between them.
+Positions minimise the squared horizontal distance along every parent → child link, so children sit
+under their parents and couples above their children wherever the space allows. When a row is too
+wide for that, both directions give way a little instead of one winning. The engine sweeps the rows
+down and up; each step solves one row exactly with weighted **isotonic regression** (the
+pool-adjacent-violators algorithm). A unit's target is the mean of what its links want, weighted by
+the number of links, and the result keeps the order from step 4 and the minimum spacing.
+
+The minimum spacing follows family structure:
+
+- `partnerGap` between partners;
+- `siblingGap` between neighbours that share a parent (siblings, or a couple next to the partner's
+  sibling);
+- the wider `familyGap` between neighbours from different families, so a child does not seem to
+  belong to the neighbouring couple.
+
+Disconnected groups are laid out side by side with `componentGap` between them.
 
 ## 6. Edges
 
@@ -100,7 +116,8 @@ The renderer draws `ended` and non-biological edges dashed (see [Rendering](./re
 | `nodeWidth`     | 188     | Card width                                        |
 | `nodeHeight`    | 68      | Card height                                       |
 | `partnerGap`    | 28      | Gap between partners                              |
-| `siblingGap`    | 36      | Gap between other neighbours                      |
+| `siblingGap`    | 36      | Gap between neighbours that share a parent        |
+| `familyGap`     | 90      | Gap between different families (2.5 × siblingGap) |
 | `generationGap` | 84      | Vertical gap between rows                         |
 | `componentGap`  | 120     | Gap between disconnected groups                   |
 
