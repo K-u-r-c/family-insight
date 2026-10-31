@@ -15,6 +15,7 @@ import {
   type ElectronApplication,
   type Page
 } from '@playwright/test'
+import { SITE_LANGUAGES, siteText } from '../.vitepress/siteLocales'
 
 const DIST = join(__dirname, '..', '.vitepress', 'dist')
 const BASE = '/family-insight/'
@@ -58,6 +59,19 @@ function pages(): string[] {
   return [...xml.matchAll(/<loc>https:\/\/k-u-r-c\.github\.io(\/family-insight\/[^<]*)<\/loc>/g)]
     .map((m) => m[1]!)
     .sort()
+}
+
+/** Pages to open in the slower browser checks: the translated developer placeholders share one
+ * template, so only the first of each language. */
+function browserPages(): string[] {
+  const seen = new Set<string>()
+  return pages().filter((path) => {
+    const section = /^(.*\/[a-z]{2}\/developer\/).+/.exec(path)?.[1]
+    if (!section) return true
+    if (seen.has(section)) return false
+    seen.add(section)
+    return true
+  })
 }
 
 let server: Server
@@ -115,14 +129,16 @@ async function open(path: string, theme: 'light' | 'dark' = 'light'): Promise<st
   return problems
 }
 
-test('the English and Polish guides have the same pages', () => {
+test('the guide has the same pages in every language', () => {
   const all = pages()
   const en = all.filter((p) => p.startsWith(`${BASE}guide/`)).map((p) => p.slice(BASE.length))
-  const pl = all
-    .filter((p) => p.startsWith(`${BASE}pl/guide/`))
-    .map((p) => p.slice(BASE.length + 3))
   expect(en.length).toBeGreaterThan(20)
-  expect(pl).toEqual(en)
+  for (const { prefix } of SITE_LANGUAGES.filter((l) => l.prefix)) {
+    const translated = all
+      .filter((p) => p.startsWith(`${BASE}${prefix.slice(1)}/guide/`))
+      .map((p) => p.slice(BASE.length + prefix.length))
+    expect(translated, prefix).toEqual(en)
+  }
 })
 
 test('every link, anchor and image points to something that exists', () => {
@@ -160,10 +176,10 @@ test('every link, anchor and image points to something that exists', () => {
 
 test('every page loads without errors and has a title, description and navigation', async () => {
   const issues: string[] = []
-  const defaults = new Set([
-    'A beautiful, simple family tree editor for Windows, macOS and Linux.',
-    'Piękny i prosty program do tworzenia drzewa genealogicznego na Windows, macOS i Linux.'
-  ])
+  const defaults = new Set(SITE_LANGUAGES.map((l) => siteText(l.code, 'description')))
+  const homes = new Set(
+    SITE_LANGUAGES.map((l) => `${BASE}${l.prefix.slice(1)}${l.prefix ? '/' : ''}`)
+  )
   for (const path of pages()) {
     issues.push(...(await open(path)).map((p) => `${path}: ${p}`))
     const info = await page.evaluate(() => ({
@@ -176,8 +192,8 @@ test('every page loads without errors and has a title, description and navigatio
         .filter((img) => img.complete && img.naturalWidth === 0 && img.offsetParent !== null)
         .map((img) => img.src)
     }))
-    const home = path === BASE || path === `${BASE}pl/`
-    const placeholder = /\/pl\/developer\/.+/.test(path)
+    const home = homes.has(path)
+    const placeholder = /\/[a-z]{2}\/developer\/.+/.test(path)
     if (!info.title || (!home && !info.h1)) issues.push(`${path}: no title or heading`)
     if (!home && !placeholder && defaults.has(info.description)) {
       issues.push(`${path}: no page description`)
@@ -191,7 +207,7 @@ test('every page loads without errors and has a title, description and navigatio
 for (const theme of ['light', 'dark'] as const) {
   test(`no serious accessibility violations (${theme})`, async () => {
     const violations: string[] = []
-    for (const path of pages()) {
+    for (const path of browserPages()) {
       await open(path, theme)
       await page.addScriptTag({ content: AXE })
       const found = await page.evaluate(async () => {
@@ -229,7 +245,7 @@ for (const theme of ['light', 'dark'] as const) {
 test('pages fit a phone screen and the menu opens', async () => {
   await page.setViewportSize({ width: 375, height: 800 })
   const overflowing: string[] = []
-  for (const path of pages()) {
+  for (const path of browserPages()) {
     await open(path)
     const widths = await page.evaluate(() => ({
       scroll: document.documentElement.scrollWidth,
@@ -249,9 +265,15 @@ for (const [path, query] of [
   [`${BASE}guide/`, 'CSV'],
   [`${BASE}guide/`, 'backup'],
   [`${BASE}pl/guide/`, 'kopia zapasowa'],
-  [`${BASE}pl/guide/`, 'import']
+  [`${BASE}pl/guide/`, 'import'],
+  [`${BASE}de/guide/`, 'Sicherungskopie'],
+  [`${BASE}fr/guide/`, 'sauvegarde'],
+  [`${BASE}es/guide/`, 'copia de seguridad'],
+  [`${BASE}it/guide/`, 'backup'],
+  [`${BASE}pt/guide/`, 'segurança'],
+  [`${BASE}ru/guide/`, 'резервные']
 ] as const) {
-  test(`search finds "${query}" (${path.includes('/pl/') ? 'pl' : 'en'})`, async () => {
+  test(`search finds "${query}" (${path.slice(BASE.length).split('/')[0]})`, async () => {
     await open(path)
     await page.locator('#local-search button').click()
     const input = page.locator('.VPLocalSearchBox input')

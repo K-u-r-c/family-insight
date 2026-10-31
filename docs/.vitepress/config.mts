@@ -1,12 +1,11 @@
 import { readFileSync } from 'node:fs'
 import { defineConfig, type DefaultTheme, type MarkdownRenderer } from 'vitepress'
 import { developerSidebar } from './developer.mjs'
+import { SITE_LANGUAGES, siteText } from './siteLocales'
 
 const REPO = 'https://github.com/K-u-r-c/family-insight'
 const DOWNLOAD = `${REPO}/releases/latest`
 export const SITE_URL = 'https://k-u-r-c.github.io/family-insight/'
-
-type Locale = 'en' | 'pl'
 
 const SCREENSHOTS = new Set(
   Object.keys(JSON.parse(readFileSync(new URL('./screenshots.json', import.meta.url), 'utf8')))
@@ -41,66 +40,58 @@ function checkScreenshots(md: MarkdownRenderer): void {
   })
 }
 
-/** User guide sidebar. Page slugs are the same in both languages so the switcher keeps the page. */
-function guideSidebar(locale: Locale): DefaultTheme.SidebarItem[] {
-  const p = locale === 'pl' ? '/pl/guide/' : '/guide/'
-  const pl = locale === 'pl'
+/** User guide sidebar. Page slugs are the same in every language so the switcher keeps the page. */
+function guideSidebar(code: string, prefix: string): DefaultTheme.SidebarItem[] {
+  const p = `${prefix}/guide/`
+  const t = (english: string): string => siteText(code, `sidebar.${english}`)
+  const group = (title: string, items: [string, string][]): DefaultTheme.SidebarItem => ({
+    text: t(title),
+    items: items.map(([text, page]) => ({
+      text: text === 'GEDCOM' ? text : t(text),
+      link: `${p}${page}`
+    }))
+  })
   return [
-    {
-      text: pl ? 'Pierwsze kroki' : 'Getting started',
-      items: [
-        { text: pl ? 'Wprowadzenie' : 'Introduction', link: p },
-        { text: pl ? 'Instalacja' : 'Installation', link: `${p}install` },
-        { text: pl ? 'Twoje pierwsze drzewo' : 'Your first family tree', link: `${p}first-tree` },
-        { text: pl ? 'Okno programu' : 'The main window', link: `${p}main-window` },
-        { text: pl ? 'Przykładowa rodzina' : 'The sample family', link: `${p}sample-family` }
-      ]
-    },
-    {
-      text: pl ? 'Osoby i relacje' : 'People and relationships',
-      items: [
-        { text: pl ? 'Dodawanie osób' : 'Adding people', link: `${p}people` },
-        { text: pl ? 'Edycja osoby' : 'Editing a person', link: `${p}editing` },
-        { text: pl ? 'Wydarzenia' : 'Life events', link: `${p}events` },
-        { text: pl ? 'Relacje' : 'Relationships', link: `${p}relationships` },
-        { text: pl ? 'Źródła' : 'Sources', link: `${p}sources` },
-        { text: pl ? 'Zdjęcia i dokumenty' : 'Photos and documents', link: `${p}media` },
-        { text: pl ? 'Miejsca' : 'Places', link: `${p}places` },
-        { text: pl ? 'Mapa' : 'Map', link: `${p}map` },
-        { text: pl ? 'Usuwanie i cofanie' : 'Deleting and undoing', link: `${p}undo` }
-      ]
-    },
-    {
-      text: pl ? 'Przeglądanie drzewa' : 'Exploring the tree',
-      items: [
-        { text: pl ? 'Poruszanie się po drzewie' : 'Navigating the tree', link: `${p}navigation` },
-        { text: pl ? 'Tryby widoku' : 'View modes', link: `${p}view-modes` },
-        { text: pl ? 'Wyszukiwanie' : 'Finding people', link: `${p}search` },
-        { text: pl ? 'Szczegóły i oś życia' : 'Details and timeline', link: `${p}timeline` },
-        { text: pl ? 'Statystyki' : 'Statistics', link: `${p}statistics` }
-      ]
-    },
-    {
-      text: pl ? 'Pliki, CSV i druk' : 'Files, CSV and printing',
-      items: [
-        { text: pl ? 'Zapisywanie i otwieranie' : 'Saving and opening', link: `${p}files` },
-        { text: pl ? 'Import z CSV' : 'Import from CSV', link: `${p}csv-import` },
-        { text: pl ? 'Eksport do CSV' : 'Export to CSV', link: `${p}csv-export` },
-        { text: 'GEDCOM', link: `${p}gedcom` },
-        { text: pl ? 'Obrazy, PDF i druk' : 'Images, PDF and printing', link: `${p}export-print` }
-      ]
-    },
-    {
-      text: pl ? 'Pomoc' : 'Help',
-      items: [
-        { text: pl ? 'Ustawienia' : 'Settings', link: `${p}settings` },
-        { text: pl ? 'Aktualizacje' : 'Updates', link: `${p}updates` },
-        { text: pl ? 'Skróty klawiszowe' : 'Keyboard shortcuts', link: `${p}shortcuts` },
-        { text: pl ? 'Najczęstsze pytania' : 'FAQ', link: `${p}faq` },
-        { text: pl ? 'Rozwiązywanie problemów' : 'Troubleshooting', link: `${p}troubleshooting` },
-        { text: pl ? 'Słowniczek' : 'Glossary', link: `${p}glossary` }
-      ]
-    }
+    group('Getting started', [
+      ['Introduction', ''],
+      ['Installation', 'install'],
+      ['Your first family tree', 'first-tree'],
+      ['The main window', 'main-window'],
+      ['The sample family', 'sample-family']
+    ]),
+    group('People and relationships', [
+      ['Adding people', 'people'],
+      ['Editing a person', 'editing'],
+      ['Life events', 'events'],
+      ['Relationships', 'relationships'],
+      ['Sources', 'sources'],
+      ['Photos and documents', 'media'],
+      ['Places', 'places'],
+      ['Map', 'map'],
+      ['Deleting and undoing', 'undo']
+    ]),
+    group('Exploring the tree', [
+      ['Navigating the tree', 'navigation'],
+      ['View modes', 'view-modes'],
+      ['Finding people', 'search'],
+      ['Details and timeline', 'timeline'],
+      ['Statistics', 'statistics']
+    ]),
+    group('Files, CSV and printing', [
+      ['Saving and opening', 'files'],
+      ['Import from CSV', 'csv-import'],
+      ['Export to CSV', 'csv-export'],
+      ['GEDCOM', 'gedcom'],
+      ['Images, PDF and printing', 'export-print']
+    ]),
+    group('Help', [
+      ['Settings', 'settings'],
+      ['Updates', 'updates'],
+      ['Keyboard shortcuts', 'shortcuts'],
+      ['FAQ', 'faq'],
+      ['Troubleshooting', 'troubleshooting'],
+      ['Glossary', 'glossary']
+    ])
   ]
 }
 
@@ -115,7 +106,11 @@ export default defineConfig({
   // Open Graph / social preview for every page.
   transformHead({ pageData, siteData }) {
     const path = pageData.relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
-    const locale = pageData.relativePath.startsWith('pl/') ? 'pl' : 'root'
+    const language =
+      SITE_LANGUAGES.find(
+        (l) => l.prefix && pageData.relativePath.startsWith(`${l.prefix.slice(1)}/`)
+      ) ?? SITE_LANGUAGES[0]!
+    const locale = language.prefix ? language.code : 'root'
     const title = pageData.title ? `${pageData.title} | Family Insight` : 'Family Insight'
     const description =
       (pageData.frontmatter.description as string | undefined) ??
@@ -128,7 +123,7 @@ export default defineConfig({
       ['meta', { property: 'og:description', content: description }],
       ['meta', { property: 'og:url', content: `${SITE_URL}${path}` }],
       ['meta', { property: 'og:image', content: `${SITE_URL}og-image.png` }],
-      ['meta', { property: 'og:locale', content: locale === 'pl' ? 'pl_PL' : 'en_GB' }],
+      ['meta', { property: 'og:locale', content: language.og }],
       ['meta', { name: 'twitter:card', content: 'summary_large_image' }]
     ]
   },
@@ -150,85 +145,84 @@ export default defineConfig({
     search: {
       provider: 'local',
       options: {
-        locales: {
-          pl: {
-            translations: {
-              button: { buttonText: 'Szukaj', buttonAriaLabel: 'Szukaj' },
-              modal: {
-                displayDetails: 'Pokaż szczegóły',
-                resetButtonTitle: 'Wyczyść',
-                backButtonTitle: 'Zamknij wyszukiwanie',
-                noResultsText: 'Brak wyników dla',
-                footer: {
-                  selectText: 'wybierz',
-                  selectKeyAriaLabel: 'Enter',
-                  navigateText: 'przejdź',
-                  navigateUpKeyAriaLabel: 'strzałka w górę',
-                  navigateDownKeyAriaLabel: 'strzałka w dół',
-                  closeText: 'zamknij',
-                  closeKeyAriaLabel: 'Esc'
+        locales: Object.fromEntries(
+          SITE_LANGUAGES.filter((l) => l.prefix).map((l) => {
+            const t = (key: string): string => siteText(l.code, `search.${key}`)
+            return [
+              l.code,
+              {
+                translations: {
+                  button: { buttonText: t('buttonText'), buttonAriaLabel: t('buttonText') },
+                  modal: {
+                    displayDetails: t('displayDetails'),
+                    resetButtonTitle: t('resetButtonTitle'),
+                    backButtonTitle: t('backButtonTitle'),
+                    noResultsText: t('noResultsText'),
+                    footer: {
+                      selectText: t('selectText'),
+                      selectKeyAriaLabel: 'Enter',
+                      navigateText: t('navigateText'),
+                      navigateUpKeyAriaLabel: t('navigateUpKeyAriaLabel'),
+                      navigateDownKeyAriaLabel: t('navigateDownKeyAriaLabel'),
+                      closeText: t('closeText'),
+                      closeKeyAriaLabel: 'Esc'
+                    }
+                  }
                 }
               }
-            }
-          }
-        }
+            ]
+          })
+        )
       }
     }
   },
-  locales: {
-    root: {
-      label: 'English',
-      lang: 'en',
-      description: 'A beautiful, simple family tree editor for Windows, macOS and Linux.',
-      themeConfig: {
-        nav: [
-          { text: 'User guide', link: '/guide/', activeMatch: '^/guide/' },
-          { text: 'Developers', link: '/developer/', activeMatch: '^/developer/' },
-          { text: 'Download', link: DOWNLOAD }
-        ],
-        sidebar: { '/guide/': guideSidebar('en'), '/developer/': developerSidebar },
-        editLink: { pattern: `${REPO}/edit/main/docs/:path`, text: 'Edit this page on GitHub' },
-        footer: {
-          message: 'Released under the MIT licence.',
-          copyright: 'Family Insight – your family history stays on your computer.'
+  locales: Object.fromEntries(
+    SITE_LANGUAGES.map((l) => {
+      const t = (key: string): string => siteText(l.code, key)
+      const config = {
+        label: l.label,
+        lang: l.code,
+        link: `${l.prefix}/`,
+        description: t('description'),
+        themeConfig: {
+          nav: [
+            {
+              text: t('nav.guide'),
+              link: `${l.prefix}/guide/`,
+              activeMatch: `^${l.prefix}/guide/`
+            },
+            {
+              text: t('nav.developers'),
+              link: `${l.prefix}/developer/`,
+              activeMatch: `^${l.prefix}/developer/`
+            },
+            { text: t('nav.download'), link: DOWNLOAD }
+          ],
+          sidebar: {
+            [`${l.prefix}/guide/`]: guideSidebar(l.code, l.prefix),
+            [`${l.prefix}/developer/`]: developerSidebar
+          },
+          editLink: { pattern: `${REPO}/edit/main/docs/:path`, text: t('editLink') },
+          footer: { message: t('footer.message'), copyright: t('footer.copyright') },
+          outline: { label: t('outline') },
+          docFooter: { prev: t('docFooter.prev'), next: t('docFooter.next') },
+          lastUpdated: { text: t('lastUpdated') },
+          darkModeSwitchLabel: t('darkModeSwitchLabel'),
+          lightModeSwitchTitle: t('lightModeSwitchTitle'),
+          darkModeSwitchTitle: t('darkModeSwitchTitle'),
+          sidebarMenuLabel: t('sidebarMenuLabel'),
+          returnToTopLabel: t('returnToTopLabel'),
+          langMenuLabel: t('langMenuLabel'),
+          skipToContentLabel: t('skipToContentLabel'),
+          notFound: {
+            title: t('notFound.title'),
+            quote: t('notFound.quote'),
+            linkLabel: t('notFound.linkLabel'),
+            linkText: t('notFound.linkText')
+          }
         }
       }
-    },
-    pl: {
-      label: 'Polski',
-      lang: 'pl',
-      link: '/pl/',
-      description:
-        'Piękny i prosty program do tworzenia drzewa genealogicznego na Windows, macOS i Linux.',
-      themeConfig: {
-        nav: [
-          { text: 'Poradnik', link: '/pl/guide/', activeMatch: '^/pl/guide/' },
-          { text: 'Dla programistów', link: '/pl/developer/', activeMatch: '^/pl/developer/' },
-          { text: 'Pobierz', link: DOWNLOAD }
-        ],
-        sidebar: { '/pl/guide/': guideSidebar('pl'), '/pl/developer/': developerSidebar },
-        editLink: { pattern: `${REPO}/edit/main/docs/:path`, text: 'Edytuj tę stronę na GitHubie' },
-        footer: {
-          message: 'Udostępniane na licencji MIT.',
-          copyright: 'Family Insight – historia Twojej rodziny zostaje na Twoim komputerze.'
-        },
-        outline: { label: 'Na tej stronie' },
-        docFooter: { prev: 'Poprzednia', next: 'Następna' },
-        lastUpdated: { text: 'Ostatnia zmiana' },
-        darkModeSwitchLabel: 'Motyw',
-        lightModeSwitchTitle: 'Włącz jasny motyw',
-        darkModeSwitchTitle: 'Włącz ciemny motyw',
-        sidebarMenuLabel: 'Menu',
-        returnToTopLabel: 'Wróć na górę',
-        langMenuLabel: 'Zmień język',
-        skipToContentLabel: 'Przejdź do treści',
-        notFound: {
-          title: 'NIE ZNALEZIONO STRONY',
-          quote: 'Tej gałęzi nie ma w naszym drzewie.',
-          linkLabel: 'Przejdź do strony głównej',
-          linkText: 'Strona główna'
-        }
-      }
-    }
-  }
+      return [l.prefix ? l.code : 'root', config]
+    })
+  )
 })

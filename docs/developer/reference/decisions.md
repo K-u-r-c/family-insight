@@ -398,3 +398,18 @@ Details:
 (_arquivo_, _planilha_, _sobrenome_), and `pt-PT` (like any `pt-*` tag) maps to it. CSV import also
 accepts the European words (`apelido`, `nome de solteira`). A separate `pt-PT` locale can be added
 later without changing anything else.
+
+## The user guide in every app language (2026-10, issue #77)
+
+- **Same slugs everywhere** (`/de/guide/csv-import` …), so the VitePress language switcher keeps
+  the page; a unit test (`links.test.ts`) and the site test compare the page lists.
+- **Site texts as data**: navigation, sidebar, search and theme component texts are one JSON file
+  per language (`docs/.vitepress/locales/`) read by `siteLocales.ts`; the config builds every
+  locale from them instead of en/pl branches.
+- **Screenshots in every language and theme** (63 scenes × 8 × 2). They are generated, not
+  hand-made, so the cost is run time (~2.5 h) and ~30 MB in the repository; `Screenshot.vue` falls
+  back to English for a language without them.
+- **Developer docs stay English**; each language has placeholders that link to the English pages.
+- Translations were drafted per language from the English guide, the app's own strings (UI labels
+  in the guide match the app exactly) and the glossary, then checked by script for structure,
+  anchors, links and frontmatter.

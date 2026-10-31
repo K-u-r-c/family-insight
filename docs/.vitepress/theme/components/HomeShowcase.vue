@@ -2,14 +2,11 @@
 /** The app's main window under the home page hero. */
 import { computed } from 'vue'
 import { useData } from 'vitepress'
+import { siteLanguage, siteText } from '../../siteLocales'
 import Screenshot from './Screenshot.vue'
 
 const { lang } = useData()
-const alt = computed(() =>
-  lang.value.startsWith('pl')
-    ? 'Okno Family Insight z drzewem czterech pokoleń i szczegółami wybranej osoby'
-    : 'Family Insight showing a four-generation family tree and the details of one person'
-)
+const alt = computed(() => siteText(siteLanguage(lang.value), 'theme.showcase'))
 </script>
 
 <template>

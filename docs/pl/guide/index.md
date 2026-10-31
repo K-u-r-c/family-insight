@@ -5,8 +5,8 @@ description: Czym jest Family Insight, co potrafi i gdzie przechowuje Twoje drze
 # Wprowadzenie
 
 **Family Insight** to darmowy program do tworzenia drzewa genealogicznego, przeglądania go
-i uzupełniania. Działa na Windows, macOS i Linuksie, po polsku i po angielsku, w pełni bez
-internetu.
+i uzupełniania. Działa na Windows, macOS i Linuksie, w ośmiu językach (m.in. po polsku, angielsku,
+niemiecku i rosyjsku), w pełni bez internetu.
 
 <Screenshot name="workspace" alt="Family Insight z drzewem rodzinnym pośrodku, listą osób po lewej i szczegółami Piotra Kowalskiego po prawej" />
 
@@ -38,7 +38,8 @@ po awarii.
 
 ## Język i wygląd
 
-Cały program jest dostępny **po polsku** i **po angielsku**, z motywem **jasnym**, **ciemnym**
+Cały program jest dostępny **po polsku**, **angielsku**, **niemiecku**, **francusku**,
+**hiszpańsku**, **włosku**, **portugalsku** i **rosyjsku**, z motywem **jasnym**, **ciemnym**
 lub zgodnym z systemem. Zmienisz je na ekranie powitalnym albo później w
 [ustawieniach](./settings).
 

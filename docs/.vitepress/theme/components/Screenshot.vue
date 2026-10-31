@@ -7,6 +7,7 @@
 import { computed, ref } from 'vue'
 import { useData, withBase } from 'vitepress'
 import manifest from '../../screenshots.json'
+import { siteLanguage, siteText } from '../../siteLocales'
 
 const props = defineProps<{
   /** Scene name from `docs/.screenshots/scenes.spec.ts`. */
@@ -20,7 +21,11 @@ const { lang, isDark } = useData()
 const sizes = (manifest as Record<string, Record<string, [number, number]>>)[props.name]
 if (!sizes) throw new Error(`Unknown screenshot "${props.name}". Run npm run docs:screenshots.`)
 
-const language = computed(() => (lang.value.startsWith('pl') ? 'pl' : 'en'))
+// English pictures for a language whose screenshots haven't been generated.
+const language = computed(() => {
+  const code = siteLanguage(lang.value)
+  return sizes[`${code}-light`] ? code : 'en'
+})
 const variants = computed(() =>
   (['light', 'dark'] as const).map((theme) => {
     const [width, height] = sizes[`${language.value}-${theme}`] ?? sizes[`en-${theme}`] ?? [0, 0]
@@ -34,9 +39,9 @@ const variants = computed(() =>
 )
 const current = computed(() => variants.value[isDark.value ? 1 : 0]!)
 const enlargeLabel = computed(() =>
-  language.value === 'pl' ? `Powiększ: ${props.alt}` : `Enlarge: ${props.alt}`
+  siteText(siteLanguage(lang.value), 'theme.enlarge', { alt: props.alt })
 )
-const closeLabel = computed(() => (language.value === 'pl' ? 'Zamknij' : 'Close'))
+const closeLabel = computed(() => siteText(siteLanguage(lang.value), 'theme.close'))
 
 const zoom = ref<HTMLDialogElement>()
 const open = (): void => zoom.value?.showModal()

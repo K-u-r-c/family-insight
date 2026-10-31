@@ -6,7 +6,7 @@ titleTemplate: Family tree editor for Windows, macOS and Linux
 hero:
   name: Family Insight
   text: Your family story, beautifully organised.
-  tagline: Build your family tree, explore your relatives and keep your history in one place. Free, offline, in English and Polish.
+  tagline: Build your family tree, explore your relatives and keep your history in one place. Free, offline, in eight languages.
   image:
     src: /logo.svg
     alt: Family Insight
@@ -39,5 +39,5 @@ features:
     details: Undo, autosave, crash recovery and rotating backups. Your tree is one file on your computer – no account, no cloud.
   - icon: 🖨️
     title: Print and share
-    details: Export the tree as PNG, SVG or PDF, or print it. English and Polish, light and dark theme.
+    details: Export the tree as PNG, SVG or PDF, or print it. Eight languages, light and dark theme.
 ---

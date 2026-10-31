@@ -78,11 +78,23 @@ round trip `parse(format(d))` for each language automatically.
 - `electron-builder.yml`: add the NSIS installer language (`de_DE`) to `installerLanguages`, and a
   `Comment[de]` line to the Linux desktop entry.
 
-## 6. Documentation (optional, but lovely)
+## 6. Documentation
 
-The website has English and Polish user guides. A new guide language means a new VitePress locale in
-`docs/.vitepress/config.mts` (labels, sidebar), translated pages under `docs/de/guide/`, and a new entry
-in `VARIANTS` in `docs/.screenshots/shoot.ts` so screenshots are generated in the language.
+The user guide exists in every app language (`docs/<code>/guide/`, English at the root) with the
+same page names, so the language switcher keeps the page:
+
+- translate every page of `docs/guide/` and `docs/index.md` into `docs/<code>/`, naming UI elements
+  exactly as `locales/<code>.json` does; keep `{#anchor}` ids, links and `<Screenshot name>`;
+- copy `docs/pl/developer/` (the English-only placeholders) and translate its texts;
+- add the site texts (navigation, sidebar, search, theme components) as
+  `docs/.vitepress/locales/<code>.json` and the language to `SITE_LANGUAGES` in
+  `docs/.vitepress/siteLocales.ts`;
+- add the code to `GUIDE_LANGUAGES` in `src/shared/links.ts` (Help opens the guide in the app's
+  language);
+- run `npm run docs:screenshots` – it renders every scene in every app language.
+
+`src/shared/links.test.ts` fails while a language has no complete guide, and `npm run docs:test`
+compares the pages of all languages.
 
 ## 7. Check
 

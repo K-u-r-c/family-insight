@@ -6,25 +6,29 @@
 import { computed } from 'vue'
 import { useData } from 'vitepress'
 import { formatShortcut, SHORTCUT_GROUPS } from '../../../../src/shared/shortcuts'
-import en from '../../../../src/shared/locales/en.json'
-import pl from '../../../../src/shared/locales/pl.json'
+import { LOCALES } from '../../../../src/shared/i18n'
+import { siteLanguage, siteText } from '../../siteLocales'
 
 const { lang } = useData()
-const polish = computed(() => lang.value.startsWith('pl'))
+const code = computed(() => siteLanguage(lang.value))
+// The app's own texts in the page's language (every site language is an app language).
+const messages = computed(
+  () =>
+    (LOCALES as Record<string, { translation: Record<string, unknown> }>)[code.value]
+      ?.translation ?? LOCALES.en.translation
+)
 const t = (key: string): string =>
   String(
     key
       .split('.')
-      .reduce<unknown>(
-        (node, part) => (node as Record<string, unknown>)?.[part],
-        polish.value ? pl : en
-      ) ?? key
+      .reduce<unknown>((node, part) => (node as Record<string, unknown>)?.[part], messages.value) ??
+      key
   )
-const headers = computed(() =>
-  polish.value
-    ? { action: 'Działanie', other: 'Windows / Linux', mac: 'macOS' }
-    : { action: 'Action', other: 'Windows / Linux', mac: 'macOS' }
-)
+const headers = computed(() => ({
+  action: siteText(code.value, 'theme.action'),
+  other: 'Windows / Linux',
+  mac: 'macOS'
+}))
 </script>
 
 <template>

@@ -15,7 +15,9 @@
     "playwright.docs.config.ts",
     "src/core/**/*",
     "src/shared/pseudo.ts",
-    "src/shared/i18n.ts"
+    "src/shared/i18n.ts",
+    "docs/.vitepress/siteLocales.ts",
+    "docs/.vitepress/locales/*.json"
   ],
   "exclude": ["src/core/**/*.test.ts"]
 }

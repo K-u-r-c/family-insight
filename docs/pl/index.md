@@ -6,7 +6,7 @@ titleTemplate: Program do drzewa genealogicznego na Windows, macOS i Linux
 hero:
   name: Family Insight
   text: Historia Twojej rodziny, pięknie uporządkowana.
-  tagline: Stwórz drzewo genealogiczne, poznawaj krewnych i trzymaj historię rodziny w jednym miejscu. Za darmo, bez internetu, po polsku i po angielsku.
+  tagline: Stwórz drzewo genealogiczne, poznawaj krewnych i trzymaj historię rodziny w jednym miejscu. Za darmo, bez internetu, w ośmiu językach.
   image:
     src: /logo.svg
     alt: Family Insight
@@ -39,5 +39,5 @@ features:
     details: Cofanie, autozapis, odzyskiwanie po awarii i kopie zapasowe. Drzewo to jeden plik na Twoim komputerze – bez konta i chmury.
   - icon: 🖨️
     title: Druk i udostępnianie
-    details: Eksportuj drzewo do PNG, SVG lub PDF albo je wydrukuj. Polski i angielski, jasny i ciemny motyw.
+    details: Eksportuj drzewo do PNG, SVG lub PDF albo je wydrukuj. Osiem języków, jasny i ciemny motyw.
 ---

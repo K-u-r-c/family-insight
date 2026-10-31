@@ -72,7 +72,8 @@ test('native menu is localized, reflects state and drives the app', async () => 
 
 for (const [language, url] of [
   ['en', 'https://k-u-r-c.github.io/family-insight/guide/'],
-  ['pl', 'https://k-u-r-c.github.io/family-insight/pl/guide/']
+  ['pl', 'https://k-u-r-c.github.io/family-insight/pl/guide/'],
+  ['ru', 'https://k-u-r-c.github.io/family-insight/ru/guide/']
 ] as const) {
   test(`Help → User guide opens the documentation website (${language})`, async () => {
     const { app } = await launch({ language })

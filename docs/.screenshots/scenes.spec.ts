@@ -549,9 +549,7 @@ async function addRelative(s: Session, role: string): Promise<void> {
 async function buildFirstTree(s: Session, until: 'father' | 'done'): Promise<void> {
   const { page, t } = s
   await page.getByRole('button', { name: t('welcome.newTree') }).click()
-  await dialog(s)
-    .getByRole('textbox')
-    .fill(s.variant.lang === 'pl' ? 'Moja rodzina' : 'My family')
+  await dialog(s).getByRole('textbox').fill(s.t('tree.untitled'))
   await dialog(s)
     .getByRole('button', { name: t('welcome.create') })
     .click()

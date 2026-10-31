@@ -8,6 +8,8 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- The user guide on the website in all eight languages; **Help → User Guide** opens it in the
+  app's language.
 - User interface in **German** (Deutsch), **French** (Français), **Spanish** (Español), **Italian** (Italiano), **Portuguese** (Português) and **Russian** (Русский).
 - CSV import reads column names and values in German, French, Spanish, Italian, Portuguese and
   Russian, recognises Cyrillic (Windows-1251) and Western European (Windows-1252) files from older

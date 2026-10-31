@@ -31,12 +31,9 @@ export const VARIANTS: Variant[] = PSEUDO
         { lang: CHECK_LANG, theme: 'light' },
         { lang: CHECK_LANG, theme: 'dark' }
       ]
-    : [
-        { lang: 'en', theme: 'light' },
-        { lang: 'en', theme: 'dark' },
-        { lang: 'pl', theme: 'light' },
-        { lang: 'pl', theme: 'dark' }
-      ]
+    : SUPPORTED_LANGUAGES.flatMap((lang) =>
+        (['light', 'dark'] as const).map((theme): Variant => ({ lang, theme }))
+      )
 
 /** Window content size of every screenshot session. */
 export const WINDOW = { width: 1280, height: 800 }

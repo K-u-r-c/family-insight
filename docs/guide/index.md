@@ -5,8 +5,8 @@ description: What Family Insight is, what it can do and where your family tree i
 # Introduction
 
 **Family Insight** is a free program for building your family tree, exploring it and keeping it
-up to date. It runs on Windows, macOS and Linux, in English and Polish, and works completely
-offline.
+up to date. It runs on Windows, macOS and Linux, in eight languages (English, Polish, German,
+French, Spanish, Italian, Portuguese and Russian) and works completely offline.
 
 <Screenshot name="workspace" alt="Family Insight with a family tree in the middle, the list of people on the left and the details of Piotr Kowalski on the right" />
 
@@ -37,8 +37,8 @@ a crash.
 
 ## Language and appearance
 
-The whole program is available in **English** and **Polish**, with a **light** and a **dark**
-theme (or one that follows your system). You can switch both on the welcome screen or later in
+The whole program is available in **English**, **Polish**, **German**, **French**, **Spanish**,
+**Italian**, **Portuguese** and **Russian**, with a **light** and a **dark** theme (or one that follows your system). You can switch both on the welcome screen or later in
 the [settings](./settings).
 
 ## Where to start
