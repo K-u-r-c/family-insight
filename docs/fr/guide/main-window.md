@@ -29,7 +29,8 @@ Quand un arbre est ouvert, la fenêtre ressemble à ceci :
 Au centre se trouve l’**arbre généalogique** lui-même. Cliquez sur une fiche pour sélectionner une
 personne, double-cliquez pour la modifier, faites un clic droit pour d’autres actions.
 
-À droite de la barre d’outils se trouvent deux autres boutons : **Statistiques** (📊, voir
+À droite de la barre d’outils se trouvent trois autres boutons : **Calculateur de parenté** (voir
+[Calculateur de parenté](./relationship-calculator)), **Statistiques** (📊, voir
 [Statistiques](./statistics)) et **Paramètres** (thème, langue, taille des fiches et enregistrement
 automatique, voir [Paramètres](./settings)).
 

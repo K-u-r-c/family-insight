@@ -60,4 +60,4 @@ se alguém fosse virar o seu próprio ascendente –, o Family Insight explica o
 Clique com o botão direito em um cartão para ter as mesmas ações: editar, adicionar um parente,
 definir a pessoa como [pessoa principal](./view-modes#root-person) ou excluí-la.
 
-<Screenshot name="card-menu" alt="O menu do cartão de Ewa Lis com Editar, Adicionar parente: Pai, Mãe, Parceiro(a), Filho(a), Irmão(ã), Definir como pessoa principal e Excluir pessoa" />
+<Screenshot name="card-menu" alt="O menu do cartão de Ewa Lis com Editar, Adicionar parente: Pai, Mãe, Parceiro(a), Filho(a), Irmão(ã), Encontrar parentesco…, Definir como pessoa principal e Excluir pessoa" />

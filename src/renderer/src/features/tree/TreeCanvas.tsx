@@ -1,10 +1,18 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Home, Pencil, Sprout, Trash2, UserPlus } from 'lucide-react'
+import { Home, Pencil, Sprout, Trash2, UserPlus, Waypoints, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { pathRelationships } from '@core/kinship/path'
 import { layoutFamily, type Layout } from '@core/layout/layout'
 import { searchPersons } from '@core/search'
 import { displayName, getChildren, getParents, getPartners } from '@core/model/tree'
-import { Button, EmptyState, Menu, type MenuAnchor, type MenuEntry } from '@renderer/components/ui'
+import {
+  Button,
+  EmptyState,
+  IconButton,
+  Menu,
+  type MenuAnchor,
+  type MenuEntry
+} from '@renderer/components/ui'
 import { deletePersonWithConfirm } from '@renderer/features/person/deletePerson'
 import { addNewRelative, runCommand } from '@renderer/features/person/relationActions'
 import { setRootCommand } from '@renderer/store/commands'
@@ -96,7 +104,8 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
   const size = useTreeView((s) => s.size)
   const collapsed = useTreeView((s) => s.collapsed)
   const showMinimap = useSettings((s) => s.settings.showMinimap)
-  const { setViewport, setSize, toggleCollapsed } = useTreeView.getState()
+  const storedPath = useTreeView((s) => s.path)
+  const { setViewport, setSize, toggleCollapsed, setPath } = useTreeView.getState()
   const layout = useLayout()
   const ref = useRef<HTMLDivElement>(null)
   const [menu, setMenu] = useState<{ anchor: MenuAnchor; entries: MenuEntry[] } | null>(null)
@@ -129,6 +138,13 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
     () => (query.trim() ? new Set(searchPersons(tree, query).map((p) => p.id)) : null),
     [tree, query]
   )
+  // The highlighted relationship path, unless someone on it has since been deleted.
+  const path = useMemo(
+    () => (storedPath?.every((id) => id in tree.persons) ? storedPath : null),
+    [storedPath, tree]
+  )
+  const onPath = useMemo(() => (path ? new Set(path) : null), [path])
+  const pathLinks = useMemo(() => (path ? pathRelationships(tree, path) : null), [path, tree])
 
   // Track the canvas size (measured immediately, then observed).
   const hasPeople = count > 0
@@ -173,6 +189,20 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
   useEffect(() => {
     if (filePath && fittedFor.current === docKey) savedViewports.set(filePath, viewport)
   }, [filePath, viewport, docKey])
+
+  // Fit a newly highlighted path into view (once its people are all laid out).
+  const fittedPath = useRef<readonly string[] | null>(null)
+  useEffect(() => {
+    if (!path || fittedPath.current === path || !size.width) return
+    const nodes = path.map((id) => positions.get(id)).filter((n) => n !== undefined)
+    if (nodes.length < path.length) return
+    fittedPath.current = path
+    const x = Math.min(...nodes.map((n) => n.x))
+    const y = Math.min(...nodes.map((n) => n.y))
+    const width = Math.max(...nodes.map((n) => n.x + n.width)) - x
+    const height = Math.max(...nodes.map((n) => n.y + n.height)) - y
+    setViewport(fitViewport({ x, y, width, height }, size, 96), true)
+  }, [path, positions, size, setViewport])
 
   // Bring the selected person into view when the selection changes.
   const lastSelected = useRef<string | null>(null)
@@ -287,6 +317,14 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
           })),
           { type: 'separator' },
           {
+            label: t('kinship.contextMenu'),
+            icon: Waypoints,
+            onSelect: () => {
+              const root = useDocument.getState().tree?.meta.rootPersonId
+              useWorkspaceUi.getState().openRelationship(root && root !== id ? root : null, id)
+            }
+          },
+          {
             label: isRoot ? t('tree.unsetRoot') : t('tree.setRoot'),
             icon: Home,
             onSelect: () => void runCommand(setRootCommand(isRoot ? undefined : id))
@@ -348,7 +386,8 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
       e.preventDefault()
       resetZoom()
     } else if (e.key === 'Escape') {
-      select(null)
+      if (path) setPath(null)
+      else select(null)
     }
   }
 
@@ -424,6 +463,7 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
             bounds={bounds}
             highlight={selectedId}
             dimmed={matches !== null}
+            path={pathLinks}
           />
         )}
         {visible.map((node) => {
@@ -437,7 +477,9 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
               selected={node.id === selectedId}
               root={node.id === tree.meta.rootPersonId}
               match={matches?.has(node.id) ?? false}
-              dimmed={matches !== null && !matches.has(node.id)}
+              dimmed={!onPath && matches !== null && !matches.has(node.id)}
+              faded={onPath !== null && !onPath.has(node.id)}
+              onPath={onPath?.has(node.id) ?? false}
               collapsed={collapsed.has(node.id)}
               canCollapse={mode !== 'ancestors'}
               onSelect={select}
@@ -448,6 +490,23 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
           )
         })}
       </div>
+      {path && (
+        <div className={styles.pathBanner} onPointerDown={(e) => e.stopPropagation()}>
+          <Waypoints size={16} aria-hidden="true" />
+          <span>
+            {t('kinship.pathBanner', {
+              a: displayName(tree.persons[path[0]!]!) || t('person.unnamed'),
+              b: displayName(tree.persons[path.at(-1)!]!) || t('person.unnamed')
+            })}
+          </span>
+          <IconButton
+            icon={X}
+            size="sm"
+            label={t('kinship.hidePath')}
+            onClick={() => setPath(null)}
+          />
+        </div>
+      )}
       {showMinimap && layout && layout.nodes.length > 1 && <Minimap layout={layout} />}
       <CanvasControls layout={layout} />
       <div className="visually-hidden" aria-live="polite" role="status">

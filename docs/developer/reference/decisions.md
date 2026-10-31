@@ -413,3 +413,21 @@ later without changing anything else.
 - Translations were drafted per language from the English guide, the app's own strings (UI labels
   in the guide match the app exactly) and the glossary, then checked by script for structure,
   anchors, links and frontmatter.
+
+## Relationship calculator UI (2026-10, issue #80)
+
+- **View menu, not a Tools menu**: the app has no Tools menu, and one with a single item would be
+  odd, so **Relationship calculator…** sits under View next to Statistics, with a toolbar button
+  next to the Statistics button.
+- **Reads like its result**: the left box is the person, the right one the reference ("[left] is
+  the cousin of [right]"); the path and the banner on the tree run in the same direction.
+- **Opening values**: the toolbar and menu fill in the selected person and the root person; a
+  card's **Find relationship…** starts from that card (with the root person as the reference).
+- **Showing the path** switches to the Family view and expands collapsed branches only when someone
+  on the path would otherwise be hidden; the path is per session (cleared when another file opens)
+  and ignored once someone on it is deleted. While it is shown it decides what fades, not the
+  search.
+- **Root-person line** in the details uses the language's `phrase` ("The granddaughter of Piotr
+  Kowalski") so it needs no extra UI strings per relationship.
+- **Not done: relationship labels on every card** (optional in the issue) – the details line and
+  the calculator cover the need without crowding the cards.

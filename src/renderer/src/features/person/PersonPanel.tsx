@@ -11,6 +11,7 @@ import { deletePersonWithConfirm } from './deletePerson'
 import { FamilySection } from './FamilySection'
 import { PersonDetails, useAgeLabel } from './PersonDetails'
 import { PersonEditor } from './PersonEditor'
+import { RootRelationship } from '@renderer/features/kinship/RootRelationship'
 import styles from './PersonPanel.module.css'
 import { PersonAvatar } from '@renderer/features/person/PersonAvatar'
 
@@ -72,6 +73,7 @@ export function PersonPanel(): React.JSX.Element | null {
           {(lifespan || age) && (
             <p className={styles.sub}>{[lifespan, age].filter(Boolean).join(' · ')}</p>
           )}
+          <RootRelationship person={person} />
         </div>
         {editing ? (
           !unnamed && (

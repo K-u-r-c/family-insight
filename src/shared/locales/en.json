@@ -592,6 +592,25 @@
     "withoutEvents_other": "{{count}} people have no life events yet.",
     "sourcedFacts": "facts with a source"
   },
+  "kinship": {
+    "title": "Relationship calculator",
+    "description": "Find out how two people in the tree are related.",
+    "menu": "Relationship calculator…",
+    "contextMenu": "Find relationship…",
+    "person": "Person",
+    "reference": "In relation to",
+    "choose": "Choose a person…",
+    "swap": "Swap people",
+    "hint": "Choose two people to see how they are related.",
+    "same": "Choose two different people.",
+    "unrelated": "No relationship between {{b}} and {{a}} was found in this tree.",
+    "path": "Path",
+    "alternatives": "All relationships",
+    "showOnTree": "Show on tree",
+    "pathBanner": "Relationship path: {{a}} → {{b}}",
+    "hidePath": "Hide path",
+    "toRoot": "Relationship to the root person – open the calculator"
+  },
   "shortcuts": {
     "title": "Keyboard shortcuts",
     "files": "Files",

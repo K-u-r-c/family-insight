@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { CitationTarget } from '@core/model/sources'
+import type { PersonId } from '@core/model/types'
 
 export type PeopleSort = 'surname' | 'givenNames' | 'birth'
 export type AppDialog =
@@ -14,6 +15,7 @@ export type AppDialog =
   | 'about'
   | 'sources'
   | 'places'
+  | 'relationship'
   | null
 
 /** Transient UI state of the workspace (not part of the document, not undoable). */
@@ -35,6 +37,8 @@ interface WorkspaceUiState {
   view: 'tree' | 'map'
   /** Place selected when the places dialog opens. */
   placeKey: string | null
+  /** People the relationship calculator opens with. */
+  relationship: { a: PersonId | null; b: PersonId | null }
   setQuery: (query: string) => void
   setSort: (sort: PeopleSort) => void
   setEditing: (id: string | null) => void
@@ -47,6 +51,7 @@ interface WorkspaceUiState {
   setEditingMedia: (id: string | null) => void
   setView: (view: 'tree' | 'map') => void
   openPlaces: (placeKey?: string | null) => void
+  openRelationship: (a?: PersonId | null, b?: PersonId | null) => void
 }
 
 export const useWorkspaceUi = create<WorkspaceUiState>((set) => ({
@@ -60,6 +65,7 @@ export const useWorkspaceUi = create<WorkspaceUiState>((set) => ({
   editingMedia: null,
   view: 'tree',
   placeKey: null,
+  relationship: { a: null, b: null },
   setQuery: (query) => set({ query }),
   setSort: (sort) => set({ sort }),
   setEditing: (editingId) => set({ editingId }),
@@ -70,5 +76,6 @@ export const useWorkspaceUi = create<WorkspaceUiState>((set) => ({
   closeViewer: () => set({ viewing: null }),
   setEditingMedia: (editingMedia) => set({ editingMedia }),
   setView: (view) => set({ view }),
-  openPlaces: (placeKey = null) => set({ dialog: 'places', placeKey })
+  openPlaces: (placeKey = null) => set({ dialog: 'places', placeKey }),
+  openRelationship: (a = null, b = null) => set({ dialog: 'relationship', relationship: { a, b } })
 }))

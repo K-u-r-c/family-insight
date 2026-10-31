@@ -27,7 +27,8 @@ Quando un albero è aperto, la finestra si presenta così:
 Al centro c'è l'**albero genealogico** vero e proprio. Fai clic su una scheda per selezionare una
 persona, doppio clic per modificarla, clic destro per altre azioni.
 
-A destra nella barra degli strumenti ci sono altri due pulsanti: **Statistiche** (📊, vedi
+A destra nella barra degli strumenti ci sono altri tre pulsanti: **Calcolatore di parentela** (vedi
+[Calcolatore di parentela](./relationship-calculator)), **Statistiche** (📊, vedi
 [Statistiche](./statistics)) e **Impostazioni** (tema, lingua, dimensione delle schede e
 salvataggio automatico, vedi [Impostazioni](./settings)).
 

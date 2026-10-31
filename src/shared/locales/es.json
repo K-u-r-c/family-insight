@@ -614,6 +614,25 @@
     "withoutEvents_other": "{{count}} personas aún no tienen eventos vitales.",
     "sourcedFacts": "datos con fuente"
   },
+  "kinship": {
+    "title": "Calculadora de parentesco",
+    "description": "Descubra qué parentesco hay entre dos personas del árbol.",
+    "menu": "Calculadora de parentesco…",
+    "contextMenu": "Buscar parentesco…",
+    "person": "Persona",
+    "reference": "Con respecto a",
+    "choose": "Elija una persona…",
+    "swap": "Intercambiar personas",
+    "hint": "Elija dos personas para ver qué parentesco tienen.",
+    "same": "Elija dos personas distintas.",
+    "unrelated": "No se encontró ningún parentesco entre {{b}} y {{a}} en este árbol.",
+    "path": "Camino",
+    "alternatives": "Todos los parentescos",
+    "showOnTree": "Mostrar en el árbol",
+    "pathBanner": "Camino de parentesco: {{a}} → {{b}}",
+    "hidePath": "Ocultar camino",
+    "toRoot": "Parentesco con la persona principal: abrir la calculadora"
+  },
   "shortcuts": {
     "title": "Atajos de teclado",
     "files": "Archivos",

@@ -1319,6 +1319,51 @@ scene('statistics', async (s) => {
   return dialogShot(s, { settle: 1200 })
 })
 
+/** Opens the relationship calculator for Michał Kowalski in relation to Aleksandra Lis. */
+async function openRelationship(s: Session): Promise<void> {
+  const { page, t } = s
+  await openSample(s)
+  await select(s, 'Michał Kowalski')
+  await page.getByRole('button', { name: t('kinship.title') }).click()
+  await dialog(s).waitFor()
+  await page.getByRole('button', { name: t('kinship.reference') }).click()
+  const picker = page.getByRole('dialog', { name: t('kinship.reference') })
+  await picker.getByRole('searchbox').fill('Aleksandra')
+  await picker.getByRole('option', { name: /Aleksandra Lis/ }).click()
+  await page.getByTestId('kinship-sentence').filter({ hasText: 'Aleksandra Lis' }).waitFor()
+}
+
+scene('relationship', async (s) => {
+  await openRelationship(s)
+  await parkMouse(s)
+  return dialogShot(s)
+})
+
+scene('relationship-path', async (s) => {
+  await openRelationship(s)
+  await s.page.getByRole('button', { name: s.t('kinship.showOnTree') }).click()
+  await canvas(s).locator('[data-on-path]').first().waitFor()
+  await s.page.waitForTimeout(900)
+  await parkMouse(s)
+})
+
+scene('root-relationship', async (s) => {
+  const { t } = s
+  await openSample(s)
+  await card(s, 'Piotr Kowalski').click({ button: 'right' })
+  await menu(s)
+    .getByRole('menuitem', { name: t('tree.setRoot') })
+    .click()
+  await select(s, 'Lena Kowalska')
+  const line = panel(s)
+    .getByRole('button', { name: /Piotr Kowalski/ })
+    .first()
+  await line.waitFor()
+  await parkMouse(s)
+  const edit = panel(s).getByRole('button', { name: t('common.edit') })
+  return { clip: [panel(s).getByRole('heading', { name: 'Lena Kowalska' }), line, edit], pad: 24 }
+})
+
 scene('shortcuts', async (s) => {
   await openSample(s)
   await menuAction(s, 'help:shortcuts')

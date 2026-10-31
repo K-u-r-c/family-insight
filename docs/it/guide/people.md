@@ -62,4 +62,4 @@ nulla.
 Fai clic destro su una scheda per le stesse azioni: modificare, aggiungere un parente, impostare la
 persona come [persona principale](./view-modes#root-person) o eliminarla.
 
-<Screenshot name="card-menu" alt="Il menu della scheda di Ewa Lis con Modifica, Aggiungi parente: Padre, Madre, Partner, Figlio o figlia, Fratello o sorella, Imposta come persona principale ed Elimina persona" />
+<Screenshot name="card-menu" alt="Il menu della scheda di Ewa Lis con Modifica, Aggiungi parente: Padre, Madre, Partner, Figlio o figlia, Fratello o sorella, Trova la parentela…, Imposta come persona principale ed Elimina persona" />

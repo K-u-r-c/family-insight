@@ -8,6 +8,11 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- **Relationship calculator** (toolbar, **View → Relationship calculator…** or a card's
+  **Find relationship…**): how two people are related, in words of the app's language – first
+  cousin once removed, brat stryjeczny, Großtante, cousin issu de germain, троюродная сестра – with
+  every relationship when there are several and the path between them, which **Show on tree**
+  highlights. The details of every person say how they are related to the root person.
 - The user guide on the website in all eight languages; **Help → User Guide** opens it in the
   app's language.
 - User interface in **German** (Deutsch), **French** (Français), **Spanish** (Español), **Italian** (Italiano), **Portuguese** (Português) and **Russian** (Русский).

@@ -28,7 +28,8 @@ Cuando hay un árbol abierto, la ventana tiene este aspecto:
 En el centro está el propio **árbol genealógico**. Haga clic en una tarjeta para seleccionar a una
 persona, doble clic para editarla y clic derecho para ver más acciones.
 
-A la derecha de la barra de herramientas hay dos botones más: **Estadísticas** (📊, consulte
+A la derecha de la barra de herramientas hay tres botones más: **Calculadora de parentesco**
+(consulte [Calculadora de parentesco](./relationship-calculator)), **Estadísticas** (📊, consulte
 [Estadísticas](./statistics)) y **Configuración** (tema, idioma, tamaño de las tarjetas y
 guardado automático, consulte [Configuración](./settings)).
 

@@ -614,6 +614,25 @@
     "withoutEvents_other": "{{count}} persone non hanno ancora eventi.",
     "sourcedFacts": "fatti con una fonte"
   },
+  "kinship": {
+    "title": "Calcolatore di parentela",
+    "description": "Scopri come sono imparentate due persone dell’albero.",
+    "menu": "Calcolatore di parentela…",
+    "contextMenu": "Trova la parentela…",
+    "person": "Persona",
+    "reference": "Rispetto a",
+    "choose": "Scegli una persona…",
+    "swap": "Scambia le persone",
+    "hint": "Scegli due persone per vedere come sono imparentate.",
+    "same": "Scegli due persone diverse.",
+    "unrelated": "In questo albero non è stata trovata alcuna parentela tra {{b}} e {{a}}.",
+    "path": "Percorso",
+    "alternatives": "Tutte le parentele",
+    "showOnTree": "Mostra nell’albero",
+    "pathBanner": "Percorso di parentela: {{a}} → {{b}}",
+    "hidePath": "Nascondi percorso",
+    "toRoot": "Parentela con la persona principale – apri il calcolatore"
+  },
   "shortcuts": {
     "title": "Scorciatoie da tastiera",
     "files": "File",

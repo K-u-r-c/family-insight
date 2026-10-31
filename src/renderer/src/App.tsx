@@ -21,6 +21,7 @@ import { ImportCsvDialog } from './features/csv/ImportCsvDialog'
 import { NewTreeDialog } from './features/welcome/NewTreeDialog'
 import { ExportImageDialog } from './features/export/ExportImageDialog'
 import { StatsDialog } from './features/stats/StatsDialog'
+import { RelationshipDialog } from './features/kinship/RelationshipDialog'
 import { ShortcutsDialog } from './features/help/ShortcutsDialog'
 import { AboutDialog } from './features/help/AboutDialog'
 import { deletePersonWithConfirm } from './features/person/deletePerson'
@@ -121,6 +122,11 @@ export function App(): React.JSX.Element {
       'view:statistics': () => {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('stats')
       },
+      'view:relationship': () => {
+        const { tree, selectedPersonId } = useDocument.getState()
+        if (tree)
+          useWorkspaceUi.getState().openRelationship(tree.meta.rootPersonId, selectedPersonId)
+      },
       'help:csv-template': () => void saveCsvTemplate(),
       'file:export-csv': () => {
         if (useDocument.getState().tree) useWorkspaceUi.getState().openDialog('export-csv')
@@ -157,6 +163,9 @@ export function App(): React.JSX.Element {
         <ExportImageDialog onClose={() => openDialog(null)} />
       )}
       {dialog === 'stats' && hasDocument && <StatsDialog onClose={() => openDialog(null)} />}
+      {dialog === 'relationship' && hasDocument && (
+        <RelationshipDialog onClose={() => openDialog(null)} />
+      )}
       {dialog === 'shortcuts' && <ShortcutsDialog onClose={() => openDialog(null)} />}
       {dialog === 'about' && <AboutDialog onClose={() => openDialog(null)} />}
       {dialog === 'sources' && hasDocument && <SourcesDialog onClose={() => openDialog(null)} />}

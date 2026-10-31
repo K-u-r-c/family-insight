@@ -60,4 +60,4 @@ example someone would become their own ancestor – Family Insight explains why 
 Right-click a card for the same actions: edit, add a relative, set
 the person as the [root person](./view-modes#root-person) or delete them.
 
-<Screenshot name="card-menu" alt="The menu of Ewa Lis's card with Edit, Add relative: Father, Mother, Partner, Child, Sibling, Set as root person and Delete person" />
+<Screenshot name="card-menu" alt="The menu of Ewa Lis's card with Edit, Add relative: Father, Mother, Partner, Child, Sibling, Find relationship…, Set as root person and Delete person" />

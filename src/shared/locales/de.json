@@ -592,6 +592,25 @@
     "withoutEvents_other": "{{count}} Personen haben noch keine Lebensereignisse.",
     "sourcedFacts": "Angaben mit Quelle"
   },
+  "kinship": {
+    "title": "Verwandtschaftsrechner",
+    "description": "Finden Sie heraus, wie zwei Personen im Stammbaum verwandt sind.",
+    "menu": "Verwandtschaftsrechner…",
+    "contextMenu": "Verwandtschaft ermitteln…",
+    "person": "Person",
+    "reference": "Im Verhältnis zu",
+    "choose": "Person auswählen…",
+    "swap": "Personen tauschen",
+    "hint": "Wählen Sie zwei Personen aus, um zu sehen, wie sie verwandt sind.",
+    "same": "Wählen Sie zwei verschiedene Personen aus.",
+    "unrelated": "Zwischen {{b}} und {{a}} wurde in diesem Stammbaum keine Verwandtschaft gefunden.",
+    "path": "Pfad",
+    "alternatives": "Alle Verwandtschaften",
+    "showOnTree": "Im Stammbaum zeigen",
+    "pathBanner": "Verwandtschaftspfad: {{a}} → {{b}}",
+    "hidePath": "Pfad ausblenden",
+    "toRoot": "Verwandtschaft zur Hauptperson – Rechner öffnen"
+  },
   "shortcuts": {
     "title": "Tastenkürzel",
     "files": "Dateien",

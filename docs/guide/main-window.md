@@ -26,7 +26,8 @@ When a tree is open, the window looks like this:
 In the middle is the **family tree** itself. Click a card to select a person, double-click it to
 edit, right-click it for more actions.
 
-On the right of the toolbar are two more buttons: **Statistics** (📊, see
+On the right of the toolbar are three more buttons: **Relationship calculator** (see
+[Relationship calculator](./relationship-calculator)), **Statistics** (📊, see
 [Statistics](./statistics)) and **Settings** (theme, language, card size and autosave, see
 [Settings](./settings)).
 

@@ -636,6 +636,25 @@
     "withoutEvents_other": "{{count}} osoby nie ma jeszcze żadnych wydarzeń.",
     "sourcedFacts": "faktów ze źródłem"
   },
+  "kinship": {
+    "title": "Kalkulator pokrewieństwa",
+    "description": "Sprawdź, jak spokrewnione są dwie osoby z drzewa.",
+    "menu": "Kalkulator pokrewieństwa…",
+    "contextMenu": "Sprawdź pokrewieństwo…",
+    "person": "Osoba",
+    "reference": "W stosunku do",
+    "choose": "Wybierz osobę…",
+    "swap": "Zamień osoby",
+    "hint": "Wybierz dwie osoby, aby zobaczyć, jak są spokrewnione.",
+    "same": "Wybierz dwie różne osoby.",
+    "unrelated": "W tym drzewie nie ma powiązania między osobami {{b}} i {{a}}.",
+    "path": "Ścieżka",
+    "alternatives": "Wszystkie pokrewieństwa",
+    "showOnTree": "Pokaż na drzewie",
+    "pathBanner": "Ścieżka pokrewieństwa: {{a}} → {{b}}",
+    "hidePath": "Ukryj ścieżkę",
+    "toRoot": "Pokrewieństwo z osobą główną – otwórz kalkulator"
+  },
   "shortcuts": {
     "title": "Skróty klawiszowe",
     "files": "Pliki",

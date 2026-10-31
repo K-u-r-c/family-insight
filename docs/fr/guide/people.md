@@ -63,4 +63,4 @@ ne change.
 Faites un clic droit sur une fiche pour accéder aux mêmes actions : modifier, ajouter un proche,
 définir la personne comme [personne de référence](./view-modes#root-person) ou la supprimer.
 
-<Screenshot name="card-menu" alt="Le menu de la fiche d’Ewa Lis avec Modifier, Ajouter un proche : Père, Mère, Conjoint, Enfant, Frère ou sœur, Définir comme personne de référence et Supprimer la personne" />
+<Screenshot name="card-menu" alt="Le menu de la fiche d’Ewa Lis avec Modifier, Ajouter un proche : Père, Mère, Conjoint, Enfant, Frère ou sœur, Trouver le lien de parenté…, Définir comme personne de référence et Supprimer la personne" />

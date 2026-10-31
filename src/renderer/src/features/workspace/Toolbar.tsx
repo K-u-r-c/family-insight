@@ -1,4 +1,5 @@
-import { BarChart3, Redo2, Search, Undo2, UserPlus } from 'lucide-react'
+import { BarChart3, Redo2, Search, Undo2, UserPlus, Waypoints } from 'lucide-react'
+import { useDocument } from '@renderer/store/document'
 import { useTranslation } from 'react-i18next'
 import { TreeLogo } from '@renderer/components/TreeLogo'
 import { Button, IconButton, TextField } from '@renderer/components/ui'
@@ -87,6 +88,14 @@ export function Toolbar({
               first.focus()
             }
           }
+        }}
+      />
+      <IconButton
+        icon={Waypoints}
+        label={t('kinship.title')}
+        onClick={() => {
+          const { tree, selectedPersonId } = useDocument.getState()
+          useWorkspaceUi.getState().openRelationship(tree?.meta.rootPersonId, selectedPersonId)
         }}
       />
       <IconButton

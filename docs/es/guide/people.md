@@ -62,4 +62,4 @@ no se cambia nada.
 Haga clic derecho en una tarjeta para acceder a las mismas acciones: editar, añadir un familiar,
 establecer a la persona como [persona principal](./view-modes#root-person) o eliminarla.
 
-<Screenshot name="card-menu" alt="El menú de la tarjeta de Ewa Lis con Editar, Añadir familiar: Padre, Madre, Pareja, Hijo/a, Hermano/a, Establecer como persona principal y Eliminar persona" />
+<Screenshot name="card-menu" alt="El menú de la tarjeta de Ewa Lis con Editar, Añadir familiar: Padre, Madre, Pareja, Hijo/a, Hermano/a, Buscar parentesco…, Establecer como persona principal y Eliminar persona" />

@@ -27,7 +27,8 @@ Com uma árvore aberta, a janela fica assim:
 No centro fica a própria **árvore genealógica**. Clique em um cartão para selecionar uma pessoa,
 dê um clique duplo para editá-la e clique com o botão direito para ver mais ações.
 
-À direita da barra de ferramentas há mais dois botões: **Estatísticas** (📊, veja
+À direita da barra de ferramentas há mais três botões: **Calculadora de parentesco** (veja
+[Calculadora de parentesco](./relationship-calculator)), **Estatísticas** (📊, veja
 [Estatísticas](./statistics)) e **Configurações** (tema, idioma, tamanho dos cartões e
 salvamento automático, veja [Configurações](./settings)).
 

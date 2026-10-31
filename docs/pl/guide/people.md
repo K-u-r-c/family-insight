@@ -60,4 +60,4 @@ zostałby swoim własnym przodkiem – Family Insight wyjaśni dlaczego i nic si
 Kliknij kartę prawym przyciskiem, aby zobaczyć te same działania: edycję, dodanie krewnego,
 ustawienie jako [osoby głównej](./view-modes#root-person) i usunięcie.
 
-<Screenshot name="card-menu" alt="Menu karty Ewy Lis: Edytuj, Dodaj krewnego: Ojciec, Matka, Partner, Dziecko, Rodzeństwo, Ustaw jako osobę główną i Usuń osobę" />
+<Screenshot name="card-menu" alt="Menu karty Ewy Lis: Edytuj, Dodaj krewnego: Ojciec, Matka, Partner, Dziecko, Rodzeństwo, Sprawdź pokrewieństwo…, Ustaw jako osobę główną i Usuń osobę" />

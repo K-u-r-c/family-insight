@@ -42,3 +42,14 @@ sex of the aunt/uncle or sibling on `b`'s line) are what Polish and Russian term
   `a` (step-sibling).
 
 A pair in a tree of 1 000 people takes well under 50 ms (tested).
+
+## Words and the UI
+
+`describeRelationships(tree, a, b, language, unnamed)` (`describe.ts`) runs `findRelationships`
+and turns each descriptor into a sentence (and a phrase, when the language has a word) with the
+language's namer from `terms/`; relationships without a word get the `distant` or `byMarriage`
+sentence. The renderer uses it in the calculator (`features/kinship/RelationshipDialog.tsx`) and
+for the root-person line in the details. `pathRelationships(tree, path)` (`path.ts`) gives the
+relationship ids along a path; the tree canvas highlights the lines whose `relationshipIds`
+include them (a couple's line to a child carries both parents' links, so a path through either
+parent lights it).

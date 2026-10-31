@@ -18,6 +18,10 @@ interface PersonCardProps {
   root: boolean
   match: boolean
   dimmed: boolean
+  /** A relationship path is highlighted and this person is not on it. */
+  faded: boolean
+  /** On the highlighted relationship path. */
+  onPath: boolean
   collapsed: boolean
   /** Collapsing branches makes sense in this view mode. */
   canCollapse: boolean
@@ -35,6 +39,8 @@ export const PersonCard = memo(function PersonCard({
   root,
   match,
   dimmed,
+  faded,
+  onPath,
   collapsed,
   canCollapse,
   onSelect,
@@ -53,13 +59,15 @@ export const PersonCard = memo(function PersonCard({
 
   return (
     <div
-      className={cx(styles.wrap, dimmed && styles.dimmed)}
+      className={cx(styles.wrap, dimmed && styles.dimmed, faded && styles.faded)}
       style={{
         transform: `translate(${node.x}px, ${node.y}px)`,
         width: node.width,
         height: node.height
       }}
       data-person-id={person.id}
+      data-dimmed={dimmed || faded || undefined}
+      data-on-path={onPath || undefined}
     >
       <button
         type="button"
@@ -69,6 +77,7 @@ export const PersonCard = memo(function PersonCard({
           compact && styles.compact,
           selected && styles.selected,
           match && styles.match,
+          onPath && styles.onPath,
           deceased && styles.deceased
         )}
         aria-pressed={selected}

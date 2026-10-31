@@ -44,6 +44,7 @@ const SAME_AS_ENGLISH = new Set([
   'pl:export.format',
   'pl:gedcom.importTitle',
   'de:theme.system',
+  'de:kinship.person',
   'de:person.details',
   'de:person.name',
   'de:tree.zoomControls',

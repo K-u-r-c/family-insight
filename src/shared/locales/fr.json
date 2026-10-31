@@ -614,6 +614,25 @@
     "withoutEvents_other": "{{count}} personnes n’ont encore aucun événement.",
     "sourcedFacts": "faits avec une source"
   },
+  "kinship": {
+    "title": "Calculateur de parenté",
+    "description": "Découvrez le lien de parenté entre deux personnes de l’arbre.",
+    "menu": "Calculateur de parenté…",
+    "contextMenu": "Trouver le lien de parenté…",
+    "person": "Personne",
+    "reference": "Par rapport à",
+    "choose": "Choisir une personne…",
+    "swap": "Inverser les personnes",
+    "hint": "Choisissez deux personnes pour voir leur lien de parenté.",
+    "same": "Choisissez deux personnes différentes.",
+    "unrelated": "Aucun lien de parenté entre {{b}} et {{a}} n’a été trouvé dans cet arbre.",
+    "path": "Chemin",
+    "alternatives": "Tous les liens de parenté",
+    "showOnTree": "Afficher dans l’arbre",
+    "pathBanner": "Chemin de parenté : {{a}} → {{b}}",
+    "hidePath": "Masquer le chemin",
+    "toRoot": "Lien avec la personne de référence – ouvrir le calculateur"
+  },
   "shortcuts": {
     "title": "Raccourcis clavier",
     "files": "Fichiers",

@@ -29,7 +29,8 @@ In der Mitte liegt der **Stammbaum** selbst. Klicken Sie auf eine Karte, um eine
 auszuwählen, doppelklicken Sie zum Bearbeiten und klicken Sie mit der rechten Maustaste für weitere
 Aktionen.
 
-Rechts in der Symbolleiste gibt es zwei weitere Schaltflächen: **Statistik** (📊, siehe
+Rechts in der Symbolleiste gibt es drei weitere Schaltflächen: **Verwandtschaftsrechner** (siehe
+[Verwandtschaftsrechner](./relationship-calculator)), **Statistik** (📊, siehe
 [Statistik](./statistics)) und **Einstellungen** (Design, Sprache, Kartengröße und automatisches
 Speichern, siehe [Einstellungen](./settings)).
 

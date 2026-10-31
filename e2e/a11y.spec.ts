@@ -62,6 +62,19 @@ for (const theme of ['light', 'dark'] as const) {
     expect(await seriousViolations(second.page)).toEqual([])
     await second.page.getByRole('button', { name: 'Statistics' }).click()
     expect(await seriousViolations(second.page)).toEqual([])
+    await second.page.keyboard.press('Escape')
+
+    // The relationship calculator, its person picker and the path on the tree.
+    await second.page.getByRole('button', { name: 'Relationship calculator' }).click()
+    const calculator = second.page.getByRole('dialog', { name: 'Relationship calculator' })
+    await calculator.getByRole('button', { name: 'In relation to' }).click()
+    const picker = second.page.getByRole('dialog', { name: 'In relation to' })
+    expect(await seriousViolations(second.page)).toEqual([])
+    await picker.getByRole('option', { name: /Piotr Kowalski/ }).click()
+    expect(await seriousViolations(second.page)).toEqual([])
+    await calculator.getByRole('button', { name: 'Show on tree' }).click()
+    await expect(second.page.locator('[data-on-path]').first()).toBeVisible()
+    expect(await seriousViolations(second.page)).toEqual([])
     await closeApp(second.app)
   })
 }

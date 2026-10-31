@@ -21,11 +21,16 @@ interface TreeViewState {
   mode: ViewMode
   depth: number
   collapsed: ReadonlySet<PersonId>
+  /** A relationship path highlighted on the tree (people from one to the other), if any. */
+  path: readonly PersonId[] | null
   setViewport: (viewport: Viewport, animate?: boolean) => void
   setSize: (width: number, height: number) => void
   setMode: (mode: ViewMode) => void
   setDepth: (depth: number) => void
   toggleCollapsed: (id: PersonId) => void
+  /** Expands the given people (branches collapsed under them become visible again). */
+  expand: (ids: Iterable<PersonId>) => void
+  setPath: (path: readonly PersonId[] | null) => void
   reset: () => void
 }
 
@@ -35,7 +40,8 @@ const initial = {
   animate: false,
   mode: 'family' as ViewMode,
   depth: 4,
-  collapsed: new Set<PersonId>()
+  collapsed: new Set<PersonId>(),
+  path: null
 }
 
 /** View state of the tree canvas (per session, not part of the document). */
@@ -56,6 +62,13 @@ export const useTreeView = create<TreeViewState>((set) => ({
       else next.add(id)
       return { collapsed: next }
     }),
+  expand: (ids) =>
+    set((s) => {
+      const next = new Set(s.collapsed)
+      for (const id of ids) next.delete(id)
+      return { collapsed: next }
+    }),
+  setPath: (path) => set({ path }),
   reset: () => set({ ...initial, collapsed: new Set() })
 }))
 

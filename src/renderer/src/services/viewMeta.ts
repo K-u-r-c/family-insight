@@ -18,6 +18,7 @@ export function applyViewMeta(tree: FamilyTree): void {
   useTreeView.setState({
     mode: view?.mode ?? 'family',
     depth: view ? Math.min(10, Math.max(1, view.depth)) : 4,
-    collapsed: new Set(view?.collapsed ?? [])
+    collapsed: new Set(view?.collapsed ?? []),
+    path: null
   })
 }

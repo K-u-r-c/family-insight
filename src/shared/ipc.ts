@@ -191,6 +191,7 @@ export type MenuAction =
   | 'view:toggle-sidebar'
   | 'view:toggle-minimap'
   | 'view:statistics'
+  | 'view:relationship'
   | 'view:toggle-map'
 
 /** The API exposed to the renderer as `window.familyInsight` by the preload script. */

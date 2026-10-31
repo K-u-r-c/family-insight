@@ -65,4 +65,4 @@ Klicken Sie mit der rechten Maustaste auf eine Karte, um dieselben Aktionen aufz
 Verwandte hinzufügen, die Person als [Hauptperson](./view-modes#root-person) festlegen oder sie
 löschen.
 
-<Screenshot name="card-menu" alt="Das Menü der Karte von Ewa Lis mit Bearbeiten, Verwandte hinzufügen: Vater, Mutter, Partner/in, Kind, Geschwister, Als Hauptperson festlegen und Person löschen" />
+<Screenshot name="card-menu" alt="Das Menü der Karte von Ewa Lis mit Bearbeiten, Verwandte hinzufügen: Vater, Mutter, Partner/in, Kind, Geschwister, Verwandtschaft ermitteln…, Als Hauptperson festlegen und Person löschen" />

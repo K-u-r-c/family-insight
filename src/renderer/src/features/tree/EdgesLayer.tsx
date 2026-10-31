@@ -34,34 +34,46 @@ export function roundedPath(points: Point[], radius = 10): string {
 
 const isActive = (e: LayoutEdge, highlight: string | null): boolean =>
   highlight !== null && (e.source === highlight || e.target === highlight)
+const isOnPath = (e: LayoutEdge, path: ReadonlySet<string> | null): boolean =>
+  path !== null && e.relationshipIds.some((id) => path.has(id))
 
 interface EdgesLayerProps {
   edges: LayoutEdge[]
   bounds: { minX: number; minY: number; width: number; height: number }
   highlight: string | null
   dimmed: boolean
+  /** Relationships of the highlighted path: their lines stand out, the others fade. */
+  path: ReadonlySet<string> | null
 }
 
 export const EdgesLayer = memo(function EdgesLayer({
   edges,
   bounds,
   highlight,
-  dimmed
+  dimmed,
+  path
 }: EdgesLayerProps): React.JSX.Element {
   return (
     <svg
-      className={cx(styles.edges, dimmed && styles.edgesDimmed)}
+      className={cx(styles.edges, dimmed && !path && styles.edgesDimmed)}
       style={{ left: bounds.minX, top: bounds.minY }}
       width={bounds.width}
       height={bounds.height}
       viewBox={`${bounds.minX} ${bounds.minY} ${bounds.width} ${bounds.height}`}
       aria-hidden="true"
     >
-      {/* Edges touching the selected person are drawn last so they sit on top. */}
+      {/* Edges touching the selected person (or on the path) are drawn last, on top. */}
       {[...edges]
-        .sort((a, b) => Number(isActive(a, highlight)) - Number(isActive(b, highlight)))
+        .sort(
+          (a, b) =>
+            Number(isOnPath(a, path)) * 2 +
+            Number(isActive(a, highlight)) -
+            Number(isOnPath(b, path)) * 2 -
+            Number(isActive(b, highlight))
+        )
         .map((e) => {
-          const active = isActive(e, highlight)
+          const onPath = isOnPath(e, path)
+          const active = !path && isActive(e, highlight)
           return (
             <path
               key={e.id}
@@ -70,7 +82,9 @@ export const EdgesLayer = memo(function EdgesLayer({
                 styles.edge,
                 e.type === 'partner' && styles.partnerEdge,
                 (e.kind && e.kind !== 'biological') || e.ended ? styles.dashed : undefined,
-                active && styles.activeEdge
+                active && styles.activeEdge,
+                onPath && styles.pathEdge,
+                path && !onPath && styles.offPathEdge
               )}
             />
           )

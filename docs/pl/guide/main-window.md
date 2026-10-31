@@ -28,7 +28,8 @@ Gdy drzewo jest otwarte, okno wygląda tak:
 Pośrodku jest samo **drzewo**. Kliknij kartę, aby wybrać osobę, kliknij dwukrotnie, aby ją
 edytować, kliknij prawym przyciskiem, aby zobaczyć więcej działań.
 
-Po prawej stronie paska narzędzi są jeszcze dwa przyciski: **Statystyki** (📊, zobacz
+Po prawej stronie paska narzędzi są jeszcze trzy przyciski: **Kalkulator pokrewieństwa** (zobacz
+[Kalkulator pokrewieństwa](./relationship-calculator)), **Statystyki** (📊, zobacz
 [Statystyki](./statistics)) i **Ustawienia** (motyw, język, wielkość kart i autozapis, zobacz
 [Ustawienia](./settings)).
 

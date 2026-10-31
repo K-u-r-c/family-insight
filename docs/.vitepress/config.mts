@@ -75,7 +75,8 @@ function guideSidebar(code: string, prefix: string): DefaultTheme.SidebarItem[] 
       ['View modes', 'view-modes'],
       ['Finding people', 'search'],
       ['Details and timeline', 'timeline'],
-      ['Statistics', 'statistics']
+      ['Statistics', 'statistics'],
+      ['Relationship calculator', 'relationship-calculator']
     ]),
     group('Files, CSV and printing', [
       ['Saving and opening', 'files'],

@@ -29,6 +29,7 @@ const DOCUMENT_ITEMS = [
   'sources',
   'places',
   'statistics',
+  'relationship',
   'map',
   'fit',
   'zoom-in',
@@ -207,6 +208,7 @@ export function buildMenu(): void {
           click: () => updateSettings({ showMinimap: !getSettings().showMinimap })
         },
         item('statistics', t('stats.title'), 'view:statistics'),
+        item('relationship', t('kinship.menu'), 'view:relationship'),
         {
           id: 'map',
           label: t('map.title'),

@@ -1,0 +1,23 @@
+.relation {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: baseline;
+  max-width: 100%;
+  padding: 0;
+  margin-top: 2px;
+  font-size: var(--text-md);
+  color: var(--color-accent-text);
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+.relation svg {
+  flex: none;
+  align-self: center;
+}
+
+.relation:hover span {
+  text-decoration: underline;
+}

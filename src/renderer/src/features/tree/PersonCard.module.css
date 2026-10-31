@@ -88,8 +88,36 @@
     0 0 0 5px var(--color-highlight);
 }
 
+.onPath {
+  border-color: var(--color-accent);
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    0 0 0 6px var(--color-accent-soft),
+    var(--shadow-md);
+}
+
 .dimmed {
   opacity: 0.32;
+}
+
+/* Off the highlighted path: the card recedes but its text stays readable (AA contrast). */
+.faded .card {
+  background: var(--color-canvas);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.faded .card::before {
+  opacity: 0.35;
+}
+
+.faded .card > :first-child {
+  filter: grayscale(1);
+}
+
+.faded .name {
+  font-weight: 500;
+  color: var(--color-text-muted);
 }
 
 .deceased .name {
