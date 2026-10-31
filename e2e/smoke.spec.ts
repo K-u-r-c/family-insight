@@ -30,7 +30,7 @@ test.describe('smoke', () => {
     await expect(page.getByRole('heading', { name: 'Welcome to Family Insight' })).toBeVisible()
     const picker = page.getByRole('combobox', { name: 'Language' })
     // Every language is listed in its own name.
-    await expect(picker.getByRole('option')).toHaveText(['English', 'Polski'])
+    await expect(picker.getByRole('option')).toHaveText(['English', 'Polski', 'Deutsch'])
     await picker.selectOption('pl')
     await expect(page.getByRole('heading', { name: 'Witaj w Family Insight' })).toBeVisible()
     await closeApp(app)

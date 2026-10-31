@@ -14,7 +14,8 @@
     "docs/.test/**/*",
     "playwright.docs.config.ts",
     "src/core/**/*",
-    "src/shared/pseudo.ts"
+    "src/shared/pseudo.ts",
+    "src/shared/i18n.ts"
   ],
   "exclude": ["src/core/**/*.test.ts"]
 }

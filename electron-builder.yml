@@ -43,6 +43,7 @@ nsis:
   installerLanguages:
     - en_US
     - pl_PL
+    - de_DE
   createStartMenuShortcut: true
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
@@ -90,7 +91,8 @@ linux:
       Name: Family Insight
       Comment: Family tree editor
       Comment[pl]: Edytor drzewa genealogicznego
-      Keywords: genealogy;family;tree;genealogia;rodzina;drzewo;
+      Comment[de]: Stammbaum-Editor
+      Keywords: genealogy;family;tree;genealogia;rodzina;drzewo;Genealogie;Familie;Stammbaum;
       StartupWMClass: Family Insight
 deb:
   depends:

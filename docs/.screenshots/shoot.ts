@@ -1,13 +1,14 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ElectronApplication, Locator, Page } from '@playwright/test'
+import { LOCALES as APP_LOCALES, SUPPORTED_LANGUAGES } from '../../src/shared/i18n'
 import en from '../../src/shared/locales/en.json'
-import pl from '../../src/shared/locales/pl.json'
 import { pseudoLocalize } from '../../src/shared/pseudo'
 import { test } from '@playwright/test'
 import { closeApp, launch, type Launched } from '../../e2e/app'
 
-export type Lang = 'en' | 'pl' | 'xx'
+/** A UI language code, or `xx` for the pseudo-locale. */
+export type Lang = string
 export type Theme = 'light' | 'dark'
 export interface Variant {
   lang: Lang
@@ -16,29 +17,40 @@ export interface Variant {
 
 /**
  * `PSEUDO_SHOTS=1` renders every scene in the development pseudo-locale instead (accented,
- * 40 % longer texts) into `test-results/pseudo/` – a layout check, not documentation.
+ * 40 % longer texts) into `test-results/pseudo/`, and `SHOTS_LANG=de` in another UI language in
+ * both themes into `test-results/lang-check/` – layout checks, not documentation.
  */
 const PSEUDO = process.env.PSEUDO_SHOTS === '1'
+const CHECK_LANG = process.env.SHOTS_LANG
+const CHECK = PSEUDO || Boolean(CHECK_LANG)
 
 export const VARIANTS: Variant[] = PSEUDO
   ? [{ lang: 'xx', theme: 'light' }]
-  : [
-      { lang: 'en', theme: 'light' },
-      { lang: 'en', theme: 'dark' },
-      { lang: 'pl', theme: 'light' },
-      { lang: 'pl', theme: 'dark' }
-    ]
+  : CHECK_LANG
+    ? [
+        { lang: CHECK_LANG, theme: 'light' },
+        { lang: CHECK_LANG, theme: 'dark' }
+      ]
+    : [
+        { lang: 'en', theme: 'light' },
+        { lang: 'en', theme: 'dark' },
+        { lang: 'pl', theme: 'light' },
+        { lang: 'pl', theme: 'dark' }
+      ]
 
 /** Window content size of every screenshot session. */
 export const WINDOW = { width: 1280, height: 800 }
-const OUT_DIR = PSEUDO
-  ? join(__dirname, '..', '..', 'test-results', 'pseudo')
+const OUT_DIR = CHECK
+  ? join(__dirname, '..', '..', 'test-results', PSEUDO ? 'pseudo' : 'lang-check')
   : join(__dirname, '..', 'public', 'screenshots')
 const MANIFEST = join(__dirname, '..', '.vitepress', 'screenshots.json')
 /** Annotation colour: high contrast on both themes and distinct from the app's palette. */
 const MARK = '#e8590c'
 
-const LOCALES: Record<Lang, unknown> = { en, pl, xx: pseudoLocalize(en) }
+const LOCALES: Record<Lang, unknown> = {
+  ...Object.fromEntries(SUPPORTED_LANGUAGES.map((l) => [l, APP_LOCALES[l].translation])),
+  xx: pseudoLocalize(en)
+}
 
 /** Translates like the app (i18next keys, `{{var}}` interpolation, `_one/_other` plurals). */
 export function translate(
@@ -261,7 +273,7 @@ async function drawMarks(page: Page, marks: Mark[]): Promise<void> {
 type Manifest = Record<string, Record<string, [number, number]>>
 
 function record(name: string, variant: Variant, width: number, height: number): void {
-  if (PSEUDO) return
+  if (CHECK) return
   let manifest: Manifest = {}
   try {
     manifest = JSON.parse(readFileSync(MANIFEST, 'utf8')) as Manifest

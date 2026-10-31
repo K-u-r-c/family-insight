@@ -8,6 +8,7 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- **German** (Deutsch) user interface.
 - CSV import reads column names and values in German, French, Spanish, Italian, Portuguese and
   Russian, recognises Cyrillic (Windows-1251) and Western European (Windows-1252) files from older
   Excel versions, and lets you pick another character set in the preview.

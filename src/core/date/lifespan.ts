@@ -2,11 +2,11 @@ import type { Person } from '../model/types'
 import { isLiving } from '../model/tree'
 import { shortFuzzyDate, type DateLanguage } from './fuzzyDate'
 
-// Genealogical abbreviations (French uses the symbols ° and †).
+// Genealogical abbreviations; German and French use symbols ("geb." would clash with "geb. Mazur").
 const BORN: Record<DateLanguage, string> = {
   en: 'b.',
   pl: 'ur.',
-  de: 'geb.',
+  de: '*',
   fr: '°',
   es: 'n.',
   it: 'n.',
@@ -16,7 +16,7 @@ const BORN: Record<DateLanguage, string> = {
 const DIED: Record<DateLanguage, string> = {
   en: 'd.',
   pl: 'zm.',
-  de: 'gest.',
+  de: '†',
   fr: '†',
   es: 'f.',
   it: 'm.',

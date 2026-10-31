@@ -6,15 +6,17 @@ description: Eksport drzewa do arkusza CSV, który poprawnie otworzy się w Exce
 
 Wybierz **☰ → Eksportuj CSV…** (albo **Plik → Eksportuj → CSV…** w pasku menu):
 
-<Screenshot name="csv-export" alt="Okno Eksport do CSV z separatorem kolumn (przecinek lub średnik) i nazwami kolumn (English lub Polski)" />
+<Screenshot name="csv-export" alt="Okno Eksport do CSV z separatorem kolumn (przecinek lub średnik) i nazwami kolumn (English, Polski lub Deutsch)" />
 
 1. **Separator kolumn** – **Średnik** dla Excela z ustawieniami regionalnymi, w których przecinek
    jest separatorem dziesiętnym (polskimi, niemieckimi, francuskimi, hiszpańskimi, włoskimi,
    portugalskimi, rosyjskimi …) – inaczej wszystko trafi do jednej kolumny; **Przecinek** dla
    większości innych programów. Domyślny wybór zależy od języka programu, a Family Insight
    zapamięta Twój wybór.
-2. **Nazwy kolumn** – polskie (`imiona`, `nazwisko` …) albo angielskie (`given_names`, `surname`
-   …). Przy polskich nazwach także wartości są po polsku (`kobieta`, `tak` / `nie`).
+2. **Nazwy kolumn** – w jednym z języków programu: polskie (`imiona`, `nazwisko` …), angielskie
+   (`given_names`, `surname` …), niemieckie (`vornamen`, `nachname` …) i tak dalej. Wartości są w
+   tym samym języku co nazwy kolumn (`kobieta`, `tak` / `nie` po polsku; `weiblich`, `ja` / `nein`
+   po niemiecku).
 3. Kliknij **Eksportuj…** i wskaż miejsce zapisu. Po zakończeniu pojawi się komunikat z przyciskiem
    **Pokaż w folderze**.
 

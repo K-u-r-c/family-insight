@@ -6,14 +6,15 @@ description: Export your family tree to a CSV spreadsheet that opens correctly i
 
 Choose **☰ → Export CSV…** (or **File → Export → CSV…** in the menu bar):
 
-<Screenshot name="csv-export" alt="The Export to CSV dialog with the column separator (comma or semicolon) and the column names (English or Polski)" />
+<Screenshot name="csv-export" alt="The Export to CSV dialog with the column separator (comma or semicolon) and the column names (English, Polski or Deutsch)" />
 
 1. **Column separator** – **Comma** for most programs; **Semicolon** for Excel with regional
    settings that use a decimal comma (Polish, German, French, Spanish, Italian, Portuguese,
    Russian …), which otherwise puts everything into one column. The default follows the language of
    the program, and Family Insight remembers your choice.
-2. **Column names** – English (`given_names`, `surname` …) or Polish (`imiona`, `nazwisko` …).
-   With Polish names the values are Polish too (`kobieta`, `tak` / `nie`).
+2. **Column names** – in one of the program's languages: English (`given_names`, `surname` …),
+   Polish (`imiona`, `nazwisko` …), German (`vornamen`, `nachname` …) and so on. The values follow
+   the column names (`kobieta`, `tak` / `nie` in Polish; `weiblich`, `ja` / `nein` in German).
 3. Click **Export…** and choose where to save the file. A message with **Show in folder** appears
    when it's done.
 

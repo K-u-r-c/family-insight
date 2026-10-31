@@ -37,7 +37,7 @@ zrobić. Sam program ma otwarty kod – każdy może sprawdzić, co robi.
 1. Pobierz `family-insight-<wersja>-setup.exe` i otwórz go.
 2. Jeśli pojawi się niebieskie okno **System Windows ochronił ten komputer** (SmartScreen),
    kliknij **Więcej informacji**, a potem **Uruchom mimo to**.
-3. Wybierz język instalatora (Polski lub English) i przejdź przez kolejne kroki. Możesz zmienić
+3. Wybierz język instalatora (Polski, English lub Deutsch) i przejdź przez kolejne kroki. Możesz zmienić
    folder instalacji. Uprawnienia administratora nie są potrzebne – program instaluje się dla
    Twojego konta.
 4. Uruchom Family Insight z **menu Start** albo **skrótu na pulpicie**.
