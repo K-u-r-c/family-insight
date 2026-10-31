@@ -1037,5 +1037,33 @@
     "mediaFiles_one": "{{count}} file multimediale",
     "mediaFiles_many": "{{count}} file multimediali",
     "mediaFiles_other": "{{count}} file multimediali"
+  },
+  "tour": {
+    "menu": "Mostra la visita guidata",
+    "step": "Passo {{current}} di {{total}}",
+    "next": "Avanti",
+    "back": "Indietro",
+    "done": "Fatto",
+    "skip": "Salta la visita",
+    "close": "Chiudi la visita guidata",
+    "reset": "Ripristina suggerimenti e visite guidate",
+    "basics": {
+      "add": {
+        "title": "Aggiungi persone",
+        "body": "Comincia da te o da qualcuno che conosci: clicca qui, scrivi il nome e salva. I parenti si aggiungono poi dalla scheda di una persona."
+      },
+      "views": {
+        "title": "Scegli cosa vedere",
+        "body": "Mostra tutta la famiglia o solo gli antenati, i discendenti o entrambi (clessidra) di una persona."
+      },
+      "search": {
+        "title": "Trova chiunque",
+        "body": "Scrivi un nome, un luogo o un anno: l’albero evidenzia le persone che corrispondono."
+      },
+      "settings": {
+        "title": "Su misura per te",
+        "body": "Qui trovi tema, stile Arazzo, lingua, dimensione delle schede e salvataggio automatico. La visita guidata si riavvia dal menu Aiuto."
+      }
+    }
   }
 }

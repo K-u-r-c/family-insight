@@ -49,3 +49,9 @@ de la ayuda, los atajos de teclado y la información sobre el programa.
 - Oculte la lista de personas con el botón de su parte superior (o con **Ver → Lista de personas**
   en la barra de menús) para dejar más espacio al árbol.
 - Cierre el panel de detalles con **×** o haga clic en una parte vacía del árbol.
+
+## Visita guiada {#guided-tour}
+
+Elija **Ayuda → Mostrar la visita guiada** en la barra de menús. Una visita breve señala una tras otra las partes más importantes de la ventana; mientras tanto puede usar el programa con normalidad. Avance con **Siguiente** y **Atrás** (o las teclas ← →) y pulse <kbd>Esc</kbd> para saltarla. Las visitas terminadas o saltadas no se vuelven a ofrecer: **Configuración → Restablecer consejos y visitas guiadas** las recupera.
+
+<Screenshot name="guided-tour" alt="La visita guiada señalando el botón Añadir persona, con una ventana: Paso 1 de 4, Añada personas, y los botones Saltar la visita, Atrás y Siguiente" />

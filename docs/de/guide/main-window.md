@@ -51,3 +51,9 @@ Befehle sowie Hilfe, Tastenkürzel und Informationen über das Programm.
 - Blenden Sie die Personenliste mit der Schaltfläche oben in der Liste aus (oder in der Menüleiste
   mit **Ansicht → Personenliste**), um dem Stammbaum mehr Platz zu geben.
 - Schließen Sie den Detailbereich mit **×** oder klicken Sie auf eine leere Stelle im Stammbaum.
+
+## Geführte Tour {#guided-tour}
+
+Wählen Sie **Hilfe → Geführte Tour anzeigen** in der Menüleiste. Eine kurze Tour zeigt nacheinander auf die wichtigsten Teile des Fensters; Sie können das Programm dabei normal benutzen. Mit **Weiter** und **Zurück** (oder den Tasten ← →) bewegen Sie sich, <kbd>Esc</kbd> überspringt die Tour. Beendete oder übersprungene Touren werden nicht erneut angeboten – **Einstellungen → Tipps und geführte Touren zurücksetzen** holt sie zurück.
+
+<Screenshot name="guided-tour" alt="Die geführte Tour zeigt auf die Schaltfläche Person hinzufügen, mit einem Hinweisfenster: Schritt 1 von 4, Personen hinzufügen, und den Schaltflächen Tour überspringen, Zurück und Weiter" />

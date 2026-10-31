@@ -989,5 +989,33 @@
     "sources_other": "{{count}} sources",
     "mediaFiles_one": "{{count}} media file",
     "mediaFiles_other": "{{count}} media files"
+  },
+  "tour": {
+    "menu": "Show guided tour",
+    "step": "Step {{current}} of {{total}}",
+    "next": "Next",
+    "back": "Back",
+    "done": "Done",
+    "skip": "Skip tour",
+    "close": "Close the guided tour",
+    "reset": "Reset tips and guided tours",
+    "basics": {
+      "add": {
+        "title": "Add people",
+        "body": "Start with yourself or anyone you know: click here, type the name and save. Relatives are added from a person’s card later."
+      },
+      "views": {
+        "title": "Choose what you see",
+        "body": "Show the whole family, or only someone’s ancestors, descendants or both (hourglass)."
+      },
+      "search": {
+        "title": "Find anyone",
+        "body": "Type a name, a place or a year; the tree highlights the people who match."
+      },
+      "settings": {
+        "title": "Make it yours",
+        "body": "Theme, the Tapestry style, language, card size and autosave live here. The guided tour can be started again from the Help menu."
+      }
+    }
   }
 }

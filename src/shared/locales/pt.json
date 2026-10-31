@@ -1037,5 +1037,33 @@
     "mediaFiles_one": "{{count}} arquivo de mídia",
     "mediaFiles_many": "{{count}} arquivos de mídia",
     "mediaFiles_other": "{{count}} arquivos de mídia"
+  },
+  "tour": {
+    "menu": "Mostrar a visita guiada",
+    "step": "Passo {{current}} de {{total}}",
+    "next": "Próximo",
+    "back": "Voltar",
+    "done": "Concluir",
+    "skip": "Pular a visita",
+    "close": "Fechar a visita guiada",
+    "reset": "Redefinir dicas e visitas guiadas",
+    "basics": {
+      "add": {
+        "title": "Adicione pessoas",
+        "body": "Comece por você ou por alguém que você conhece: clique aqui, digite o nome e salve. Os parentes são adicionados depois pelo cartão de uma pessoa."
+      },
+      "views": {
+        "title": "Escolha o que ver",
+        "body": "Mostre a família inteira ou só os antepassados, os descendentes ou ambos (ampulheta) de uma pessoa."
+      },
+      "search": {
+        "title": "Encontre qualquer pessoa",
+        "body": "Digite um nome, um lugar ou um ano; a árvore destaca as pessoas encontradas."
+      },
+      "settings": {
+        "title": "Do seu jeito",
+        "body": "Aqui ficam o tema, o estilo Tapeçaria, o idioma, o tamanho dos cartões e o salvamento automático. A visita guiada pode ser reaberta pelo menu Ajuda."
+      }
+    }
   }
 }

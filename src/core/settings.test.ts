@@ -27,6 +27,15 @@ describe('settings', () => {
     expect(sanitizeSettings({ style: 7 }, d, isLang).style).toBe('modern')
   })
 
+  it('keeps the seen tours as a short list of names', () => {
+    const d = defaultSettings('en')
+    expect(d.tours).toEqual([])
+    expect(
+      sanitizeSettings({ tours: ['basics', 'basics', 3, 'x'.repeat(99)] }, d, isLang).tours
+    ).toEqual(['basics'])
+    expect(sanitizeSettings({ tours: 'basics' }, d, isLang).tours).toEqual([])
+  })
+
   it('returns defaults for garbage input', () => {
     const d = defaultSettings('en')
     expect(sanitizeSettings('nope', d, isLang)).toEqual(d)

@@ -529,3 +529,16 @@ later without changing anything else.
 - **Fonts**: `embedFonts` embeds only the families the picture uses, so Tapestry files carry
   Cormorant and EB Garamond (with the Latin Extended and Cyrillic subsets the text needs) and no
   Inter.
+
+## Guided tours (2026-10, issue #108)
+
+- **Own small engine** instead of a tour library: the step logic is a pure function
+  (`src/core/tour.ts`), the overlay one component; it needs our tokens, styles, 8 languages and
+  `wait for` conditions that look at the document – libraries add weight and their own styling.
+- **The dimming never blocks the app** (pointer events off, a spotlight hole as an even-odd SVG
+  path), so steps can ask the user to act; the popover is a non-modal `role="dialog"` that takes
+  the focus on every step.
+- **Targets by `data-tour`**, polled every 200 ms (panels open, windows resize); a missing target
+  shows the step centred. Modal dialogs are avoided as targets (native top layer).
+- Finished and skipped tours are remembered in `settings.tours` (sanitised: unique short strings,
+  at most 50); a settings item clears them.

@@ -1037,5 +1037,33 @@
     "mediaFiles_one": "{{count}} fichier multimédia",
     "mediaFiles_many": "{{count}} fichiers multimédias",
     "mediaFiles_other": "{{count}} fichiers multimédias"
+  },
+  "tour": {
+    "menu": "Afficher la visite guidée",
+    "step": "Étape {{current}} sur {{total}}",
+    "next": "Suivant",
+    "back": "Précédent",
+    "done": "Terminé",
+    "skip": "Passer la visite",
+    "close": "Fermer la visite guidée",
+    "reset": "Réinitialiser les astuces et les visites guidées",
+    "basics": {
+      "add": {
+        "title": "Ajouter des personnes",
+        "body": "Commencez par vous-même ou par quelqu’un que vous connaissez : cliquez ici, saisissez le nom et enregistrez. Les proches s’ajoutent ensuite depuis la carte d’une personne."
+      },
+      "views": {
+        "title": "Choisir ce que vous voyez",
+        "body": "Affichez toute la famille, ou seulement les ascendants, les descendants ou les deux (sablier) d’une personne."
+      },
+      "search": {
+        "title": "Retrouver chacun",
+        "body": "Tapez un nom, un lieu ou une année ; l’arbre met en évidence les personnes trouvées."
+      },
+      "settings": {
+        "title": "À votre goût",
+        "body": "Le thème, le style Tapisserie, la langue, la taille des cartes et l’enregistrement automatique sont ici. La visite guidée se relance depuis le menu Aide."
+      }
+    }
   }
 }

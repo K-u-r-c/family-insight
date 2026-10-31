@@ -48,3 +48,9 @@ scorciatoie da tastiera e le informazioni sul programma.
 - Nascondi l'elenco delle persone con il pulsante in alto (o con **Visualizza → Elenco persone**
   nella barra dei menu) per dare più spazio all'albero.
 - Chiudi il pannello dei dettagli con **×**, oppure fai clic su una parte vuota dell'albero.
+
+## Visita guidata {#guided-tour}
+
+Scegli **Aiuto → Mostra la visita guidata** nella barra dei menu. Una breve visita indica una dopo l'altra le parti più importanti della finestra; nel frattempo puoi usare il programma normalmente. Muoviti con **Avanti** e **Indietro** (o i tasti ← →) e premi <kbd>Esc</kbd> per saltarla. Le visite finite o saltate non vengono riproposte: **Impostazioni → Ripristina suggerimenti e visite guidate** le fa tornare.
+
+<Screenshot name="guided-tour" alt="La visita guidata che indica il pulsante Aggiungi persona, con un riquadro: Passo 1 di 4, Aggiungi persone, e i pulsanti Salta la visita, Indietro e Avanti" />

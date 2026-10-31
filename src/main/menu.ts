@@ -266,6 +266,7 @@ export function buildMenu(): void {
           click: () => void shell.openExternal(guideUrl(getSettings().language))
         },
         item('shortcuts', t('menu.shortcuts'), 'help:shortcuts', 'F1'),
+        item('tour', t('tour.menu'), 'help:tour'),
         { type: 'separator' },
         { label: t('menu.csvFormat'), click: () => send('help:csv-format') },
         { label: t('menu.csvTemplate'), click: () => send('help:csv-template') },

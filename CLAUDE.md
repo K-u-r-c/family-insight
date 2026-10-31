@@ -21,7 +21,7 @@ Electron + React + TypeScript family tree app (eight UI languages). Read `docs/d
 - CSV behaviour is specified in `docs/developer/reference/csv-format.md`; keep the doc and code in sync.
 - Step-by-step guides for common changes live in `docs/developer/howto/`: `ui-text.md`,
   `setting.md`, `ipc.md`, `menu.md`, `person-field.md`, `format.md`, `view-mode.md`, `language.md`,
-  `style.md`.
+  `style.md`, `tour.md`.
   The `.finsight` format and its versioning policy: `docs/developer/reference/file-format.md`.
 - User-visible changes: update the user guide (`docs/guide`, `docs/pl/guide`) and regenerate the
   affected screenshots (`npm run docs:screenshots -- -g <scene>`).

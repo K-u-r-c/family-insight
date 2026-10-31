@@ -49,3 +49,9 @@ o programie.
 - Ukryj listę osób przyciskiem u jej góry (albo **Widok → Lista osób** w pasku menu), aby drzewo
   miało więcej miejsca.
 - Zamknij panel szczegółów przyciskiem **×** albo kliknij puste miejsce w drzewie.
+
+## Przewodnik {#guided-tour}
+
+Wybierz **Pomoc → Pokaż przewodnik** na pasku menu. Krótki przewodnik wskazuje po kolei najważniejsze części okna; w trakcie możesz normalnie korzystać z programu. Przechodź przyciskami **Dalej** i **Wstecz** (albo klawiszami ← →), a <kbd>Esc</kbd> go pomija. Ukończone lub pominięte przewodniki nie pojawiają się ponownie – **Ustawienia → Przywróć wskazówki i przewodniki** przywraca je.
+
+<Screenshot name="guided-tour" alt="Przewodnik wskazujący przycisk Dodaj osobę, z okienkiem: Krok 1 z 4, Dodawaj osoby, i przyciskami Pomiń przewodnik, Wstecz i Dalej" />

@@ -1407,6 +1407,14 @@ scene(
   { settings: { style: 'tapestry' } }
 )
 
+scene('guided-tour', async (s) => {
+  await openSample(s)
+  await s.app.evaluate(({ Menu }) => Menu.getApplicationMenu()!.getMenuItemById('tour')!.click())
+  await s.page.locator('[data-tour-overlay] [role="dialog"]').waitFor()
+  await s.page.waitForTimeout(800)
+  await parkMouse(s)
+})
+
 scene('unsaved-status', async (s) => {
   await openSample(s)
   await setRoot(s, 'Lena Kowalska')

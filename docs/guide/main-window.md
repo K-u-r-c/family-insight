@@ -47,3 +47,9 @@ information about the program.
 - Hide the list of people with the button at its top (or **View → People List** in the menu bar)
   to give the tree more space.
 - Close the details panel with **×**, or click an empty part of the tree.
+
+## Guided tour {#guided-tour}
+
+Choose **Help → Show guided tour** in the menu bar. A short tour points at the most important parts of the window one after another; you can use the program while it runs. Move with **Next** and **Back** (or the ← → keys) and press <kbd>Esc</kbd> to skip it. Finished or skipped tours are not offered again – **Settings → Reset tips and guided tours** brings them back.
+
+<Screenshot name="guided-tour" alt="The guided tour pointing at the Add person button, with a popover: Step 1 of 4, Add people, and the buttons Skip tour, Back and Next" />

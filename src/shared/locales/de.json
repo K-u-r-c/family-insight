@@ -989,5 +989,33 @@
     "sources_other": "{{count}} Quellen",
     "mediaFiles_one": "{{count}} Mediendatei",
     "mediaFiles_other": "{{count}} Mediendateien"
+  },
+  "tour": {
+    "menu": "Geführte Tour anzeigen",
+    "step": "Schritt {{current}} von {{total}}",
+    "next": "Weiter",
+    "back": "Zurück",
+    "done": "Fertig",
+    "skip": "Tour überspringen",
+    "close": "Geführte Tour schließen",
+    "reset": "Tipps und geführte Touren zurücksetzen",
+    "basics": {
+      "add": {
+        "title": "Personen hinzufügen",
+        "body": "Beginnen Sie mit sich selbst oder jemandem, den Sie kennen: Hier klicken, Namen eingeben und speichern. Verwandte fügen Sie später über die Karte einer Person hinzu."
+      },
+      "views": {
+        "title": "Wählen, was Sie sehen",
+        "body": "Zeigen Sie die ganze Familie oder nur die Vorfahren, Nachkommen oder beides (Sanduhr) einer Person."
+      },
+      "search": {
+        "title": "Jeden finden",
+        "body": "Geben Sie einen Namen, einen Ort oder ein Jahr ein; der Stammbaum hebt die passenden Personen hervor."
+      },
+      "settings": {
+        "title": "Nach Ihrem Geschmack",
+        "body": "Hier finden Sie Design, den Stil Gobelin, Sprache, Kartengröße und automatisches Speichern. Die geführte Tour starten Sie über das Hilfe-Menü erneut."
+      }
+    }
   }
 }

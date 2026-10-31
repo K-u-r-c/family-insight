@@ -15,6 +15,8 @@ All notable changes to this project are documented here. The format follows
   **Settings → Style** or **View → Style**.
 - Images, PDFs and prints in either style: the export dialog has a **Style** choice, so a tree can
   be printed on parchment with framed medallions whichever style the window shows.
+- **Guided tour** (**Help → Show guided tour**): a short tour points at the main parts of the window
+  one after another; Esc skips it, and **Settings → Reset tips and guided tours** shows it again.
 
 ## [1.2.1] - 2026-10-31
 

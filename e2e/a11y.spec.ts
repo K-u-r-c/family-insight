@@ -92,6 +92,19 @@ for (const [theme, style] of [
   })
 }
 
+for (const theme of ['light', 'dark'] as const) {
+  test(`no serious accessibility violations with the guided tour open (${theme})`, async () => {
+    const file = join(tempDir(), 'kowalscy.finsight')
+    copyFileSync(join(__dirname, 'fixtures', 'kowalscy.finsight'), file)
+    const { app, page } = await launch({ args: [file], theme })
+    await expect(page.locator('[data-person-id]').first()).toBeVisible()
+    await app.evaluate(({ Menu }) => Menu.getApplicationMenu()!.getMenuItemById('tour')!.click())
+    await expect(page.getByRole('dialog', { name: 'Add people' })).toBeVisible()
+    expect(await seriousViolations(page)).toEqual([])
+    await closeApp(app)
+  })
+}
+
 test('keyboard: shortcut help, skip link and screen reader announcements', async () => {
   const file = join(tempDir(), 'kowalscy.finsight')
   copyFileSync(join(__dirname, 'fixtures', 'kowalscy.finsight'), file)

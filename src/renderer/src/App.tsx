@@ -44,6 +44,8 @@ import { ExportGedcomDialog } from './features/gedcom/ExportGedcomDialog'
 import { ImportGedcomDialog } from './features/gedcom/ImportGedcomDialog'
 import { startGedcomImport } from './features/gedcom/importFlow'
 import { openCsvFormatDocs, saveCsvTemplate } from './features/csv/csvHelp'
+import { TourOverlay } from './features/tour/TourOverlay'
+import { useTour } from './features/tour/tourStore'
 
 const Gallery = lazy(() =>
   import('./features/gallery/Gallery').then((m) => ({ default: m.Gallery }))
@@ -86,6 +88,7 @@ export function App(): React.JSX.Element {
       'help:check-updates': () => void checkForUpdatesManually(),
       'help:shortcuts': () => useWorkspaceUi.getState().openDialog('shortcuts'),
       'help:about': () => useWorkspaceUi.getState().openDialog('about'),
+      'help:tour': () => useTour.getState().start('basics'),
       'file:close': () => void closeTree(),
       'edit:add-person': () => addPersonAndEdit(),
       'edit:delete': () => {
@@ -176,6 +179,7 @@ export function App(): React.JSX.Element {
           onClose={() => useWorkspaceUi.getState().setCiting(null)}
         />
       )}
+      <TourOverlay />
       {hasDocument && <MediaViewer />}
       {hasDocument && <MediaDetailsDialog />}
       {dialog === 'new-tree' && (

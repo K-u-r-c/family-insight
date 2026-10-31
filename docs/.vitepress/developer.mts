@@ -38,7 +38,8 @@ export const developerSidebar: DefaultTheme.SidebarItem[] = [
       { text: 'Add a file format', link: '/developer/howto/format' },
       { text: 'Add a view mode', link: '/developer/howto/view-mode' },
       { text: 'Add a language', link: '/developer/howto/language' },
-      { text: 'Add a visual style', link: '/developer/howto/style' }
+      { text: 'Add a visual style', link: '/developer/howto/style' },
+      { text: 'Add a guided tour', link: '/developer/howto/tour' }
     ]
   },
   {

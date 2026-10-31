@@ -72,6 +72,10 @@ export function SettingsMenu(): React.JSX.Element {
       checked: settings.onlineMaps,
       onSelect: () => void update({ onlineMaps: !settings.onlineMaps })
     },
+    {
+      label: t('tour.reset'),
+      onSelect: () => void update({ tours: [] })
+    },
     { type: 'separator' },
     { type: 'heading', label: t('updates.title') },
     {
@@ -95,6 +99,7 @@ export function SettingsMenu(): React.JSX.Element {
       <IconButton
         icon={Settings2}
         label={t('settings.title')}
+        data-tour="settings"
         aria-haspopup="menu"
         aria-expanded={anchor !== null}
         onClick={(e) => setAnchor(anchorBelow(e.currentTarget, true))}

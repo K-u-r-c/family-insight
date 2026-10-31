@@ -46,6 +46,7 @@ export function Toolbar({
         icon={UserPlus}
         onClick={onAddPerson}
         title={formatShortcut('Mod+Shift+N')}
+        data-tour="add-person"
       >
         {t('workspace.addPerson')}
       </Button>
@@ -71,6 +72,7 @@ export function Toolbar({
       <div className={styles.spacer} />
       <TextField
         id="workspace-search"
+        data-tour="search"
         className={styles.search}
         icon={Search}
         type="search"

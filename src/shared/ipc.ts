@@ -174,6 +174,7 @@ export type MenuAction =
   | 'help:csv-template'
   | 'help:shortcuts'
   | 'help:guide'
+  | 'help:tour'
   | 'file:close'
   | 'edit:add-person'
   | 'edit:delete'

@@ -1037,5 +1037,33 @@
     "mediaFiles_one": "{{count}} archivo multimedia",
     "mediaFiles_many": "{{count}} archivos multimedia",
     "mediaFiles_other": "{{count}} archivos multimedia"
+  },
+  "tour": {
+    "menu": "Mostrar la visita guiada",
+    "step": "Paso {{current}} de {{total}}",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "done": "Listo",
+    "skip": "Saltar la visita",
+    "close": "Cerrar la visita guiada",
+    "reset": "Restablecer consejos y visitas guiadas",
+    "basics": {
+      "add": {
+        "title": "Añada personas",
+        "body": "Empiece por usted o por alguien que conozca: haga clic aquí, escriba el nombre y guarde. Los familiares se añaden después desde la tarjeta de una persona."
+      },
+      "views": {
+        "title": "Elija qué ver",
+        "body": "Muestre toda la familia o solo los antepasados, los descendientes o ambos (reloj de arena) de una persona."
+      },
+      "search": {
+        "title": "Encuentre a cualquiera",
+        "body": "Escriba un nombre, un lugar o un año; el árbol resalta a las personas que coinciden."
+      },
+      "settings": {
+        "title": "A su gusto",
+        "body": "Aquí están el tema, el estilo Tapiz, el idioma, el tamaño de las tarjetas y el guardado automático. La visita guiada se vuelve a abrir desde el menú Ayuda."
+      }
+    }
   }
 }

@@ -60,6 +60,8 @@ export interface Settings {
   mapTileUrl: string
   updates: UpdateSettings
   panels: PanelSettings
+  /** Guided tours the user finished or skipped (not offered again). */
+  tours: string[]
 }
 
 export const MAX_RECENT_FILES = 10
@@ -90,7 +92,8 @@ export function defaultSettings(language: string): Settings {
     onlineMaps: false,
     mapTileUrl: DEFAULT_TILE_URL,
     updates: { checkAutomatically: true },
-    panels: { sidebarOpen: true, sidebarWidth: 280, detailsWidth: 380 }
+    panels: { sidebarOpen: true, sidebarWidth: 280, detailsWidth: 380 },
+    tours: []
   }
 }
 
@@ -109,7 +112,7 @@ export function sanitizeSettings(
   isLanguage: (v: unknown) => boolean
 ): Settings {
   const src = isObj(raw) ? raw : {}
-  const out: Settings = { ...fallback, panels: { ...fallback.panels } }
+  const out: Settings = { ...fallback, panels: { ...fallback.panels }, tours: [...fallback.tours] }
   if (isLanguage(src.language)) out.language = src.language as string
   if (typeof src.onlinePlaceLookup === 'boolean') out.onlinePlaceLookup = src.onlinePlaceLookup
   if (typeof src.onlineMaps === 'boolean') out.onlineMaps = src.onlineMaps
@@ -160,6 +163,11 @@ export function sanitizeSettings(
     }
   } else if (src.windowBounds === null) {
     delete out.windowBounds
+  }
+  if (Array.isArray(src.tours)) {
+    out.tours = [
+      ...new Set(src.tours.filter((t): t is string => typeof t === 'string' && t.length <= 40))
+    ].slice(0, 50)
   }
   if (isObj(src.panels)) {
     const p = src.panels

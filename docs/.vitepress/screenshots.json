@@ -395,6 +395,24 @@
     "ru-light": [893, 517],
     "ru-dark": [893, 517]
   },
+  "guided-tour": {
+    "en-light": [1280, 800],
+    "en-dark": [1280, 800],
+    "pl-light": [1280, 800],
+    "pl-dark": [1280, 800],
+    "de-light": [1280, 800],
+    "de-dark": [1280, 800],
+    "fr-light": [1280, 800],
+    "fr-dark": [1280, 800],
+    "es-light": [1280, 800],
+    "es-dark": [1280, 800],
+    "it-light": [1280, 800],
+    "it-dark": [1280, 800],
+    "pt-light": [1280, 800],
+    "pt-dark": [1280, 800],
+    "ru-light": [1280, 800],
+    "ru-dark": [1280, 800]
+  },
   "link-existing": {
     "en-light": [547, 501],
     "en-dark": [547, 501],

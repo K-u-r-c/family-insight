@@ -51,3 +51,9 @@ plus l’aide, les raccourcis clavier et des informations sur le logiciel.
 - Masquez la liste des personnes avec le bouton situé en haut de celle-ci (ou
   **Affichage → Liste des personnes** dans la barre de menus) pour donner plus de place à l’arbre.
 - Fermez le panneau de détails avec **×**, ou cliquez sur une partie vide de l’arbre.
+
+## Visite guidée {#guided-tour}
+
+Choisissez **Aide → Afficher la visite guidée** dans la barre de menus. Une courte visite montre l’une après l’autre les parties les plus importantes de la fenêtre ; vous pouvez utiliser le logiciel pendant ce temps. Avancez avec **Suivant** et **Précédent** (ou les touches ← →) et appuyez sur <kbd>Esc</kbd> pour la passer. Les visites terminées ou passées ne sont plus proposées – **Paramètres → Réinitialiser les astuces et les visites guidées** les fait revenir.
+
+<Screenshot name="guided-tour" alt="La visite guidée montrant le bouton Ajouter une personne, avec une bulle : Étape 1 sur 4, Ajouter des personnes, et les boutons Passer la visite, Précédent et Suivant" />

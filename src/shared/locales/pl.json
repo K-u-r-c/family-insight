@@ -1085,5 +1085,33 @@
     "mediaFiles_few": "{{count}} pliki multimediów",
     "mediaFiles_many": "{{count}} plików multimediów",
     "mediaFiles_other": "{{count}} pliku multimediów"
+  },
+  "tour": {
+    "menu": "Pokaż przewodnik",
+    "step": "Krok {{current}} z {{total}}",
+    "next": "Dalej",
+    "back": "Wstecz",
+    "done": "Gotowe",
+    "skip": "Pomiń przewodnik",
+    "close": "Zamknij przewodnik",
+    "reset": "Przywróć wskazówki i przewodniki",
+    "basics": {
+      "add": {
+        "title": "Dodawaj osoby",
+        "body": "Zacznij od siebie albo kogokolwiek, kogo znasz: kliknij tutaj, wpisz imię i zapisz. Krewnych dodasz potem z karty osoby."
+      },
+      "views": {
+        "title": "Wybierz, co widzisz",
+        "body": "Pokaż całą rodzinę albo tylko przodków, potomków lub jedno i drugie (klepsydra) wybranej osoby."
+      },
+      "search": {
+        "title": "Znajdź każdego",
+        "body": "Wpisz imię, miejsce lub rok – drzewo wyróżni pasujące osoby."
+      },
+      "settings": {
+        "title": "Dopasuj program",
+        "body": "Tu są motyw, styl Gobelin, język, wielkość kart i autozapis. Przewodnik uruchomisz ponownie z menu Pomoc."
+      }
+    }
   }
 }

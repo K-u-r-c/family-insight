@@ -26,7 +26,7 @@ export function ViewModeControls(): React.JSX.Element {
   const wide = useWindowWidth() >= (mode === 'family' ? 1400 : 1560)
 
   return (
-    <div className={styles.controls}>
+    <div className={styles.controls} data-tour="view-modes">
       <SegmentedControl
         label={t('view.mode')}
         value={mode}
