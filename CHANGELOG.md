@@ -6,6 +6,8 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-31
+
 ### Added
 
 - **Styles**: besides the modern look, the new **Tapestry** style makes the app look like an old
@@ -165,7 +167,8 @@ First public release.
   Intel, ad-hoc signed), Linux (AppImage, deb with `.finsight` file association); app icon.
 - Documentation: README and user guide in English and Polish, CSV and file format specs.
 
-[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/K-u-r-c/family-insight/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/K-u-r-c/family-insight/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/K-u-r-c/family-insight/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/K-u-r-c/family-insight/compare/v1.0.1...v1.1.0

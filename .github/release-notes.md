@@ -1,21 +1,24 @@
-## Family Insight 1.2.1 🌳
+## Family Insight 1.3.0 🌳
 
 A beautiful, simple family tree editor for Windows, macOS and Linux — in eight languages.
 Piękny i prosty program do tworzenia drzewa genealogicznego — w ośmiu językach.
 
-**A clearer tree / czytelniejsze drzewo:**
+**New in 1.3 / Nowości:**
 
-- **Every generation on its own row** – when one family is known further back than the family it
-  married into, the whole branch moves down together / **każde pokolenie w swoim rzędzie**
-- **Families stay apart** – a clear gap between families and children under their own parents /
-  **rodziny nie zlewają się** – wyraźna przerwa i dzieci pod własnymi rodzicami
-- **Lines never merge** – each family's lines run separately and never pass behind other cards /
-  **linie się nie nakładają**
-- **Highlighted lines** – select a person or point at their card to see their lines to parents,
-  partners and children / **podświetlone linie** zaznaczonej osoby
+- **Tapestry style** – the whole app like an old family tapestry: parchment and ink, or dark green
+  and gold; people in framed medallions joined by gold thread, the family name in a framed title
+  (**Settings → Style** or **View → Style**) / **styl Gobelin** – program jak stary rodowy gobelin:
+  pergamin i atrament albo ciemna zieleń i złoto, osoby w medalionach połączone złotą nicią
+- **Print it on parchment** – images, PDFs and prints in either style / **wydruki i obrazy w stylu
+  Gobelin**
+- **Guided tour** – on the first start the app builds your first tree with you, step by step;
+  **Help → Show guided tour** any time / **przewodnik** – przy pierwszym uruchomieniu program krok
+  po kroku buduje z Tobą pierwsze drzewo
+- **Tips** – a short tip the first time you open the map, the relationship calculator, sources,
+  statistics … / **wskazówki** przy pierwszym otwarciu funkcji
 
-> **Compatibility / zgodność:** 1.2.1 uses the same file format as 1.1 and 1.2 – trees open in all
-> of them. / 1.2.1 używa tego samego formatu plików co 1.1 i 1.2.
+> **Compatibility / zgodność:** 1.3 uses the same file format as 1.1 and 1.2 – trees open in all
+> of them. / 1.3 używa tego samego formatu plików co 1.1 i 1.2.
 
 📖 **Documentation / dokumentacja:** <https://k-u-r-c.github.io/family-insight/>
 
