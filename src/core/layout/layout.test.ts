@@ -3,6 +3,7 @@ import { layoutFamily, selectPeople, type Layout, type LayoutNode } from './layo
 import { remarriageFixture, TreeBuilder } from '../test/fixtures'
 import type { FamilyTree } from '../model/types'
 import { twoFamiliesFixture } from './fixtures'
+import { kinshipFixture } from '../kinship/fixture'
 
 const node = (layout: Layout, id: string): LayoutNode => {
   const n = layout.nodes.find((x) => x.id === id)
@@ -469,6 +470,179 @@ describe('family groups (#101)', () => {
     const [k1, k2] = span(['halfUncleChild1', 'halfUncleChild2', 'halfUncleChild3'])
     const [p1, p2] = span(['halfUncle', 'halfUncleWife'])
     expect(k2 >= p1 && k1 <= p2).toBe(true)
+  })
+})
+
+describe('lines (#102)', () => {
+  const SIZES = {
+    nodeWidth: 220,
+    nodeHeight: 64,
+    partnerGap: 28,
+    siblingGap: 32,
+    generationGap: 76
+  }
+  type Seg = { x1: number; y1: number; x2: number; y2: number }
+  const segments = (e: Layout['edges'][number]): Seg[] =>
+    e.points.slice(1).map((p, i) => ({ x1: e.points[i]!.x, y1: e.points[i]!.y, x2: p.x, y2: p.y }))
+
+  /** Horizontal stretches of child lines from different parent groups that overlap at one height. */
+  function sharedStretches(l: Layout): string[] {
+    const hs = l.edges
+      .filter((e) => e.type === 'child')
+      .flatMap((e) =>
+        segments(e)
+          .filter((s) => s.y1 === s.y2 && s.x1 !== s.x2)
+          .map((s) => ({ ...s, group: e.people.slice(0, -1).join('+'), id: e.id }))
+      )
+    const out: string[] = []
+    for (let i = 0; i < hs.length; i++) {
+      for (let j = i + 1; j < hs.length; j++) {
+        const a = hs[i]!
+        const b = hs[j]!
+        if (a.y1 !== b.y1 || a.group === b.group) continue
+        const overlap =
+          Math.min(Math.max(a.x1, a.x2), Math.max(b.x1, b.x2)) -
+          Math.max(Math.min(a.x1, a.x2), Math.min(b.x1, b.x2))
+        if (overlap > 1) out.push(`${a.id} / ${b.id}`)
+      }
+    }
+    return out
+  }
+  /** Lines that pass through a card of someone they do not connect. */
+  function linesThroughCards(l: Layout): string[] {
+    const out: string[] = []
+    for (const e of l.edges) {
+      for (const s of segments(e)) {
+        for (const n of l.nodes) {
+          if (e.people.includes(n.id)) continue
+          const [x1, x2] = [Math.min(s.x1, s.x2), Math.max(s.x1, s.x2)]
+          const [y1, y2] = [Math.min(s.y1, s.y2), Math.max(s.y1, s.y2)]
+          if (
+            x2 > n.x + 0.5 &&
+            x1 < n.x + n.width - 0.5 &&
+            y2 > n.y + 0.5 &&
+            y1 < n.y + n.height - 0.5
+          )
+            out.push(`${e.id} through ${n.id}`)
+        }
+      }
+    }
+    return out
+  }
+
+  // x's son y marries x's granddaughter w (a link over two rows); h has three partners.
+  const awkward = (): FamilyTree =>
+    new TreeBuilder()
+      .person('x', 'X', 'male')
+      .person('xw', 'XW', 'female')
+      .person('y', 'Y', 'male')
+      .person('z', 'Z', 'male')
+      .person('zw', 'ZW', 'female')
+      .person('w', 'W', 'female')
+      .person('k', 'K')
+      .person('h', 'H', 'male')
+      .person('p1', 'P1', 'female')
+      .person('p2', 'P2', 'female')
+      .person('p3', 'P3', 'female')
+      .person('hk', 'HK')
+      .couple('x', 'xw')
+      .child('x', 'y')
+      .child('xw', 'y')
+      .child('x', 'z')
+      .child('xw', 'z')
+      .couple('z', 'zw')
+      .child('z', 'w')
+      .child('zw', 'w')
+      .couple('y', 'w')
+      .child('y', 'k')
+      .child('w', 'k')
+      .child('x', 'h')
+      .child('xw', 'h')
+      .couple('h', 'p1')
+      .couple('h', 'p2')
+      .couple('h', 'p3')
+      .child('h', 'hk')
+      .child('p3', 'hk')
+      .build()
+  const trees = (): [string, FamilyTree][] => [
+    ['two families', twoFamiliesFixture()],
+    ['kinship', kinshipFixture()],
+    ['remarriage', remarriageFixture()],
+    ['awkward', awkward()],
+    ['random', randomTree(300, 3)]
+  ]
+
+  it('never lets two families share a horizontal stretch', () => {
+    for (const [name, tree] of trees()) {
+      for (const generationGap of [76, 30]) {
+        expect(sharedStretches(layoutFamily(tree, { ...SIZES, generationGap })), name).toEqual([])
+      }
+    }
+  })
+
+  it('never draws a line through someone else’s card', () => {
+    for (const [name, tree] of trees()) {
+      const l = layoutFamily(tree, SIZES)
+      expect(linesThroughCards(l), name).toEqual([])
+      assertNoOverlap(l)
+    }
+  })
+
+  it('keeps one family on one lane whatever order the parents were entered in', () => {
+    const tree = new TreeBuilder()
+      .person('f', 'F', 'male')
+      .person('m', 'M', 'female')
+      .person('a', 'A')
+      .person('b', 'B')
+      .person('c', 'C')
+      .couple('f', 'm')
+      .child('f', 'a')
+      .child('m', 'a')
+      .child('m', 'b')
+      .child('f', 'b')
+      .child('f', 'c')
+      .child('m', 'c')
+      .build()
+    const l = layoutFamily(tree, SIZES)
+    const buses = new Set(l.edges.filter((e) => e.type === 'child').map((e) => e.points.at(-2)!.y))
+    expect(buses.size).toBe(1)
+  })
+
+  it('keeps a single-lane gap exactly as before', () => {
+    const tree = remarriageFixture()
+    const l = layoutFamily(tree, SIZES)
+    const row = SIZES.nodeHeight + SIZES.generationGap
+    for (const n of l.nodes) expect(n.y).toBe(n.generation * row)
+    for (const e of l.edges.filter((x) => x.type === 'child')) {
+      const child = node(l, e.target)
+      expect(e.points.at(-2)!.y).toBe(child.y - SIZES.generationGap / 2)
+    }
+  })
+
+  it('grows a gap that needs more lanes than fit', () => {
+    const tree = kinshipFixture()
+    const tight = layoutFamily(tree, { ...SIZES, generationGap: 30 })
+    const rows = Math.max(...tight.nodes.map((n) => n.generation))
+    // Without growing, the height would be exactly rows × (card + gap) + card.
+    expect(tight.height).toBeGreaterThan(rows * (SIZES.nodeHeight + 30) + SIZES.nodeHeight)
+    expect(sharedStretches(tight)).toEqual([])
+  })
+
+  it('routes a link over two rows through a free channel and partners around cards', () => {
+    const tree = awkward()
+    const l = layoutFamily(tree, SIZES)
+    const long = l.edges.find((e) => e.target === 'y')!
+    expect(long.people).toEqual(expect.arrayContaining(['x', 'xw', 'y']))
+    expect(long.points.length).toBeGreaterThan(4)
+    expect(linesThroughCards(l)).toEqual([])
+  })
+
+  it('lists everyone a line connects', () => {
+    const l = layoutFamily(remarriageFixture(), SIZES)
+    const toPiotr = l.edges.find((e) => e.type === 'child' && e.target === 'piotr')!
+    expect(new Set(toPiotr.people)).toEqual(new Set(['jan', 'anna', 'piotr']))
+    const partner = l.edges.find((e) => e.type === 'partner' && e.people.includes('ewa'))!
+    expect(new Set(partner.people)).toEqual(new Set(['jan', 'ewa']))
   })
 })
 

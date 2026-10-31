@@ -33,13 +33,14 @@ export function roundedPath(points: Point[], radius = 10): string {
 }
 
 const isActive = (e: LayoutEdge, highlight: string | null): boolean =>
-  highlight !== null && (e.source === highlight || e.target === highlight)
+  highlight !== null && e.people.includes(highlight)
 const isOnPath = (e: LayoutEdge, path: ReadonlySet<string> | null): boolean =>
   path !== null && e.relationshipIds.some((id) => path.has(id))
 
 interface EdgesLayerProps {
   edges: LayoutEdge[]
   bounds: { minX: number; minY: number; width: number; height: number }
+  /** Selected (or hovered) person: their lines stand out and the others step back. */
   highlight: string | null
   dimmed: boolean
   /** Relationships of the highlighted path: their lines stand out, the others fade. */
@@ -78,11 +79,14 @@ export const EdgesLayer = memo(function EdgesLayer({
             <path
               key={e.id}
               d={roundedPath(e.points)}
+              data-people={e.people.join(' ')}
+              data-active={active || undefined}
               className={cx(
                 styles.edge,
                 e.type === 'partner' && styles.partnerEdge,
                 (e.kind && e.kind !== 'biological') || e.ended ? styles.dashed : undefined,
                 active && styles.activeEdge,
+                !path && highlight !== null && !active && styles.quietEdge,
                 onPath && styles.pathEdge,
                 path && !onPath && styles.offPathEdge
               )}

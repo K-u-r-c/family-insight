@@ -74,6 +74,8 @@ export interface LayoutEdge {
   relationshipIds: string[]
   source: PersonId
   target: PersonId
+  /** Everyone the line connects: both partners, or the parent(s) and the child. */
+  people: PersonId[]
 }
 
 export interface Layout {
@@ -715,7 +717,6 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
   if (!ids.size) return { nodes: [], edges: [], width: 0, height: 0 }
   const g = buildGraph(tree, ids)
   const full = buildGraph(tree, new Set(Object.keys(tree.persons)))
-  const rowHeight = o.nodeHeight + o.generationGap
 
   // Components: the focus person's group first, then by size and age.
   const comps = components(g).sort((a, b) => {
@@ -727,7 +728,6 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
   const nodes: LayoutNode[] = []
   const pos = new Map<PersonId, LayoutNode>()
   let offsetX = 0
-  let maxY = 0
   for (const comp of comps) {
     const c = layoutComponent(g, comp, o, options.focusId)
     const shift = offsetX - c.minX
@@ -736,7 +736,7 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
       const node: LayoutNode = {
         id,
         x: Math.round(c.centers.get(id)! + shift - o.nodeWidth / 2),
-        y: generation * rowHeight,
+        y: 0,
         width: o.nodeWidth,
         height: o.nodeHeight,
         generation,
@@ -745,14 +745,183 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
       }
       nodes.push(node)
       pos.set(id, node)
-      maxY = Math.max(maxY, node.y + node.height)
     }
     offsetX += c.maxX - c.minX + o.componentGap
   }
   nodes.sort((a, b) => (a.id < b.id ? -1 : 1))
+  const edges = routeEdges(tree, g, nodes, pos, o)
+  const maxY = Math.max(...nodes.map((n) => n.y + n.height))
+  const width = Math.max(...nodes.map((n) => n.x + n.width)) - Math.min(...nodes.map((n) => n.x))
+  return { nodes, edges, width, height: maxY }
+}
+
+/** Vertical distance between lanes, and the clearance between the outer lanes and the cards. */
+const LANE_STEP = 10
+const LANE_MARGIN = 14
+/** Horizontal clearance between two lines sharing a lane. */
+const LANE_CLEARANCE = 12
+
+interface Hop {
+  /** Band above this row (between `row - 1` and `row`). */
+  row: number
+  left: number
+  right: number
+  /** Lines with the same key belong to one parent group and share a lane. */
+  key: string
+  lane?: number
+}
+
+/**
+ * Sets every node's `y` and draws the lines. Child lines run down from the parents to a
+ * horizontal segment in the gap above the child's row; each parent group gets its own lane there,
+ * so lines of different families never overlap, and a gap that needs more lanes than fit grows.
+ */
+function routeEdges(
+  tree: FamilyTree,
+  g: Graph,
+  nodes: LayoutNode[],
+  pos: Map<PersonId, LayoutNode>,
+  o: Sizes
+): LayoutEdge[] {
+  const maxGen = Math.max(...nodes.map((n) => n.generation))
+  const rowCards: LayoutNode[][] = Array.from({ length: maxGen + 1 }, () => [])
+  for (const n of nodes) rowCards[n.generation]!.push(n)
+  for (const row of rowCards) row.sort((a, b) => a.x - b.x)
+  const centerX = (n: LayoutNode): number => n.x + n.width / 2
+
+  /** An x where a vertical line passes rows `from…to` without touching a card. */
+  const channel = (from: number, to: number, near: number, alsoNear: number): number => {
+    const free = (x: number): boolean => {
+      for (let r = from; r <= to; r++) {
+        for (const n of rowCards[r] ?? []) if (x > n.x - 8 && x < n.x + n.width + 8) return false
+      }
+      return true
+    }
+    if (free(near)) return near
+    const candidates: number[] = []
+    for (let r = from; r <= to; r++) {
+      const row = rowCards[r] ?? []
+      row.forEach((n, i) => {
+        candidates.push(n.x - 20, n.x + n.width + 20)
+        const next = row[i + 1]
+        if (next) candidates.push((n.x + n.width + next.x) / 2)
+      })
+    }
+    const cost = (x: number): number => Math.abs(x - near) + Math.abs(x - alsoNear)
+    return candidates.filter(free).sort((a, b) => cost(a) - cost(b) || a - b)[0] ?? near
+  }
+
+  // 1. Child links, grouped by the parent (or couple) they come from.
+  interface ChildLine {
+    links: ParentChildRelationship[]
+    parents: LayoutNode[]
+    child: LayoutNode
+    sx: number
+    /** From between two adjacent partners (else from the bottom of the single parent's card). */
+    couple: boolean
+    hops: Hop[]
+    /** Vertical channel of a line that spans several rows. */
+    via?: number
+  }
+  const lines: ChildLine[] = []
+  for (const child of nodes) {
+    const links = (g.parents.get(child.id) ?? []).filter((r) => pos.has(r.parentId))
+    if (!links.length) continue
+    const parents = links.map((r) => pos.get(r.parentId)!)
+    const adjacentCouple =
+      parents.length === 2 &&
+      parents[0]!.generation === parents[1]!.generation &&
+      Math.abs(parents[0]!.x - parents[1]!.x) <= o.nodeWidth + o.partnerGap + 1 &&
+      (g.partners.get(parents[0]!.id) ?? []).some(
+        (p) => partnerOf(p, parents[0]!.id) === parents[1]!.id
+      )
+    const groups: [ParentChildRelationship[], LayoutNode[]][] = adjacentCouple
+      ? [[links, parents]]
+      : links.map((r, i) => [[r], [parents[i]!]])
+    for (const [ls, ps] of groups) {
+      const [l, r] = ps.length === 2 && ps[1]!.x < ps[0]!.x ? [ps[1]!, ps[0]!] : [ps[0]!, ps[1]]
+      const sx = r ? (l.x + l.width + r.x) / 2 : centerX(l)
+      const key = ps
+        .map((p) => p.id)
+        .sort()
+        .join('+')
+      const top = centerX(child)
+      const line: ChildLine = { links: ls, parents: ps, child, sx, couple: !!r, hops: [] }
+      const from = l.generation
+      if (from === child.generation - 1) {
+        line.hops.push({
+          row: child.generation,
+          left: Math.min(sx, top),
+          right: Math.max(sx, top),
+          key
+        })
+      } else if (from < child.generation - 1) {
+        // Several rows down: across in the first gap, down a free channel, across to the child.
+        const via = channel(from + 1, child.generation - 1, top, sx)
+        line.via = via
+        const own = `${key}>${child.id}`
+        line.hops.push({
+          row: from + 1,
+          left: Math.min(sx, via),
+          right: Math.max(sx, via),
+          key: own
+        })
+        line.hops.push({
+          row: child.generation,
+          left: Math.min(via, top),
+          right: Math.max(via, top),
+          key: own
+        })
+      }
+      lines.push(line)
+    }
+  }
+
+  // 2. Lanes: interval colouring of the hops in each gap.
+  const byKey = new Map<string, Hop[]>()
+  for (const line of lines) {
+    for (const h of line.hops)
+      byKey.set(`${h.row}|${h.key}`, [...(byKey.get(`${h.row}|${h.key}`) ?? []), h])
+  }
+  const lanes = new Array<number>(maxGen + 1).fill(1)
+  const bands = new Map<number, { left: number; right: number; hops: Hop[] }[]>()
+  for (const [k, hs] of byKey) {
+    const row = Number(k.split('|')[0])
+    const span = {
+      left: Math.min(...hs.map((h) => h.left)),
+      right: Math.max(...hs.map((h) => h.right)),
+      hops: hs
+    }
+    bands.set(row, [...(bands.get(row) ?? []), span])
+  }
+  for (const [row, spans] of bands) {
+    spans.sort((a, b) => a.left - b.left || a.right - b.right)
+    const ends: number[] = []
+    for (const span of spans) {
+      let lane = ends.findIndex((end) => end + LANE_CLEARANCE <= span.left)
+      if (lane < 0) {
+        lane = ends.length
+        ends.push(span.right)
+      } else ends[lane] = span.right
+      for (const h of span.hops) h.lane = lane
+    }
+    lanes[row] = Math.max(1, ends.length)
+  }
+
+  // 3. Rows: a gap grows when it needs more lanes than fit.
+  const fit = Math.max(1, Math.floor((o.generationGap - 2 * LANE_MARGIN) / LANE_STEP) + 1)
+  const gapOf = (row: number): number =>
+    o.generationGap + Math.max(0, lanes[row]! - fit) * LANE_STEP
+  const rowY: number[] = [0]
+  for (let r = 1; r <= maxGen; r++) rowY.push(rowY[r - 1]! + o.nodeHeight + gapOf(r))
+  for (const n of nodes) n.y = rowY[n.generation]!
+  const laneY = (h: Hop): number => {
+    const mid = rowY[h.row]! - gapOf(h.row) / 2
+    return mid + ((h.lane ?? 0) - (lanes[h.row]! - 1) / 2) * LANE_STEP
+  }
 
   const edges: LayoutEdge[] = []
-  // Partner lines between neighbours on the same row.
+  // 4. Partner lines: straight between neighbours, over the cards between partners who are not.
   for (const r of Object.values(tree.relationships).sort((a, b) => (a.id < b.id ? -1 : 1))) {
     if (r.type !== 'partnership') continue
     const a = pos.get(r.partnerIds[0])
@@ -760,17 +929,27 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
     if (!a || !b) continue
     const [left, right] = a.x <= b.x ? [a, b] : [b, a]
     const y = left.y + o.nodeHeight / 2
-    const points =
-      left.y === right.y
-        ? [
-            { x: left.x + left.width, y },
-            { x: right.x, y }
-          ]
-        : [
-            { x: left.x + left.width, y },
-            { x: right.x + right.width / 2, y },
-            { x: right.x + right.width / 2, y: right.y }
-          ]
+    let points: Point[]
+    if (left.y !== right.y) {
+      points = [
+        { x: left.x + left.width, y },
+        { x: centerX(right), y },
+        { x: centerX(right), y: right.y }
+      ]
+    } else if (right.x - (left.x + left.width) <= o.partnerGap + 1) {
+      points = [
+        { x: left.x + left.width, y },
+        { x: right.x, y }
+      ]
+    } else {
+      const above = left.y - Math.min(12, LANE_MARGIN - 2)
+      points = [
+        { x: centerX(left), y: left.y },
+        { x: centerX(left), y: above },
+        { x: centerX(right), y: above },
+        { x: centerX(right), y: right.y }
+      ]
+    }
     edges.push({
       id: r.id,
       type: 'partner',
@@ -778,56 +957,56 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
       ended: !!r.end,
       relationshipIds: [r.id],
       source: left.id,
-      target: right.id
+      target: right.id,
+      people: [left.id, right.id]
     })
   }
 
-  // Child lines: from the couple's midpoint (adjacent partners) or the parent's bottom.
-  for (const child of nodes) {
-    const links = (g.parents.get(child.id) ?? []).filter((r) => pos.has(r.parentId))
-    if (!links.length) continue
-    const parents = links.map((r) => pos.get(r.parentId)!)
-    const busY = child.y - o.generationGap / 2
-    const top = { x: child.x + child.width / 2, y: child.y }
-    const kind = links.some((r) => r.kind === 'biological') ? 'biological' : links[0]!.kind
-    const adjacentCouple =
-      parents.length === 2 &&
-      parents[0]!.y === parents[1]!.y &&
-      Math.abs(parents[0]!.x - parents[1]!.x) <= o.nodeWidth + o.partnerGap + 1 &&
-      (g.partners.get(parents[0]!.id) ?? []).some(
-        (p) => partnerOf(p, parents[0]!.id) === parents[1]!.id
-      )
-    if (adjacentCouple) {
-      const [l, r] =
-        parents[0]!.x < parents[1]!.x ? [parents[0]!, parents[1]!] : [parents[1]!, parents[0]!]
-      const sx = (l.x + l.width + r.x) / 2
-      const sy = l.y + o.nodeHeight / 2
-      edges.push({
-        id: `c:${links.map((x) => x.id).join('+')}`,
-        type: 'child',
-        points: [{ x: sx, y: sy }, { x: sx, y: busY }, { x: top.x, y: busY }, top],
-        kind,
-        relationshipIds: links.map((x) => x.id),
-        source: l.id,
-        target: child.id
-      })
+  // 5. Child lines.
+  for (const line of lines) {
+    const { links, parents, child } = line
+    const [l] =
+      parents.length === 2 && parents[1]!.x < parents[0]!.x ? [parents[1]!] : [parents[0]!]
+    const sy = line.couple ? l.y + o.nodeHeight / 2 : l.y + l.height
+    const top = { x: centerX(child), y: child.y }
+    let points: Point[]
+    if (line.hops.length === 1) {
+      const y = laneY(line.hops[0]!)
+      points = [{ x: line.sx, y: sy }, { x: line.sx, y }, { x: top.x, y }, top]
+    } else if (line.hops.length === 2) {
+      const y1 = laneY(line.hops[0]!)
+      const y2 = laneY(line.hops[1]!)
+      const via = line.via!
+      points = [
+        { x: line.sx, y: sy },
+        { x: line.sx, y: y1 },
+        { x: via, y: y1 },
+        { x: via, y: y2 },
+        { x: top.x, y: y2 },
+        top
+      ]
     } else {
-      for (const [i, p] of parents.entries()) {
-        const sx = p.x + p.width / 2
-        const sy = p.y + p.height
-        edges.push({
-          id: `c:${links[i]!.id}`,
-          type: 'child',
-          points: [{ x: sx, y: sy }, { x: sx, y: busY }, { x: top.x, y: busY }, top],
-          kind: links[i]!.kind,
-          relationshipIds: [links[i]!.id],
-          source: p.id,
-          target: child.id
-        })
-      }
+      // Malformed data (a parent on or below the child's row): a plain line.
+      const y = child.y - o.generationGap / 2
+      points = [{ x: line.sx, y: sy }, { x: line.sx, y }, { x: top.x, y }, top]
     }
+    const kind =
+      links.length > 1 && links.some((r) => r.kind === 'biological') ? 'biological' : links[0]!.kind
+    edges.push({
+      id: links.length > 1 ? `c:${links.map((x) => x.id).join('+')}` : `c:${links[0]!.id}`,
+      type: 'child',
+      points: dedupe(points),
+      kind,
+      relationshipIds: links.map((x) => x.id),
+      source: l.id,
+      target: child.id,
+      people: [...parents.map((p) => p.id), child.id]
+    })
   }
+  return edges
+}
 
-  const width = Math.max(...nodes.map((n) => n.x + n.width)) - Math.min(...nodes.map((n) => n.x))
-  return { nodes, edges, width, height: maxY }
+/** Drops repeated points (zero-length segments). */
+function dedupe(points: Point[]): Point[] {
+  return points.filter((p, i) => i === 0 || p.x !== points[i - 1]!.x || p.y !== points[i - 1]!.y)
 }

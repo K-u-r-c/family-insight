@@ -22,6 +22,11 @@ flowchart TB
   CSS `transform`, so the browser moves a single composited layer.
 - **Edges** are one SVG (`EdgesLayer.tsx`) with a path per layout edge. Ended partnerships and
   adoptive, step and foster links get a dashed style.
+- The **selected or hovered person's lines** stand out in the accent colour and the other lines step
+  back to 45 % opacity. Each edge lists everyone it connects (`people`: both partners, or the
+  parents and the child), so a couple's line lights up for either parent. The colour and opacity
+  change is a short transition, switched off with `prefers-reduced-motion`. A highlighted
+  relationship path takes precedence.
 - **Cards** (`PersonCard.tsx`) are `<button>`s with the avatar (photo or initials), name, birth
   surname and lifespan, a colour accent by sex and markers for the root person and deceased people.
   States: hover, selected, search match and dimmed. Compact density uses a smaller card.

@@ -461,3 +461,16 @@ later without changing anything else.
   partners stay close. On the reported tree the width grew from 4 904 to 4 985 px (+1.6 %), the
   longest sideways child line fell from 1 265 to 809 px, and the total sideways line length from
   13 096 to 8 522 px.
+
+## Lanes for child lines and highlighted lines (2026-10, issue #102)
+
+- **Lanes by interval colouring**: every parent group's horizontal segment gets the lowest lane
+  in its gap that is free (12 px clearance). A gap with one lane looks as before. When more lanes
+  are needed than fit (10 px apart, 14 px from the cards), the gap grows instead of crowding,
+  so `node.y` is no longer always `generation × (card + gap)`.
+- **Links over several rows** take a free vertical channel through the rows in between. Partners
+  who are not neighbours are joined just above the cards. A geometry test checks that no line
+  crosses the card of someone it does not connect.
+- **Highlight follows selection and hover**: an edge's `people` decide whether it belongs to the
+  person, so a couple's line lights up for either parent. The other lines step back to 45 %
+  opacity instead of being hidden, so the structure stays readable.

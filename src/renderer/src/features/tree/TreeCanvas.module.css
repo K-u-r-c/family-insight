@@ -42,6 +42,9 @@
   stroke: var(--color-edge);
   stroke-width: 1.6;
   stroke-linejoin: round;
+  transition:
+    opacity var(--duration-fast) var(--easing),
+    stroke var(--duration-fast) var(--easing);
 }
 
 .partnerEdge {
@@ -66,8 +69,14 @@
   stroke-width: 2.4;
 }
 
+/* The other lines while someone's lines are highlighted. */
+.quietEdge {
+  opacity: 0.45;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .world[data-animate] {
+  .world[data-animate],
+  .edge {
     transition: none;
   }
 }

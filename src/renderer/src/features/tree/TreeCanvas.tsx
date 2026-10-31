@@ -112,6 +112,8 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
   const [panning, setPanning] = useState(false)
   // Screen reader summary of the person reached with the arrow keys.
   const [announcement, setAnnouncement] = useState('')
+  // Person under the pointer: their lines stand out like the selected person's.
+  const [hovered, setHovered] = useState<string | null>(null)
   const describePerson = (id: string): string => {
     const names = (people: { givenNames: string; surname: string }[]): string =>
       people.map((p) => displayName(p) || t('person.unnamed')).join(', ')
@@ -455,6 +457,12 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
     >
       <div
         className={styles.world}
+        onPointerOver={(e) => {
+          const card = (e.target as HTMLElement).closest<HTMLElement>('[data-person-id]')
+          const id = card?.dataset.personId ?? null
+          if (id !== hovered) setHovered(id)
+        }}
+        onPointerLeave={() => setHovered(null)}
         data-animate={animate || undefined}
         style={{ transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.k})` }}
       >
@@ -462,7 +470,7 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
           <EdgesLayer
             edges={layout.edges}
             bounds={bounds}
-            highlight={selectedId}
+            highlight={hovered ?? selectedId}
             dimmed={matches !== null}
             path={pathLinks}
           />

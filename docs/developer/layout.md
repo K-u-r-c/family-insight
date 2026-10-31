@@ -98,10 +98,19 @@ Disconnected groups are laid out side by side with `componentGap` between them.
 
 ## 6. Edges
 
-- **Partner edges** connect neighbours in a unit; `ended` marks finished partnerships.
-- **Child edges** start in the middle of the partner line (or under a single parent), run down to a
-  horizontal “bus” halfway between the rows and drop to each child. `kind` marks adoptive, step and
-  foster links.
+- **Partner edges** connect neighbours in a unit; `ended` marks finished partnerships. Partners
+  who are not neighbours (someone with three or more partners) are joined by a line just above the
+  cards, never through the card between them.
+- **Child edges** start in the gap between two partners (or under a single parent's card), run down
+  to a horizontal segment in the gap above the child's row and drop to the child. `kind` marks
+  adoptive, step and foster links.
+- **Lanes**: each parent group's horizontal segment gets a lane in that gap. Lanes are assigned by
+  interval colouring, so segments of different families never overlap at the same height. With one
+  lane the line sits halfway between the rows. A gap that needs more lanes than fit grows by
+  10 px per extra lane, and the rows below move down.
+- A **link over several rows** (only when the data forces it, see step 2) goes across in the first
+  gap, down a free channel between the cards of the rows in between, then across to the child.
+- Every edge lists `people`: both partners, or the parents and the child.
 
 The renderer draws `ended` and non-biological edges dashed (see [Rendering](./rendering)).
 

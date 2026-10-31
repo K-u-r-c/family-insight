@@ -159,3 +159,48 @@ test('statistics: tiles, bars that filter, and the to-do list', async () => {
   await expect(page.getByRole('heading', { name: 'Józef Kowalski' })).toBeVisible()
   await closeApp(app)
 })
+
+test('selecting or hovering a person highlights exactly their lines', async () => {
+  const { app, page } = await launch({ args: [sample()] })
+  const canvas = page.getByRole('application', { name: 'Family tree' })
+  const lines = canvas.locator('svg path[data-people]')
+  /** Ids of the people on the active lines, and whether every line of `id` is active. */
+  const state = (id: string): Promise<{ active: string[]; mine: number; activeCount: number }> =>
+    lines.evaluateAll(
+      (paths, person) => ({
+        active: paths.filter((p) => p.hasAttribute('data-active')).map((p) => p.dataset.people!),
+        mine: paths.filter((p) => p.dataset.people!.split(' ').includes(person)).length,
+        activeCount: paths.filter((p) => p.hasAttribute('data-active')).length
+      }),
+      id
+    )
+
+  await expect(canvas.getByRole('button', { name: /^Piotr Kowalski/ })).toBeVisible()
+  expect((await state('piotr')).activeCount).toBe(0)
+
+  await canvas.getByRole('button', { name: /^Piotr Kowalski/ }).click()
+  await expect(page.getByRole('heading', { name: 'Piotr Kowalski' })).toBeVisible()
+  const selected = await state('piotr')
+  // Parents' line, both partner lines and the lines to his children.
+  expect(selected.mine).toBeGreaterThanOrEqual(4)
+  expect(selected.activeCount).toBe(selected.mine)
+  for (const people of selected.active) expect(people.split(' ')).toContain('piotr')
+
+  // Hovering another card (his first wife, next to him) shows that person's lines instead.
+  const other = canvas.getByRole('button', { name: /^Magdalena Nowicka/ })
+  const otherId = await other.evaluate(
+    (el) => el.closest<HTMLElement>('[data-person-id]')!.dataset.personId!
+  )
+  await other.hover()
+  await expect
+    .poll(async () => (await state(otherId)).active.every((p) => p.split(' ').includes(otherId)))
+    .toBe(true)
+  const hovered = await state(otherId)
+  expect(hovered.activeCount).toBe(hovered.mine)
+  expect(hovered.activeCount).toBeGreaterThan(0)
+
+  // Leaving the canvas goes back to the selected person.
+  await page.mouse.move(2, 2)
+  await expect.poll(async () => (await state('piotr')).activeCount).toBe(selected.mine)
+  await closeApp(app)
+})
