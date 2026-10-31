@@ -6,6 +6,24 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-10-31
+
+### Fixed
+
+- **Generations across families**: when one family is known further back than the family it married
+  into, the partner's parents, brothers and sisters and their families now move down with them
+  instead of staying a row too high, so everyone of one generation stands on one row.
+- **Families stay apart**: a wider gap separates neighbouring families, children stand under their
+  own parents, and the order of families avoids crossing lines – a child no longer seems to belong
+  to the neighbouring couple.
+- **Lines never merge**: the lines from different parents to their children no longer run along
+  the same stretch, and no line passes behind someone else's card.
+
+### Added
+
+- Selecting a person – or pointing at their card – highlights their lines to parents, partners and
+  children; the other lines step back.
+
 ## [1.2.0] - 2026-10-31
 
 ### Added
@@ -130,7 +148,8 @@ First public release.
   Intel, ad-hoc signed), Linux (AppImage, deb with `.finsight` file association); app icon.
 - Documentation: README and user guide in English and Polish, CSV and file format specs.
 
-[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/K-u-r-c/family-insight/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/K-u-r-c/family-insight/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/K-u-r-c/family-insight/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/K-u-r-c/family-insight/compare/v1.0.0...v1.0.1

@@ -1,22 +1,21 @@
-## Family Insight 1.2.0 🌳
+## Family Insight 1.2.1 🌳
 
-A beautiful, simple family tree editor for Windows, macOS and Linux — now in eight languages.
-Piękny i prosty program do tworzenia drzewa genealogicznego — teraz w ośmiu językach.
+A beautiful, simple family tree editor for Windows, macOS and Linux — in eight languages.
+Piękny i prosty program do tworzenia drzewa genealogicznego — w ośmiu językach.
 
-**New in 1.2 / Nowości:**
+**A clearer tree / czytelniejsze drzewo:**
 
-- **Six new languages** – Deutsch, Français, Español, Italiano, Português, Русский: the app, the
-  installer and the [user guide](https://k-u-r-c.github.io/family-insight/) / **sześć nowych
-  języków** – aplikacja, instalator i poradnik
-- **Relationship calculator** – “first cousin once removed”, “brat stryjeczny”, “Großtante” – with
-  the path highlighted on the tree / **kalkulator pokrewieństwa** ze ścieżką na drzewie
-- **Dates and CSV in every language** – month names (`12 marca 1890`, `12. Mai 1890`), column
-  names, and older Excel files (Windows-1250/1251/1252) / **daty i CSV w każdym języku**
-- **Smarter search and sorting** – `mueller` finds Müller, `ivanov` finds Иванов, “van der Berg” is
-  sorted under B / **lepsze wyszukiwanie i sortowanie**
+- **Every generation on its own row** – when one family is known further back than the family it
+  married into, the whole branch moves down together / **każde pokolenie w swoim rzędzie**
+- **Families stay apart** – a clear gap between families and children under their own parents /
+  **rodziny nie zlewają się** – wyraźna przerwa i dzieci pod własnymi rodzicami
+- **Lines never merge** – each family's lines run separately and never pass behind other cards /
+  **linie się nie nakładają**
+- **Highlighted lines** – select a person or point at their card to see their lines to parents,
+  partners and children / **podświetlone linie** zaznaczonej osoby
 
-> **Compatibility / zgodność:** 1.2 uses the same file format as 1.1 – trees open in both. / 1.2
-> używa tego samego formatu plików co 1.1 – drzewa otwierają się w obu wersjach.
+> **Compatibility / zgodność:** 1.2.1 uses the same file format as 1.1 and 1.2 – trees open in all
+> of them. / 1.2.1 używa tego samego formatu plików co 1.1 i 1.2.
 
 📖 **Documentation / dokumentacja:** <https://k-u-r-c.github.io/family-insight/>
 
