@@ -8,6 +8,12 @@ const LANGUAGES: { code: string; name: string; welcome: string; menu: string[] }
     name: 'Deutsch',
     welcome: 'Willkommen bei Family Insight',
     menu: ['Datei', 'Bearbeiten', 'Ansicht', 'Hilfe']
+  },
+  {
+    code: 'fr',
+    name: 'Français',
+    welcome: 'Bienvenue dans Family Insight',
+    menu: ['Fichier', 'Édition', 'Affichage', 'Aide']
   }
 ]
 

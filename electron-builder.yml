@@ -44,6 +44,7 @@ nsis:
     - en_US
     - pl_PL
     - de_DE
+    - fr_FR
   createStartMenuShortcut: true
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
@@ -92,7 +93,8 @@ linux:
       Comment: Family tree editor
       Comment[pl]: Edytor drzewa genealogicznego
       Comment[de]: Stammbaum-Editor
-      Keywords: genealogy;family;tree;genealogia;rodzina;drzewo;Genealogie;Familie;Stammbaum;
+      Comment[fr]: Éditeur d’arbre généalogique
+      Keywords: genealogy;family;tree;genealogia;rodzina;drzewo;Genealogie;Familie;Stammbaum;généalogie;famille;arbre;
       StartupWMClass: Family Insight
 deb:
   depends:

@@ -7,7 +7,9 @@ process.env['TZ'] = 'Europe/Warsaw'
 export default defineConfig({
   testDir: './docs/.screenshots',
   timeout: 180_000,
-  retries: 0,
+  // A session now and then waits forever for an animation frame (Electron throttles a window that
+  // isn't shown yet); a fresh session renders the shot fine.
+  retries: 1,
   fullyParallel: false,
   workers: 1,
   reporter: 'list'

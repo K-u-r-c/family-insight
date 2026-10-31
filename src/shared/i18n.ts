@@ -1,5 +1,6 @@
 import de from './locales/de.json'
 import en from './locales/en.json'
+import fr from './locales/fr.json'
 import pl from './locales/pl.json'
 import { pseudoLocalize } from './pseudo'
 
@@ -7,7 +8,7 @@ import { pseudoLocalize } from './pseudo'
  * Languages of the app. Adding one: create `locales/<code>.json`, add it to `LOCALES` and to
  * `SUPPORTED_LANGUAGES` (see docs/developer/howto/language.md).
  */
-export const SUPPORTED_LANGUAGES = ['en', 'pl', 'de'] as const
+export const SUPPORTED_LANGUAGES = ['en', 'pl', 'de', 'fr'] as const
 export type Language = (typeof SUPPORTED_LANGUAGES)[number]
 export const DEFAULT_LANGUAGE: Language = 'en'
 
@@ -26,7 +27,8 @@ export interface LocaleInfo {
 export const LOCALES: Record<Language, LocaleInfo> = {
   en: { code: 'en', nativeName: 'English', translation: en, csvDelimiter: ',' },
   pl: { code: 'pl', nativeName: 'Polski', translation: pl, csvDelimiter: ';' },
-  de: { code: 'de', nativeName: 'Deutsch', translation: de, csvDelimiter: ';' }
+  de: { code: 'de', nativeName: 'Deutsch', translation: de, csvDelimiter: ';' },
+  fr: { code: 'fr', nativeName: 'Français', translation: fr, csvDelimiter: ';' }
 }
 
 let pseudoEnabled = false

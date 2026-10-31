@@ -36,10 +36,10 @@
     "pl-dark": [360, 215]
   },
   "csv-export": {
-    "en-light": [547, 405],
-    "en-dark": [547, 405],
-    "pl-light": [547, 405],
-    "pl-dark": [547, 405]
+    "en-light": [547, 407],
+    "en-dark": [547, 407],
+    "pl-light": [547, 407],
+    "pl-dark": [547, 407]
   },
   "csv-import": {
     "en-light": [893, 755],
@@ -246,10 +246,10 @@
     "pl-dark": [1280, 800]
   },
   "settings-menu": {
-    "en-light": [219, 660],
-    "en-dark": [219, 660],
-    "pl-light": [219, 674],
-    "pl-dark": [219, 674]
+    "en-light": [219, 692],
+    "en-dark": [219, 692],
+    "pl-light": [219, 706],
+    "pl-dark": [219, 706]
   },
   "shortcuts": {
     "en-light": [893, 529],

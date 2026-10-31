@@ -16,7 +16,7 @@ test('export CSV with semicolons and Polish headers', async () => {
   await page.getByRole('button', { name: 'Plik' }).click()
   await page.getByRole('menuitem', { name: 'Eksportuj CSV…' }).click()
   await page.getByRole('radio', { name: 'Średnik ( ; )' }).click()
-  await page.getByRole('radio', { name: 'Polski' }).click()
+  await page.getByRole('combobox', { name: 'Nazwy kolumn' }).selectOption('pl')
   await page.getByRole('button', { name: 'Eksportuj…' }).click()
   await expect(page.getByText('Wyeksportowano 15 osób')).toBeVisible()
   await expect.poll(() => existsSync(target)).toBe(true)

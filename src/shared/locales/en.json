@@ -426,7 +426,8 @@
       "separation": "Separated from",
       "death": "Widowed:",
       "other": "Ended with"
-    }
+    },
+    "eventDetail": "{{event}}: {{description}}"
   },
   "csv": {
     "exportTitle": "Export to CSV",

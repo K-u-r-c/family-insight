@@ -99,13 +99,12 @@ export function PersonDetails({ person }: { person: Person }): React.JSX.Element
             {t('timeline.child')} <Link id={e.childId} />
           </>
         )
-      case 'event':
-        return [
-          eventName(e.event, (key) => t(key as never) as unknown as string),
-          e.event.description
-        ]
-          .filter(Boolean)
-          .join(': ')
+      case 'event': {
+        const name = eventName(e.event, (key) => t(key as never) as unknown as string)
+        return e.event.description
+          ? t('timeline.eventDetail', { event: name, description: e.event.description })
+          : name
+      }
     }
   }
 

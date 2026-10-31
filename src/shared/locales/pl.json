@@ -444,7 +444,8 @@
       "separation": "Separacja z:",
       "death": "Owdowienie:",
       "other": "Koniec związku z:"
-    }
+    },
+    "eventDetail": "{{event}}: {{description}}"
   },
   "csv": {
     "exportTitle": "Eksport do CSV",

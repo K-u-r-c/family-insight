@@ -426,7 +426,8 @@
       "separation": "Trennung von",
       "death": "Verwitwet:",
       "other": "Beziehung beendet mit"
-    }
+    },
+    "eventDetail": "{{event}}: {{description}}"
   },
   "csv": {
     "exportTitle": "Als CSV exportieren",

@@ -6,7 +6,7 @@ description: Export your family tree to a CSV spreadsheet that opens correctly i
 
 Choose **☰ → Export CSV…** (or **File → Export → CSV…** in the menu bar):
 
-<Screenshot name="csv-export" alt="The Export to CSV dialog with the column separator (comma or semicolon) and the column names (English, Polski or Deutsch)" />
+<Screenshot name="csv-export" alt="The Export to CSV dialog with the column separator (comma or semicolon) and the column names (English, Polski, Deutsch or Français)" />
 
 1. **Column separator** – **Comma** for most programs; **Semicolon** for Excel with regional
    settings that use a decimal comma (Polish, German, French, Spanish, Italian, Portuguese,
