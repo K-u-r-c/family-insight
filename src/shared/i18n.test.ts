@@ -92,6 +92,7 @@ const SAME_AS_ENGLISH = new Set([
   'fr:sources.title',
   'fr:tree.born',
   'fr:tree.zoomControls',
+  'es:shortcuts.general',
   'gedcom.version551',
   'gedcom.version70',
   'export.png',

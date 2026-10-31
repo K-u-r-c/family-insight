@@ -37,7 +37,7 @@ program itself is open source – anyone can check what it does.
 1. Download `family-insight-<version>-setup.exe` and open it.
 2. If a blue **Windows protected your PC** window (SmartScreen) appears, click **More info** and
    then **Run anyway**.
-3. Choose the installer language (English, Polski, Deutsch or Français) and follow the steps. You can change the
+3. Choose the installer language (English, Polski, Deutsch, Français or Español) and follow the steps. You can change the
    installation folder. No administrator rights are needed – the program is installed for your
    user account.
 4. Start Family Insight from the **Start menu** or the **desktop shortcut**.

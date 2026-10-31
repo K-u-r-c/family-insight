@@ -84,7 +84,8 @@
 
 .qualifier {
   flex-shrink: 0;
-  width: 108px;
+  /* As wide as the longest option ("Exactamente", "Después de"). */
+  min-width: 108px;
   height: calc(var(--control-md) - 2px);
   padding: 0 var(--space-2);
   font-size: var(--text-md);

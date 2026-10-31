@@ -246,10 +246,10 @@
     "pl-dark": [1280, 800]
   },
   "settings-menu": {
-    "en-light": [219, 692],
-    "en-dark": [219, 692],
-    "pl-light": [219, 706],
-    "pl-dark": [219, 706]
+    "en-light": [219, 723],
+    "en-dark": [219, 723],
+    "pl-light": [219, 737],
+    "pl-dark": [219, 737]
   },
   "shortcuts": {
     "en-light": [893, 529],
