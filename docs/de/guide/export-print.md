@@ -9,7 +9,7 @@ description: Den Stammbaum als PNG-Bild, SVG-Vektorbild oder PDF speichern oder 
 Wählen Sie **☰ → Bild exportieren…** (oder in der Menüleiste
 **Datei → Exportieren → Bild (PNG, SVG, PDF)…**):
 
-<Screenshot name="export-image" alt="Der Dialog Bild exportieren mit dem Format (PNG, SVG, PDF), Was exportieren (Ganzer Stammbaum oder Sichtbarer Bereich), der Auflösung und der Option, den Namen des Stammbaums und das heutige Datum hinzuzufügen" />
+<Screenshot name="export-image" alt="Der Dialog Bild exportieren mit dem Format (PNG, SVG, PDF), Was exportieren (Ganzer Stammbaum oder Sichtbarer Bereich), der Auflösung, dem Stil (Modern oder Gobelin) und der Option, den Namen des Stammbaums und das heutige Datum hinzuzufügen" />
 
 - **Format**
   - **PNG** – ein Bild zum Teilen, für E-Mails oder Präsentationen.
@@ -18,6 +18,7 @@ Wählen Sie **☰ → Bild exportieren…** (oder in der Menüleiste
   - **PDF** – ein druckbares Dokument; der Stammbaum wird auf **eine Seite** eingepasst.
 - **Was exportieren** – **Ganzer Stammbaum** oder nur **Sichtbarer Bereich** (was Sie gerade
   auf dem Bildschirm sehen – zoomen und verschieben Sie den Stammbaum vorher).
+- **Stil** – **Modern** oder **Gobelin**; voreingestellt ist der Stil, den das Programm gerade verwendet. Ein Bild im Stil Gobelin zeigt Pergament, gerahmte Medaillons und Goldfäden. **Drucken…** verwendet den aktuellen Stil des Programms.
 - **Auflösung** (PNG) – 1×, 2× oder 3×. Höher bedeutet schärfer, aber eine größere Datei.
 - **Papierformat** und **Ausrichtung** (PDF) – A4, A3 oder Letter, Querformat oder Hochformat.
 - **Name des Stammbaums und heutiges Datum hinzufügen** – ein Titel oben auf der Seite.

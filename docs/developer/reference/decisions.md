@@ -514,3 +514,18 @@ later without changing anything else.
   `aria-hidden` – the name is in the toolbar); "fit to window" leaves room for it.
 - **Ornaments component** (`components/ui/Ornaments.tsx`) for the corners of dialogs and the
   welcome screen; hidden in other styles and in forced-colours mode, never takes pointer events.
+
+## Exports in a style (2026-10, issue #107)
+
+- **One builder, two renderers**: `buildTreeSvg` takes `style`; Modern output is byte-for-byte as
+  before (tested), Tapestry draws parchment with a woven `<pattern>` and a vignette, framed
+  medallions, gold thread with a sheen, partner knots and the title in a cartouche with the same
+  SVG flourish the app uses (imported `?raw` and recoloured).
+- **Paper is always light**: Tapestry exports use the parchment variant even in the dark theme,
+  as Modern exports always use the light print palette – a dark cloth would waste ink.
+- **The dialog chooses the style** (default: the app's style), and the layout uses that style's
+  card sizes, so a Modern window can produce a Tapestry print and vice versa; **Print** uses the
+  current style.
+- **Fonts**: `embedFonts` embeds only the families the picture uses, so Tapestry files carry
+  Cormorant and EB Garamond (with the Latin Extended and Cyrillic subsets the text needs) and no
+  Inter.

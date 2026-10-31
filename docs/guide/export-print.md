@@ -8,7 +8,7 @@ description: Save the family tree as a PNG image, an SVG vector image or a PDF, 
 
 Choose **☰ → Export Image…** (or **File → Export → Image (PNG, SVG, PDF)…** in the menu bar):
 
-<Screenshot name="export-image" alt="The Export image dialog with the format (PNG, SVG, PDF), what to export (whole tree or visible area), the resolution and the option to add the tree name and today's date" />
+<Screenshot name="export-image" alt="The Export image dialog with the format (PNG, SVG, PDF), what to export (whole tree or visible area), the resolution, the style (Modern or Tapestry) and the option to add the tree name and today's date" />
 
 - **Format**
   - **PNG** – a picture for sharing, e-mail or presentations.
@@ -16,6 +16,7 @@ Choose **☰ → Export Image…** (or **File → Export → Image (PNG, SVG, PD
   - **PDF** – a printable document; the tree is scaled to fit on **one page**.
 - **What to export** – the **whole tree** or only the **visible area** (what you see on the
   screen now – zoom and move the tree first).
+- **Style** – **Modern** or **Tapestry**; the style the program uses now is chosen at first. A Tapestry picture shows parchment, framed medallions and gold thread. **Print…** uses the program's current style.
 - **Resolution** (PNG) – 1×, 2× or 3×. Higher means a sharper but larger file.
 - **Paper size** and **orientation** (PDF) – A4, A3 or Letter, landscape or portrait.
 - **Add the tree name and today's date** – a title at the top.

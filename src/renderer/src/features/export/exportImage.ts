@@ -3,7 +3,9 @@ import { dateLanguage } from '@core/date/fuzzyDate'
 import { resolveLanguage } from '@shared/i18n'
 import type { PdfOptions } from '@shared/ipc'
 import i18n from '@renderer/i18n'
-import { layoutOptions } from '@renderer/features/tree/TreeCanvas'
+import type { AppStyle } from '@core/settings'
+import { cardSizes, layoutOptions } from '@renderer/features/tree/TreeCanvas'
+import { useSettings } from '@renderer/store/settings'
 import { useDocument } from '@renderer/store/document'
 import { useTreeView } from '@renderer/store/treeView'
 import { portraitDataUrl } from '@renderer/services/media'
@@ -16,6 +18,8 @@ export type ExportScope = 'all' | 'visible'
 export interface ImageExportOptions {
   scope: ExportScope
   withTitle: boolean
+  /** Style of the picture; defaults to the app's current style. */
+  style?: AppStyle
 }
 
 const t = (key: string, options?: Record<string, unknown>): string =>
@@ -24,9 +28,12 @@ const t = (key: string, options?: Record<string, unknown>): string =>
 /** SVG of the current view of the tree (whole layout or just the visible area). */
 export function currentTreeSvg(options: ImageExportOptions): TreeSvg | null {
   const tree = useDocument.getState().tree
-  const opts = layoutOptions()
-  if (!tree || !opts) return null
-  const layout = layoutFamily(tree, opts)
+  const base = layoutOptions()
+  if (!tree || !base) return null
+  const { style: current, density } = useSettings.getState().settings
+  const style = options.style ?? current
+  // Card sizes of the chosen style (the canvas may show the other one).
+  const layout = layoutFamily(tree, { ...base, ...cardSizes(style, density) })
   const language = dateLanguage(resolveLanguage(i18n.language))
   const { viewport, size } = useTreeView.getState()
   const crop =
@@ -47,7 +54,8 @@ export function currentTreeSvg(options: ImageExportOptions): TreeSvg | null {
     subtitle: options.withTitle ? t('export.subtitle', { date }) : undefined,
     unnamed: t('person.unnamed'),
     bornLabel: (surname) => t('tree.born', { surname }),
-    portrait: (person) => portraitDataUrl(tree, person)
+    portrait: (person) => portraitDataUrl(tree, person),
+    style
   })
 }
 

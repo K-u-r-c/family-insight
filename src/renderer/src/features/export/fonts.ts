@@ -5,7 +5,12 @@
  * characters appear in the text.
  */
 
-const FAMILIES = ['Inter Variable', 'Source Serif 4 Variable']
+const FAMILIES = [
+  'Inter Variable',
+  'Source Serif 4 Variable',
+  'Cormorant Variable',
+  'EB Garamond Variable'
+]
 const cache = new Map<string, Promise<string | null>>()
 
 /** Whether any character of `text` falls into a CSS `unicode-range`. */
@@ -64,7 +69,8 @@ export async function embedFonts(svg: string): Promise<string> {
     for (const rule of [...cssRules]) {
       if (!(rule instanceof CSSFontFaceRule)) continue
       const family = rule.style.getPropertyValue('font-family').replace(/["']/g, '').trim()
-      if (!FAMILIES.includes(family)) continue
+      // Only the families the picture uses (each style has its own).
+      if (!FAMILIES.includes(family) || !svg.includes(family)) continue
       if (!coversText(rule.style.getPropertyValue('unicode-range'), text)) continue
       const src = /url\(["']?([^"')]+)["']?\)/.exec(rule.style.getPropertyValue('src'))?.[1]
       if (!src) continue

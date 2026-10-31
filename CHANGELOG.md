@@ -13,6 +13,8 @@ All notable changes to this project are documented here. The format follows
   with classic serif type: people as framed medallions joined by gold thread, the tree's name in a
   framed title, woven cloth behind the tree and ornaments in the corners. Switch it in
   **Settings → Style** or **View → Style**.
+- Images, PDFs and prints in either style: the export dialog has a **Style** choice, so a tree can
+  be printed on parchment with framed medallions whichever style the window shows.
 
 ## [1.2.1] - 2026-10-31
 

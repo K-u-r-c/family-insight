@@ -9,7 +9,7 @@ description: Salve a árvore genealógica como imagem PNG, imagem vetorial SVG o
 Escolha **☰ → Exportar imagem…** (ou **Arquivo → Exportar → Imagem (PNG, SVG, PDF)…** na barra de
 menus):
 
-<Screenshot name="export-image" alt="A caixa de diálogo Exportar imagem com o formato (PNG, SVG, PDF), o que exportar (árvore inteira ou área visível), a resolução e a opção de adicionar o nome da árvore e a data de hoje" />
+<Screenshot name="export-image" alt="A caixa de diálogo Exportar imagem com o formato (PNG, SVG, PDF), o que exportar (árvore inteira ou área visível), a resolução, o estilo (Moderno ou Tapeçaria) e a opção de adicionar o nome da árvore e a data de hoje" />
 
 - **Formato**
   - **PNG** – uma imagem para compartilhar, enviar por e-mail ou usar em apresentações.
@@ -18,6 +18,7 @@ menus):
   - **PDF** – um documento para impressão; a árvore é redimensionada para caber em **uma página**.
 - **O que exportar** – a **árvore inteira** ou só a **área visível** (o que você está vendo na
   tela agora – amplie e desloque a árvore antes).
+- **Estilo** – **Moderno** ou **Tapeçaria**; de início vem escolhido o estilo que o programa usa agora. Uma imagem no estilo Tapeçaria mostra pergaminho, medalhões emoldurados e fios de ouro. **Imprimir…** usa o estilo atual do programa.
 - **Resolução** (PNG) – 1×, 2× ou 3×. Quanto maior, mais nítido, mas maior o arquivo.
 - **Tamanho do papel** e **orientação** (PDF) – A4, A3 ou Letter (carta), paisagem ou retrato.
 - **Adicionar o nome da árvore e a data de hoje** – um título no topo.

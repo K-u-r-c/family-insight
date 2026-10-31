@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ImageDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { PdfOptions } from '@shared/ipc'
+import { APP_STYLES, type AppStyle } from '@core/settings'
 import {
   alertDialog,
   Button,
@@ -11,6 +12,7 @@ import {
   toast
 } from '@renderer/components/ui'
 import { useDocument } from '@renderer/store/document'
+import { useSettings } from '@renderer/store/settings'
 import styles from '@renderer/features/csv/CsvDialogs.module.css'
 import {
   exportableTreeSvg,
@@ -28,11 +30,12 @@ export function ExportImageDialog({ onClose }: { onClose: () => void }): React.J
   const [pageSize, setPageSize] = useState<PdfOptions['pageSize']>('A4')
   const [orientation, setOrientation] = useState<'landscape' | 'portrait'>('landscape')
   const [withTitle, setWithTitle] = useState(true)
+  const [style, setStyle] = useState<AppStyle>(() => useSettings.getState().settings.style)
   const [busy, setBusy] = useState(false)
 
   const run = async (): Promise<void> => {
     const tree = useDocument.getState().tree
-    const image = await exportableTreeSvg({ scope, withTitle })
+    const image = await exportableTreeSvg({ scope, withTitle, style })
     if (!tree || !image) return
     setBusy(true)
     try {
@@ -117,6 +120,16 @@ export function ExportImageDialog({ onClose }: { onClose: () => void }): React.J
               { value: 'all', label: t('export.scopeAll') },
               { value: 'visible', label: t('export.scopeVisible') }
             ]}
+          />
+        </div>
+        <div className={styles.option}>
+          <span className={styles.label}>{t('settings.style')}</span>
+          <SegmentedControl
+            block
+            label={t('settings.style')}
+            value={style}
+            onChange={setStyle}
+            options={APP_STYLES.map((value) => ({ value, label: t(`style.${value}`) }))}
           />
         </div>
         {format === 'png' && (

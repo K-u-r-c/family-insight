@@ -8,7 +8,7 @@ description: Zapisz drzewo jako obraz PNG, grafikę wektorową SVG lub PDF albo 
 
 Wybierz **☰ → Eksportuj obraz…** (albo **Plik → Eksportuj → Obraz (PNG, SVG, PDF)…** w pasku menu):
 
-<Screenshot name="export-image" alt="Okno Eksport obrazu z formatem (PNG, SVG, PDF), zakresem (całe drzewo lub widoczny obszar), rozdzielczością i opcją dodania nazwy drzewa i dzisiejszej daty" />
+<Screenshot name="export-image" alt="Okno Eksport obrazu z formatem (PNG, SVG, PDF), zakresem (całe drzewo lub widoczny obszar), rozdzielczością, stylem (Nowoczesny lub Gobelin) i opcją dodania nazwy drzewa i dzisiejszej daty" />
 
 - **Format**
   - **PNG** – obraz do udostępniania, wysłania e-mailem lub prezentacji.
@@ -17,6 +17,7 @@ Wybierz **☰ → Eksportuj obraz…** (albo **Plik → Eksportuj → Obraz (PNG
   - **PDF** – dokument do druku; drzewo jest dopasowane do **jednej strony**.
 - **Co wyeksportować** – **całe drzewo** albo tylko **widoczny obszar** (to, co teraz widać na
   ekranie – najpierw przybliż i przesuń drzewo).
+- **Styl** – **Nowoczesny** albo **Gobelin**; na początku wybrany jest styl, którego program używa teraz. Obraz w stylu Gobelin ma tło z pergaminu, oprawione medaliony i złote nici. **Drukuj…** używa bieżącego stylu programu.
 - **Rozdzielczość** (PNG) – 1×, 2× lub 3×. Wyższa daje ostrzejszy, ale większy plik.
 - **Rozmiar papieru** i **orientacja** (PDF) – A4, A3 lub Letter, pozioma lub pionowa.
 - **Dodaj nazwę drzewa i dzisiejszą datę** – tytuł na górze.
