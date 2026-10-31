@@ -27,12 +27,13 @@ Electron + React + TypeScript family tree app (eight UI languages). Read `docs/d
 
 ## Working through the backlog
 
-Done: #1–#33 (v1.0.0) and #38–#51 (documentation site, v1.0.1).
-**Current scope: #52–#81** – milestones v1.1 (#52–#67) and v1.2 (#68–#81), strictly in issue-number
-order, each ending with its release (v1.1.0, v1.2.0).
-Out of scope: the mobile apps (#82–#98, moved to the Backlog milestone on 2026-10-31 – planned for
-the future), #36 (paid code signing) and #99 (store publishing, deferred); #34, #35 and #37 are
-superseded by the roadmap issues.
+Done: #1–#33 (v1.0.0), #38–#51 (documentation site, v1.0.1) and #52–#81 (v1.1.0, v1.2.0).
+**Current scope: #100–#103** – milestone v1.2.1 (tree layout readability, release v1.2.1), strictly
+in issue-number order. For this milestone the user guide is **not** changed and the documentation
+screenshots are **not** regenerated.
+Out of scope: the mobile apps (#82–#98, in the Backlog milestone – planned for the future), #36
+(paid code signing) and #99 (store publishing, deferred); #34, #35 and #37 are superseded by the
+roadmap issues.
 
 - One issue at a time: implement → `npm run check` + `npm run build` (+ `npm run docs:build`
   when docs change) → update the user guide and affected screenshots → commit straight to

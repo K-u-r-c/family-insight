@@ -8,6 +8,7 @@ import type {
   PersonId,
   TreeViewMode
 } from '../model/types'
+import { rankGraph, type RankEdge } from './ranking'
 
 /**
  * Family graph layout.
@@ -241,8 +242,48 @@ function components(g: Graph): PersonId[][] {
   return result
 }
 
-/** Rows: children below parents, partners on the same row, ancestors pulled down to their children. */
+/**
+ * Rows: partners share a row and every child is below its parents, with parent–child links as
+ * short as possible (one row wherever the data allows). Partners are merged into one node and
+ * the rows come from an optimal layering (network simplex), so when a marriage puts someone on
+ * a lower row, their parents, siblings and their families move with them.
+ */
 function assignGenerations(g: Graph, comp: PersonId[]): Map<PersonId, number> {
+  // Union-find over partnerships: each group of partners shares one row.
+  const index = new Map(comp.map((id, i) => [id, i]))
+  const root = comp.map((_, i) => i)
+  const find = (i: number): number => {
+    while (root[i] !== i) i = root[i] = root[root[i]!]!
+    return i
+  }
+  for (const id of comp) {
+    for (const r of g.partners.get(id) ?? []) {
+      const a = find(index.get(id)!)
+      const b = find(index.get(partnerOf(r, id))!)
+      if (a !== b) root[Math.max(a, b)] = Math.min(a, b)
+    }
+  }
+  const groupOf = new Map<number, number>()
+  const group = comp.map((_, i) => {
+    const r = find(i)
+    if (!groupOf.has(r)) groupOf.set(r, groupOf.size)
+    return groupOf.get(r)!
+  })
+  const edges: RankEdge[] = []
+  for (const id of comp) {
+    for (const r of g.parents.get(id) ?? []) {
+      edges.push({ from: group[index.get(r.parentId)!]!, to: group[index.get(id)!]!, weight: 1 })
+    }
+  }
+  // A partner who is also a parent (or any cycle) has no valid layering: fall back to relaxation.
+  if (edges.some((e) => e.from === e.to)) return relaxGenerations(g, comp)
+  const ranks = rankGraph(groupOf.size, edges)
+  if (!ranks) return relaxGenerations(g, comp)
+  return new Map(comp.map((id, i) => [id, ranks[group[i]!]!]))
+}
+
+/** Fallback for malformed data: children below parents, partners on the same row, best effort. */
+function relaxGenerations(g: Graph, comp: PersonId[]): Map<PersonId, number> {
   const gen = new Map<PersonId, number>(comp.map((id) => [id, 0]))
   const limit = comp.length * 4 + 10
   for (let iter = 0; iter < limit; iter++) {

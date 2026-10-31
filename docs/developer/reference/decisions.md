@@ -431,3 +431,18 @@ later without changing anything else.
   Kowalski") so it needs no extra UI strings per relationship.
 - **Not done: relationship labels on every card** (optional in the issue) – the details line and
   the calculator cover the need without crowding the cards.
+
+## Generations by optimal layering (2026-10, issue #100)
+
+- **Problem**: longest-path layering put both families' oldest known people on the top row. When
+  a marriage moved someone down to their partner's row, only that person moved – their parents and
+  siblings stayed a row too high, and the line to them spanned two rows.
+- **Chosen: network simplex** (Gansner et al., as in Graphviz/dagre) over groups of partners: rows
+  minimise the total length of parent → child links, so a whole branch moves with the person, and
+  links span one row whenever the data allows. Implemented in `src/core/layout/ranking.ts` (about
+  200 lines, no dependency – the decision for a custom engine above still holds); a brute-force
+  test checks optimality on small graphs.
+- **Fallback**: data with a cycle (someone partnered with their own parent) has no valid layering;
+  the previous relaxation is kept for it.
+- **Regression fixture** `twoFamiliesFixture` (`src/core/layout/fixtures.ts`) reproduces the shape
+  of the user's tree that showed the bug, with invented names; real trees are never committed.

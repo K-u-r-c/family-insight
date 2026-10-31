@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { layoutFamily, selectPeople, type Layout, type LayoutNode } from './layout'
 import { remarriageFixture, TreeBuilder } from '../test/fixtures'
 import type { FamilyTree } from '../model/types'
+import { twoFamiliesFixture } from './fixtures'
 
 const node = (layout: Layout, id: string): LayoutNode => {
   const n = layout.nodes.find((x) => x.id === id)
@@ -228,6 +229,160 @@ describe('view modes', () => {
     expect(l.nodes.find((n) => n.id === 'ola')?.hasHiddenChildren).toBe(true)
   })
 })
+
+/** Parent → child links whose rows differ by more than one (the child row minus the parent row). */
+function stretchedLinks(tree: FamilyTree, layout: Layout): string[] {
+  const gen = new Map(layout.nodes.map((n) => [n.id, n.generation]))
+  const out: string[] = []
+  for (const r of Object.values(tree.relationships)) {
+    if (r.type !== 'parent-child' || !gen.has(r.parentId) || !gen.has(r.childId)) continue
+    const d = gen.get(r.childId)! - gen.get(r.parentId)!
+    if (d !== 1) out.push(`${r.parentId}→${r.childId}:${d}`)
+  }
+  return out
+}
+function partnersApart(tree: FamilyTree, layout: Layout): string[] {
+  const gen = new Map(layout.nodes.map((n) => [n.id, n.generation]))
+  return Object.values(tree.relationships)
+    .filter((r) => r.type === 'partnership')
+    .map((r) => r.partnerIds)
+    .filter(([a, b]) => gen.has(a) && gen.has(b) && gen.get(a) !== gen.get(b))
+    .map(([a, b]) => `${a}+${b}`)
+}
+
+describe('generations across families (#100)', () => {
+  const tree = twoFamiliesFixture()
+
+  it('keeps every parent → child link at one row when one side is known deeper', () => {
+    const l = layoutFamily(tree)
+    expect(stretchedLinks(tree, l)).toEqual([])
+    expect(partnersApart(tree, l)).toEqual([])
+    const row = (id: string): number => node(l, id).generation
+    // The father moves down to the mother's row – and his whole family moves with him.
+    for (const id of ['father', 'mother', 'uncle1', 'uncle2', 'uncle3', 'uncle1Wife', 'mUncle'])
+      expect(row(id), id).toBe(3)
+    for (const id of ['me', 'sister', 'pCousin1', 'pCousin4', 'mCousin1'])
+      expect(row(id), id).toBe(4)
+    for (const id of ['pgf', 'pgm', 'mgf', 'mgm', 'halfUncle']) expect(row(id), id).toBe(2)
+    for (const id of ['pggf', 'pggm', 'mgfMother', 'stepGf', 'mgmFather'])
+      expect(row(id), id).toBe(1)
+    expect(row('mgfGrandfather')).toBe(0)
+    assertNoOverlap(l)
+  })
+
+  it('keeps the other view modes exact', () => {
+    for (const mode of ['ancestors', 'descendants', 'hourglass'] as const) {
+      for (const focusId of ['me', 'pgf', 'mgfMother']) {
+        const l = layoutFamily(tree, { mode, focusId })
+        expect(stretchedLinks(tree, l), `${mode} from ${focusId}`).toEqual([])
+        expect(partnersApart(tree, l), `${mode} from ${focusId}`).toEqual([])
+      }
+    }
+  })
+
+  it('stretches only the links the data forces', () => {
+    // x's son y marries x's granddaughter w: y must share w's row, two below x.
+    const t = new TreeBuilder()
+      .person('x', 'X', 'male')
+      .person('xw', 'XW', 'female')
+      .person('y', 'Y', 'male')
+      .person('z', 'Z', 'male')
+      .person('w', 'W', 'female')
+      .person('k', 'K')
+      .couple('x', 'xw')
+      .child('x', 'y')
+      .child('xw', 'y')
+      .child('x', 'z')
+      .child('xw', 'z')
+      .child('z', 'w')
+      .couple('y', 'w')
+      .child('y', 'k')
+      .child('w', 'k')
+      .build()
+    const l = layoutFamily(t)
+    expect(new Set(stretchedLinks(t, l))).toEqual(new Set(['x→y:2', 'xw→y:2']))
+    expect(partnersApart(t, l)).toEqual([])
+  })
+
+  it('needs no stretched links whenever an exact layering exists (generated trees)', () => {
+    for (let seed = 1; seed <= 25; seed++) {
+      const t = familiesOfDifferentDepth(seed)
+      const l = layoutFamily(t)
+      expect(stretchedLinks(t, l), `seed ${seed}`).toEqual([])
+      expect(partnersApart(t, l), `seed ${seed}`).toEqual([])
+      assertNoOverlap(l)
+    }
+  })
+
+  it('falls back to a best-effort layout for impossible data', () => {
+    // A parent who is also the partner of their child cannot satisfy both rules.
+    const t = new TreeBuilder()
+      .person('a', 'A')
+      .person('b', 'B')
+      .person('c', 'C')
+      .child('a', 'b')
+      .couple('a', 'b')
+      .child('b', 'c')
+      .build()
+    const l = layoutFamily(t)
+    expect(l.nodes).toHaveLength(3)
+    assertNoOverlap(l)
+  })
+})
+
+/**
+ * Seeded families whose founders live in different generations; people only marry within their
+ * own (true) generation – into another family or someone from outside – so an exact layering
+ * always exists.
+ */
+function familiesOfDifferentDepth(seed: number): FamilyTree {
+  let s = seed
+  const rand = (): number => {
+    s = (s * 1103515245 + 12345) % 2147483648
+    return s / 2147483648
+  }
+  const b = new TreeBuilder()
+  let count = 0
+  const add = (): string => {
+    const id = `p${count++}`
+    b.person(id, id, rand() < 0.5 ? 'male' : 'female')
+    return id
+  }
+  // Unmarried people by true generation, and the couples of each generation.
+  const single = new Map<number, string[]>()
+  const couples: [string, string, number][] = []
+  const marry = (a: string, b2: string, g: number): void => {
+    b.couple(a, b2)
+    couples.push([a, b2, g])
+  }
+  const families = 3 + Math.floor(rand() * 3)
+  for (let f = 0; f < families; f++) {
+    const g = Math.floor(rand() * 3)
+    marry(add(), add(), g)
+  }
+  for (let g = 0; g < 5; g++) {
+    for (const [a, c, cg] of couples.filter((x) => x[2] === g)) {
+      if (cg !== g) continue
+      const n = Math.floor(rand() * 4)
+      for (let k = 0; k < n; k++) {
+        const child = add()
+        b.child(a, child).child(c, child)
+        single.set(g + 1, [...(single.get(g + 1) ?? []), child])
+      }
+    }
+    // Marry the next generation: within families' pool (other families) or to outsiders.
+    const pool = single.get(g + 1) ?? []
+    while (pool.length) {
+      const p = pool.splice(Math.floor(rand() * pool.length), 1)[0]!
+      const r = rand()
+      if (r < 0.35 && pool.length) {
+        const q = pool.splice(Math.floor(rand() * pool.length), 1)[0]!
+        marry(p, q, g + 1)
+      } else if (r < 0.8) marry(p, add(), g + 1)
+    }
+  }
+  return b.build()
+}
 
 /** Seeded random family: generations of couples with 0–4 children, some remarriages. */
 function randomTree(size: number, seed: number): FamilyTree {

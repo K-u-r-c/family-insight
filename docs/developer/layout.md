@@ -13,7 +13,8 @@ const layout = layoutFamily(tree, { mode, focusId, depth, collapsed, nodeWidth, 
 
 It is deterministic (the same input always gives the same picture), has no DOM dependency and is
 unit-tested on fixtures: a nuclear family, a remarriage with half-siblings, adoption, a five-generation
-pedigree and 1 000 random people. The 1 000-person tree is laid out in about 30 ms; the test fails
+pedigree, two families known to different depths (`twoFamiliesFixture`), generated families of
+different depth and 1 000 random people. The 1 000-person tree is laid out in about 30 ms; the test fails
 above 200 ms locally (1 s on CI). Why a custom engine instead of a graph library is explained in the
 [decision log](./reference/decisions#layout).
 
@@ -40,10 +41,21 @@ The canvas passes the root person as `focusId`, or the selected person when ther
 
 ## 2. Generations
 
-Rows are assigned by constraint relaxation: every child must be at least one row below each of its
-parents and partners share a row. People without parents (people who married into the family) are
-then pulled down to just above their highest child, so they appear next to their partner instead of
-at the top of the tree.
+Partners share a row and every child is at least one row below each of its parents. Within those
+rules the rows are chosen so that parent → child links are **as short as possible** – one row
+wherever the data allows:
+
+1. Partners are merged into one node (union-find over partnerships), so a couple or a chain of
+   remarriages is one node.
+2. Each parent → child link becomes an edge between those nodes.
+3. `rankGraph` (`src/core/layout/ranking.ts`) solves the optimal layering with the **network
+   simplex** method (Gansner et al., as in Graphviz): it minimises the total edge length, moving
+   whole groups at once.
+
+So when one family is known further back than the family it married into, the marriage does not
+leave anyone behind: the partner's parents, siblings and their families move down with them.
+People who married into the family sit next to their partner, not at the top of the tree. Data with
+a cycle (someone partnered with their own parent) falls back to simple constraint relaxation.
 
 ## 3. Units
 
