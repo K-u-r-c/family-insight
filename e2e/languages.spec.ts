@@ -20,6 +20,12 @@ const LANGUAGES: { code: string; name: string; welcome: string; menu: string[] }
     name: 'Español',
     welcome: 'Le damos la bienvenida a Family Insight',
     menu: ['Archivo', 'Edición', 'Ver', 'Ayuda']
+  },
+  {
+    code: 'it',
+    name: 'Italiano',
+    welcome: 'Ti diamo il benvenuto in Family Insight',
+    menu: ['File', 'Modifica', 'Visualizza', 'Aiuto']
   }
 ]
 
