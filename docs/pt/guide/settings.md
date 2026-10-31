@@ -19,7 +19,7 @@ Clique no botão **Configurações** (⚙) à direita da barra de ferramentas:
 | **Carregar mapas da internet**             | desativado (padrão) / ativado                                             | Baixa o fundo do mapa do OpenStreetMap enquanto você usa o [mapa](./map#online).                                                                           |
 | **Pesquisar locais na internet**           | desativado (padrão) / ativado                                             | Permite que **Pesquisar na internet** envie o nome de um local ao OpenStreetMap para encontrar as coordenadas dele ([Locais](./places#lookup)).            |
 
-O estilo também pode ser mudado na barra de menus: **Exibir → Estilo**.
+O estilo também pode ser mudado na barra de menus: **Exibir → Estilo**. No estilo Tapeçaria, as pessoas da árvore são medalhões emoldurados com o retrato acima do nome, os parceiros são unidos por um pequeno nó e as linhas parecem fios de ouro.
 
 O tema e o idioma também podem ser mudados na tela de boas-vindas (canto superior direito) e no
 menu **Exibir** da barra de menus. O menu **Exibir** também mostra ou oculta a lista de pessoas e o

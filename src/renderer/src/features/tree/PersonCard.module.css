@@ -230,3 +230,102 @@
     transition: none;
   }
 }
+
+/*
+ * Tapestry style: a framed cartouche with a gold double border. Comfortable cards are upright
+ * medallions (portrait in a ring of the sex colour above the name); compact cards keep the row.
+ */
+:global(:root[data-style='tapestry']) .card {
+  --frame: inset 0 0 0 3px var(--color-surface-raised), inset 0 0 0 4px var(--color-edge);
+
+  background: linear-gradient(var(--color-surface-raised), var(--color-surface));
+  border-color: var(--color-edge);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--frame), var(--shadow-sm);
+}
+
+:global(:root[data-style='tapestry']) .card::before {
+  display: none;
+}
+
+:global(:root[data-style='tapestry']) .card > :first-child {
+  box-shadow:
+    0 0 0 2px var(--color-surface-raised),
+    0 0 0 4px var(--accent);
+}
+
+:global(:root[data-style='tapestry']) .card:not(.compact) {
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  padding: 10px 12px 8px;
+  text-align: center;
+}
+
+:global(:root[data-style='tapestry']) .card:not(.compact) .text {
+  flex: none;
+  align-items: center;
+  width: 100%;
+}
+
+:global(:root[data-style='tapestry']) .name {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+
+:global(:root[data-style='tapestry']) .compact .name {
+  font-size: var(--text-base);
+}
+
+:global(:root[data-style='tapestry']) .card:hover {
+  border-color: var(--color-edge);
+  box-shadow: var(--frame), var(--shadow-md);
+}
+
+:global(:root[data-style='tapestry']) .selected,
+:global(:root[data-style='tapestry']) .selected:hover {
+  border-color: var(--color-accent);
+  box-shadow:
+    var(--frame),
+    0 0 0 2px var(--color-accent),
+    var(--shadow-md);
+}
+
+:global(:root[data-style='tapestry']) .match {
+  box-shadow:
+    var(--frame),
+    0 0 0 3px var(--color-highlight),
+    var(--shadow-md);
+}
+
+:global(:root[data-style='tapestry']) .selected.match {
+  box-shadow:
+    var(--frame),
+    0 0 0 2px var(--color-accent),
+    0 0 0 5px var(--color-highlight);
+}
+
+:global(:root[data-style='tapestry']) .onPath {
+  border-color: var(--color-accent);
+  box-shadow:
+    var(--frame),
+    0 0 0 2px var(--color-accent),
+    0 0 0 6px var(--color-accent-soft),
+    var(--shadow-md);
+}
+
+:global(:root[data-style='tapestry']) .faded .card {
+  background: var(--color-canvas);
+  border-color: var(--color-border);
+  box-shadow: none;
+}
+
+:global(:root[data-style='tapestry']) .rootBadge {
+  top: 7px;
+  right: 9px;
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+}

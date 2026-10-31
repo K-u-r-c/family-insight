@@ -42,3 +42,36 @@ test('the style switches from the View menu and the settings menu, and is rememb
   await expect.poll(() => style(again.page)).toBeUndefined()
   await closeApp(again.app)
 })
+
+test('tapestry tree: upright medallions, knots, search and highlighted lines', async () => {
+  const file = join(tempDir(), 'kowalscy.finsight')
+  copyFileSync(join(__dirname, 'fixtures', 'kowalscy.finsight'), file)
+  const { app, page } = await launch({ args: [file], style: 'tapestry' })
+  const canvas = page.getByRole('application', { name: 'Family tree' })
+  const piotr = canvas.getByRole('button', { name: /^Piotr Kowalski/ })
+  await expect(piotr).toBeVisible()
+
+  // Comfortable cards are upright medallions; partners are joined by a knot.
+  expect(await piotr.evaluate((el) => getComputedStyle(el).flexDirection)).toBe('column')
+  // Unscaled card height (the canvas may be zoomed).
+  expect(await piotr.evaluate((el) => (el as HTMLElement).offsetHeight)).toBeGreaterThan(90)
+  await expect(canvas.locator('svg circle').first()).toBeAttached()
+
+  // Search fades the others, as in the modern style.
+  await page.getByPlaceholder(/Search people/).fill('Lis')
+  await expect(canvas.locator('[data-dimmed]').first()).toBeAttached()
+  await page.getByPlaceholder(/Search people/).fill('')
+
+  // Selecting highlights the person's lines, knots included.
+  await piotr.click()
+  await expect(canvas.locator('svg path[data-active]').first()).toBeAttached()
+  const knots = await canvas
+    .locator('svg g')
+    .evaluateAll(
+      (groups) =>
+        groups.filter((g) => g.querySelector('path[data-active]') && g.querySelector('circle'))
+          .length
+    )
+  expect(knots).toBeGreaterThan(0)
+  await closeApp(app)
+})

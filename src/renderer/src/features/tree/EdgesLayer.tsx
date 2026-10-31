@@ -45,6 +45,8 @@ interface EdgesLayerProps {
   dimmed: boolean
   /** Relationships of the highlighted path: their lines stand out, the others fade. */
   path: ReadonlySet<string> | null
+  /** Tapestry style: softer curves, a sheen on the gold thread and a knot between partners. */
+  tapestry?: boolean
 }
 
 export const EdgesLayer = memo(function EdgesLayer({
@@ -52,7 +54,8 @@ export const EdgesLayer = memo(function EdgesLayer({
   bounds,
   highlight,
   dimmed,
-  path
+  path,
+  tapestry = false
 }: EdgesLayerProps): React.JSX.Element {
   return (
     <svg
@@ -75,22 +78,45 @@ export const EdgesLayer = memo(function EdgesLayer({
         .map((e) => {
           const onPath = isOnPath(e, path)
           const active = !path && isActive(e, highlight)
+          const dashed = (e.kind && e.kind !== 'biological') || e.ended
+          const state = cx(
+            active && styles.activeEdge,
+            !path && highlight !== null && !active && styles.quietEdge,
+            onPath && styles.pathEdge,
+            path && !onPath && styles.offPathEdge
+          )
+          const d = roundedPath(e.points, tapestry ? 24 : 10)
+          // Neighbouring partners get a small knot halfway along their line.
+          const knot =
+            tapestry && e.type === 'partner' && e.points.length === 2
+              ? {
+                  x: (e.points[0]!.x + e.points[1]!.x) / 2,
+                  y: (e.points[0]!.y + e.points[1]!.y) / 2
+                }
+              : null
           return (
-            <path
-              key={e.id}
-              d={roundedPath(e.points)}
-              data-people={e.people.join(' ')}
-              data-active={active || undefined}
-              className={cx(
-                styles.edge,
-                e.type === 'partner' && styles.partnerEdge,
-                (e.kind && e.kind !== 'biological') || e.ended ? styles.dashed : undefined,
-                active && styles.activeEdge,
-                !path && highlight !== null && !active && styles.quietEdge,
-                onPath && styles.pathEdge,
-                path && !onPath && styles.offPathEdge
+            <g key={e.id}>
+              <path
+                d={d}
+                data-people={e.people.join(' ')}
+                data-active={active || undefined}
+                className={cx(
+                  styles.edge,
+                  e.type === 'partner' && styles.partnerEdge,
+                  dashed && styles.dashed,
+                  state
+                )}
+              />
+              {tapestry && !dashed && <path d={d} className={cx(styles.threadSheen, state)} />}
+              {knot && (
+                <circle
+                  cx={knot.x}
+                  cy={knot.y}
+                  r={5}
+                  className={cx(styles.edge, styles.knot, dashed && styles.dashedKnot, state)}
+                />
               )}
-            />
+            </g>
           )
         })}
     </svg>

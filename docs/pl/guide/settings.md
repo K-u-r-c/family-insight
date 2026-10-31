@@ -19,7 +19,7 @@ Kliknij przycisk **Ustawienia** (⚙) po prawej stronie paska narzędzi:
 | **Wczytuj mapy online**                  | wyłączone (domyślnie) / włączone                                          | Pobiera tło mapy z OpenStreetMap, gdy korzystasz z [mapy](./map#online).                                                                    |
 | **Wyszukuj miejsca online**              | wyłączone (domyślnie) / włączone                                          | Pozwala przyciskowi **Wyszukaj online** wysłać nazwę miejsca do OpenStreetMap, aby znaleźć współrzędne ([Miejsca](./places#lookup)).        |
 
-Styl można też zmienić na pasku menu: **Widok → Styl**.
+Styl można też zmienić na pasku menu: **Widok → Styl**. W stylu Gobelin osoby na drzewie są oprawionymi medalionami z portretem nad imieniem, partnerów łączy mały węzeł, a linie wyglądają jak złota nić.
 
 Motyw i język zmienisz też na ekranie powitalnym (prawy górny róg) i w menu **Widok** na pasku
 menu. Menu **Widok** pozwala też pokazać lub ukryć listę osób i mapę przeglądową.

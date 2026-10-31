@@ -101,58 +101,59 @@ function buildTree(): Uint8Array {
   })
 }
 
-test('portraits: panning a tree of ~1 000 people with portraits', async () => {
-  test.setTimeout(180_000)
-  const file = join(tempDir(), 'portraits.finsight')
-  writeFileSync(file, buildTree())
-  const t0 = Date.now()
-  const log = (m: string) => console.info(`${((Date.now() - t0) / 1000).toFixed(1)} s: ${m}`)
-  const { app, page } = await launch({ args: [file], visible: true })
-  log('launched')
-  await expect(page.locator('[data-person-id] img').first()).toBeVisible({ timeout: 60_000 })
-  log('first portrait visible')
-  // The whole family, zoomed out so that every card is on screen at once (worst case).
-  await app.evaluate(({ BrowserWindow }) =>
-    BrowserWindow.getAllWindows()[0]!.webContents.send('menu:action', 'view:fit')
-  )
-  await page.waitForTimeout(1500)
-  log('fitted')
-  const cards = await page.locator('[data-person-id]').count()
-  const images = await page.locator('[data-person-id] img').count()
-  const box = (await page.getByRole('application').boundingBox())!
-  const frames = page.evaluate(
-    () =>
-      new Promise<number[]>((resolve) => {
-        const times: number[] = []
-        let last = performance.now()
-        const end = last + 4000
-        const tick = (now: number) => {
-          times.push(now - last)
-          last = now
-          if (now < end) requestAnimationFrame(tick)
-          else resolve(times)
-        }
-        requestAnimationFrame(tick)
-      })
-  )
-  // Pan back and forth while frames are recorded.
-  for (let i = 0; i < 6; i++) {
-    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
-    await page.mouse.down()
-    await page.mouse.move(
-      box.x + box.width / 2 + (i % 2 ? 400 : -400),
-      box.y + box.height / 2 + 150,
-      { steps: 25 }
+for (const style of ['modern', 'tapestry'] as const)
+  test(`portraits: panning a tree of ~1 000 people with portraits (${style})`, async () => {
+    test.setTimeout(180_000)
+    const file = join(tempDir(), 'portraits.finsight')
+    writeFileSync(file, buildTree())
+    const t0 = Date.now()
+    const log = (m: string) => console.info(`${((Date.now() - t0) / 1000).toFixed(1)} s: ${m}`)
+    const { app, page } = await launch({ args: [file], visible: true, style })
+    log('launched')
+    await expect(page.locator('[data-person-id] img').first()).toBeVisible({ timeout: 60_000 })
+    log('first portrait visible')
+    // The whole family, zoomed out so that every card is on screen at once (worst case).
+    await app.evaluate(({ BrowserWindow }) =>
+      BrowserWindow.getAllWindows()[0]!.webContents.send('menu:action', 'view:fit')
     )
-    await page.mouse.up()
-  }
-  const times = (await frames).slice(1).sort((a, b) => a - b)
-  const avg = times.reduce((s, t) => s + t, 0) / times.length
-  const p95 = times[Math.floor(times.length * 0.95)]!
-  const max = times[times.length - 1]!
-  console.info(
-    `${cards} cards rendered, ${images} portraits; ${times.length} frames in 4 s: ` +
-      `${(1000 / avg).toFixed(0)} fps average, p95 frame ${p95.toFixed(1)} ms, worst ${max.toFixed(1)} ms`
-  )
-  await closeApp(app)
-})
+    await page.waitForTimeout(1500)
+    log('fitted')
+    const cards = await page.locator('[data-person-id]').count()
+    const images = await page.locator('[data-person-id] img').count()
+    const box = (await page.getByRole('application').boundingBox())!
+    const frames = page.evaluate(
+      () =>
+        new Promise<number[]>((resolve) => {
+          const times: number[] = []
+          let last = performance.now()
+          const end = last + 4000
+          const tick = (now: number) => {
+            times.push(now - last)
+            last = now
+            if (now < end) requestAnimationFrame(tick)
+            else resolve(times)
+          }
+          requestAnimationFrame(tick)
+        })
+    )
+    // Pan back and forth while frames are recorded.
+    for (let i = 0; i < 6; i++) {
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+      await page.mouse.down()
+      await page.mouse.move(
+        box.x + box.width / 2 + (i % 2 ? 400 : -400),
+        box.y + box.height / 2 + 150,
+        { steps: 25 }
+      )
+      await page.mouse.up()
+    }
+    const times = (await frames).slice(1).sort((a, b) => a - b)
+    const avg = times.reduce((s, t) => s + t, 0) / times.length
+    const p95 = times[Math.floor(times.length * 0.95)]!
+    const max = times[times.length - 1]!
+    console.info(
+      `${style}: ${cards} cards rendered, ${images} portraits; ${times.length} frames in 4 s: ` +
+        `${(1000 / avg).toFixed(0)} fps average, p95 frame ${p95.toFixed(1)} ms, worst ${max.toFixed(1)} ms`
+    )
+    await closeApp(app)
+  })

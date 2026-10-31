@@ -489,3 +489,15 @@ later without changing anything else.
   from films or books.
 - `--color-on-danger` and `--color-switch-knob` replace the last raw colours in components (the
   modern dark danger button now uses dark text, which also fixes its contrast).
+
+## Tapestry tree (2026-10, issue #105)
+
+- **Upright medallions, same engine**: Tapestry cards are 184 × 104 (compact 164 × 56) with a wider
+  partner gap for the knot; `cardSizes(style, density)` feeds the layout, which stays style-free.
+- **Curves through the lanes**: lines keep the orthogonal lane points from #102 and only round the
+  corners more (24 px), so "families never share a stretch" and "no line through a card" still
+  hold; a thin sheen path and the partner knot are drawn only in Tapestry and take the same
+  highlight classes.
+- **Dark thread is bronze, highlight is gold**: with gold as both the accent and the thread, the
+  highlighted lines were hard to tell apart; the dark variant's thread became `#8a7440`.
+- Measured with the manual 1 000-portrait pan check: 60 fps average in both styles (p95 16.8 ms).

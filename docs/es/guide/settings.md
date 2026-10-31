@@ -19,7 +19,7 @@ Haga clic en el botón **Configuración** (⚙), a la derecha de la barra de her
 | **Cargar mapas de internet**               | desactivado (predeterminado) / activado                                   | Descarga el fondo del mapa de OpenStreetMap mientras usa el [mapa](./map#online).                                                                    |
 | **Buscar lugares en internet**             | desactivado (predeterminado) / activado                                   | Permite que **Buscar en internet** envíe el nombre de un lugar a OpenStreetMap para encontrar sus coordenadas ([Lugares](./places#lookup)).          |
 
-El estilo también se puede cambiar en la barra de menús: **Ver → Estilo**.
+El estilo también se puede cambiar en la barra de menús: **Ver → Estilo**. En el estilo Tapiz, las personas del árbol son medallones enmarcados con el retrato sobre el nombre, las parejas se unen con un pequeño nudo y las líneas parecen hilo de oro.
 
 El tema y el idioma también se pueden cambiar en la pantalla de bienvenida (esquina superior
 derecha) y en el menú **Ver** de la barra de menús. El menú **Ver** también muestra u oculta la

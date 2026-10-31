@@ -2,7 +2,8 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { Home, Pencil, Sprout, Trash2, UserPlus, Waypoints, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { pathRelationships } from '@core/kinship/path'
-import { layoutFamily, type Layout } from '@core/layout/layout'
+import { layoutFamily, type Layout, type LayoutOptions } from '@core/layout/layout'
+import type { AppStyle, CardDensity } from '@core/settings'
 import { searchPersons } from '@core/search'
 import { displayName, getChildren, getParents, getPartners } from '@core/model/tree'
 import {
@@ -33,16 +34,33 @@ import { Minimap } from './Minimap'
 import { PersonCard } from './PersonCard'
 import styles from './TreeCanvas.module.css'
 
-const SIZES = {
-  comfortable: {
-    nodeWidth: 220,
-    nodeHeight: 64,
-    partnerGap: 28,
-    siblingGap: 32,
-    generationGap: 76
+const SIZES: Record<AppStyle, Record<CardDensity, Partial<LayoutOptions>>> = {
+  modern: {
+    comfortable: {
+      nodeWidth: 220,
+      nodeHeight: 64,
+      partnerGap: 28,
+      siblingGap: 32,
+      generationGap: 76
+    },
+    compact: { nodeWidth: 172, nodeHeight: 48, partnerGap: 20, siblingGap: 22, generationGap: 56 }
   },
-  compact: { nodeWidth: 172, nodeHeight: 48, partnerGap: 20, siblingGap: 22, generationGap: 56 }
+  // Upright medallions (portrait above the name); a wider partner gap holds the partner knot.
+  tapestry: {
+    comfortable: {
+      nodeWidth: 184,
+      nodeHeight: 104,
+      partnerGap: 40,
+      siblingGap: 32,
+      generationGap: 88
+    },
+    compact: { nodeWidth: 164, nodeHeight: 56, partnerGap: 30, siblingGap: 22, generationGap: 60 }
+  }
 }
+
+/** Card sizes and gaps for a style and density. */
+export const cardSizes = (style: AppStyle, density: CardDensity): Partial<LayoutOptions> =>
+  SIZES[style][density]
 
 /** Switches the selected person's panel to edit mode and focuses the first field. */
 export function focusEditor(): void {
@@ -58,10 +76,10 @@ export function layoutOptions(): Parameters<typeof layoutFamily>[1] | null {
   const tree = useDocument.getState().tree
   if (!tree) return null
   const { mode, depth, collapsed } = useTreeView.getState()
-  const density = useSettings.getState().settings.density
+  const { density, style } = useSettings.getState().settings
   const focusId = tree.meta.rootPersonId ?? useDocument.getState().selectedPersonId ?? undefined
   return {
-    ...SIZES[density],
+    ...cardSizes(style, density),
     mode,
     depth,
     collapsed,
@@ -72,6 +90,7 @@ export function layoutOptions(): Parameters<typeof layoutFamily>[1] | null {
 export function useLayout(): Layout | null {
   const tree = useDocument((s) => s.tree)
   const density = useSettings((s) => s.settings.density)
+  const style = useSettings((s) => s.settings.style)
   const mode = useTreeView((s) => s.mode)
   const depth = useTreeView((s) => s.depth)
   const collapsed = useTreeView((s) => s.collapsed)
@@ -81,14 +100,14 @@ export function useLayout(): Layout | null {
     () =>
       tree
         ? layoutFamily(tree, {
-            ...SIZES[density],
+            ...cardSizes(style, density),
             mode,
             depth,
             collapsed,
             focusId: mode === 'family' ? tree.meta.rootPersonId : (focusId ?? undefined)
           })
         : null,
-    [tree, density, mode, depth, collapsed, focusId]
+    [tree, density, style, mode, depth, collapsed, focusId]
   )
 }
 
@@ -98,6 +117,7 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
   const selectedId = useDocument((s) => s.selectedPersonId)
   const select = useDocument((s) => s.select)
   const density = useSettings((s) => s.settings.density)
+  const style = useSettings((s) => s.settings.style)
   const query = useWorkspaceUi((s) => s.query)
   const viewport = useTreeView((s) => s.viewport)
   const animate = useTreeView((s) => s.animate)
@@ -473,6 +493,7 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
             highlight={hovered ?? selectedId}
             dimmed={matches !== null}
             path={pathLinks}
+            tapestry={style === 'tapestry'}
           />
         )}
         {visible.map((node) => {

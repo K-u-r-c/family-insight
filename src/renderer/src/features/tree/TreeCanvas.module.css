@@ -74,6 +74,45 @@
   opacity: 0.45;
 }
 
+/* Tapestry: a thicker gold thread with a thin light sheen, and a knot between partners. */
+:global(:root[data-style='tapestry']) .edge {
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+:global(:root[data-style='tapestry']) .partnerEdge {
+  stroke-width: 2.8;
+}
+
+.threadSheen {
+  fill: none;
+  stroke: var(--color-highlight);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.threadSheen.activeEdge,
+.threadSheen.pathEdge {
+  stroke: var(--color-on-accent);
+  stroke-width: 0.9;
+}
+
+.knot {
+  fill: var(--color-surface-raised);
+  stroke-width: 2.2;
+}
+
+.knot.activeEdge,
+.knot.pathEdge {
+  fill: var(--color-accent-soft);
+}
+
+.dashedKnot {
+  stroke-dasharray: 3 2;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .world[data-animate],
   .edge {

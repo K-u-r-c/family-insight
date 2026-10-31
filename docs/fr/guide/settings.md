@@ -19,7 +19,7 @@ Cliquez sur le bouton **Paramètres** (⚙) à droite de la barre d’outils :
 | **Charger les cartes en ligne**                 | désactivé (par défaut) / activé                                           | Télécharge le fond de carte depuis OpenStreetMap pendant que vous utilisez la [carte](./map#online).                                                                |
 | **Rechercher les lieux en ligne**               | désactivé (par défaut) / activé                                           | Permet à **Rechercher en ligne** d’envoyer un nom de lieu à OpenStreetMap pour trouver ses coordonnées ([Lieux](./places#lookup)).                                  |
 
-Le style se change aussi dans la barre de menus : **Affichage → Style**.
+Le style se change aussi dans la barre de menus : **Affichage → Style**. Avec le style Tapisserie, les personnes de l’arbre sont des médaillons encadrés avec le portrait au-dessus du nom, les conjoints sont reliés par un petit nœud et les lignes ressemblent à du fil d’or.
 
 Le thème et la langue peuvent aussi être changés sur l’écran d’accueil (coin supérieur droit) et
 dans le menu **Affichage** de la barre de menus. Le menu **Affichage** permet aussi d’afficher ou de

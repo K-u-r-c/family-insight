@@ -30,6 +30,11 @@ flowchart TB
 - **Cards** (`PersonCard.tsx`) are `<button>`s with the avatar (photo or initials), name, birth
   surname and lifespan, a colour accent by sex and markers for the root person and deceased people.
   States: hover, selected, search match and dimmed. Compact density uses a smaller card.
+- In the **Tapestry style** (`data-style="tapestry"`) the card CSS turns comfortable cards into
+  upright medallions with a gold double frame (portrait above the name; compact cards keep the row),
+  and `EdgesLayer` gets `tapestry`: corners round with a 24 px radius, solid lines get a thin
+  sheen on the gold thread and neighbouring partners a small knot. Card sizes per style and
+  density come from `cardSizes()` in `TreeCanvas.tsx`, so the layout engine needs no special case.
 - Only cards inside the visible area (plus a 300 px margin) are rendered, which keeps 1 000-person
   trees smooth.
 - Layout changes (view mode, collapsing, new people) animate with CSS transitions; with

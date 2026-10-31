@@ -19,7 +19,7 @@ Click the **Settings** button (⚙) on the right of the toolbar:
 | **Load maps online**                | off (default) / on                                                        | Downloads the map background from OpenStreetMap while you use the [map](./map#online).                                                                      |
 | **Look up places online**           | off (default) / on                                                        | Lets **Look up online** send a place name to OpenStreetMap to find its coordinates ([Places](./places#lookup)).                                             |
 
-The style can also be changed in the menu bar: **View → Style**.
+The style can also be changed in the menu bar: **View → Style**. In the Tapestry style the people on the tree are framed medallions with the portrait above the name, partners are joined by a small knot and the lines look like gold thread.
 
 The theme and the language can also be changed on the welcome screen (top-right corner) and in the
 **View** menu of the menu bar. The **View** menu also shows or hides the list of people and the

@@ -19,7 +19,7 @@ Fai clic sul pulsante **Impostazioni** (⚙) a destra nella barra degli strument
 | **Carica le mappe online**                     | disattivato (predefinito) / attivo                                        | Scarica lo sfondo della mappa da OpenStreetMap mentre usi la [mappa](./map#online).                                                                          |
 | **Cerca i luoghi online**                      | disattivato (predefinito) / attivo                                        | Permette a **Cerca online** di inviare il nome di un luogo a OpenStreetMap per trovarne le coordinate ([Luoghi](./places#lookup)).                           |
 
-Lo stile si può cambiare anche dalla barra dei menu: **Visualizza → Stile**.
+Lo stile si può cambiare anche dalla barra dei menu: **Visualizza → Stile**. Nello stile Arazzo le persone dell’albero sono medaglioni incorniciati con il ritratto sopra il nome, i partner sono uniti da un piccolo nodo e le linee sembrano fili d’oro.
 
 Il tema e la lingua si possono cambiare anche nella schermata di benvenuto (angolo in alto a destra)
 e nel menu **Visualizza** della barra dei menu. Il menu **Visualizza** mostra o nasconde anche

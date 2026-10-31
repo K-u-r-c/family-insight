@@ -19,7 +19,7 @@ Klicken Sie rechts in der Symbolleiste auf die Schaltfläche **Einstellungen** (
 | **Karten online laden**             | aus (Standard) / ein                                                      | Lädt den Kartenhintergrund von OpenStreetMap, während Sie die [Karte](./map#online) verwenden.                                                                      |
 | **Orte online suchen**              | aus (Standard) / ein                                                      | Erlaubt **Online suchen**, einen Ortsnamen an OpenStreetMap zu senden, um seine Koordinaten zu finden ([Orte](./places#lookup)).                                    |
 
-Den Stil können Sie auch in der Menüleiste ändern: **Ansicht → Stil**.
+Den Stil können Sie auch in der Menüleiste ändern: **Ansicht → Stil**. Im Stil Gobelin erscheinen die Personen im Stammbaum als gerahmte Medaillons mit dem Porträt über dem Namen, Partner sind durch einen kleinen Knoten verbunden und die Linien sehen aus wie Goldfaden.
 
 Design und Sprache lassen sich auch auf dem Startbildschirm (rechte obere Ecke) und in der
 Menüleiste im Menü **Ansicht** ändern. Im Menü **Ansicht** blenden Sie außerdem die Personenliste
