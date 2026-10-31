@@ -12,6 +12,16 @@ artifactName: ${name}-${version}-${os}-${arch}.${ext}
 extraResources:
   - from: build/icon.png
     to: icon.png
+  - from: THIRD_PARTY_NOTICES.md
+    to: licenses/THIRD_PARTY_NOTICES.md
+  - from: node_modules/@fontsource-variable/inter/LICENSE
+    to: licenses/Inter-OFL.txt
+  - from: node_modules/@fontsource-variable/source-serif-4/LICENSE
+    to: licenses/SourceSerif4-OFL.txt
+  - from: node_modules/@fontsource-variable/cormorant/LICENSE
+    to: licenses/Cormorant-OFL.txt
+  - from: node_modules/@fontsource-variable/eb-garamond/LICENSE
+    to: licenses/EBGaramond-OFL.txt
 fileAssociations:
   - ext: finsight
     name: Family Insight Tree

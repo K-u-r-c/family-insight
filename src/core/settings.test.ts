@@ -19,6 +19,14 @@ describe('settings', () => {
     expect(defaultSettings('en').csvDelimiter).toBe(',')
   })
 
+  it('accepts the known styles only', () => {
+    const d = defaultSettings('en')
+    expect(d.style).toBe('modern')
+    expect(sanitizeSettings({ style: 'tapestry' }, d, isLang).style).toBe('tapestry')
+    expect(sanitizeSettings({ style: 'gothic' }, d, isLang).style).toBe('modern')
+    expect(sanitizeSettings({ style: 7 }, d, isLang).style).toBe('modern')
+  })
+
   it('returns defaults for garbage input', () => {
     const d = defaultSettings('en')
     expect(sanitizeSettings('nope', d, isLang)).toEqual(d)

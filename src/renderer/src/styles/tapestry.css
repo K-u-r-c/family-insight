@@ -1,0 +1,180 @@
+/*
+ * Tapestry style: an old family tapestry or heraldic roll. Light is parchment and ink, dark a
+ * bottle-green tapestry with gold thread. Only token values change here – components keep using
+ * the variables from tokens.css. Contrast: text/bg pairs meet WCAG AA (≥ 4.5:1) in both variants.
+ *
+ * Specificity: `:root[data-style]` (0,2,0) beats the modern dark blocks for the light variant;
+ * the dark variant needs `[data-theme='dark']` or the system preference on top (0,3,0).
+ */
+@import '@fontsource-variable/cormorant/index.css';
+@import '@fontsource-variable/eb-garamond/index.css';
+
+:root[data-style='tapestry'] {
+  --font-sans: 'EB Garamond Variable', 'Iowan Old Style', Georgia, serif;
+  --font-serif: 'Cormorant Variable', 'EB Garamond Variable', Georgia, serif;
+
+  /* Garamond has a small x-height: one step larger reads like the modern sizes. */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 14px;
+  --text-base: 15px;
+  --text-lg: 17px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --text-3xl: 37px;
+
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 10px;
+
+  /* Parchment and ink */
+  --color-bg: #efe4cc;
+  --color-canvas: #ecdfc2;
+  --color-canvas-dot: #d8c7a2;
+  --color-surface: #f8f0dc;
+  --color-surface-raised: #fbf5e6;
+  --color-surface-muted: #e9dcbf;
+  --color-surface-hover: #f1e6cc;
+  --color-overlay: rgb(43 29 18 / 42%);
+  --color-border: #d6c39c;
+  --color-border-strong: #b9a273;
+  --color-text: #2b1d12;
+  --color-text-muted: #5e4a33;
+  --color-text-subtle: #68523a;
+  --color-accent: #7a1f2b;
+  --color-accent-hover: #63171f;
+  --color-accent-soft: #f0dcd3;
+  --color-accent-text: #6e1a26;
+  --color-on-accent: #fbf5e6;
+  --color-focus: #7a1f2b;
+  --color-danger: #a3361c;
+  --color-danger-hover: #852b16;
+  --color-danger-soft: #f4dbd2;
+  --color-on-danger: #fbf5e6;
+  --color-switch-knob: #fbf5e6;
+  --color-warning: #80520a;
+  --color-warning-soft: #f3e3bf;
+  --color-success: #3f6a2a;
+  --color-female: #9c3f5c;
+  --color-female-soft: #f0dbe0;
+  --color-male: #2f5583;
+  --color-male-soft: #dde4ee;
+  --color-other: #6a4a8f;
+  --color-other-soft: #e7def0;
+  --color-unknown: #7a6b55;
+  --color-unknown-soft: #e8e0d2;
+  --color-female-text: #8a3450;
+  --color-male-text: #2a4c78;
+  --color-other-text: #5c3f80;
+  --color-unknown-text: #5a4f40;
+  /* Gold thread */
+  --color-edge: #a8874a;
+  --color-highlight: #d4a72c;
+  --shadow-sm: 0 1px 2px rgb(60 40 20 / 10%), 0 1px 3px rgb(60 40 20 / 10%);
+  --shadow-md: 0 4px 12px rgb(60 40 20 / 14%), 0 2px 4px rgb(60 40 20 / 8%);
+  --shadow-lg: 0 18px 48px rgb(60 40 20 / 24%), 0 4px 12px rgb(60 40 20 / 12%);
+
+  color-scheme: light;
+}
+
+/* Dark values are duplicated for the explicit choice and the system preference. */
+:root[data-style='tapestry'][data-theme='dark'] {
+  --color-bg: #0f1a15;
+  --color-canvas: #12201a;
+  --color-canvas-dot: #1f3329;
+  --color-surface: #172720;
+  --color-surface-raised: #1c2e26;
+  --color-surface-muted: #1f3329;
+  --color-surface-hover: #233a2f;
+  --color-overlay: rgb(0 0 0 / 58%);
+  --color-border: #2f4a3c;
+  --color-border-strong: #43634f;
+  --color-text: #f1e6c8;
+  --color-text-muted: #c9b98f;
+  --color-text-subtle: #b5a57c;
+  --color-accent: #d4ae5a;
+  --color-accent-hover: #e2c27a;
+  --color-accent-soft: #2e3a23;
+  --color-accent-text: #e6c983;
+  --color-on-accent: #1a1408;
+  --color-focus: #e2c27a;
+  --color-danger: #ef8a74;
+  --color-danger-hover: #f5a693;
+  --color-danger-soft: #3d241d;
+  --color-on-danger: #1f0f0a;
+  --color-switch-knob: #f1e6c8;
+  --color-warning: #e5bd5c;
+  --color-warning-soft: #3a3018;
+  --color-success: #8fc79a;
+  --color-female: #e79ab0;
+  --color-female-soft: #3a2530;
+  --color-male: #95b4e3;
+  --color-male-soft: #22324a;
+  --color-other: #c2a6e6;
+  --color-other-soft: #33294a;
+  --color-unknown: #b7aa8c;
+  --color-unknown-soft: #2c3328;
+  --color-female-text: #f2b6c7;
+  --color-male-text: #b2cbef;
+  --color-other-text: #d3c0ef;
+  --color-unknown-text: #d0c4a6;
+  --color-edge: #b8994f;
+  --color-highlight: #e0b842;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 35%);
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 40%);
+  --shadow-lg: 0 18px 48px rgb(0 0 0 / 55%);
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-style='tapestry']:not([data-theme]) {
+    --color-bg: #0f1a15;
+    --color-canvas: #12201a;
+    --color-canvas-dot: #1f3329;
+    --color-surface: #172720;
+    --color-surface-raised: #1c2e26;
+    --color-surface-muted: #1f3329;
+    --color-surface-hover: #233a2f;
+    --color-overlay: rgb(0 0 0 / 58%);
+    --color-border: #2f4a3c;
+    --color-border-strong: #43634f;
+    --color-text: #f1e6c8;
+    --color-text-muted: #c9b98f;
+    --color-text-subtle: #b5a57c;
+    --color-accent: #d4ae5a;
+    --color-accent-hover: #e2c27a;
+    --color-accent-soft: #2e3a23;
+    --color-accent-text: #e6c983;
+    --color-on-accent: #1a1408;
+    --color-focus: #e2c27a;
+    --color-danger: #ef8a74;
+    --color-danger-hover: #f5a693;
+    --color-danger-soft: #3d241d;
+    --color-on-danger: #1f0f0a;
+    --color-switch-knob: #f1e6c8;
+    --color-warning: #e5bd5c;
+    --color-warning-soft: #3a3018;
+    --color-success: #8fc79a;
+    --color-female: #e79ab0;
+    --color-female-soft: #3a2530;
+    --color-male: #95b4e3;
+    --color-male-soft: #22324a;
+    --color-other: #c2a6e6;
+    --color-other-soft: #33294a;
+    --color-unknown: #b7aa8c;
+    --color-unknown-soft: #2c3328;
+    --color-female-text: #f2b6c7;
+    --color-male-text: #b2cbef;
+    --color-other-text: #d3c0ef;
+    --color-unknown-text: #d0c4a6;
+    --color-edge: #b8994f;
+    --color-highlight: #e0b842;
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 35%);
+    --shadow-md: 0 4px 16px rgb(0 0 0 / 40%);
+    --shadow-lg: 0 18px 48px rgb(0 0 0 / 55%);
+
+    color-scheme: dark;
+  }
+}

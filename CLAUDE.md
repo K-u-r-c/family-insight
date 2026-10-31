@@ -14,12 +14,14 @@ Electron + React + TypeScript family tree app (eight UI languages). Read `docs/d
 - Domain logic in `src/core` (pure TS, no Electron/React imports) with Vitest tests.
 - Never hard-code UI text: add keys to **every** locale file in `src/shared/locales/` (plural forms
   per language; `src/shared/i18n.test.ts` checks keys, plurals and placeholders).
-- Never hard-code colours: use CSS variables from `src/renderer/src/styles/tokens.css`.
+- Never hard-code colours or fonts: use CSS variables from `src/renderer/src/styles/tokens.css`
+  (every visual style overrides them, e.g. `styles/tapestry.css`).
 - Renderer never accesses Node/fs; add IPC in `src/shared/ipc.ts` → `src/main/ipc.ts` →
   `src/preload/index.ts`, and validate input in main.
 - CSV behaviour is specified in `docs/developer/reference/csv-format.md`; keep the doc and code in sync.
 - Step-by-step guides for common changes live in `docs/developer/howto/`: `ui-text.md`,
-  `setting.md`, `ipc.md`, `menu.md`, `person-field.md`, `format.md`, `view-mode.md`, `language.md`.
+  `setting.md`, `ipc.md`, `menu.md`, `person-field.md`, `format.md`, `view-mode.md`, `language.md`,
+  `style.md`.
   The `.finsight` format and its versioning policy: `docs/developer/reference/file-format.md`.
 - User-visible changes: update the user guide (`docs/guide`, `docs/pl/guide`) and regenerate the
   affected screenshots (`npm run docs:screenshots -- -g <scene>`).
@@ -27,10 +29,12 @@ Electron + React + TypeScript family tree app (eight UI languages). Read `docs/d
 
 ## Working through the backlog
 
-Done: #1–#33 (v1.0.0), #38–#51 (documentation site, v1.0.1) and #52–#81 (v1.1.0, v1.2.0).
-**Current scope: #100–#103** – milestone v1.2.1 (tree layout readability, release v1.2.1), strictly
-in issue-number order. For this milestone the user guide is **not** changed and the documentation
-screenshots are **not** regenerated.
+Done: #1–#33 (v1.0.0), #38–#51 (documentation site, v1.0.1), #52–#81 (v1.1.0, v1.2.0) and
+#100–#103 (v1.2.1).
+**Current scope: #104–#111** – milestone v1.3 (Tapestry style with a style switch, built-in guided
+tour, release v1.3.0), strictly in issue-number order. Update the user guide in all 8 languages,
+but regenerate screenshots only for new or directly affected scenes
+(`npm run docs:screenshots -- -g <scene>`), never a full regeneration.
 Out of scope: the mobile apps (#82–#98, in the Backlog milestone – planned for the future), #36
 (paid code signing) and #99 (store publishing, deferred); #34, #35 and #37 are superseded by the
 roadmap issues.

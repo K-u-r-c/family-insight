@@ -25,6 +25,7 @@
   "settings": {
     "language": "Język",
     "theme": "Motyw",
+    "style": "Styl",
     "title": "Ustawienia",
     "autosave": "Zapisuj automatycznie",
     "density": "Karty",
@@ -39,6 +40,10 @@
     "system": "Systemowy",
     "light": "Jasny",
     "dark": "Ciemny"
+  },
+  "style": {
+    "modern": "Nowoczesny",
+    "tapestry": "Gobelin"
   },
   "menu": {
     "file": "Plik",

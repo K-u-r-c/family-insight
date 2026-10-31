@@ -69,7 +69,7 @@
   width: 16px;
   height: 16px;
   content: '';
-  background: #fff;
+  background: var(--color-switch-knob);
   border-radius: 50%;
   box-shadow: var(--shadow-sm);
   transition: transform var(--duration-base) var(--easing-spring);

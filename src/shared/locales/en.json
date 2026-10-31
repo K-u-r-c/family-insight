@@ -25,6 +25,7 @@
   "settings": {
     "language": "Language",
     "theme": "Theme",
+    "style": "Style",
     "title": "Settings",
     "autosave": "Save automatically",
     "density": "Cards",
@@ -39,6 +40,10 @@
     "system": "System",
     "light": "Light",
     "dark": "Dark"
+  },
+  "style": {
+    "modern": "Modern",
+    "tapestry": "Tapestry"
   },
   "menu": {
     "file": "File",

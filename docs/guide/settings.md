@@ -6,17 +6,20 @@ description: Change the language, theme, card size and autosave of Family Insigh
 
 Click the **Settings** button (⚙) on the right of the toolbar:
 
-<Screenshot name="settings-menu" alt="The settings menu with Theme (System, Light, Dark), Language (English, Polski, Deutsch, Français, Español, Italiano, Português, Русский), Cards (Comfortable, Compact) and Save automatically" />
+<Screenshot name="settings-menu" alt="The settings menu with Theme (System, Light, Dark), Style (Modern, Tapestry), Language (English, Polski, Deutsch, Français, Español, Italiano, Português, Русский), Cards (Comfortable, Compact) and Save automatically" />
 
-| Setting                             | Choices                                                                   | What it does                                                                                                    |
-| ----------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| **Theme**                           | System, Light, Dark                                                       | The colours of the program. **System** follows the light or dark mode of your computer.                         |
-| **Language**                        | English, Polski, Deutsch, Français, Español, Italiano, Português, Русский | The language of the whole program, including the menu bar and dialogs. It changes immediately.                  |
-| **Cards**                           | Comfortable, Compact                                                      | The size of the cards in the tree. Compact cards fit more people on the screen and on paper.                    |
-| **Save automatically**              | on (default) / off                                                        | [Autosave](./files#autosave) of trees that already have a file.                                                 |
-| **Check for updates automatically** | on (default) / off                                                        | A daily check for new versions ([Updates](./updates)); **Check now…** checks right away.                        |
-| **Load maps online**                | off (default) / on                                                        | Downloads the map background from OpenStreetMap while you use the [map](./map#online).                          |
-| **Look up places online**           | off (default) / on                                                        | Lets **Look up online** send a place name to OpenStreetMap to find its coordinates ([Places](./places#lookup)). |
+| Setting                             | Choices                                                                   | What it does                                                                                                                                                |
+| ----------------------------------- | ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Theme**                           | System, Light, Dark                                                       | The colours of the program. **System** follows the light or dark mode of your computer.                                                                     |
+| **Style**                           | Modern, Tapestry                                                          | The look of the whole program. **Tapestry** looks like an old family tapestry: parchment and ink in the light theme, dark green and gold in the dark theme. |
+| **Language**                        | English, Polski, Deutsch, Français, Español, Italiano, Português, Русский | The language of the whole program, including the menu bar and dialogs. It changes immediately.                                                              |
+| **Cards**                           | Comfortable, Compact                                                      | The size of the cards in the tree. Compact cards fit more people on the screen and on paper.                                                                |
+| **Save automatically**              | on (default) / off                                                        | [Autosave](./files#autosave) of trees that already have a file.                                                                                             |
+| **Check for updates automatically** | on (default) / off                                                        | A daily check for new versions ([Updates](./updates)); **Check now…** checks right away.                                                                    |
+| **Load maps online**                | off (default) / on                                                        | Downloads the map background from OpenStreetMap while you use the [map](./map#online).                                                                      |
+| **Look up places online**           | off (default) / on                                                        | Lets **Look up online** send a place name to OpenStreetMap to find its coordinates ([Places](./places#lookup)).                                             |
+
+The style can also be changed in the menu bar: **View → Style**.
 
 The theme and the language can also be changed on the welcome screen (top-right corner) and in the
 **View** menu of the menu bar. The **View** menu also shows or hides the list of people and the

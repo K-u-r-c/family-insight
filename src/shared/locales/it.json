@@ -25,6 +25,7 @@
   "settings": {
     "language": "Lingua",
     "theme": "Tema",
+    "style": "Stile",
     "title": "Impostazioni",
     "autosave": "Salva automaticamente",
     "density": "Schede",
@@ -39,6 +40,10 @@
     "system": "Sistema",
     "light": "Chiaro",
     "dark": "Scuro"
+  },
+  "style": {
+    "modern": "Moderno",
+    "tapestry": "Arazzo"
   },
   "menu": {
     "file": "File",

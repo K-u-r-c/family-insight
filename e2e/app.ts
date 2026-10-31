@@ -13,6 +13,7 @@ export interface Launched {
 interface LaunchOptions {
   language?: string
   theme?: 'light' | 'dark'
+  style?: 'modern' | 'tapestry'
   args?: string[]
   userData?: string
   /** Show the window (frame timing needs a visible window). */
@@ -27,7 +28,11 @@ export async function launch(options: LaunchOptions = {}): Promise<Launched> {
   if (!options.userData) {
     writeFileSync(
       join(userData, 'settings.json'),
-      JSON.stringify({ language: options.language ?? 'en', theme: options.theme ?? 'light' })
+      JSON.stringify({
+        language: options.language ?? 'en',
+        theme: options.theme ?? 'light',
+        style: options.style ?? 'modern'
+      })
     )
   }
   const app = await electron.launch({

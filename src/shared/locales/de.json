@@ -25,6 +25,7 @@
   "settings": {
     "language": "Sprache",
     "theme": "Design",
+    "style": "Stil",
     "title": "Einstellungen",
     "autosave": "Automatisch speichern",
     "density": "Karten",
@@ -39,6 +40,10 @@
     "system": "System",
     "light": "Hell",
     "dark": "Dunkel"
+  },
+  "style": {
+    "modern": "Modern",
+    "tapestry": "Gobelin"
   },
   "menu": {
     "file": "Datei",

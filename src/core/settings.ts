@@ -8,6 +8,9 @@ import { isValidVersion } from './updates'
 export type ThemePreference = 'system' | 'light' | 'dark'
 export type CsvDelimiter = ',' | ';'
 export type CardDensity = 'comfortable' | 'compact'
+/** Visual style of the whole app; each style has light and dark variants. */
+export type AppStyle = 'modern' | 'tapestry'
+export const APP_STYLES: readonly AppStyle[] = ['modern', 'tapestry']
 
 export interface RecentFile {
   path: string
@@ -41,6 +44,7 @@ export interface Settings {
   version: 1
   language: string
   theme: ThemePreference
+  style: AppStyle
   recentFiles: RecentFile[]
   windowBounds?: WindowBounds
   csvDelimiter: CsvDelimiter
@@ -75,6 +79,7 @@ export function defaultSettings(language: string): Settings {
     version: 1,
     language,
     theme: 'system',
+    style: 'modern',
     recentFiles: [],
     csvDelimiter: csvDelimiterOf(headerLanguage(language)),
     density: 'comfortable',
@@ -121,6 +126,7 @@ export function sanitizeSettings(
     else if (u.skippedVersion === null) delete out.updates.skippedVersion
   }
   if (src.theme === 'system' || src.theme === 'light' || src.theme === 'dark') out.theme = src.theme
+  if (APP_STYLES.includes(src.style as AppStyle)) out.style = src.style as AppStyle
   if (src.csvDelimiter === ',' || src.csvDelimiter === ';') out.csvDelimiter = src.csvDelimiter
   if (src.density === 'comfortable' || src.density === 'compact') out.density = src.density
   if (typeof src.showMinimap === 'boolean') out.showMinimap = src.showMinimap

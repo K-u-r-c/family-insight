@@ -62,7 +62,9 @@ in the renderer for the preview and could run anywhere else.
 4. **Every string is translated:** i18next resources in `src/shared/locales/*.json`, used by
    the renderer and the native menu. See [Internationalisation](./i18n).
 5. **Every colour is a token:** components use the CSS variables from
-   `src/renderer/src/styles/tokens.css`, so light, dark and “follow system” work everywhere.
+   `src/renderer/src/styles/tokens.css`, so light, dark and “follow system” work everywhere – and in
+   every visual style (`data-style`, e.g. Tapestry in `styles/tapestry.css`; see
+   [Add a visual style](./howto/style)).
 6. **Every edit is a command:** document changes go through commands and an immutable history, so
    undo/redo, autosave and recovery work uniformly. See [State, undo and saving](./state).
 7. **Extension points:** the import/export format registry, view modes and locales. See the

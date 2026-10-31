@@ -25,6 +25,7 @@
   "settings": {
     "language": "Idioma",
     "theme": "Tema",
+    "style": "Estilo",
     "title": "Configurações",
     "autosave": "Salvar automaticamente",
     "density": "Cartões",
@@ -39,6 +40,10 @@
     "system": "Sistema",
     "light": "Claro",
     "dark": "Escuro"
+  },
+  "style": {
+    "modern": "Moderno",
+    "tapestry": "Tapeçaria"
   },
   "menu": {
     "file": "Arquivo",

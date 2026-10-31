@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- **Styles**: besides the modern look, the new **Tapestry** style makes the app look like an old
+  family tapestry – parchment and ink in the light theme, dark green and gold in the dark theme,
+  with classic serif type. Switch it in **Settings → Style** or **View → Style**.
+
 ## [1.2.1] - 2026-10-31
 
 ### Fixed

@@ -474,3 +474,18 @@ later without changing anything else.
 - **Highlight follows selection and hover**: an edge's `people` decide whether it belongs to the
   person, so a couple's line lights up for either parent. The other lines step back to 45 %
   opacity instead of being hidden, so the structure stays readable.
+
+## Visual styles (2026-10, issue #104)
+
+- **Style independent of theme**: `settings.style` (`modern` | `tapestry`) sets `data-style` on
+  `<html>` next to `data-theme`, so each style has a light and a dark variant and "follow system"
+  keeps working. A style is only token overrides (`styles/tapestry.css`) – no component branches.
+- **Tapestry palette**: parchment and ink (light), bottle green and gold (dark), checked for WCAG AA
+  (minimum 5.0:1 on the text pairs) and by axe in both variants.
+- **Fonts**: Cormorant (headings) and EB Garamond (interface), both OFL with Latin Extended and
+  Cyrillic, bundled from Fontsource. Garamond's small x-height gets one step larger type tokens.
+  Licences are listed in `THIRD_PARTY_NOTICES.md` and installed in `resources/licenses/`.
+- **Original artwork only**: the style evokes old family tapestries in general; nothing is taken
+  from films or books.
+- `--color-on-danger` and `--color-switch-knob` replace the last raw colours in components (the
+  modern dark danger button now uses dark text, which also fixes its contrast).

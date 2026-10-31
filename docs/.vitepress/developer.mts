@@ -37,7 +37,8 @@ export const developerSidebar: DefaultTheme.SidebarItem[] = [
       { text: 'Add a field to a person', link: '/developer/howto/person-field' },
       { text: 'Add a file format', link: '/developer/howto/format' },
       { text: 'Add a view mode', link: '/developer/howto/view-mode' },
-      { text: 'Add a language', link: '/developer/howto/language' }
+      { text: 'Add a language', link: '/developer/howto/language' },
+      { text: 'Add a visual style', link: '/developer/howto/style' }
     ]
   },
   {

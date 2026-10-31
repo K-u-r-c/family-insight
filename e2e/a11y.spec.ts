@@ -44,15 +44,20 @@ async function seriousViolations(page: Page): Promise<string[]> {
     )
 }
 
-for (const theme of ['light', 'dark'] as const) {
-  test(`no serious accessibility violations (${theme})`, async () => {
+for (const [theme, style] of [
+  ['light', 'modern'],
+  ['dark', 'modern'],
+  ['light', 'tapestry'],
+  ['dark', 'tapestry']
+] as const) {
+  test(`no serious accessibility violations (${style}, ${theme})`, async () => {
     const file = join(tempDir(), 'kowalscy.finsight')
     copyFileSync(join(__dirname, 'fixtures', 'kowalscy.finsight'), file)
-    const { app, page } = await launch({ theme })
+    const { app, page } = await launch({ theme, style })
     expect(await seriousViolations(page)).toEqual([])
     await closeApp(app)
 
-    const second = await launch({ args: [file], theme })
+    const second = await launch({ args: [file], theme, style })
     await second.page
       .getByRole('application')
       .getByRole('button', { name: /^Jan Kowalski/ })

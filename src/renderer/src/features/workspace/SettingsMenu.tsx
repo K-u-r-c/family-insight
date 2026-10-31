@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Settings2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import type { ThemePreference } from '@core/settings'
+import { APP_STYLES, type ThemePreference } from '@core/settings'
 import { languageOptions } from '@shared/i18n'
 import {
   anchorBelow,
@@ -34,6 +34,13 @@ export function SettingsMenu(): React.JSX.Element {
       label: t(`theme.${theme}`),
       checked: settings.theme === theme,
       onSelect: () => void update({ theme })
+    })),
+    { type: 'separator' },
+    { type: 'heading', label: t('settings.style') },
+    ...APP_STYLES.map((style) => ({
+      label: t(`style.${style}`),
+      checked: settings.style === style,
+      onSelect: () => void update({ style })
     })),
     { type: 'separator' },
     { type: 'heading', label: t('settings.language') },

@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu, shell, type MenuItemConstructorOptions } from 'electron'
+import { APP_STYLES } from '@core/settings'
 import { csvDelimiterFor, languageOptions } from '@shared/i18n'
 import { IpcChannel, type MenuAction, type MenuState } from '@shared/ipc'
 import { guideUrl, ISSUES_URL, PROJECT_URL } from '@shared/links'
@@ -225,6 +226,16 @@ export function buildMenu(): void {
             type: 'radio' as const,
             checked: settings.theme === theme,
             click: () => updateSettings({ theme })
+          }))
+        },
+        {
+          label: t('settings.style'),
+          submenu: APP_STYLES.map((style) => ({
+            id: `style-${style}`,
+            label: t(`style.${style}`),
+            type: 'radio' as const,
+            checked: settings.style === style,
+            click: () => updateSettings({ style })
           }))
         },
         {

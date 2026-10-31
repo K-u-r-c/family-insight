@@ -70,6 +70,8 @@
   --color-danger: #b23b31;
   --color-danger-hover: #962f27;
   --color-danger-soft: #f8e5e2;
+  --color-on-danger: #ffffff;
+  --color-switch-knob: #ffffff;
   --color-warning: #94650d;
   --color-warning-soft: #fbf0d9;
   --color-success: #2f7350;
@@ -130,6 +132,7 @@
   --color-danger: #ea7b70;
   --color-danger-hover: #f29a91;
   --color-danger-soft: #3d2320;
+  --color-on-danger: #1a0d0b;
   --color-warning: #e2b553;
   --color-warning-soft: #3a2f17;
   --color-success: #6cb68a;
@@ -188,6 +191,7 @@
     --color-danger: #ea7b70;
     --color-danger-hover: #f29a91;
     --color-danger-soft: #3d2320;
+    --color-on-danger: #1a0d0b;
     --color-warning: #e2b553;
     --color-warning-soft: #3a2f17;
     --color-success: #6cb68a;
