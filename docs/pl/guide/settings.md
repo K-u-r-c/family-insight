@@ -6,17 +6,17 @@ description: Zmiana języka, motywu, wielkości kart i autozapisu Family Insight
 
 Kliknij przycisk **Ustawienia** (⚙) po prawej stronie paska narzędzi:
 
-<Screenshot name="settings-menu" alt="Menu ustawień z sekcjami Motyw (Systemowy, Jasny, Ciemny), Język (English, Polski, Deutsch, Français, Español, Italiano), Karty (Wygodne, Kompaktowe) i Zapisuj automatycznie" />
+<Screenshot name="settings-menu" alt="Menu ustawień z sekcjami Motyw (Systemowy, Jasny, Ciemny), Język (English, Polski, Deutsch, Français, Español, Italiano, Português), Karty (Wygodne, Kompaktowe) i Zapisuj automatycznie" />
 
-| Ustawienie                               | Opcje                                                 | Co robi                                                                                                                              |
-| ---------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| **Motyw**                                | Systemowy, Jasny, Ciemny                              | Kolory programu. **Systemowy** podąża za jasnym lub ciemnym trybem komputera.                                                        |
-| **Język**                                | English, Polski, Deutsch, Français, Español, Italiano | Język całego programu, także paska menu i okien dialogowych. Zmienia się od razu.                                                    |
-| **Karty**                                | Wygodne, Kompaktowe                                   | Wielkość kart w drzewie. Kompaktowe mieszczą więcej osób na ekranie i na papierze.                                                   |
-| **Zapisuj automatycznie**                | włączone (domyślnie) / wyłączone                      | [Autozapis](./files#autosave) drzew, które mają już plik.                                                                            |
-| **Sprawdzaj aktualizacje automatycznie** | włączone (domyślnie) / wyłączone                      | Codzienne sprawdzanie nowych wersji ([Aktualizacje](./updates)); **Sprawdź teraz…** sprawdza od razu.                                |
-| **Wczytuj mapy online**                  | wyłączone (domyślnie) / włączone                      | Pobiera tło mapy z OpenStreetMap, gdy korzystasz z [mapy](./map#online).                                                             |
-| **Wyszukuj miejsca online**              | wyłączone (domyślnie) / włączone                      | Pozwala przyciskowi **Wyszukaj online** wysłać nazwę miejsca do OpenStreetMap, aby znaleźć współrzędne ([Miejsca](./places#lookup)). |
+| Ustawienie                               | Opcje                                                            | Co robi                                                                                                                              |
+| ---------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Motyw**                                | Systemowy, Jasny, Ciemny                                         | Kolory programu. **Systemowy** podąża za jasnym lub ciemnym trybem komputera.                                                        |
+| **Język**                                | English, Polski, Deutsch, Français, Español, Italiano, Português | Język całego programu, także paska menu i okien dialogowych. Zmienia się od razu.                                                    |
+| **Karty**                                | Wygodne, Kompaktowe                                              | Wielkość kart w drzewie. Kompaktowe mieszczą więcej osób na ekranie i na papierze.                                                   |
+| **Zapisuj automatycznie**                | włączone (domyślnie) / wyłączone                                 | [Autozapis](./files#autosave) drzew, które mają już plik.                                                                            |
+| **Sprawdzaj aktualizacje automatycznie** | włączone (domyślnie) / wyłączone                                 | Codzienne sprawdzanie nowych wersji ([Aktualizacje](./updates)); **Sprawdź teraz…** sprawdza od razu.                                |
+| **Wczytuj mapy online**                  | wyłączone (domyślnie) / włączone                                 | Pobiera tło mapy z OpenStreetMap, gdy korzystasz z [mapy](./map#online).                                                             |
+| **Wyszukuj miejsca online**              | wyłączone (domyślnie) / włączone                                 | Pozwala przyciskowi **Wyszukaj online** wysłać nazwę miejsca do OpenStreetMap, aby znaleźć współrzędne ([Miejsca](./places#lookup)). |
 
 Motyw i język zmienisz też na ekranie powitalnym (prawy górny róg) i w menu **Widok** na pasku
 menu. Menu **Widok** pozwala też pokazać lub ukryć listę osób i mapę przeglądową.

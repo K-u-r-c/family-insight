@@ -97,6 +97,10 @@ const SAME_AS_ENGLISH = new Set([
   'it:photo.zoom',
   'it:relations.add.partner',
   'it:tree.zoomControls',
+  'pt:photo.zoom',
+  'pt:places.latitude',
+  'pt:places.longitude',
+  'pt:tree.zoomControls',
   'gedcom.version551',
   'gedcom.version70',
   'export.png',
@@ -215,6 +219,11 @@ describe('languages', () => {
     expect(resolveLanguage('en_GB')).toBe('en')
     expect(resolveLanguage('EN-us')).toBe('en')
     expect(resolveLanguage('zh-Hant-TW')).toBe('en')
+    expect(resolveLanguage('pt-PT')).toBe('pt')
+    expect(resolveLanguage('pt_BR')).toBe('pt')
+    expect(resolveLanguage('de-AT')).toBe('de')
+    expect(resolveLanguage('fr-CA')).toBe('fr')
+    expect(resolveLanguage('es-MX')).toBe('es')
     expect(resolveLanguage(undefined)).toBe('en')
     expect(resolveLanguage('')).toBe('en')
     for (const lang of SUPPORTED_LANGUAGES) {

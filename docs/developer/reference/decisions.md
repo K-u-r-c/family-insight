@@ -391,3 +391,10 @@ Details:
   when they name one month in every language (`mar`, `sept.`; `jui` is refused).
 - **`MM/DD/YYYY` only as a fallback** in English (and in CSV, which has no language): when the
   day-first reading is impossible (`05/23/1890`), never when both readings are valid.
+
+## One Portuguese locale, Brazilian (2026-10, issue #75)
+
+`pt` is written in Brazilian Portuguese – the larger user base – with Brazilian vocabulary
+(_arquivo_, _planilha_, _sobrenome_), and `pt-PT` (like any `pt-*` tag) maps to it. CSV import also
+accepts the European words (`apelido`, `nome de solteira`). A separate `pt-PT` locale can be added
+later without changing anything else.

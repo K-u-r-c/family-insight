@@ -26,6 +26,12 @@ const LANGUAGES: { code: string; name: string; welcome: string; menu: string[] }
     name: 'Italiano',
     welcome: 'Ti diamo il benvenuto in Family Insight',
     menu: ['File', 'Modifica', 'Visualizza', 'Aiuto']
+  },
+  {
+    code: 'pt',
+    name: 'Português',
+    welcome: 'Boas-vindas ao Family Insight',
+    menu: ['Arquivo', 'Editar', 'Exibir', 'Ajuda']
   }
 ]
 
