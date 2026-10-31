@@ -437,6 +437,7 @@ export function TreeCanvas({ onAddPerson }: { onAddPerson: () => void }): React.
     <div
       ref={ref}
       className={styles.canvas}
+      data-tree-canvas
       data-panning={panning || undefined}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}

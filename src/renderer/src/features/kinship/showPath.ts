@@ -35,4 +35,9 @@ export function showPathOnTree(path: readonly PersonId[]): void {
   }
   view.setPath(path)
   useWorkspaceUi.getState().setView('tree')
+  // Focus the tree (after the calculator has given focus back to its trigger), so Esc hides the
+  // path and the arrow keys move from there.
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => document.querySelector<HTMLElement>('[data-tree-canvas]')?.focus())
+  )
 }

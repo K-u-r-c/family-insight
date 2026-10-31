@@ -55,6 +55,17 @@ for (const [language, s] of Object.entries(CASES)) {
     }
     await expect(onPath.filter({ hasText: 'Aleksandra Lis' })).toHaveCount(1)
     await expect(canvas.locator('[data-dimmed]').first()).toBeVisible()
+    // Focus is on the tree, so Esc hides the path; the bar's button does too.
+    await expect(canvas).toBeFocused()
+    await page.keyboard.press('Escape')
+    await expect(onPath).toHaveCount(0)
+    await page.getByRole('button', { name: s.title }).click()
+    await page
+      .getByRole('dialog', { name: s.title })
+      .getByRole('button', { name: s.showOnTree })
+      .click()
+    // Reopened from the toolbar: the selected person and the root person (grandson → grandfather).
+    await expect(onPath).toHaveCount(3)
     await page.getByRole('button', { name: s.hidePath }).click()
     await expect(onPath).toHaveCount(0)
     await closeApp(app)
