@@ -556,3 +556,14 @@ later without changing anything else.
   unless a test asks for a first launch (`firstRun: true`) – so the offer does not appear in every
   test and picture.
 - Upgrading users see the offer once on the welcome screen (it is an offer, not a forced tour).
+
+## One-time feature hints (2026-10, issue #110)
+
+- **Inside the dialog, not over it**: most features with a hint are modal dialogs, which the
+  browser draws in the top layer above any overlay, so a hint is a note at the top of the dialog
+  (`Dialog`'s `hint` slot, `<Hint id>`), never taking the focus. The map gets it in its side panel;
+  the Tapestry switch (made from a menu, no dialog) uses a one-step overlay tour (`hint:style`).
+- **Once each, one per start**: `src/core/hints.ts` decides; a hint is recorded in
+  `settings.tips` when it appears and stays for that dialog only. `settings.showTips` turns them
+  off; "Reset tips and guided tours" clears hints and tours and turns tips back on.
+- **Off in tests and screenshots** unless a test asks (`tips: true`), like the first-run tour.

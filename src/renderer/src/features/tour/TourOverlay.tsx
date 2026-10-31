@@ -2,7 +2,8 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Button, IconButton } from '@renderer/components/ui'
-import { useTour } from './tourStore'
+import { useSettings } from '@renderer/store/settings'
+import { HINT_PREFIX, useTour } from './tourStore'
 import { TOURS, tourContext } from './tours'
 import styles from './TourOverlay.module.css'
 
@@ -139,6 +140,8 @@ export function TourOverlay(): React.JSX.Element | null {
 
   if (!position || !steps || !step) return null
   const last = position.index === steps.length - 1
+  // A hint shown through the overlay: one step, "Got it" / "Don't show tips".
+  const hint = position.tourId.startsWith(HINT_PREFIX)
   const box = place(target, popSize, view)
   return (
     <div className={styles.layer} data-tour-overlay>
@@ -163,7 +166,9 @@ export function TourOverlay(): React.JSX.Element | null {
       >
         <div className={styles.head}>
           <span className={styles.counter}>
-            {t('tour.step', { current: position.index + 1, total: steps.length })}
+            {hint
+              ? t('hint.label')
+              : t('tour.step', { current: position.index + 1, total: steps.length })}
           </span>
           <IconButton
             icon={X}
@@ -179,15 +184,28 @@ export function TourOverlay(): React.JSX.Element | null {
           {t(step.body as never)}
         </p>
         <div className={styles.actions}>
-          <Button variant="ghost" size="sm" onClick={() => send({ type: 'skip' })}>
-            {t('tour.skip')}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              if (hint) void useSettings.getState().update({ showTips: false })
+              send({ type: 'skip' })
+            }}
+          >
+            {hint ? t('hint.dontShow') : t('tour.skip')}
           </Button>
           <span className={styles.spacer} />
-          <Button size="sm" disabled={position.index === 0} onClick={() => send({ type: 'back' })}>
-            {t('tour.back')}
-          </Button>
+          {!hint && (
+            <Button
+              size="sm"
+              disabled={position.index === 0}
+              onClick={() => send({ type: 'back' })}
+            >
+              {t('tour.back')}
+            </Button>
+          )}
           <Button variant="primary" size="sm" onClick={() => send({ type: 'next' })}>
-            {last ? t('tour.done') : t('tour.next')}
+            {hint ? t('hint.gotIt') : last ? t('tour.done') : t('tour.next')}
           </Button>
         </div>
       </div>

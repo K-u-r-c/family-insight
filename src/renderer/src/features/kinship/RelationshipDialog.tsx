@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowLeftRight, ChevronRight, Waypoints } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Hint } from '@renderer/features/hints/Hint'
 import { displayName, isLiving } from '@core/model/tree'
 import type { Person, PersonId } from '@core/model/types'
 import { Button, Dialog, IconButton } from '@renderer/components/ui'
@@ -96,6 +97,7 @@ export function RelationshipDialog({ onClose }: { onClose: () => void }): React.
         title={t('kinship.title')}
         description={t('kinship.description')}
         wide
+        hint={<Hint id="kinship" />}
         footer={
           <>
             <Button onClick={onClose}>{t('common.close')}</Button>

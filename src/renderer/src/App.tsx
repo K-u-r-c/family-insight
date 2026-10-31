@@ -47,6 +47,7 @@ import { openCsvFormatDocs, saveCsvTemplate } from './features/csv/csvHelp'
 import { TourOverlay } from './features/tour/TourOverlay'
 import { useTour } from './features/tour/tourStore'
 import { FIRST_RUN } from './features/tour/tours'
+import { useStyleHint } from './features/hints/useStyleHint'
 
 const Gallery = lazy(() =>
   import('./features/gallery/Gallery').then((m) => ({ default: m.Gallery }))
@@ -64,6 +65,7 @@ function useHash(): string {
 
 export function App(): React.JSX.Element {
   useApplyTheme()
+  useStyleHint()
   useEffect(() => initUpdates(), [])
   useGlobalShortcuts()
   useFileIntegration()

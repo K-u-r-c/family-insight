@@ -61,3 +61,9 @@ The tour builds your first tree with you: it points at one thing at a time and m
 <Screenshot name="tour-add-parent" alt="The guided tour pointing at the Father and Mother buttons in the details panel, with the step Add a parent" />
 
 Start it again any time with **Help → Show guided tour** in the menu bar. Finished or skipped tours are not offered again – **Settings → Reset tips and guided tours** brings them back.
+
+### Tips
+
+The first time you open some features – the map, the relationship calculator, sources, a photo’s details, CSV or GEDCOM import, statistics or the Tapestry style – a short tip explains what to do there. Each tip appears once, at most one per start of the program; **Got it** closes it and **Don’t show tips** turns tips off (**Settings → Show tips**).
+
+<Screenshot name="feature-hint" alt="The Statistics window with a tip at the top: Click a bar to show those people on the tree, with the buttons Got it and Don’t show tips" />

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Download, ImageIcon, Trash2, UserPlus, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Hint } from '@renderer/features/hints/Hint'
 import { mediaUsage, peopleOfMedia } from '@core/model/media'
 import { displayName } from '@core/model/tree'
 import type { MediaItem } from '@core/model/types'
@@ -75,6 +76,7 @@ function DetailsDialog({ item }: { item: MediaItem }): React.JSX.Element | null 
 
   return (
     <Dialog
+      hint={<Hint id="media" />}
       open
       wide
       onClose={close}

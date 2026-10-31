@@ -28,6 +28,7 @@
     "style": "Style",
     "title": "Paramètres",
     "autosave": "Enregistrer automatiquement",
+    "showTips": "Afficher les astuces",
     "density": "Cartes",
     "densityOption": {
       "comfortable": "Confortables",
@@ -1086,6 +1087,22 @@
         "title": "Le garder en sécurité",
         "body": "Enregistrez votre arbre depuis ce menu ; ensuite il s’enregistre tout seul et garde des sauvegardes. Aide → Afficher la visite guidée relance cette visite."
       }
+    }
+  },
+  "hint": {
+    "label": "Astuce",
+    "gotIt": "Compris",
+    "dontShow": "Ne plus afficher les astuces",
+    "map": "Chaque lieu avec des coordonnées est un marqueur. Le panneau permet de choisir les lieux de qui et les années que vous voyez, et de lire la liste des lieux.",
+    "kinship": "Choisissez deux personnes pour voir leur lien de parenté. Afficher dans l’arbre met en évidence le chemin entre elles.",
+    "sources": "Ajoutez une source une seule fois – un registre, un livre, un site web – et citez-la pour n’importe quel fait avec le petit bouton de citation à côté.",
+    "media": "Une photo ou un document peut être montré sur plusieurs personnes : ajoutez-les sous Affiché pour. Un titre, une date et un lieu aident à le retrouver.",
+    "csvImport": "Vérifiez avant l’import que chaque colonne correspond au bon champ ; les colonnes sans correspondance sont ignorées.",
+    "gedcom": "GEDCOM est le format d’échange de la plupart des logiciels de généalogie. Lisez ensuite le résumé pour voir ce qui n’a pas pu être repris.",
+    "stats": "Cliquez sur une barre pour afficher ces personnes dans l’arbre. La liste en bas montre à qui il manque encore des dates ou des parents.",
+    "style": {
+      "title": "Le style Tapisserie",
+      "body": "Les images et les impressions peuvent aussi l’utiliser : choisissez le style dans Exporter une image. Revenez en arrière à tout moment avec Paramètres → Style."
     }
   }
 }

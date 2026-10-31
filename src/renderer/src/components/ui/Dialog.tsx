@@ -19,6 +19,8 @@ export interface DialogProps {
   children?: ReactNode
   /** Element to focus on open (defaults to the first focusable element). */
   initialFocus?: React.RefObject<HTMLElement | null>
+  /** A one-time tip shown at the top of the content the first time the dialog opens. */
+  hint?: ReactNode
 }
 
 /**
@@ -35,7 +37,8 @@ export function Dialog({
   footer,
   wide,
   children,
-  initialFocus
+  initialFocus,
+  hint
 }: DialogProps): React.JSX.Element | null {
   const { t } = useTranslation()
   const ref = useRef<HTMLDialogElement>(null)
@@ -97,6 +100,7 @@ export function Dialog({
       </div>
       {children && (
         <div className={styles.body} data-dialog-body>
+          {hint}
           {children}
         </div>
       )}

@@ -73,8 +73,13 @@ export function SettingsMenu(): React.JSX.Element {
       onSelect: () => void update({ onlineMaps: !settings.onlineMaps })
     },
     {
+      label: t('settings.showTips'),
+      checked: settings.showTips,
+      onSelect: () => void update({ showTips: !settings.showTips })
+    },
+    {
       label: t('tour.reset'),
-      onSelect: () => void update({ tours: [] })
+      onSelect: () => void update({ tours: [], tips: [], showTips: true })
     },
     { type: 'separator' },
     { type: 'heading', label: t('updates.title') },

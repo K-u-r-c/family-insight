@@ -60,5 +60,9 @@ export const TOURS: Record<string, TourStepDef[]> = {
     step('views', 'view-modes'),
     step('search', 'search'),
     step('save', 'file-menu')
+  ],
+  // One-step tours used as hints where no dialog is open (see features/hints).
+  'hint:style': [
+    { id: 'style', target: 'settings', title: 'hint.style.title', body: 'hint.style.body' }
   ]
 }

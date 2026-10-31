@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { BookOpen, Library, Plus, Search, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Hint } from '@renderer/features/hints/Hint'
 import { getCitationsForSource } from '@core/model/sources'
 import type { Source } from '@core/model/types'
 import { compareText, matchesQuery } from '@core/text'
@@ -97,6 +98,7 @@ export function SourcesDialog({ onClose }: { onClose: () => void }): React.JSX.E
     <Dialog
       open
       wide
+      hint={<Hint id="sources" />}
       onClose={onClose}
       icon={Library}
       title={t('sources.title')}

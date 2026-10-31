@@ -105,6 +105,18 @@ for (const theme of ['light', 'dark'] as const) {
   })
 }
 
+for (const theme of ['light', 'dark'] as const) {
+  test(`no serious accessibility violations with a hint open (${theme})`, async () => {
+    const file = join(tempDir(), 'kowalscy.finsight')
+    copyFileSync(join(__dirname, 'fixtures', 'kowalscy.finsight'), file)
+    const { app, page } = await launch({ args: [file], theme, tips: true })
+    await page.getByRole('button', { name: 'Statistics' }).click()
+    await expect(page.getByRole('note', { name: 'Tip' })).toBeVisible()
+    expect(await seriousViolations(page)).toEqual([])
+    await closeApp(app)
+  })
+}
+
 test('keyboard: shortcut help, skip link and screen reader announcements', async () => {
   const file = join(tempDir(), 'kowalscy.finsight')
   copyFileSync(join(__dirname, 'fixtures', 'kowalscy.finsight'), file)

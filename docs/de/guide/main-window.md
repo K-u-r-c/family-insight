@@ -65,3 +65,9 @@ Die Tour legt mit Ihnen den ersten Stammbaum an: Sie zeigt auf eine Sache nach d
 <Screenshot name="tour-add-parent" alt="Die geführte Tour zeigt auf die Schaltflächen Vater und Mutter im Detailbereich, mit dem Schritt Einen Elternteil hinzufügen" />
 
 Jederzeit wieder starten mit **Hilfe → Geführte Tour anzeigen** in der Menüleiste. Beendete oder übersprungene Touren werden nicht erneut angeboten – **Einstellungen → Tipps und geführte Touren zurücksetzen** holt sie zurück.
+
+### Tipps
+
+Wenn Sie manche Funktionen zum ersten Mal öffnen – die Karte, den Verwandtschaftsrechner, die Quellen, die Details eines Fotos, den CSV- oder GEDCOM-Import, die Statistik oder den Stil Gobelin –, erklärt ein kurzer Tipp, was Sie dort tun können. Jeder Tipp erscheint einmal, höchstens einer pro Programmstart; **Verstanden** schließt ihn, **Keine Tipps zeigen** schaltet die Tipps aus (**Einstellungen → Tipps zeigen**).
+
+<Screenshot name="feature-hint" alt="Das Fenster Statistik mit einem Tipp oben: Klicken Sie auf einen Balken, um diese Personen im Stammbaum zu zeigen, mit den Schaltflächen Verstanden und Keine Tipps zeigen" />

@@ -28,6 +28,7 @@
     "style": "Stil",
     "title": "Einstellungen",
     "autosave": "Automatisch speichern",
+    "showTips": "Tipps zeigen",
     "density": "Karten",
     "densityOption": {
       "comfortable": "Großzügig",
@@ -1038,6 +1039,22 @@
         "title": "Sicher aufbewahren",
         "body": "Speichern Sie den Stammbaum über dieses Menü; danach speichert er automatisch und legt Sicherungen an. Hilfe → Geführte Tour anzeigen holt diese Tour zurück."
       }
+    }
+  },
+  "hint": {
+    "label": "Tipp",
+    "gotIt": "Verstanden",
+    "dontShow": "Keine Tipps zeigen",
+    "map": "Jeder Ort mit Koordinaten ist eine Markierung. Im Bereich wählen Sie, wessen Orte und welche Jahre Sie sehen, und lesen die Liste der Orte.",
+    "kinship": "Wählen Sie zwei Personen, um zu sehen, wie sie verwandt sind. Im Stammbaum zeigen hebt den Weg zwischen ihnen hervor.",
+    "sources": "Legen Sie eine Quelle einmal an – ein Kirchenbuch, ein Buch, eine Website – und zitieren Sie sie bei jedem Fakt mit dem kleinen Zitat-Knopf daneben.",
+    "media": "Ein Foto oder Dokument kann bei mehreren Personen erscheinen: Fügen Sie sie unter Angezeigt bei hinzu. Titel, Datum und Ort helfen, es später zu finden.",
+    "csvImport": "Prüfen Sie vor dem Import, ob jede Spalte dem richtigen Feld zugeordnet ist; Spalten ohne Zuordnung werden ausgelassen.",
+    "gedcom": "GEDCOM ist das Austauschformat der meisten Genealogieprogramme. Lesen Sie danach die Zusammenfassung – sie zeigt, was nicht übernommen werden konnte.",
+    "stats": "Klicken Sie auf einen Balken, um diese Personen im Stammbaum zu zeigen. Die Liste unten zeigt, wem noch Daten oder Eltern fehlen.",
+    "style": {
+      "title": "Der Stil Gobelin",
+      "body": "Auch Bilder und Ausdrucke können ihn verwenden: Wählen Sie den Stil unter Bild exportieren. Zurück jederzeit über Einstellungen → Stil."
     }
   }
 }

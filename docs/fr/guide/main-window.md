@@ -65,3 +65,9 @@ La visite crée avec vous votre premier arbre : elle montre une chose à la fo
 <Screenshot name="tour-add-parent" alt="La visite guidée montrant les boutons Père et Mère dans le panneau des détails, avec l’étape Ajouter un parent" />
 
 Relancez-la à tout moment avec **Aide → Afficher la visite guidée** dans la barre de menus. Les visites terminées ou passées ne sont plus proposées – **Paramètres → Réinitialiser les astuces et les visites guidées** les fait revenir.
+
+### Astuces
+
+La première fois que vous ouvrez certaines fonctions – la carte, le calculateur de parenté, les sources, les détails d’une photo, l’import CSV ou GEDCOM, les statistiques ou le style Tapisserie –, une courte astuce explique quoi y faire. Chaque astuce n’apparaît qu’une fois, au plus une par démarrage du logiciel ; **Compris** la ferme et **Ne plus afficher les astuces** les désactive (**Paramètres → Afficher les astuces**).
+
+<Screenshot name="feature-hint" alt="La fenêtre Statistiques avec une astuce en haut : Cliquez sur une barre pour afficher ces personnes dans l’arbre, avec les boutons Compris et Ne plus afficher les astuces" />

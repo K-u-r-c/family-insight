@@ -28,6 +28,7 @@
     "style": "Style",
     "title": "Settings",
     "autosave": "Save automatically",
+    "showTips": "Show tips",
     "density": "Cards",
     "densityOption": {
       "comfortable": "Comfortable",
@@ -1038,6 +1039,22 @@
         "title": "Keep it safe",
         "body": "Save your tree from this menu; after that it saves automatically and keeps backups. Help → Show guided tour brings this tour back."
       }
+    }
+  },
+  "hint": {
+    "label": "Tip",
+    "gotIt": "Got it",
+    "dontShow": "Don’t show tips",
+    "map": "Each place with coordinates is a marker. Use the panel to choose whose places and which years you see, and to read the list of places.",
+    "kinship": "Pick two people to see how they are related. Show on tree highlights the path between them.",
+    "sources": "Add a source once – a register, a book, a website – and cite it from any fact with the small quote button next to it.",
+    "media": "A photo or document can be shown on several people: add them under Shown on. A title, date and place help you find it later.",
+    "csvImport": "Check that every column is matched to the right field before importing; columns without a match are left out.",
+    "gedcom": "GEDCOM is the exchange format of most genealogy programs. Read the summary afterwards for anything that could not be taken over.",
+    "stats": "Click a bar to show those people on the tree. The list at the bottom shows who still needs dates or parents.",
+    "style": {
+      "title": "The Tapestry style",
+      "body": "Pictures and prints can use it too: choose the style in Export Image. Switch back any time in Settings → Style."
     }
   }
 }

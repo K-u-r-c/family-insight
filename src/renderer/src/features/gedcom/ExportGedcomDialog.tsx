@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FileDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Hint } from '@renderer/features/hints/Hint'
 import { exportGedcom } from '@core/io/gedcom/export'
 import { Button, Checkbox, Dialog, SegmentedControl, toast } from '@renderer/components/ui'
 import { currentLibrary } from '@renderer/services/media'
@@ -48,6 +49,7 @@ export function ExportGedcomDialog({ onClose }: { onClose: () => void }): React.
     <Dialog
       open
       onClose={onClose}
+      hint={<Hint id="gedcom" />}
       icon={FileDown}
       title={t('gedcom.exportTitle')}
       description={t('gedcom.exportDescription')}

@@ -16,6 +16,8 @@ interface LaunchOptions {
   style?: 'modern' | 'tapestry'
   /** A first launch: the guided tour is offered (otherwise it counts as seen). */
   firstRun?: boolean
+  /** Show the one-time feature hints (off in tests unless asked). */
+  tips?: boolean
   args?: string[]
   userData?: string
   /** Show the window (frame timing needs a visible window). */
@@ -34,7 +36,8 @@ export async function launch(options: LaunchOptions = {}): Promise<Launched> {
         language: options.language ?? 'en',
         theme: options.theme ?? 'light',
         style: options.style ?? 'modern',
-        tours: options.firstRun ? [] : ['first-run']
+        tours: options.firstRun ? [] : ['first-run'],
+        showTips: options.tips ?? false
       })
     )
   }

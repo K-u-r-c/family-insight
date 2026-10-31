@@ -10,7 +10,11 @@ interface TourStore {
   send: (event: TourEvent<TourContext>) => void
 }
 
+/** Hints shown through the overlay are tours named `hint:<id>`; they count as shown hints. */
+export const HINT_PREFIX = 'hint:'
+
 function remember(tourId: string): void {
+  if (tourId.startsWith(HINT_PREFIX)) return // recorded when the hint was claimed
   const { settings, update } = useSettings.getState()
   void update({ tours: markTourSeen(settings.tours, tourId) })
 }

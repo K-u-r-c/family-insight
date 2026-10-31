@@ -28,6 +28,7 @@
     "style": "Styl",
     "title": "Ustawienia",
     "autosave": "Zapisuj automatycznie",
+    "showTips": "Pokazuj wskazówki",
     "density": "Karty",
     "densityOption": {
       "comfortable": "Wygodne",
@@ -1134,6 +1135,22 @@
         "title": "Zadbaj o zapis",
         "body": "Zapisz drzewo z tego menu – potem zapisuje się samo i tworzy kopie zapasowe. Pomoc → Pokaż przewodnik przywraca ten przewodnik."
       }
+    }
+  },
+  "hint": {
+    "label": "Wskazówka",
+    "gotIt": "Rozumiem",
+    "dontShow": "Nie pokazuj wskazówek",
+    "map": "Każde miejsce ze współrzędnymi to znacznik. W panelu wybierzesz, czyje miejsca i z których lat widzisz, i przeczytasz listę miejsc.",
+    "kinship": "Wybierz dwie osoby, żeby zobaczyć, jak są spokrewnione. Pokaż na drzewie wyróżnia ścieżkę między nimi.",
+    "sources": "Dodaj źródło raz – księgę metrykalną, książkę, stronę – i powołuj się na nie przy dowolnym fakcie małym przyciskiem cytatu obok.",
+    "media": "Zdjęcie lub dokument można pokazać przy kilku osobach: dodaj je w sekcji Widoczne u. Tytuł, data i miejsce pomogą je potem znaleźć.",
+    "csvImport": "Przed importem sprawdź, czy każda kolumna trafia do właściwego pola; kolumny bez dopasowania są pomijane.",
+    "gedcom": "GEDCOM to format wymiany większości programów genealogicznych. Po imporcie przeczytaj podsumowanie – pokaże, czego nie udało się przenieść.",
+    "stats": "Kliknij słupek, żeby pokazać te osoby na drzewie. Lista na dole pokazuje, komu brakuje jeszcze dat lub rodziców.",
+    "style": {
+      "title": "Styl Gobelin",
+      "body": "Obrazy i wydruki też mogą go używać: wybierz styl w oknie Eksport obrazu. Wrócisz w każdej chwili przez Ustawienia → Styl."
     }
   }
 }

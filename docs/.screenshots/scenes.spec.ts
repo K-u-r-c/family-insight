@@ -1455,6 +1455,19 @@ scene(
   firstRun
 )
 
+scene(
+  'feature-hint',
+  async (s) => {
+    await openSample(s)
+    await s.page.getByRole('button', { name: s.t('stats.title') }).click()
+    const note = s.page.getByRole('note', { name: s.t('hint.label') })
+    await note.waitFor()
+    await s.page.waitForTimeout(700)
+    return { clip: [dialog(s).getByRole('heading', { level: 2 }), note], pad: 24 }
+  },
+  { settings: { showTips: true } }
+)
+
 scene('unsaved-status', async (s) => {
   await openSample(s)
   await setRoot(s, 'Lena Kowalska')

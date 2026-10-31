@@ -105,6 +105,7 @@ export async function start(variant: Variant, options: StartOptions = {}): Promi
         language: variant.lang,
         theme: variant.theme,
         tours: ['first-run'],
+        showTips: false,
         ...options.settings
       })
     )

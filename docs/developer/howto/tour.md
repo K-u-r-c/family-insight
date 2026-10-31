@@ -58,3 +58,17 @@ seen, and **Help → Show guided tour** (menu id `tour`, action `help:tour`) sta
   `getBoundingClientRect`).
 - e2e: `e2e/tour.spec.ts` (`launch({ firstRun: true })` for a fresh profile – other tests count the
   tour as seen); axe with the overlay open: `e2e/a11y.spec.ts`.
+
+## One-time hints
+
+For a single tip the first time a feature opens, use a **hint** instead of a tour:
+
+1. Add the id to `HINTS` in `src/core/hints.ts` and the text `hint.<id>` to every locale file.
+2. In a dialog pass `hint={<Hint id="<id>" />}` to `Dialog`; elsewhere render `<Hint id="<id>" />`
+   at the top of the view. Hints work inside modal dialogs and never take the focus.
+3. Where no dialog is involved and something on screen should be pointed at, add a one-step tour
+   named `hint:<id>` in `tours.ts` and start it after `useHints.getState().claim('<id>')`
+   (see `useStyleHint`).
+
+Each hint appears once, at most one per start, and not when **Show tips** is off. Tests and
+screenshots run with tips off unless they pass `tips: true` / `settings: { showTips: true }`.

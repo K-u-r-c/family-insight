@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { AlertTriangle, FileUp, XCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Hint } from '@renderer/features/hints/Hint'
 import { decodeText, TEXT_ENCODINGS, type TextEncodingName } from '@core/file/encoding'
 import { CSV_COLUMNS, type CsvColumn } from '@core/io/csv/columns'
 import { importCsv } from '@core/io/csv/import'
@@ -97,6 +98,7 @@ export function ImportCsvDialog({ onClose }: { onClose: () => void }): React.JSX
     <Dialog
       open
       wide
+      hint={<Hint id="csvImport" />}
       onClose={onClose}
       icon={FileUp}
       title={t('csv.importTitle', { name: source.name })}

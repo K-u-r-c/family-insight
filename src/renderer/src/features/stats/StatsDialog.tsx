@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { BarChart3 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Hint } from '@renderer/features/hints/Hint'
 import { displayName } from '@core/model/tree'
 import { computeStats, type CountItem } from '@core/stats'
 import { Dialog } from '@renderer/components/ui'
@@ -118,6 +119,7 @@ export function StatsDialog({ onClose }: { onClose: () => void }): React.JSX.Ele
     <Dialog
       open
       wide
+      hint={<Hint id="stats" />}
       onClose={onClose}
       icon={BarChart3}
       title={t('stats.title')}

@@ -28,6 +28,7 @@
     "style": "Estilo",
     "title": "Configurações",
     "autosave": "Salvar automaticamente",
+    "showTips": "Mostrar dicas",
     "density": "Cartões",
     "densityOption": {
       "comfortable": "Confortável",
@@ -1086,6 +1087,22 @@
         "title": "Guarde com segurança",
         "body": "Salve sua árvore por este menu; depois ela é salva sozinha e mantém cópias de segurança. Ajuda → Mostrar a visita guiada traz esta visita de volta."
       }
+    }
+  },
+  "hint": {
+    "label": "Dica",
+    "gotIt": "Entendi",
+    "dontShow": "Não mostrar dicas",
+    "map": "Cada lugar com coordenadas é um marcador. No painel você escolhe de quem são os lugares e quais anos vê, e lê a lista de lugares.",
+    "kinship": "Escolha duas pessoas para ver qual é o parentesco. Mostrar na árvore destaca o caminho entre elas.",
+    "sources": "Adicione uma fonte uma vez só – um registro, um livro, um site – e cite-a em qualquer dado com o pequeno botão de citação ao lado.",
+    "media": "Uma foto ou um documento pode aparecer em várias pessoas: adicione-as em Aparece em. Um título, uma data e um lugar ajudam a encontrá-lo depois.",
+    "csvImport": "Antes de importar, confira se cada coluna corresponde ao campo certo; colunas sem correspondência ficam de fora.",
+    "gedcom": "GEDCOM é o formato de troca da maioria dos programas de genealogia. Depois leia o resumo: ele mostra o que não pôde ser trazido.",
+    "stats": "Clique numa barra para mostrar essas pessoas na árvore. A lista embaixo mostra a quem ainda faltam datas ou pais.",
+    "style": {
+      "title": "O estilo Tapeçaria",
+      "body": "Imagens e impressões também podem usá-lo: escolha o estilo em Exportar imagem. Volte quando quiser em Configurações → Estilo."
     }
   }
 }

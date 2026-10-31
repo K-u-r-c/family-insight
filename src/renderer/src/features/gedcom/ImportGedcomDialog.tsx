@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { AlertTriangle, FileUp } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Hint } from '@renderer/features/hints/Hint'
 import { decodeGedcom, GEDCOM_ENCODINGS, type GedcomEncoding } from '@core/io/gedcom/encoding'
 import { readGedzip } from '@core/io/gedcom/gedzip'
 import { attachMedia, importGedcom } from '@core/io/gedcom/import'
@@ -109,6 +110,7 @@ export function ImportGedcomDialog({ onClose }: { onClose: () => void }): React.
     <Dialog
       open
       wide
+      hint={<Hint id="gedcom" />}
       onClose={onClose}
       icon={FileUp}
       title={t('gedcom.importTitle', { name: source.name })}

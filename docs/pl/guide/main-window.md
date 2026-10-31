@@ -63,3 +63,9 @@ Przewodnik buduje z Tobą pierwsze drzewo: wskazuje jedną rzecz naraz i sam prz
 <Screenshot name="tour-add-parent" alt="Przewodnik wskazujący przyciski Ojciec i Matka w panelu szczegółów, z krokiem Dodaj rodzica" />
 
 Uruchomisz go ponownie w każdej chwili przez **Pomoc → Pokaż przewodnik** na pasku menu. Ukończone lub pominięte przewodniki nie pojawiają się same – **Ustawienia → Przywróć wskazówki i przewodniki** przywraca je.
+
+### Wskazówki
+
+Przy pierwszym otwarciu niektórych funkcji – mapy, kalkulatora pokrewieństwa, źródeł, szczegółów zdjęcia, importu CSV lub GEDCOM, statystyk albo stylu Gobelin – krótka wskazówka podpowiada, co tam zrobić. Każda pojawia się raz, najwyżej jedna przy jednym uruchomieniu programu; **Rozumiem** ją zamyka, a **Nie pokazuj wskazówek** wyłącza wskazówki (**Ustawienia → Pokazuj wskazówki**).
+
+<Screenshot name="feature-hint" alt="Okno Statystyki ze wskazówką na górze: Kliknij słupek, żeby pokazać te osoby na drzewie, z przyciskami Rozumiem i Nie pokazuj wskazówek" />

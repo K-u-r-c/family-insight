@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { Globe, ImageDown, MapPin, MapPinOff, Route } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Hint } from '@renderer/features/hints/Hint'
 import {
   filterFacts,
   generations,
@@ -139,6 +140,7 @@ export default function MapView(): React.JSX.Element | null {
   return (
     <div className={styles.view}>
       <aside className={styles.panel} aria-label={t('map.panel')}>
+        <Hint id="map" />
         <section aria-labelledby="map-show">
           <h3 id="map-show" className={styles.heading}>
             {t('map.show')}

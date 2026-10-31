@@ -323,6 +323,24 @@
     "ru-light": [395, 720],
     "ru-dark": [395, 720]
   },
+  "feature-hint": {
+    "en-light": [835, 191],
+    "en-dark": [835, 191],
+    "pl-light": [835, 191],
+    "pl-dark": [835, 191],
+    "de-light": [835, 211],
+    "de-dark": [835, 211],
+    "fr-light": [835, 211],
+    "fr-dark": [835, 211],
+    "es-light": [835, 211],
+    "es-dark": [835, 211],
+    "it-light": [835, 211],
+    "it-dark": [835, 211],
+    "pt-light": [835, 211],
+    "pt-dark": [835, 211],
+    "ru-light": [835, 211],
+    "ru-dark": [835, 211]
+  },
   "file-menu": {
     "en-light": [225, 488],
     "en-dark": [225, 488],

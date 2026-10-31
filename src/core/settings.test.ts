@@ -36,6 +36,15 @@ describe('settings', () => {
     expect(sanitizeSettings({ tours: 'basics' }, d, isLang).tours).toEqual([])
   })
 
+  it('keeps the shown hints and the tips switch', () => {
+    const d = defaultSettings('en')
+    expect(d.showTips).toBe(true)
+    const s = sanitizeSettings({ tips: ['map', 'map', 1], showTips: false }, d, isLang)
+    expect(s.tips).toEqual(['map'])
+    expect(s.showTips).toBe(false)
+    expect(sanitizeSettings({ showTips: 'no' }, d, isLang).showTips).toBe(true)
+  })
+
   it('returns defaults for garbage input', () => {
     const d = defaultSettings('en')
     expect(sanitizeSettings('nope', d, isLang)).toEqual(d)

@@ -62,3 +62,9 @@ La visita crea con te il tuo primo albero: indica una cosa alla volta e va avant
 <Screenshot name="tour-add-parent" alt="La visita guidata che indica i pulsanti Padre e Madre nel pannello dei dettagli, con il passo Aggiungi un genitore" />
 
 Riavviala quando vuoi con **Aiuto → Mostra la visita guidata** nella barra dei menu. Le visite finite o saltate non vengono riproposte: **Impostazioni → Ripristina suggerimenti e visite guidate** le fa tornare.
+
+### Suggerimenti
+
+La prima volta che apri alcune funzioni – la mappa, il calcolatore di parentela, le fonti, i dettagli di una foto, l'importazione CSV o GEDCOM, le statistiche o lo stile Arazzo – un breve suggerimento spiega cosa fare. Ogni suggerimento compare una volta, al massimo uno per avvio del programma; **Ho capito** lo chiude e **Non mostrare suggerimenti** li disattiva (**Impostazioni → Mostra suggerimenti**).
+
+<Screenshot name="feature-hint" alt="La finestra Statistiche con un suggerimento in alto: Clicca su una barra per mostrare quelle persone sull'albero, con i pulsanti Ho capito e Non mostrare suggerimenti" />

@@ -28,6 +28,7 @@
     "style": "Stile",
     "title": "Impostazioni",
     "autosave": "Salva automaticamente",
+    "showTips": "Mostra suggerimenti",
     "density": "Schede",
     "densityOption": {
       "comfortable": "Spaziose",
@@ -1086,6 +1087,22 @@
         "title": "Al sicuro",
         "body": "Salva l'albero da questo menu: poi si salva da solo e tiene copie di sicurezza. Aiuto → Mostra la visita guidata riapre questa visita."
       }
+    }
+  },
+  "hint": {
+    "label": "Suggerimento",
+    "gotIt": "Ho capito",
+    "dontShow": "Non mostrare suggerimenti",
+    "map": "Ogni luogo con coordinate è un indicatore. Nel pannello scegli di chi sono i luoghi e quali anni vedere, e leggi l’elenco dei luoghi.",
+    "kinship": "Scegli due persone per vedere come sono imparentate. Mostra nell’albero evidenzia il percorso tra loro.",
+    "sources": "Aggiungi una fonte una volta sola – un registro, un libro, un sito – e citala per qualsiasi dato con il piccolo pulsante di citazione accanto.",
+    "media": "Una foto o un documento può comparire su più persone: aggiungile sotto Mostrato per. Titolo, data e luogo aiutano a ritrovarlo.",
+    "csvImport": "Prima di importare controlla che ogni colonna corrisponda al campo giusto; le colonne senza corrispondenza vengono tralasciate.",
+    "gedcom": "GEDCOM è il formato di scambio della maggior parte dei programmi di genealogia. Dopo leggi il riepilogo: mostra ciò che non è stato possibile importare.",
+    "stats": "Clicca su una barra per mostrare quelle persone sull’albero. L’elenco in basso mostra a chi mancano ancora date o genitori.",
+    "style": {
+      "title": "Lo stile Arazzo",
+      "body": "Anche immagini e stampe possono usarlo: scegli lo stile in Esporta immagine. Torna indietro quando vuoi con Impostazioni → Stile."
     }
   }
 }

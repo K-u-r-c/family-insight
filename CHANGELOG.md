@@ -19,6 +19,9 @@ All notable changes to this project are documented here. The format follows
   with you – start a tree, add yourself and a parent – and then shows moving around, views, search
   and saving. It moves on by itself when a step is done; Esc skips it, **Help → Show guided tour**
   starts it again and **Settings → Reset tips and guided tours** offers it again.
+- **Tips**: the first time you open the map, the relationship calculator, sources, a photo's details,
+  CSV or GEDCOM import, statistics or the Tapestry style, a short tip explains it – once, at most
+  one per start; **Settings → Show tips** turns them off.
 
 ## [1.2.1] - 2026-10-31
 

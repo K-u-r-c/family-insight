@@ -62,6 +62,9 @@ export interface Settings {
   panels: PanelSettings
   /** Guided tours the user finished or skipped (not offered again). */
   tours: string[]
+  /** One-time feature hints already shown, and whether hints are shown at all. */
+  tips: string[]
+  showTips: boolean
 }
 
 export const MAX_RECENT_FILES = 10
@@ -93,9 +96,18 @@ export function defaultSettings(language: string): Settings {
     mapTileUrl: DEFAULT_TILE_URL,
     updates: { checkAutomatically: true },
     panels: { sidebarOpen: true, sidebarWidth: 280, detailsWidth: 380 },
-    tours: []
+    tours: [],
+    tips: [],
+    showTips: true
   }
 }
+
+/** A short list of unique short strings (tour and hint names). */
+const shortNames = (list: unknown[]): string[] =>
+  [...new Set(list.filter((t): t is string => typeof t === 'string' && t.length <= 40))].slice(
+    0,
+    50
+  )
 
 const isObj = (v: unknown): v is Record<string, unknown> =>
   typeof v === 'object' && v !== null && !Array.isArray(v)
@@ -112,7 +124,12 @@ export function sanitizeSettings(
   isLanguage: (v: unknown) => boolean
 ): Settings {
   const src = isObj(raw) ? raw : {}
-  const out: Settings = { ...fallback, panels: { ...fallback.panels }, tours: [...fallback.tours] }
+  const out: Settings = {
+    ...fallback,
+    panels: { ...fallback.panels },
+    tours: [...fallback.tours],
+    tips: [...fallback.tips]
+  }
   if (isLanguage(src.language)) out.language = src.language as string
   if (typeof src.onlinePlaceLookup === 'boolean') out.onlinePlaceLookup = src.onlinePlaceLookup
   if (typeof src.onlineMaps === 'boolean') out.onlineMaps = src.onlineMaps
@@ -164,10 +181,10 @@ export function sanitizeSettings(
   } else if (src.windowBounds === null) {
     delete out.windowBounds
   }
+  if (Array.isArray(src.tips)) out.tips = shortNames(src.tips)
+  if (typeof src.showTips === 'boolean') out.showTips = src.showTips
   if (Array.isArray(src.tours)) {
-    out.tours = [
-      ...new Set(src.tours.filter((t): t is string => typeof t === 'string' && t.length <= 40))
-    ].slice(0, 50)
+    out.tours = shortNames(src.tours)
   }
   if (isObj(src.panels)) {
     const p = src.panels

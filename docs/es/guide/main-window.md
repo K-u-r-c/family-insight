@@ -63,3 +63,9 @@ La visita crea con usted su primer árbol: señala una cosa cada vez y avanza so
 <Screenshot name="tour-add-parent" alt="La visita guiada señalando los botones Padre y Madre del panel de detalles, con el paso Añada un padre o una madre" />
 
 Vuelva a abrirla cuando quiera con **Ayuda → Mostrar la visita guiada** en la barra de menús. Las visitas terminadas o saltadas no se vuelven a ofrecer: **Configuración → Restablecer consejos y visitas guiadas** las recupera.
+
+### Consejos
+
+La primera vez que abre algunas funciones –el mapa, la calculadora de parentesco, las fuentes, los detalles de una foto, la importación CSV o GEDCOM, las estadísticas o el estilo Tapiz– un consejo breve explica qué hacer allí. Cada consejo aparece una vez, como mucho uno por inicio del programa; **Entendido** lo cierra y **No mostrar consejos** desactiva los consejos (**Configuración → Mostrar consejos**).
+
+<Screenshot name="feature-hint" alt="La ventana Estadísticas con un consejo arriba: Haga clic en una barra para mostrar esas personas en el árbol, con los botones Entendido y No mostrar consejos" />
