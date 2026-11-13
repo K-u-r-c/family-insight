@@ -39,6 +39,94 @@ const layoutOf = (nodes: LayoutNode[], edges: LayoutEdge[]): Layout => ({
 })
 const emptyTree = remarriageFixture()
 
+/** Gaps (#116) for the canvas sizes: siblings, cousins, more distant branches. */
+const GAPS = { sibling: 32, cousin: 132, branch: 220 }
+
+/** Gaps between neighbouring blocks (partners, hanging columns) on every row, by relation. */
+function neighbourGaps(
+  tree: FamilyTree,
+  l: Layout
+): { gap: number; relation: 'sibling' | 'cousin' | 'branch'; pair: string }[] {
+  const parents = new Map<string, string[]>()
+  const partners = new Set<string>()
+  for (const r of Object.values(tree.relationships)) {
+    if (r.type === 'parent-child')
+      parents.set(r.childId, [...(parents.get(r.childId) ?? []), r.parentId])
+    else partners.add(r.partnerIds.slice().sort().join('|'))
+  }
+  const up = (id: string, depth: number): Set<string> => {
+    let frontier = [id]
+    const out = new Set<string>()
+    for (let d = 0; d < depth; d++) {
+      frontier = frontier.flatMap((x) => parents.get(x) ?? [])
+      for (const p of frontier) out.add(p)
+    }
+    return out
+  }
+  const rows = new Map<number, LayoutNode[]>()
+  for (const n of l.nodes) rows.set(n.generation, [...(rows.get(n.generation) ?? []), n])
+  const out: { gap: number; relation: 'sibling' | 'cousin' | 'branch'; pair: string }[] = []
+  for (const row of rows.values()) {
+    row.sort((a, b) => a.x - b.x || a.y - b.y)
+    const blocks: LayoutNode[][] = []
+    for (const n of row) {
+      const last = blocks[blocks.length - 1]
+      const prev = last?.[last.length - 1]
+      const joined =
+        prev &&
+        (prev.x === n.x ||
+          (partners.has([prev.id, n.id].sort().join('|')) &&
+            n.x - (prev.x + prev.width) <= SIZES.partnerGap + 1))
+      if (joined) last!.push(n)
+      else blocks.push([n])
+    }
+    for (let i = 1; i < blocks.length; i++) {
+      const a = blocks[i - 1]!
+      const b = blocks[i]!
+      const near = (depth: number): boolean =>
+        a.some((x) => b.some((y) => [...up(x.id, depth)].some((p) => up(y.id, depth).has(p))))
+      const relation = near(1) ? 'sibling' : near(2) ? 'cousin' : 'branch'
+      const right = Math.max(...a.map((n) => n.x + n.width))
+      const left = Math.min(...b.map((n) => n.x))
+      // A hanging column's trunk sits left of its cards.
+      const trunk = b[0]!.stack ? 12 : 0
+      out.push({ gap: left - trunk - right, relation, pair: `${a.at(-1)!.id} / ${b[0]!.id}` })
+    }
+  }
+  return out
+}
+
+/** Horizontal lines of different parent groups at one height that end less than a family gap apart. */
+function busEndsTooClose(l: Layout): string[] {
+  const hs = l.edges
+    .filter((e) => e.type === 'child')
+    .flatMap((e) =>
+      e.points.slice(1).flatMap((p, i) => {
+        const q = e.points[i]!
+        return q.y === p.y && q.x !== p.x
+          ? [
+              {
+                y: p.y,
+                l: Math.min(p.x, q.x),
+                r: Math.max(p.x, q.x),
+                g: e.people.slice(0, -1).sort().join('+')
+              }
+            ]
+          : []
+      })
+    )
+  const out: string[] = []
+  for (let i = 0; i < hs.length; i++)
+    for (let j = i + 1; j < hs.length; j++) {
+      const a = hs[i]!
+      const b = hs[j]!
+      if (a.g === b.g || a.y !== b.y) continue
+      const distance = Math.max(a.l, b.l) - Math.min(a.r, b.r)
+      if (distance < GAPS.cousin - 0.5) out.push(`${a.g} / ${b.g} at ${a.y}`)
+    }
+  return out
+}
+
 describe('layout metrics (#112)', () => {
   it('counts a crossing between lines of different parents, not within one family', () => {
     const l = layoutOf(
@@ -285,7 +373,43 @@ describe('the reported 78-person tree (#112 fixture)', () => {
     )
   })
 
-  it.todo('#116: neighbours from different families and branches keep their gaps')
+  it('#116: neighbours from different families and branches keep their gaps', () => {
+    for (const [name, t] of [
+      ['collateral', tree],
+      ['two families', twoFamiliesFixture()],
+      ['remarriage', remarriageFixture()]
+    ] as const) {
+      const l = layoutFamily(t, { ...SIZES, compactSiblings: true })
+      for (const g of neighbourGaps(t, l)) {
+        expect(g.gap + 0.5, `${name}: ${g.pair} (${g.relation})`).toBeGreaterThanOrEqual(
+          GAPS[g.relation]
+        )
+      }
+      expect(busEndsTooClose(l), name).toEqual([])
+    }
+    const gaps = neighbourGaps(tree, layout())
+    expect(
+      gaps.some((g) => g.relation === 'sibling' && Math.abs(g.gap - SIZES.siblingGap) < 1)
+    ).toBe(true)
+    expect(gaps.some((g) => g.relation === 'cousin')).toBe(true)
+    expect(gaps.some((g) => g.relation === 'branch')).toBe(true)
+  })
+
+  it('#116: a couple without ancestors stands within its child’s block', () => {
+    const l = layout()
+    const span = (ids: string[]): [number, number] => {
+      const ns = l.nodes.filter((n) => ids.includes(n.id))
+      return [Math.min(...ns.map((n) => n.x)), Math.max(...ns.map((n) => n.x + n.width))]
+    }
+    const [p1, p2] = span(['mF', 'mM'])
+    const [c1, c2] = span(['mother', 'father'])
+    expect(p2 > c1 && p1 < c2).toBe(true)
+  })
+
+  it('#116: the width stays within the #115 budget + 15 %', () => {
+    expect(layoutMetrics(tree, layout()).width).toBeLessThanOrEqual(4016 * 1.15)
+    expect(fitZoom(layout(), CANVAS_1440)).toBeGreaterThanOrEqual(0.25)
+  })
 
   it.fails('#117: no line crosses the home person’s direct line', () => {
     expect(layoutMetrics(tree, layout()).directCrossings).toEqual([])

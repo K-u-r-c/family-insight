@@ -36,8 +36,13 @@ export interface LayoutOptions {
   partnerGap?: number
   /** Horizontal gap between siblings (neighbours that share a parent). */
   siblingGap?: number
-  /** Horizontal gap between neighbours from different families (default 2.5 × `siblingGap`). */
+  /**
+   * Horizontal gap between neighbours from different families – cousins (default the larger of
+   * 2.5 × `siblingGap` and 0.6 × `nodeWidth`).
+   */
   familyGap?: number
+  /** Gap between more distant branches or unrelated families (default `nodeWidth`). */
+  branchGap?: number
   /** Vertical gap between generations. */
   generationGap?: number
   /** Gap between disconnected groups of people. */
@@ -101,7 +106,7 @@ const DEFAULTS = {
   componentGap: 120
 }
 
-type Sizes = typeof DEFAULTS & { familyGap: number }
+type Sizes = typeof DEFAULTS & { familyGap: number; branchGap: number }
 
 /** Hanging columns of siblings: cards per column, the shortest run stacked, spacing, indent. */
 const STACK_MAX = 4
@@ -766,8 +771,44 @@ function layoutComponent(
     for (const p of parentsOf.get(b)!) if (pa.has(p)) return true
     return false
   }
-  const gapBetween = (a: Unit, b: Unit): number =>
-    a.width / 2 + b.width / 2 + (related(a, b) ? o.siblingGap : o.familyGap)
+  // How closely two neighbours are related (#116): siblings, cousins (a common ancestor two
+  // generations up), or more distant branches and unrelated families.
+  const ancestry = new Map<PersonId, Map<PersonId, number>>()
+  const ancestorsUp = (id: PersonId): Map<PersonId, number> => {
+    let out = ancestry.get(id)
+    if (out) return out
+    out = new Map()
+    let frontier = [id]
+    for (let depth = 1; depth <= 2 && frontier.length; depth++) {
+      const next: PersonId[] = []
+      for (const p of frontier) {
+        for (const r of g.parents.get(p) ?? []) {
+          if (out.has(r.parentId)) continue
+          out.set(r.parentId, depth)
+          next.push(r.parentId)
+        }
+      }
+      frontier = next
+    }
+    ancestry.set(id, out)
+    return out
+  }
+  const cousins = (a: Unit, b: Unit): boolean =>
+    a.members.some((x) => {
+      const ax = ancestorsUp(x)
+      return b.members.some((y) => [...ancestorsUp(y).keys()].some((anc) => ax.has(anc)))
+    })
+  const gapCache = new Map<Unit, Map<Unit, number>>()
+  const gapBetween = (a: Unit, b: Unit): number => {
+    let row = gapCache.get(a)
+    if (!row) gapCache.set(a, (row = new Map()))
+    let gap = row.get(b)
+    if (gap === undefined) {
+      gap = related(a, b) ? o.siblingGap : cousins(a, b) ? o.familyGap : o.branchGap
+      row.set(b, gap)
+    }
+    return a.width / 2 + b.width / 2 + gap
+  }
   for (const row of rows) {
     let x = 0
     row.forEach((u, i) => {
@@ -945,7 +986,14 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
     ...DEFAULTS,
     ...Object.fromEntries(Object.entries(options).filter(([, v]) => typeof v === 'number'))
   }
-  const o: Sizes = { ...sized, familyGap: options.familyGap ?? Math.round(sized.siblingGap * 2.5) }
+  const familyGap =
+    options.familyGap ??
+    Math.max(Math.round(sized.siblingGap * 2.5), Math.round(sized.nodeWidth * 0.6))
+  const o: Sizes = {
+    ...sized,
+    familyGap,
+    branchGap: Math.max(familyGap, options.branchGap ?? sized.nodeWidth)
+  }
   const ids = selectPeople(tree, options)
   if (!ids.size) return { nodes: [], edges: [], width: 0, height: 0 }
   const g = buildGraph(tree, ids)
@@ -1000,8 +1048,6 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
 /** Vertical distance between lanes, and the clearance between the outer lanes and the cards. */
 const LANE_STEP = 10
 const LANE_MARGIN = 14
-/** Horizontal clearance between two lines sharing a lane. */
-const LANE_CLEARANCE = 12
 
 interface Hop {
   /** Band above this row (between `row - 1` and `row`). */
@@ -1155,12 +1201,12 @@ function routeEdges(
       ups: span.hops.map((h) => h.up),
       downs: span.hops.map((h) => h.down)
     }))
-    // Lines of the same parent with different partners (or alone) that would share a lane must
-    // stay a family gap apart, so they never read as one line.
-    const clearance = (a: (typeof info)[number], b: (typeof info)[number]): number =>
-      a.parents.some((p) => b.parents.includes(p)) ? o.familyGap : LANE_CLEARANCE
+    // Lines of different parent groups that would share a lane must end a family gap apart, so
+    // they never read as one line (#116).
+    const sameParent = (a: (typeof info)[number], b: (typeof info)[number]): boolean =>
+      a.parents.some((p) => b.parents.includes(p))
     const meet = (a: (typeof info)[number], b: (typeof info)[number]): boolean =>
-      a.span.left < b.span.right + clearance(a, b) && b.span.left < a.span.right + clearance(a, b)
+      a.span.left < b.span.right + o.familyGap && b.span.left < a.span.right + o.familyGap
     const inside = (xs: number[], s: { left: number; right: number }): boolean =>
       xs.some((x) => x > s.left + 0.5 && x < s.right - 0.5)
     /** `a` on a higher lane than `b` crosses nothing: a's drops miss b, b's stems miss a. */
@@ -1198,11 +1244,12 @@ function routeEdges(
       let lane = Math.max(-1, ...above[next]!.filter((p) => done.has(p)).map((p) => laneOf[p]!)) + 1
       // Lines of one parent that run side by side keep a free lane between them, so they never
       // look merged.
-      const sameParent = (k: number): boolean => clearance(info[k]!, info[next]!) > LANE_CLEARANCE
       const taken = (l: number): boolean =>
         (used[l] ?? []).some((k) => meet(info[k]!, info[next]!)) ||
         [l - 1, l + 1].some((n) =>
-          (used[n] ?? []).some((k) => sameParent(k) && meet(info[k]!, info[next]!))
+          (used[n] ?? []).some(
+            (k) => sameParent(info[k]!, info[next]!) && meet(info[k]!, info[next]!)
+          )
         )
       while (taken(lane)) lane++
       laneOf[next] = lane

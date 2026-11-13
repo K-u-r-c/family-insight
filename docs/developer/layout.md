@@ -104,8 +104,13 @@ The minimum spacing follows family structure:
 - `partnerGap` between partners;
 - `siblingGap` between neighbours that share a parent (siblings, or a couple next to the partner's
   sibling);
-- the wider `familyGap` between neighbours from different families, so a child does not seem to
-  belong to the neighbouring couple.
+- the wider `familyGap` (default the larger of 2.5 × `siblingGap` and 0.6 × `nodeWidth`) between
+  cousins – neighbours whose nearest common ancestor is two generations up – so a child does not
+  seem to belong to the neighbouring couple;
+- `branchGap` (default `nodeWidth`) between more distant branches and unrelated families.
+
+Two families' horizontal lines that would share a lane must end at least `familyGap` apart;
+otherwise one moves to another lane.
 
 **Half-siblings.** A unit's children are grouped by parent set – one partner alone, or two
 adjacent partners – and each group's line drops from its own point (the parent's card, or the gap
@@ -179,7 +184,8 @@ It prints the metrics and writes an SVG and a PNG to a temp directory (`--out` t
 | `nodeHeight`      | 68      | Card height                                                        |
 | `partnerGap`      | 28      | Gap between partners                                               |
 | `siblingGap`      | 36      | Gap between neighbours that share a parent                         |
-| `familyGap`       | 90      | Gap between different families (2.5 × siblingGap)                  |
+| `familyGap`       | 113     | Gap between cousins (max of 2.5 × siblingGap, 0.6 × nodeWidth)     |
+| `branchGap`       | 188     | Gap between distant branches and unrelated families (nodeWidth)    |
 | `generationGap`   | 84      | Vertical gap between rows                                          |
 | `componentGap`    | 120     | Gap between disconnected groups                                    |
 | `compactSiblings` | false   | Hanging columns of siblings without families (the app turns it on) |
