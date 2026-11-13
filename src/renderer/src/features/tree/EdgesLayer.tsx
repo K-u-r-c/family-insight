@@ -1,4 +1,5 @@
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
+import { junctions, jumps, splitAtJumps, type Jump } from '@core/layout/decorations'
 import type { LayoutEdge, Point } from '@core/layout/layout'
 import { cx } from '@renderer/lib/cx'
 import styles from './TreeCanvas.module.css'
@@ -32,6 +33,20 @@ export function roundedPath(points: Point[], radius = 10): string {
   return `${d} L${last.x},${last.y}`
 }
 
+/** The line as one path, with a short gap wherever it jumps over another family's line. */
+export function edgePath(e: LayoutEdge, at: readonly Jump[], radius: number): string {
+  return splitAtJumps(e.points, at)
+    .map((piece) => roundedPath(piece, radius))
+    .join(' ')
+}
+
+/** Jumps grouped by the line they interrupt. */
+export function jumpsByEdge(edges: readonly LayoutEdge[]): Map<string, Jump[]> {
+  const out = new Map<string, Jump[]>()
+  for (const j of jumps(edges)) out.set(j.edgeId, [...(out.get(j.edgeId) ?? []), j])
+  return out
+}
+
 const isActive = (e: LayoutEdge, highlight: string | null): boolean =>
   highlight !== null && e.people.includes(highlight)
 const isOnPath = (e: LayoutEdge, path: ReadonlySet<string> | null): boolean =>
@@ -57,6 +72,12 @@ export const EdgesLayer = memo(function EdgesLayer({
   path,
   tapestry = false
 }: EdgesLayerProps): React.JSX.Element {
+  const gaps = useMemo(() => jumpsByEdge(edges), [edges])
+  const dots = useMemo(() => junctions(edges), [edges])
+  const onPathIds = useMemo(
+    () => new Set(edges.filter((e) => isOnPath(e, path)).map((e) => e.id)),
+    [edges, path]
+  )
   return (
     <svg
       className={cx(styles.edges, dimmed && !path && styles.edgesDimmed)}
@@ -85,7 +106,7 @@ export const EdgesLayer = memo(function EdgesLayer({
             onPath && styles.pathEdge,
             path && !onPath && styles.offPathEdge
           )
-          const d = roundedPath(e.points, tapestry ? 24 : 10)
+          const d = edgePath(e, gaps.get(e.id) ?? [], tapestry ? 24 : 10)
           // Neighbouring partners get a small knot halfway along their line.
           const knot =
             tapestry && e.type === 'partner' && e.points.length === 2
@@ -119,6 +140,27 @@ export const EdgesLayer = memo(function EdgesLayer({
             </g>
           )
         })}
+      {/* Where a family's lines branch: a small dot (a knot in Tapestry). */}
+      {dots.map((j) => {
+        const onPath = j.edgeIds.some((id) => onPathIds.has(id))
+        const active = !path && highlight !== null && j.people.includes(highlight)
+        return (
+          <circle
+            key={`${j.edgeIds[0]}@${j.x},${j.y}`}
+            cx={j.x}
+            cy={j.y}
+            r={tapestry ? 4 : 3}
+            data-junction=""
+            className={cx(
+              styles.junction,
+              active && styles.activeEdge,
+              !path && highlight !== null && !active && styles.quietEdge,
+              onPath && styles.pathEdge,
+              path && !onPath && styles.offPathEdge
+            )}
+          />
+        )
+      })}
     </svg>
   )
 })

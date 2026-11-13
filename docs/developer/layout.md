@@ -143,12 +143,15 @@ Disconnected groups are laid out side by side with `componentGap` between them.
   parent (alone and with a partner) stay a `familyGap` apart on one lane and keep a free lane
   between them otherwise, so they never read as one line. With one
   lane the line sits halfway between the rows. A gap that needs more lanes than fit grows by
-  10 px per extra lane, and the rows below move down.
+  16 px per extra lane, and the rows below move down.
 - A child in a **hanging column** is reached by a trunk running down beside the column, with a short
   branch into the side of each card.
 - A **link over several rows** (only when the data forces it, see step 2) goes across in the first
   gap, down a free channel between the cards of the rows in between, then across to the child.
 - Every edge lists `people`: both partners, or the parents and the child.
+- **Decorations** (`src/core/layout/decorations.ts`, #118): a dot where a family's lines branch
+  (three or more directions meet, never at a plain corner) and a short gap in a vertical line where
+  it jumps over another family's line. The canvas and the exports draw both.
 
 The renderer draws `ended` and non-biological edges dashed (see [Rendering](./rendering)).
 

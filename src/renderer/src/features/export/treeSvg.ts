@@ -4,7 +4,8 @@ import type { DateLanguage } from '@core/date/fuzzyDate'
 import { displayName, isLiving } from '@core/model/tree'
 import type { FamilyTree, Person, Sex } from '@core/model/types'
 import type { AppStyle } from '@core/settings'
-import { roundedPath } from '@renderer/features/tree/EdgesLayer'
+import { junctions } from '@core/layout/decorations'
+import { edgePath, jumpsByEdge } from '@renderer/features/tree/EdgesLayer'
 import flourishSvg from '@renderer/assets/ornaments/flourish.svg?raw'
 import weaveSvg from '@renderer/assets/ornaments/weave.svg?raw'
 
@@ -241,21 +242,30 @@ function tapestryCard(
 /** Gold thread lines with a sheen, and a knot between neighbouring partners. */
 function tapestryEdges(layout: Layout): string {
   const P = TAPESTRY
-  return layout.edges
-    .map((e) => {
-      const d = roundedPath(e.points, 24)
-      const dashed = (e.kind && e.kind !== 'biological') || e.ended
-      const base = `<path d="${d}" fill="none" stroke="${P.gold}" stroke-width="${e.type === 'partner' ? 2.8 : 2.4}" stroke-linecap="round"${dashed ? ' stroke-dasharray="7 5"' : ''}/>`
-      const sheen = dashed
-        ? ''
-        : `<path d="${d}" fill="none" stroke="${P.sheen}" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/>`
-      const knot =
-        e.type === 'partner' && e.points.length === 2
-          ? `<circle cx="${(e.points[0]!.x + e.points[1]!.x) / 2}" cy="${(e.points[0]!.y + e.points[1]!.y) / 2}" r="5" fill="${P.cardTop}" stroke="${P.gold}" stroke-width="2.2"${dashed ? ' stroke-dasharray="3 2"' : ''}/>`
-          : ''
-      return base + sheen + knot
-    })
+  const gaps = jumpsByEdge(layout.edges)
+  const dots = junctions(layout.edges)
+    .map(
+      (j) =>
+        `<circle cx="${j.x}" cy="${j.y}" r="4" fill="${P.cardTop}" stroke="${P.gold}" stroke-width="1.8"/>`
+    )
     .join('')
+  return (
+    layout.edges
+      .map((e) => {
+        const d = edgePath(e, gaps.get(e.id) ?? [], 24)
+        const dashed = (e.kind && e.kind !== 'biological') || e.ended
+        const base = `<path d="${d}" fill="none" stroke="${P.gold}" stroke-width="${e.type === 'partner' ? 2.8 : 2.4}" stroke-linecap="round"${dashed ? ' stroke-dasharray="7 5"' : ''}/>`
+        const sheen = dashed
+          ? ''
+          : `<path d="${d}" fill="none" stroke="${P.sheen}" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/>`
+        const knot =
+          e.type === 'partner' && e.points.length === 2
+            ? `<circle cx="${(e.points[0]!.x + e.points[1]!.x) / 2}" cy="${(e.points[0]!.y + e.points[1]!.y) / 2}" r="5" fill="${P.cardTop}" stroke="${P.gold}" stroke-width="2.2"${dashed ? ' stroke-dasharray="3 2"' : ''}/>`
+            : ''
+        return base + sheen + knot
+      })
+      .join('') + dots
+  )
 }
 
 /** Parchment with woven threads and a vignette, and the title in a framed cartouche. */
@@ -327,15 +337,19 @@ export function buildTreeSvg(tree: FamilyTree, layout: Layout, options: TreeSvgO
     n.y + n.height >= area.y &&
     n.y <= area.y + area.height
 
+  const gaps = jumpsByEdge(layout.edges)
   const edges = tapestry
     ? tapestryEdges(layout)
     : layout.edges
         .map(
           (e) =>
-            `<path d="${roundedPath(e.points)}" fill="none" stroke="${PALETTE.edge}" stroke-width="${e.type === 'partner' ? 2.2 : 1.6}"${
+            `<path d="${edgePath(e, gaps.get(e.id) ?? [], 10)}" fill="none" stroke="${PALETTE.edge}" stroke-width="${e.type === 'partner' ? 2.2 : 1.6}"${
               (e.kind && e.kind !== 'biological') || e.ended ? ' stroke-dasharray="5 5"' : ''
             }/>`
         )
+        .join('') +
+      junctions(layout.edges)
+        .map((j) => `<circle cx="${j.x}" cy="${j.y}" r="3" fill="${PALETTE.edge}"/>`)
         .join('')
   const cards = layout.nodes
     .filter(visible)

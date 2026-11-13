@@ -2,7 +2,8 @@
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import { layoutFamily, type LayoutEdge } from '@core/layout/layout'
-import { remarriageFixture } from '@core/test/fixtures'
+import { junctions } from '@core/layout/decorations'
+import { remarriageFixture, TreeBuilder } from '@core/test/fixtures'
 import { EdgesLayer, roundedPath } from './EdgesLayer'
 
 afterEach(cleanup)
@@ -95,5 +96,69 @@ describe('EdgesLayer', () => {
         expect(el.getAttribute('class')).toMatch(/activeEdge/)
       }
     }
+  })
+})
+
+describe('junction dots and line jumps (#118)', () => {
+  const bounds = { minX: -50, minY: -50, width: 3000, height: 1000 }
+  const family = (): LayoutEdge[] => {
+    const b = new TreeBuilder().person('f', 'F', 'male').person('m', 'M', 'female').couple('f', 'm')
+    for (const id of ['a', 'b', 'c', 'd']) b.person(id, id).child('f', id).child('m', id)
+    return layoutFamily(b.build()).edges
+  }
+  const draw = (edges: LayoutEdge[], highlight: string | null = null) =>
+    render(
+      <EdgesLayer edges={edges} bounds={bounds} highlight={highlight} dimmed={false} path={null} />
+    ).container
+
+  it('draws a dot at every branching point and none at plain corners', () => {
+    const edges = family()
+    const svg = draw(edges)
+    const expected = junctions(edges)
+    expect(expected.length).toBeGreaterThan(0)
+    expect(svg.querySelectorAll('circle[data-junction]')).toHaveLength(expected.length)
+    // One parent, one child: only corners.
+    const single = layoutFamily(remarriageFixture()).edges.filter((e) => e.target === 'piotr')
+    expect(draw(single).querySelectorAll('circle[data-junction]')).toHaveLength(0)
+  })
+
+  it('highlights the dots of the selected person’s family', () => {
+    const svg = draw(family(), 'f')
+    for (const c of svg.querySelectorAll('circle[data-junction]'))
+      expect(c.getAttribute('class')).toMatch(/activeEdge/)
+  })
+
+  it('leaves a gap in a line where it jumps over another family’s line', () => {
+    const edge = (id: string, people: string[], points: [number, number][]): LayoutEdge => ({
+      id,
+      type: 'child',
+      points: points.map(([x, y]) => ({ x, y })),
+      relationshipIds: [id],
+      source: people[0]!,
+      target: people.at(-1)!,
+      people
+    })
+    const svg = draw([
+      edge(
+        'h',
+        ['p', 'x'],
+        [
+          [0, 100],
+          [400, 100]
+        ]
+      ),
+      edge(
+        'v',
+        ['q', 'y'],
+        [
+          [200, 0],
+          [200, 300]
+        ]
+      )
+    ])
+    const d = (id: string): string =>
+      svg.querySelector(`path[data-people="${id === 'v' ? 'q y' : 'p x'}"]`)!.getAttribute('d')!
+    expect(d('v').match(/M/g)).toHaveLength(2)
+    expect(d('h').match(/M/g)).toHaveLength(1)
   })
 })

@@ -188,7 +188,7 @@ describe('layoutFamily', () => {
     const ms = performance.now() - start
     expect(l.nodes).toHaveLength(1000)
     assertNoOverlap(l)
-    expect(ms).toBeLessThan(process.env.CI ? 1500 : 300)
+    expect(ms).toBeLessThan(process.env.CI ? 1000 : 200)
   })
 })
 

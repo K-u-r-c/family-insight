@@ -115,7 +115,7 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   [
     "c5Son",
     4574,
-    280,
+    312,
   ],
   [
     "c6",
@@ -145,27 +145,27 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   [
     "d3a",
     5526,
-    280,
+    312,
   ],
   [
     "d3b",
     5778,
-    280,
+    312,
   ],
   [
     "d3c",
     6030,
-    280,
+    312,
   ],
   [
     "d3d",
     6282,
-    280,
+    312,
   ],
   [
     "d3e",
     6534,
-    280,
+    312,
   ],
   [
     "d4",
@@ -200,22 +200,22 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   [
     "father",
     2447,
-    420,
+    452,
   ],
   [
     "gf",
     3265,
-    280,
+    312,
   ],
   [
     "gfBrother",
     5174,
-    280,
+    312,
   ],
   [
     "gfBrotherWife",
     4926,
-    280,
+    312,
   ],
   [
     "gfFather",
@@ -230,12 +230,12 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   [
     "gm",
     3017,
-    280,
+    312,
   ],
   [
     "gmBrother",
     2365,
-    280,
+    312,
   ],
   [
     "gmFather",
@@ -250,147 +250,147 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   [
     "mF",
     1925,
-    280,
+    312,
   ],
   [
     "mM",
     1677,
-    280,
+    312,
   ],
   [
     "me",
     2126,
-    560,
+    592,
   ],
   [
     "mother",
     2199,
-    420,
+    452,
   ],
   [
     "pc1",
     4457,
-    420,
+    452,
   ],
   [
     "pc1Child1",
     4630,
-    560,
+    592,
   ],
   [
     "pc1Child2",
     4882,
-    560,
+    592,
   ],
   [
     "pc1Wife",
     4705,
-    420,
+    452,
   ],
   [
     "pc2",
     4957,
-    420,
+    452,
   ],
   [
     "pc2Child1",
     5234,
-    560,
+    592,
   ],
   [
     "pc2Wife",
     5205,
-    420,
+    452,
   ],
   [
     "pc3",
     5457,
-    420,
+    452,
   ],
   [
     "pc3Child1",
     5586,
-    560,
+    592,
   ],
   [
     "pc3Wife",
     5705,
-    420,
+    452,
   ],
   [
     "pc4",
     5957,
-    420,
+    452,
   ],
   [
     "pc4Wife",
     6205,
-    420,
+    452,
   ],
   [
     "sister",
     2378,
-    560,
+    592,
   ],
   [
     "uncle1",
     2947,
-    420,
+    452,
   ],
   [
     "uncle1Child1",
     2730,
-    560,
+    592,
   ],
   [
     "uncle1Wife",
     2699,
-    420,
+    452,
   ],
   [
     "uncle2",
     3447,
-    420,
+    452,
   ],
   [
     "uncle2Child1",
     3082,
-    560,
+    592,
   ],
   [
     "uncle2Child2",
     3334,
-    560,
+    592,
   ],
   [
     "uncle2Wife",
     3199,
-    420,
+    452,
   ],
   [
     "uncle3",
     3699,
-    420,
+    452,
   ],
   [
     "uncle3Child1",
     3686,
-    560,
+    592,
   ],
   [
     "uncle3Child2",
     3938,
-    560,
+    592,
   ],
   [
     "uncle3Child3",
     4190,
-    560,
+    592,
   ],
   [
     "uncle3Wife",
     3947,
-    420,
+    452,
   ],
 ]
 `;
@@ -400,107 +400,107 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 2`] = `
   [
     "father",
     1696,
-    420,
+    436,
   ],
   [
     "halfAunt",
     3163,
-    280,
+    296,
   ],
   [
     "halfAuntHusband",
     3411,
-    280,
+    296,
   ],
   [
     "halfCousin1",
     2984,
-    420,
+    436,
   ],
   [
     "halfCousin2",
     3236,
-    420,
+    436,
   ],
   [
     "halfCousin3",
     3488,
-    420,
+    436,
   ],
   [
     "halfUncle",
     3991,
-    280,
+    296,
   ],
   [
     "halfUncleChild1",
     3840,
-    420,
+    436,
   ],
   [
     "halfUncleChild1Wife",
     4088,
-    420,
+    436,
   ],
   [
     "halfUncleChild2",
     4340,
-    420,
+    436,
   ],
   [
     "halfUncleChild2Wife",
     4588,
-    420,
+    436,
   ],
   [
     "halfUncleChild3",
     4840,
-    420,
+    436,
   ],
   [
     "halfUncleChild3Husband",
     5088,
-    420,
+    436,
   ],
   [
     "halfUncleWife",
     4239,
-    280,
+    296,
   ],
   [
     "mCousin1",
     2416,
-    560,
+    576,
   ],
   [
     "mCousin2",
     2668,
-    560,
+    576,
   ],
   [
     "mCousin3",
     2920,
-    560,
+    576,
   ],
   [
     "mUncle",
     2384,
-    420,
+    436,
   ],
   [
     "mUncleWife",
     2632,
-    420,
+    436,
   ],
   [
     "me",
     1812,
-    560,
+    576,
   ],
   [
     "mgf",
     2548,
-    280,
+    296,
   ],
   [
     "mgfFather",
@@ -525,7 +525,7 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 2`] = `
   [
     "mgm",
     2300,
-    280,
+    296,
   ],
   [
     "mgmFather",
@@ -550,47 +550,47 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 2`] = `
   [
     "mgmSister",
     2048,
-    280,
+    296,
   ],
   [
     "mother",
     1944,
-    420,
+    436,
   ],
   [
     "pCousin1",
     604,
-    560,
+    576,
   ],
   [
     "pCousin2",
     0,
-    560,
+    576,
   ],
   [
     "pCousin3",
     252,
-    560,
+    576,
   ],
   [
     "pCousin4",
     956,
-    560,
+    576,
   ],
   [
     "pCousin5",
     1208,
-    560,
+    576,
   ],
   [
     "pCousin6",
     1460,
-    560,
+    576,
   ],
   [
     "pgf",
     856,
-    280,
+    296,
   ],
   [
     "pggf",
@@ -605,12 +605,12 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 2`] = `
   [
     "pgm",
     1104,
-    280,
+    296,
   ],
   [
     "sister",
     2064,
-    560,
+    576,
   ],
   [
     "stepGf",
@@ -620,32 +620,32 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 2`] = `
   [
     "uncle1",
     407,
-    420,
+    436,
   ],
   [
     "uncle1Wife",
     159,
-    420,
+    436,
   ],
   [
     "uncle2",
     659,
-    420,
+    436,
   ],
   [
     "uncle2Wife",
     907,
-    420,
+    436,
   ],
   [
     "uncle3",
     1159,
-    420,
+    436,
   ],
   [
     "uncle3Wife",
     1407,
-    420,
+    436,
   ],
 ]
 `;

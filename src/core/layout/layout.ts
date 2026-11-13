@@ -8,7 +8,7 @@ import type {
   PersonId,
   TreeViewMode
 } from '../model/types'
-import { layoutMetrics } from './metrics'
+import { segmentsCross, segmentsOf } from './metrics'
 import { rankGraph, type RankEdge } from './ranking'
 
 /**
@@ -1100,28 +1100,43 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
   for (let pass = 0; pass < 3; pass++) {
     const pos = new Map(layout.nodes.map((n) => [n.id, n]))
     const before = hung.size
-    for (const c of layoutMetrics(tree, layout, { rootId: root }).directCrossings) {
-      for (const id of c.split(' @ ')[0]!.split(' × ')) {
-        const e = layout.edges.find((x) => x.id === id)
-        if (!e || e.type !== 'child' || direct.has(e.target) || hung.has(e.target)) continue
-        const child = e.target
-        const parents = (g.parents.get(child) ?? []).map((r) => pos.get(r.parentId))
-        const [a, b] = parents
-        const adjacentCouple =
-          parents.length === 2 &&
-          a &&
-          b &&
-          a.y === b.y &&
-          Math.abs(a.x - b.x) <= o.nodeWidth + o.partnerGap + 1 &&
-          (g.partners.get(a.id) ?? []).some((r) => partnerOf(r, a.id) === b.id)
-        if (
-          adjacentCouple &&
-          stackable!(child) &&
-          !(g.partners.get(child) ?? []).length &&
-          child !== options.focusId
-        )
-          hung.add(child)
+    // Lines that cross a direct-line link (only those segments are compared).
+    const isDirect = (e: LayoutEdge): boolean =>
+      e.type === 'child' &&
+      direct.has(e.target) &&
+      e.people.slice(0, -1).every((p) => direct.has(p))
+    const directSegs = layout.edges.filter(isDirect).flatMap(segmentsOf)
+    const crossing = new Set<LayoutEdge>()
+    for (const e of layout.edges) {
+      if (e.type !== 'child' || isDirect(e)) continue
+      for (const s of segmentsOf(e)) {
+        for (const d of directSegs) {
+          if (d.group === s.group) continue
+          const h = s.y1 === s.y2 ? s : d
+          const v = h === s ? d : s
+          if (h.y1 === h.y2 && v.x1 === v.x2 && segmentsCross(h, v)) crossing.add(e)
+        }
       }
+    }
+    for (const e of crossing) {
+      if (direct.has(e.target) || hung.has(e.target)) continue
+      const child = e.target
+      const parents = (g.parents.get(child) ?? []).map((r) => pos.get(r.parentId))
+      const [a, b] = parents
+      const adjacentCouple =
+        parents.length === 2 &&
+        a &&
+        b &&
+        a.y === b.y &&
+        Math.abs(a.x - b.x) <= o.nodeWidth + o.partnerGap + 1 &&
+        (g.partners.get(a.id) ?? []).some((r) => partnerOf(r, a.id) === b.id)
+      if (
+        adjacentCouple &&
+        stackable!(child) &&
+        !(g.partners.get(child) ?? []).length &&
+        child !== options.focusId
+      )
+        hung.add(child)
     }
     if (hung.size === before) break
     layout = place(hung)
@@ -1130,8 +1145,8 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
 }
 
 /** Vertical distance between lanes, and the clearance between the outer lanes and the cards. */
-const LANE_STEP = 10
-const LANE_MARGIN = 14
+const LANE_STEP = 16
+const LANE_MARGIN = 24
 
 interface Hop {
   /** Band above this row (between `row - 1` and `row`). */
@@ -1412,12 +1427,15 @@ function routeEdges(
         { x: right.x, y }
       ]
     } else {
-      const above = left.y - Math.min(12, LANE_MARGIN - 2)
+      // A quarter card towards each other, clear of the lines from their parents (#118).
+      const above = left.y - (LANE_MARGIN - LANE_STEP)
+      const lx = centerX(left) + o.nodeWidth / 4
+      const rx = centerX(right) - o.nodeWidth / 4
       points = [
-        { x: centerX(left), y: left.y },
-        { x: centerX(left), y: above },
-        { x: centerX(right), y: above },
-        { x: centerX(right), y: right.y }
+        { x: lx, y: left.y },
+        { x: lx, y: above },
+        { x: rx, y: above },
+        { x: rx, y: right.y }
       ]
     }
     edges.push({

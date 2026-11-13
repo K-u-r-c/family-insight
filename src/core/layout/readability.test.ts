@@ -446,6 +446,24 @@ describe('the reported 78-person tree (#112 fixture)', () => {
   })
 })
 
+describe('lane spacing (#118)', () => {
+  it('keeps parallel lines of different families at least 16 px apart in every fixture', () => {
+    for (const [name, tree] of [
+      ['collateral', collateralFixture()],
+      ['two families', twoFamiliesFixture()],
+      ['remarriage', remarriageFixture()],
+      ['kinship', kinshipFixture()]
+    ] as const) {
+      for (const compactSiblings of [false, true]) {
+        for (const generationGap of [76, 30]) {
+          const l = layoutFamily(tree, { ...SIZES, generationGap, compactSiblings })
+          expect(layoutMetrics(tree, l).closeParallels, `${name} ${generationGap}`).toEqual([])
+        }
+      }
+    }
+  })
+})
+
 describe('compact siblings (#115)', () => {
   const COMPACT = { ...SIZES, compactSiblings: true }
   /** Parents with `n` children who have no partners or children; the first one is the root. */
