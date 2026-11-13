@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { kinshipFixture } from '../kinship/fixture'
-import { remarriageFixture } from '../test/fixtures'
+import type { FamilyTree } from '../model/types'
+import { remarriageFixture, TreeBuilder } from '../test/fixtures'
 import { collateralFixture, twoFamiliesFixture } from './fixtures'
 import { layoutFamily, type Layout, type LayoutEdge, type LayoutNode } from './layout'
 import { CANVAS_1440, fitZoom, layoutMetrics } from './metrics'
@@ -161,6 +162,85 @@ describe('layout metrics (#112)', () => {
   })
 })
 
+describe('half-siblings (#113)', () => {
+  /** Jan: three children with Anna, two of his own, three with Ewa; Ewa also has one of her own. */
+  const blended = (): FamilyTree => {
+    const b = new TreeBuilder()
+      .person('jan', 'Jan', 'male')
+      .person('anna', 'Anna', 'female')
+      .person('ewa', 'Ewa', 'female')
+      .couple('jan', 'anna')
+      .couple('jan', 'ewa')
+    const kids = (parents: string[], ids: string[]): void => {
+      for (const id of ids) {
+        b.person(id, id)
+        for (const p of parents) b.child(p, id)
+      }
+    }
+    kids(['jan', 'anna'], ['a1', 'a2', 'a3'])
+    kids(['jan'], ['j1', 'j2'])
+    kids(['jan', 'ewa'], ['e1', 'e2', 'e3'])
+    kids(['ewa'], ['w1'])
+    return b.build()
+  }
+  /**
+   * Children of one person's different parent sets (alone, with each partner) do not interleave:
+   * between two children of one set there is no child of another set of the same person.
+   */
+  function runsBroken(tree: FamilyTree, l: Layout): string[] {
+    const parents = new Map<string, string[]>()
+    for (const r of Object.values(tree.relationships)) {
+      if (r.type === 'parent-child')
+        parents.set(r.childId, [...(parents.get(r.childId) ?? []), r.parentId].sort())
+    }
+    const rows = new Map<number, LayoutNode[]>()
+    for (const n of l.nodes) rows.set(n.generation, [...(rows.get(n.generation) ?? []), n])
+    const out: string[] = []
+    for (const row of rows.values()) {
+      const sets = row
+        .sort((a, b) => a.x - b.x)
+        .map((n) => parents.get(n.id))
+        .filter((k): k is string[] => !!k)
+      sets.forEach((a, i) => {
+        for (let j = i + 2; j < sets.length; j++) {
+          if (sets[j]!.join('+') !== a.join('+')) continue
+          for (let k = i + 1; k < j; k++) {
+            const b = sets[k]!
+            if (b.join('+') !== a.join('+') && b.some((p) => a.includes(p)))
+              out.push(`${a.join('+')} / ${b.join('+')}`)
+          }
+        }
+      })
+    }
+    return out
+  }
+
+  it('keeps each parent set together and their lines apart', () => {
+    for (const tree of [blended(), collateralFixture(), remarriageFixture()]) {
+      expect(runsBroken(tree, layoutFamily(tree, SIZES))).toEqual([])
+    }
+    for (const tree of [blended(), remarriageFixture()]) {
+      const m = layoutMetrics(tree, layoutFamily(tree, SIZES))
+      expect(m.crossings).toEqual([])
+      expect(m.closeParallels).toEqual([])
+      expect(m.throughCards).toEqual([])
+    }
+  })
+
+  it('gives a parent alone and the same parent with a partner separate lanes when they meet', () => {
+    const tree = blended()
+    const l = layoutFamily(tree, SIZES)
+    const bus = (target: string): number =>
+      l.edges.find((e) => e.target === target)!.points.at(-2)!.y
+    const right = (target: string): number =>
+      Math.max(...l.edges.find((e) => e.target === target)!.points.map((p) => p.x))
+    const left = (target: string): number =>
+      Math.min(...l.edges.find((e) => e.target === target)!.points.map((p) => p.x))
+    // Jan's own children and the children with Ewa: either different lanes or a family gap apart.
+    if (bus('j2') === bus('e1')) expect(left('e1') - right('j2')).toBeGreaterThanOrEqual(80)
+  })
+})
+
 describe('the reported 78-person tree (#112 fixture)', () => {
   const tree = collateralFixture()
   const layout = (): Layout => layoutFamily(tree, { ...SIZES, focusId: 'me' })
@@ -175,14 +255,18 @@ describe('the reported 78-person tree (#112 fixture)', () => {
   })
 
   // Budgets: each issue turns its own `it.fails` into `it`.
-  it.fails('#113: lines of one person with different partners never cross or run close', () => {
+  it('#113: lines of one person with different partners never cross or run close', () => {
     const m = layoutMetrics(tree, layout())
     const mine = new Set(
       layout()
         .edges.filter((e) => e.type === 'child' && e.people.includes('d3'))
         .map((e) => e.id)
     )
-    const touches = (s: string): boolean => [...mine].some((id) => s.includes(id))
+    const touches = (s: string): boolean =>
+      s
+        .split(' @ ')[0]!
+        .split(/ [×∥] /)
+        .every((id) => mine.has(id))
     expect(m.crossings.filter(touches)).toEqual([])
     expect(m.closeParallels.filter(touches)).toEqual([])
   })

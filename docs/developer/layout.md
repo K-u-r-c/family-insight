@@ -95,6 +95,14 @@ The minimum spacing follows family structure:
 - the wider `familyGap` between neighbours from different families, so a child does not seem to
   belong to the neighbouring couple.
 
+**Half-siblings.** A unit's children are grouped by parent set – one partner alone, or two
+adjacent partners – and each group's line drops from its own point (the parent's card, or the gap
+between the partners). A group's children are kept between the drop points of the neighbouring
+groups (with half a `familyGap` of clearance), so the groups' lines never overlap or cross. The
+bounds are enforced in the isotonic regression by pinning a unit to its bound and solving the row
+again. A group that cannot fit between its neighbours (a hub with children of his own between
+two wives) is left free; its lines are kept apart by the lane order below.
+
 Disconnected groups are laid out side by side with `componentGap` between them.
 
 ## 6. Edges
@@ -106,7 +114,11 @@ Disconnected groups are laid out side by side with `componentGap` between them.
   to a horizontal segment in the gap above the child's row and drop to the child. `kind` marks
   adoptive, step and foster links.
 - **Lanes**: each parent group's horizontal segment gets a lane in that gap. Lanes are assigned by
-  interval colouring, so segments of different families never overlap at the same height. With one
+  interval colouring, so segments of different families never overlap at the same height. When
+  two segments meet and only one of them can lie above the other without a crossing (its drops
+  miss the other segment and the other's stem misses it), that order is kept. Segments of the same
+  parent (alone and with a partner) stay a `familyGap` apart on one lane and keep a free lane
+  between them otherwise, so they never read as one line. With one
   lane the line sits halfway between the rows. A gap that needs more lanes than fit grows by
   10 px per extra lane, and the rows below move down.
 - A **link over several rows** (only when the data forces it, see step 2) goes across in the first

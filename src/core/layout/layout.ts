@@ -427,6 +427,41 @@ function placeRow(targets: number[], gaps: number[], weights?: number[]): number
   return out
 }
 
+/**
+ * `placeRow` with optional bounds per item (`lo_i ≤ x_i ≤ hi_i`): an item that ends up outside its
+ * bound is pinned to it with a heavy weight and the row is solved again.
+ */
+function placeRowBounded(
+  targets: number[],
+  gaps: number[],
+  weights: number[],
+  lo: (number | undefined)[],
+  hi: (number | undefined)[]
+): number[] {
+  const t = targets.slice()
+  const w = weights.slice()
+  let xs = placeRow(t, gaps, w)
+  for (let pass = 0; pass < 8; pass++) {
+    let changed = false
+    xs.forEach((x, i) => {
+      const h = hi[i]
+      const l = lo[i]
+      if (h !== undefined && x > h + 0.01 && t[i] !== h) {
+        t[i] = h
+        w[i] = 1e6
+        changed = true
+      } else if (l !== undefined && x < l - 0.01 && t[i] !== l) {
+        t[i] = l
+        w[i] = 1e6
+        changed = true
+      }
+    })
+    if (!changed) break
+    xs = placeRow(t, gaps, w)
+  }
+  return xs
+}
+
 interface ComponentLayout {
   centers: Map<PersonId, number>
   gen: Map<PersonId, number>
@@ -674,6 +709,68 @@ function layoutComponent(
     }
     return count ? [sum / count, count] : undefined
   }
+  // Children of one unit grouped by parent set (#113): a parent alone, or two adjacent partners.
+  // Each group's line drops from its own point (the parent's card, or the gap between the
+  // partners); a group's children stay between the drop points of the neighbouring groups, so
+  // the groups' horizontal lines never overlap or cross.
+  interface ChildGroup {
+    parents: PersonId[]
+    kids: { unit: Unit; member: PersonId }[]
+  }
+  const groupsOf = new Map<Unit, ChildGroup[]>()
+  for (const u of units) {
+    const byKey = new Map<string, ChildGroup>()
+    for (const m of u.members) {
+      for (const c of linked(m, 1)) {
+        const ps = linked(c, -1)
+        if (!ps.every((p) => unitOf.get(p) === u) || ps.length > 2) continue
+        if (
+          ps.length === 2 &&
+          Math.abs(u.members.indexOf(ps[0]!) - u.members.indexOf(ps[1]!)) !== 1
+        )
+          continue
+        const key = ps.slice().sort().join('+')
+        if (byKey.has(key) && byKey.get(key)!.kids.some((k) => k.member === c)) continue
+        const group = byKey.get(key) ?? { parents: ps, kids: [] }
+        group.kids.push({ unit: unitOf.get(c)!, member: c })
+        byKey.set(key, group)
+      }
+    }
+    if (byKey.size > 1) groupsOf.set(u, [...byKey.values()])
+  }
+  const splitRows = new Set([...groupsOf.keys()].map((u) => u.gen + 1))
+  const groupClearance = o.familyGap / 2
+  const stemOf = (g: ChildGroup): number =>
+    g.parents.reduce((s, p) => s + center(p), 0) / g.parents.length
+  /** Bounds on the unit centres of `row` that keep each child group between its neighbours. */
+  const boundsFor = (row: Unit[]): [(number | undefined)[], (number | undefined)[]] => {
+    const lo = new Map<Unit, number>()
+    const hi = new Map<Unit, number>()
+    if (splitRows.has(row[0]?.gen ?? -1)) {
+      for (const [, groups] of groupsOf) {
+        if (groups[0]!.kids[0]!.unit.gen !== row[0]!.gen) continue
+        const stems = groups.map(stemOf)
+        const order = groups.map((_, i) => i).sort((a, b) => stems[a]! - stems[b]!)
+        order.forEach((gi, k) => {
+          const g = groups[gi]!
+          const left = k > 0 ? stems[order[k - 1]!]! + groupClearance : -Infinity
+          const right = k + 1 < order.length ? stems[order[k + 1]!]! - groupClearance : Infinity
+          // Skip a group that cannot fit between its neighbours.
+          const kidUnits = [...new Set(g.kids.map((x) => x.unit))].sort((a, b) => a.order - b.order)
+          let need = 0
+          for (let i = 1; i < kidUnits.length; i++)
+            need += gapBetween(kidUnits[i - 1]!, kidUnits[i]!)
+          if (right - left < need) return
+          for (const { unit, member } of g.kids) {
+            const off = memberOffset(unit, member)
+            if (right < Infinity) hi.set(unit, Math.min(hi.get(unit) ?? Infinity, right - off))
+            if (left > -Infinity) lo.set(unit, Math.max(lo.get(unit) ?? -Infinity, left - off))
+          }
+        })
+      }
+    }
+    return [row.map((u) => lo.get(u)), row.map((u) => hi.get(u))]
+  }
   const relax = (row: Unit[], up: boolean, down: boolean): void => {
     if (!row.length) return
     const targets: number[] = []
@@ -684,12 +781,19 @@ function layoutComponent(
       weights.push(d ? d[1] : 0.01)
     }
     const gaps = row.map((u, i) => (i === 0 ? 0 : gapBetween(row[i - 1]!, u)))
-    const xs = placeRow(targets, gaps, weights)
+    const xs = splitRows.has(row[0]!.gen)
+      ? placeRowBounded(targets, gaps, weights, ...boundsFor(row))
+      : placeRow(targets, gaps, weights)
     row.forEach((u, i) => (u.x = xs[i]!))
   }
   for (let iter = 0; iter < 40; iter++) {
     for (let r = 1; r <= maxGen; r++) relax(rows[r]!, true, true)
     for (let r = maxGen - 1; r >= 0; r--) relax(rows[r]!, true, true)
+  }
+  // The last sweep moved the parents: settle the rows below them once more.
+  if (splitRows.size) {
+    const first = Math.min(...splitRows)
+    for (let r = first; r <= maxGen; r++) relax(rows[r]!, true, true)
   }
 
   const centers = new Map<PersonId, number>()
@@ -768,6 +872,9 @@ interface Hop {
   right: number
   /** Lines with the same key belong to one parent group and share a lane. */
   key: string
+  /** Where a vertical line comes down into this segment, and where one leaves it downwards. */
+  up: number
+  down: number
   lane?: number
 }
 
@@ -853,7 +960,9 @@ function routeEdges(
           row: child.generation,
           left: Math.min(sx, top),
           right: Math.max(sx, top),
-          key
+          key,
+          up: sx,
+          down: top
         })
       } else if (from < child.generation - 1) {
         // Several rows down: across in the first gap, down a free channel, across to the child.
@@ -864,13 +973,17 @@ function routeEdges(
           row: from + 1,
           left: Math.min(sx, via),
           right: Math.max(sx, via),
-          key: own
+          key: own,
+          up: sx,
+          down: via
         })
         line.hops.push({
           row: child.generation,
           left: Math.min(via, top),
           right: Math.max(via, top),
-          key: own
+          key: own,
+          up: via,
+          down: top
         })
       }
       lines.push(line)
@@ -894,18 +1007,72 @@ function routeEdges(
     }
     bands.set(row, [...(bands.get(row) ?? []), span])
   }
+  const parentsOfKey = (key: string): string[] => key.split('>')[0]!.split('+')
   for (const [row, spans] of bands) {
     spans.sort((a, b) => a.left - b.left || a.right - b.right)
-    const ends: number[] = []
-    for (const span of spans) {
-      let lane = ends.findIndex((end) => end + LANE_CLEARANCE <= span.left)
-      if (lane < 0) {
-        lane = ends.length
-        ends.push(span.right)
-      } else ends[lane] = span.right
-      for (const h of span.hops) h.lane = lane
+    const info = spans.map((span) => ({
+      span,
+      parents: parentsOfKey(span.hops[0]!.key),
+      ups: span.hops.map((h) => h.up),
+      downs: span.hops.map((h) => h.down)
+    }))
+    // Lines of the same parent with different partners (or alone) that would share a lane must
+    // stay a family gap apart, so they never read as one line.
+    const clearance = (a: (typeof info)[number], b: (typeof info)[number]): number =>
+      a.parents.some((p) => b.parents.includes(p)) ? o.familyGap : LANE_CLEARANCE
+    const meet = (a: (typeof info)[number], b: (typeof info)[number]): boolean =>
+      a.span.left < b.span.right + clearance(a, b) && b.span.left < a.span.right + clearance(a, b)
+    const inside = (xs: number[], s: { left: number; right: number }): boolean =>
+      xs.some((x) => x > s.left + 0.5 && x < s.right - 0.5)
+    /** `a` on a higher lane than `b` crosses nothing: a's drops miss b, b's stems miss a. */
+    const canAbove = (a: (typeof info)[number], b: (typeof info)[number]): boolean =>
+      !inside(a.downs, b.span) && !inside(b.ups, a.span)
+    // Segments that meet get an order when only one of the two avoids a crossing; lanes are then
+    // given in that order (lowest free lane below everything that must be above).
+    const above: number[][] = info.map(() => [])
+    for (let i = 0; i < info.length; i++) {
+      for (let j = i + 1; j < info.length; j++) {
+        if (!meet(info[i]!, info[j]!)) continue
+        const ij = canAbove(info[i]!, info[j]!)
+        const ji = canAbove(info[j]!, info[i]!)
+        if (ij && !ji) {
+          above[j]!.push(i)
+        } else if (ji && !ij) {
+          above[i]!.push(j)
+        }
+      }
     }
-    lanes[row] = Math.max(1, ends.length)
+    const laneOf = new Array<number>(info.length).fill(-1)
+    const used: number[][] = []
+    const done = new Set<number>()
+    while (done.size < info.length) {
+      let next = -1
+      for (let i = 0; i < info.length; i++) {
+        if (done.has(i)) continue
+        if (above[i]!.every((p) => done.has(p))) {
+          next = i
+          break
+        }
+      }
+      // A cycle (no order avoids every crossing): take the leftmost remaining segment.
+      if (next < 0) next = [...info.keys()].find((i) => !done.has(i))!
+      let lane = Math.max(-1, ...above[next]!.filter((p) => done.has(p)).map((p) => laneOf[p]!)) + 1
+      // Lines of one parent that run side by side keep a free lane between them, so they never
+      // look merged.
+      const sameParent = (k: number): boolean => clearance(info[k]!, info[next]!) > LANE_CLEARANCE
+      const taken = (l: number): boolean =>
+        (used[l] ?? []).some((k) => meet(info[k]!, info[next]!)) ||
+        [l - 1, l + 1].some((n) =>
+          (used[n] ?? []).some((k) => sameParent(k) && meet(info[k]!, info[next]!))
+        )
+      while (taken(lane)) lane++
+      laneOf[next] = lane
+      ;(used[lane] ??= []).push(next)
+      for (let l = 0; l < lane; l++) used[l] ??= []
+      done.add(next)
+      for (const h of info[next]!.span.hops) h.lane = lane
+    }
+    lanes[row] = Math.max(1, used.length)
   }
 
   // 3. Rows: a gap grows when it needs more lanes than fit.
