@@ -36,6 +36,7 @@
     "test:perf": "npm run build && playwright test -c playwright.perf.config.ts",
     "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
     "icons": "node scripts/icons.mjs",
+    "layout:preview": "node scripts/layout-preview.mjs",
     "typecheck:docs": "tsc --noEmit -p tsconfig.docs.json",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",

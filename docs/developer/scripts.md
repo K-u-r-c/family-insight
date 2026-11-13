@@ -8,11 +8,12 @@ All scripts are run with `npm run <name>` (`npm test` for `test`).
 
 ## Develop
 
-| Script    | What it does                                                       |
-| --------- | ------------------------------------------------------------------ |
-| `dev`     | Starts the app with hot reload (electron-vite dev server).         |
-| `build`   | Bundles main, preload and renderer into `out/` (production build). |
-| `preview` | Runs the production bundle from `out/` without packaging.          |
+| Script           | What it does                                                                                                                                                      |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dev`            | Starts the app with hot reload (electron-vite dev server).                                                                                                        |
+| `build`          | Bundles main, preload and renderer into `out/` (production build).                                                                                                |
+| `preview`        | Runs the production bundle from `out/` without packaging.                                                                                                         |
+| `layout:preview` | Lays out a `.finsight` file (or `fixture:collateral`) like the tree canvas, prints [readability metrics](./layout#readability-metrics) and writes an SVG and PNG. |
 
 ## Quality
 

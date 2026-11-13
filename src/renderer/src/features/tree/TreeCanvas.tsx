@@ -2,8 +2,8 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { Home, Pencil, Sprout, Trash2, UserPlus, Waypoints, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { pathRelationships } from '@core/kinship/path'
-import { layoutFamily, type Layout, type LayoutOptions } from '@core/layout/layout'
-import type { AppStyle, CardDensity } from '@core/settings'
+import { layoutFamily, type Layout } from '@core/layout/layout'
+import { cardSizes } from '@core/layout/sizes'
 import { searchPersons } from '@core/search'
 import { displayName, getChildren, getParents, getPartners } from '@core/model/tree'
 import {
@@ -34,33 +34,7 @@ import { Minimap } from './Minimap'
 import { PersonCard } from './PersonCard'
 import styles from './TreeCanvas.module.css'
 
-const SIZES: Record<AppStyle, Record<CardDensity, Partial<LayoutOptions>>> = {
-  modern: {
-    comfortable: {
-      nodeWidth: 220,
-      nodeHeight: 64,
-      partnerGap: 28,
-      siblingGap: 32,
-      generationGap: 76
-    },
-    compact: { nodeWidth: 172, nodeHeight: 48, partnerGap: 20, siblingGap: 22, generationGap: 56 }
-  },
-  // Upright medallions (portrait above the name); a wider partner gap holds the partner knot.
-  tapestry: {
-    comfortable: {
-      nodeWidth: 184,
-      nodeHeight: 104,
-      partnerGap: 40,
-      siblingGap: 32,
-      generationGap: 88
-    },
-    compact: { nodeWidth: 164, nodeHeight: 56, partnerGap: 30, siblingGap: 22, generationGap: 60 }
-  }
-}
-
-/** Card sizes and gaps for a style and density. */
-export const cardSizes = (style: AppStyle, density: CardDensity): Partial<LayoutOptions> =>
-  SIZES[style][density]
+export { cardSizes }
 
 /** Switches the selected person's panel to edit mode and focuses the first field. */
 export function focusEditor(): void {

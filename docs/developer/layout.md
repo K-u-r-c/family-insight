@@ -13,8 +13,9 @@ const layout = layoutFamily(tree, { mode, focusId, depth, collapsed, nodeWidth, 
 
 It is deterministic (the same input always gives the same picture), has no DOM dependency and is
 unit-tested on fixtures: a nuclear family, a remarriage with half-siblings, adoption, a five-generation
-pedigree, two families known to different depths (`twoFamiliesFixture`), generated families of
-different depth and 1 000 random people. The 1 000-person tree is laid out in about 30 ms; the test fails
+pedigree, two families known to different depths (`twoFamiliesFixture`), four great-grandparent
+families with large sibling groups (`collateralFixture`, the shape of a real 78-person tree),
+generated families of different depth and 1 000 random people. The 1 000-person tree is laid out in about 30 ms; the test fails
 above 200 ms locally (1 s on CI). Why a custom engine instead of a graph library is explained in the
 [decision log](./reference/decisions#layout).
 
@@ -113,6 +114,32 @@ Disconnected groups are laid out side by side with `componentGap` between them.
 - Every edge lists `people`: both partners, or the parents and the child.
 
 The renderer draws `ended` and non-biological edges dashed (see [Rendering](./rendering)).
+
+## Readability metrics
+
+`src/core/layout/metrics.ts` measures a finished layout, so tests can hold the engine to a budget
+and maintainers can check a real tree:
+
+| Metric                         | Meaning                                                                                         |
+| ------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `crossings`                    | Points where lines of different parent sets cross (a mother alone ≠ the mother and her partner) |
+| `directCrossings`              | Crossings on the root person's direct line (their ancestry)                                     |
+| `throughCards`                 | Lines that pass through the card of someone they do not connect                                 |
+| `closeParallels`               | Overlapping parallel segments of different groups closer than 16 px                             |
+| `longestHorizontal`            | The longest horizontal segment of a child line                                                  |
+| `directMaxRun`                 | The longest sideways run of a direct-line child line                                            |
+| `childOffsets`                 | Horizontal distance from each child to its parents' centre                                      |
+| `fitZoom(layout, CANVAS_1440)` | The zoom "fit to window" needs in a 1 440 × 900 window (no clamping)                            |
+
+`readability.test.ts` records the budgets for `collateralFixture`. To look at any file locally
+(private trees never leave your machine):
+
+```sh
+npm run layout:preview -- path/to/tree.finsight --style tapestry   # or fixture:collateral
+```
+
+It prints the metrics and writes an SVG and a PNG to a temp directory (`--out` to choose,
+`--anonymous` to draw ids instead of names, `--list` to list every crossing).
 
 ## Options
 
