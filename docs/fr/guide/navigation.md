@@ -41,21 +41,34 @@ pour masquer toute la descendance de cette personne ; **+** l’affiche de nou
 
 Les branches repliées sont enregistrées dans le fichier avec le [mode d’affichage](./view-modes).
 
+## Frères et sœurs en colonnes {#columns}
+
+Les grands-oncles et grands-tantes occupent souvent à eux seuls une rangée entière. Pour que l’arbre
+reste étroit, trois frères et sœurs ou plus sans partenaire et sans enfants dans l’arbre pendent en
+colonnes de quatre cartes au plus sous la ligne de leur famille, l’aîné en premier ; une ligne
+descend le long de chaque colonne :
+
+<Screenshot name="compact-siblings" alt="Jan et Maria Kowalski avec leur fils Piotr et son épouse à côté, et leurs quatre autres enfants en une colonne sous la ligne de la famille" />
+
+Les frères et sœurs qui ont leur propre famille restent dans la rangée à côté de leur partenaire.
+Pour afficher de nouveau tout le monde sur une rangée, désactivez **Frères et sœurs sans famille en
+colonnes** dans les [Paramètres](./settings) ou dans le menu **Affichage**.
+
 ## Au clavier {#keyboard}
 
 Cliquez sur l’arbre (ou appuyez sur <kbd>Tab</kbd> jusqu’à ce que le lien
 **Aller à l’arbre généalogique** apparaisse, puis sur <kbd>Enter</kbd>), puis :
 
-| Touche                      | Action                                    |
-| --------------------------- | ----------------------------------------- |
-| <kbd>↑</kbd>                | aller à un parent                         |
-| <kbd>↓</kbd>                | aller à un enfant                         |
-| <kbd>←</kbd> / <kbd>→</kbd> | aller à un conjoint, un frère ou une sœur |
-| <kbd>Enter</kbd>            | modifier la personne sélectionnée         |
-| <kbd>F</kbd>                | ajuster tout l’arbre à l’écran            |
-| <kbd>+</kbd> / <kbd>−</kbd> | zoom avant / arrière                      |
-| <kbd>0</kbd>                | zoom à 100 %                              |
-| <kbd>Esc</kbd>              | annuler la sélection                      |
+| Touche                      | Action                                                                     |
+| --------------------------- | -------------------------------------------------------------------------- |
+| <kbd>↑</kbd>                | aller à un parent                                                          |
+| <kbd>↓</kbd>                | aller à un enfant; dans une colonne de frères et sœurs : la carte suivante |
+| <kbd>←</kbd> / <kbd>→</kbd> | aller à un conjoint, un frère ou une sœur                                  |
+| <kbd>Enter</kbd>            | modifier la personne sélectionnée                                          |
+| <kbd>F</kbd>                | ajuster tout l’arbre à l’écran                                             |
+| <kbd>+</kbd> / <kbd>−</kbd> | zoom avant / arrière                                                       |
+| <kbd>0</kbd>                | zoom à 100 %                                                               |
+| <kbd>Esc</kbd>              | annuler la sélection                                                       |
 
 La première pression sur une flèche sélectionne la
 [personne de référence](./view-modes#root-person) (ou la première personne). Tous les raccourcis

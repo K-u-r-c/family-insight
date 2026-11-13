@@ -42,21 +42,33 @@ wieder ein.
 
 Eingeklappte Zweige werden zusammen mit der [Ansicht](./view-modes) in der Datei gespeichert.
 
+## Geschwister in Spalten {#columns}
+
+Großonkel und Großtanten füllen oft allein eine ganze Reihe. Damit der Baum schmal bleibt, hängen
+drei oder mehr Geschwister ohne Partner und ohne Kinder im Baum in Spalten von bis zu vier Karten
+unter ihrer Familienlinie, die Ältesten zuerst; neben jeder Spalte verläuft eine Linie:
+
+<Screenshot name="compact-siblings" alt="Jan und Maria Kowalski mit ihrem Sohn Piotr und seiner Frau daneben und ihren vier anderen Kindern in einer Spalte unter der Familienlinie" />
+
+Geschwister mit eigener Familie bleiben in der Reihe neben ihrem Partner. Um wieder alle in einer
+Reihe zu zeigen, schalten Sie **Geschwister ohne Familie in Spalten** in den
+[Einstellungen](./settings) oder im Menü **Ansicht** aus.
+
 ## Mit der Tastatur {#keyboard}
 
 Klicken Sie in den Stammbaum (oder drücken Sie <kbd>Tab</kbd>, bis der Link
 **Zum Stammbaum springen** erscheint, und dann <kbd>Enter</kbd>), danach:
 
-| Taste                       | Aktion                          |
-| --------------------------- | ------------------------------- |
-| <kbd>↑</kbd>                | zu einem Elternteil             |
-| <kbd>↓</kbd>                | zu einem Kind                   |
-| <kbd>←</kbd> / <kbd>→</kbd> | zu Partner/in oder Geschwistern |
-| <kbd>Enter</kbd>            | ausgewählte Person bearbeiten   |
-| <kbd>F</kbd>                | ganzen Stammbaum einpassen      |
-| <kbd>+</kbd> / <kbd>−</kbd> | vergrößern / verkleinern        |
-| <kbd>0</kbd>                | Zoom auf 100 %                  |
-| <kbd>Esc</kbd>              | Auswahl aufheben                |
+| Taste                       | Aktion                                                       |
+| --------------------------- | ------------------------------------------------------------ |
+| <kbd>↑</kbd>                | zu einem Elternteil                                          |
+| <kbd>↓</kbd>                | zu einem Kind; in einer Geschwisterspalte: die nächste Karte |
+| <kbd>←</kbd> / <kbd>→</kbd> | zu Partner/in oder Geschwistern                              |
+| <kbd>Enter</kbd>            | ausgewählte Person bearbeiten                                |
+| <kbd>F</kbd>                | ganzen Stammbaum einpassen                                   |
+| <kbd>+</kbd> / <kbd>−</kbd> | vergrößern / verkleinern                                     |
+| <kbd>0</kbd>                | Zoom auf 100 %                                               |
+| <kbd>Esc</kbd>              | Auswahl aufheben                                             |
 
 Der erste Druck auf eine Pfeiltaste wählt die [Hauptperson](./view-modes#root-person) (oder die
 erste Person) aus. Alle Kürzel finden Sie unter [Tastenkürzel](./shortcuts).

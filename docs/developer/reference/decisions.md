@@ -567,3 +567,38 @@ later without changing anything else.
   `settings.tips` when it appears and stays for that dialog only. `settings.showTips` turns them
   off; "Reset tips and guided tours" clears hints and tours and turns tips back on.
 - **Off in tests and screenshots** unless a test asks (`tips: true`), like the first-run tour.
+
+## Half-siblings and lane order (2026-11, issue #113)
+
+- **Bounds instead of a new solver**: a child group must stay between the drop points of its
+  neighbouring groups. That is a bound per unit, enforced in the existing isotonic regression by
+  pinning an item to its bound with a heavy weight and solving the row again – no new constraint
+  solver, the 1 000-person budget is unchanged.
+- **Lane order from crossings**: when two segments in a gap meet and only one stacking order avoids
+  a crossing, lanes are assigned in that (topological) order; this also handles a hub whose own
+  children cannot fit between his wives' groups.
+
+## Second parent offer (2026-11, issue #114)
+
+- **Offer, not automatic**: children entered before a partner may be the partner's step-children
+  or half-siblings, so nothing is linked without the user; children born before the partnership
+  started are not offered at all.
+- **Non-blocking**: the toast after adding a partner does not name the (still unnamed) partner;
+  the panel box stays until the children are linked or no longer qualify.
+
+## Compact siblings (2026-11, issue #115)
+
+- **Hanging columns** (org-chart style) for siblings with no partner and no children in the tree,
+  three or more per family: they rarely need horizontal room below them, and they are what makes
+  trees with many great-uncles and great-aunts wide. Siblings with families keep their places.
+- **Up to four cards per column**, not three: on the reported 78-person tree the widest row needs
+  ~4 580 px with columns of three even when packed, more than the 4 124 px that fit a 1 440 × 900
+  window at 25 % zoom; four per column gives ~4 000 px.
+- **Rows grow downwards** with their tallest column, so line lanes stay in the gap below and
+  nothing has to avoid a column sideways.
+- **The frame**: with compact siblings the widest row (by packed width) sets the horizontal frame
+  and rows that stick out by more than a sibling gap are pulled in (bounded isotonic regression),
+  so the tree is as wide as its widest row.
+- **On by default in the app, off in the engine**: `compactSiblings` is a layout option the canvas
+  passes from the setting; the engine keeps its previous output without it (snapshot test), and
+  the sample trees have no such siblings, so existing screenshots are unchanged.

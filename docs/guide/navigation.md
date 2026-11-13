@@ -39,21 +39,33 @@ has children and click the small **−** button under it to hide all of that per
 
 Collapsed branches are saved in the file together with the [view mode](./view-modes).
 
+## Siblings in columns {#columns}
+
+Great-uncles and great-aunts often fill a whole row on their own. To keep the tree narrow, three or
+more brothers and sisters who have no partner and no children in the tree hang in columns of up to
+four cards under their family line, oldest first; a line runs down beside each column:
+
+<Screenshot name="compact-siblings" alt="Jan and Maria Kowalski with their son Piotr and his wife next to them, and their four other children in one column under the family line" />
+
+Siblings with a family of their own stay in the row next to their partner. To show everyone in one
+row again, switch off **Siblings without families in columns** in [Settings](./settings) or in the
+**View** menu.
+
 ## With the keyboard {#keyboard}
 
 Click the tree (or press <kbd>Tab</kbd> until the **Skip to the family tree** link appears and press
 <kbd>Enter</kbd>), then:
 
-| Key                         | Action                     |
-| --------------------------- | -------------------------- |
-| <kbd>↑</kbd>                | go to a parent             |
-| <kbd>↓</kbd>                | go to a child              |
-| <kbd>←</kbd> / <kbd>→</kbd> | go to a partner or sibling |
-| <kbd>Enter</kbd>            | edit the selected person   |
-| <kbd>F</kbd>                | fit the whole tree         |
-| <kbd>+</kbd> / <kbd>−</kbd> | zoom in / out              |
-| <kbd>0</kbd>                | zoom to 100 %              |
-| <kbd>Esc</kbd>              | clear the selection        |
+| Key                         | Action                                                |
+| --------------------------- | ----------------------------------------------------- |
+| <kbd>↑</kbd>                | go to a parent                                        |
+| <kbd>↓</kbd>                | go to a child; in a column of siblings: the next card |
+| <kbd>←</kbd> / <kbd>→</kbd> | go to a partner or sibling                            |
+| <kbd>Enter</kbd>            | edit the selected person                              |
+| <kbd>F</kbd>                | fit the whole tree                                    |
+| <kbd>+</kbd> / <kbd>−</kbd> | zoom in / out                                         |
+| <kbd>0</kbd>                | zoom to 100 %                                         |
+| <kbd>Esc</kbd>              | clear the selection                                   |
 
 The first arrow key press selects the [root person](./view-modes#root-person) (or the first
 person). All shortcuts are listed in [Keyboard shortcuts](./shortcuts).

@@ -41,21 +41,33 @@ los descendientes de esa persona; **+** vuelve a mostrarlos.
 
 Las ramas contraídas se guardan en el archivo junto con el [modo de vista](./view-modes).
 
+## Hermanos en columnas {#columns}
+
+Los tíos abuelos a menudo ocupan una fila entera. Para que el árbol siga siendo estrecho, tres o más
+hermanos sin pareja y sin hijos en el árbol cuelgan en columnas de hasta cuatro tarjetas bajo la
+línea de su familia, del mayor al menor; junto a cada columna baja una línea:
+
+<Screenshot name="compact-siblings" alt="Jan y Maria Kowalski con su hijo Piotr y su esposa al lado, y sus otros cuatro hijos en una columna bajo la línea de la familia" />
+
+Los hermanos con familia propia se quedan en la fila junto a su pareja. Para volver a mostrar a todos
+en una fila, desactiva **Hermanos sin familia en columnas** en la [Configuración](./settings) o en el menú
+**Ver**.
+
 ## Con el teclado {#keyboard}
 
 Haga clic en el árbol (o pulse <kbd>Tab</kbd> hasta que aparezca el enlace **Saltar al árbol
 genealógico** y pulse <kbd>Enter</kbd>) y después:
 
-| Tecla                       | Acción                         |
-| --------------------------- | ------------------------------ |
-| <kbd>↑</kbd>                | ir a un progenitor             |
-| <kbd>↓</kbd>                | ir a un hijo o una hija        |
-| <kbd>←</kbd> / <kbd>→</kbd> | ir a una pareja o a un hermano |
-| <kbd>Enter</kbd>            | editar la persona seleccionada |
-| <kbd>F</kbd>                | ajustar todo el árbol          |
-| <kbd>+</kbd> / <kbd>−</kbd> | acercar / alejar               |
-| <kbd>0</kbd>                | ampliar al 100 %               |
-| <kbd>Esc</kbd>              | anular la selección            |
+| Tecla                       | Acción                                                                    |
+| --------------------------- | ------------------------------------------------------------------------- |
+| <kbd>↑</kbd>                | ir a un progenitor                                                        |
+| <kbd>↓</kbd>                | ir a un hijo o una hija; en una columna de hermanos: la tarjeta siguiente |
+| <kbd>←</kbd> / <kbd>→</kbd> | ir a una pareja o a un hermano                                            |
+| <kbd>Enter</kbd>            | editar la persona seleccionada                                            |
+| <kbd>F</kbd>                | ajustar todo el árbol                                                     |
+| <kbd>+</kbd> / <kbd>−</kbd> | acercar / alejar                                                          |
+| <kbd>0</kbd>                | ampliar al 100 %                                                          |
+| <kbd>Esc</kbd>              | anular la selección                                                       |
 
 La primera pulsación de una flecha selecciona a la [persona principal](./view-modes#root-person) (o a
 la primera persona). Todos los atajos aparecen en [Atajos de teclado](./shortcuts).

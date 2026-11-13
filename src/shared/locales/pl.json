@@ -35,7 +35,8 @@
       "compact": "Kompaktowe"
     },
     "onlinePlaceLookup": "Wyszukuj miejsca online",
-    "onlineMaps": "Wczytuj mapy online"
+    "onlineMaps": "Wczytuj mapy online",
+    "compactSiblings": "Rodzeństwo bez rodzin w kolumnach"
   },
   "theme": {
     "system": "Systemowy",

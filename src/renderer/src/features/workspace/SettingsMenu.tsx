@@ -56,6 +56,11 @@ export function SettingsMenu(): React.JSX.Element {
       checked: settings.density === density,
       onSelect: () => void update({ density })
     })),
+    {
+      label: t('settings.compactSiblings'),
+      checked: settings.compactSiblings,
+      onSelect: () => void update({ compactSiblings: !settings.compactSiblings })
+    },
     { type: 'separator' },
     {
       label: t('settings.autosave'),

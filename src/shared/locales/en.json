@@ -35,7 +35,8 @@
       "compact": "Compact"
     },
     "onlinePlaceLookup": "Look up places online",
-    "onlineMaps": "Load maps online"
+    "onlineMaps": "Load maps online",
+    "compactSiblings": "Siblings without families in columns"
   },
   "theme": {
     "system": "System",

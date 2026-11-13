@@ -40,21 +40,33 @@ discendenti di quella persona; **+** li mostra di nuovo.
 
 I rami compressi vengono salvati nel file insieme alla [modalità di vista](./view-modes).
 
+## Fratelli in colonne {#columns}
+
+I prozii occupano spesso da soli un’intera fila. Perché l’albero resti stretto, tre o più fratelli
+senza partner e senza figli nell’albero pendono in colonne di al massimo quattro schede sotto la
+linea della loro famiglia, dal più anziano; accanto a ogni colonna scende una linea:
+
+<Screenshot name="compact-siblings" alt="Jan e Maria Kowalski con il figlio Piotr e sua moglie accanto, e gli altri quattro figli in una colonna sotto la linea della famiglia" />
+
+I fratelli con una famiglia propria restano nella fila accanto al partner. Per mostrare di nuovo
+tutti in una fila, disattiva **Fratelli senza famiglia in colonne** nelle [Impostazioni](./settings)
+o nel menu **Visualizza**.
+
 ## Con la tastiera {#keyboard}
 
 Fai clic sull'albero (o premi <kbd>Tab</kbd> finché non compare il collegamento
 **Vai all'albero genealogico** e premi <kbd>Enter</kbd>), poi:
 
-| Tasto                       | Azione                                     |
-| --------------------------- | ------------------------------------------ |
-| <kbd>↑</kbd>                | vai a un genitore                          |
-| <kbd>↓</kbd>                | vai a un figlio o una figlia               |
-| <kbd>←</kbd> / <kbd>→</kbd> | vai a un partner o a un fratello o sorella |
-| <kbd>Enter</kbd>            | modifica la persona selezionata            |
-| <kbd>F</kbd>                | adatta tutto l'albero allo schermo         |
-| <kbd>+</kbd> / <kbd>−</kbd> | ingrandisci / riduci                       |
-| <kbd>0</kbd>                | zoom al 100 %                              |
-| <kbd>Esc</kbd>              | annulla la selezione                       |
+| Tasto                       | Azione                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------ |
+| <kbd>↑</kbd>                | vai a un genitore                                                              |
+| <kbd>↓</kbd>                | vai a un figlio o una figlia; in una colonna di fratelli: la scheda successiva |
+| <kbd>←</kbd> / <kbd>→</kbd> | vai a un partner o a un fratello o sorella                                     |
+| <kbd>Enter</kbd>            | modifica la persona selezionata                                                |
+| <kbd>F</kbd>                | adatta tutto l'albero allo schermo                                             |
+| <kbd>+</kbd> / <kbd>−</kbd> | ingrandisci / riduci                                                           |
+| <kbd>0</kbd>                | zoom al 100 %                                                                  |
+| <kbd>Esc</kbd>              | annulla la selezione                                                           |
 
 La prima pressione di un tasto freccia seleziona la [persona principale](./view-modes#root-person)
 (o la prima persona). Tutte le scorciatoie sono elencate in

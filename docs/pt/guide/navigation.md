@@ -41,21 +41,32 @@ todos os descendentes dessa pessoa; **+** volta a mostrá-los.
 
 Os ramos recolhidos são salvos no arquivo junto com o [modo de visualização](./view-modes).
 
+## Irmãos em colunas {#columns}
+
+Os tios-avós ocupam muitas vezes sozinhos uma fila inteira. Para a árvore continuar estreita, três
+ou mais irmãos sem parceiro e sem filhos na árvore ficam pendurados em colunas de até quatro cartões
+sob a linha da sua família, do mais velho para o mais novo; ao lado de cada coluna desce uma linha:
+
+<Screenshot name="compact-siblings" alt="Jan e Maria Kowalski com o filho Piotr e a esposa ao lado, e os outros quatro filhos numa coluna sob a linha da família" />
+
+Os irmãos com família própria ficam na fila ao lado do parceiro. Para voltar a mostrar todos numa
+fila, desligue **Irmãos sem família em colunas** nas [Configurações](./settings) ou no menu **Exibir**.
+
 ## Com o teclado {#keyboard}
 
 Clique na árvore (ou pressione <kbd>Tab</kbd> até aparecer o link
 **Ir para a árvore genealógica** e pressione <kbd>Enter</kbd>) e depois:
 
-| Tecla                       | Ação                            |
-| --------------------------- | ------------------------------- |
-| <kbd>↑</kbd>                | ir para o pai ou a mãe          |
-| <kbd>↓</kbd>                | ir para um filho ou filha       |
-| <kbd>←</kbd> / <kbd>→</kbd> | ir para parceiro(a) ou irmão(ã) |
-| <kbd>Enter</kbd>            | editar a pessoa selecionada     |
-| <kbd>F</kbd>                | ajustar a árvore inteira à tela |
-| <kbd>+</kbd> / <kbd>−</kbd> | ampliar / reduzir               |
-| <kbd>0</kbd>                | voltar a 100 %                  |
-| <kbd>Esc</kbd>              | desfazer a seleção              |
+| Tecla                       | Ação                                                                |
+| --------------------------- | ------------------------------------------------------------------- |
+| <kbd>↑</kbd>                | ir para o pai ou a mãe                                              |
+| <kbd>↓</kbd>                | ir para um filho ou filha; numa coluna de irmãos: o cartão seguinte |
+| <kbd>←</kbd> / <kbd>→</kbd> | ir para parceiro(a) ou irmão(ã)                                     |
+| <kbd>Enter</kbd>            | editar a pessoa selecionada                                         |
+| <kbd>F</kbd>                | ajustar a árvore inteira à tela                                     |
+| <kbd>+</kbd> / <kbd>−</kbd> | ampliar / reduzir                                                   |
+| <kbd>0</kbd>                | voltar a 100 %                                                      |
+| <kbd>Esc</kbd>              | desfazer a seleção                                                  |
 
 O primeiro toque em uma seta seleciona a [pessoa principal](./view-modes#root-person) (ou a
 primeira pessoa). Todos os atalhos estão listados em [Atalhos de teclado](./shortcuts).

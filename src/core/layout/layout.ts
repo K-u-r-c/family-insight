@@ -42,6 +42,11 @@ export interface LayoutOptions {
   generationGap?: number
   /** Gap between disconnected groups of people. */
   componentGap?: number
+  /**
+   * Siblings with no partner and no children (three or more in a row) hang in columns below
+   * their family line instead of taking one long row (#115). Off unless set.
+   */
+  compactSiblings?: boolean
 }
 
 export interface Point {
@@ -61,6 +66,8 @@ export interface LayoutNode {
   hasHiddenChildren: boolean
   /** The person has children in the tree (shown or not). */
   hasChildren: boolean
+  /** Place in a hanging column of siblings (`compactSiblings`): 0 is the top card. */
+  stack?: { index: number; count: number }
 }
 
 export interface LayoutEdge {
@@ -95,6 +102,12 @@ const DEFAULTS = {
 }
 
 type Sizes = typeof DEFAULTS & { familyGap: number }
+
+/** Hanging columns of siblings: cards per column, the shortest run stacked, spacing, indent. */
+const STACK_MAX = 4
+const STACK_MIN_RUN = 3
+export const STACK_GAP = 16
+export const STACK_INDENT = 24
 
 interface Graph {
   people: Person[]
@@ -393,6 +406,8 @@ interface Unit {
   /** Centre x. */
   x: number
   width: number
+  /** A hanging column of siblings (top to bottom) instead of partners side by side. */
+  stack?: boolean
 }
 
 /** Pool-adjacent-violators: x_i ≥ x_{i-1} + minDist_i, minimising Σ w_i (x_i - target_i)². */
@@ -465,6 +480,8 @@ function placeRowBounded(
 interface ComponentLayout {
   centers: Map<PersonId, number>
   gen: Map<PersonId, number>
+  /** People in hanging columns: their place in the column. */
+  stacks: Map<PersonId, { index: number; count: number }>
   minX: number
   maxX: number
   maxGen: number
@@ -474,7 +491,9 @@ function layoutComponent(
   g: Graph,
   comp: PersonId[],
   o: Sizes,
-  focusId?: PersonId
+  focusId?: PersonId,
+  /** People who may hang in a column (compact siblings); none when not set. */
+  stackable?: (id: PersonId) => boolean
 ): ComponentLayout {
   const gen = assignGenerations(g, comp)
   const unitList = buildUnits(g, comp, gen)
@@ -494,8 +513,14 @@ function layoutComponent(
   const rows: Unit[][] = Array.from({ length: maxGen + 1 }, () => [])
   for (const u of units) rows[u.gen]!.push(u)
 
+  /** A member's card centre relative to the unit centre (stacked cards sit right of the trunk). */
   const memberOffset = (u: Unit, id: PersonId): number =>
-    u.members.indexOf(id) * (o.nodeWidth + o.partnerGap) + o.nodeWidth / 2 - u.width / 2
+    u.stack
+      ? STACK_INDENT / 2
+      : u.members.indexOf(id) * (o.nodeWidth + o.partnerGap) + o.nodeWidth / 2 - u.width / 2
+  /** Where a member's line from the parents comes down, relative to the unit centre. */
+  const dropOffset = (u: Unit, id: PersonId): number =>
+    u.stack ? STACK_INDENT / 2 - u.width / 2 : memberOffset(u, id)
   const birthRank = new Map(g.people.map((p, i) => [p.id, i]))
   const unitBirth = (u: Unit): number => Math.min(...u.members.map((m) => birthRank.get(m)!))
   const position = (id: PersonId): number => {
@@ -657,6 +682,74 @@ function layoutComponent(
   }
   for (const u of units) u.members = best!.members.get(u)!
 
+  // Compact siblings (#115): three or more siblings without partners or children hang in
+  // balanced columns of up to four cards, in birth order down the columns.
+  if (stackable) {
+    const parentKey = (id: PersonId): string => linked(id, -1).slice().sort().join('+')
+    const leaf = (u: Unit): string | undefined => {
+      const id = u.members[0]!
+      if (u.members.length !== 1 || id === focusId || !stackable(id)) return undefined
+      if ((g.partners.get(id) ?? []).length || (g.children.get(id) ?? []).length) return undefined
+      const key = parentKey(id)
+      return key || undefined
+    }
+    let changed = false
+    for (let r = 0; r < rows.length; r++) {
+      const row = rows[r]!
+      // All such siblings of one family form one block, where the first of them stands; siblings
+      // with families of their own keep their places.
+      const byKey = new Map<string, Unit[]>()
+      for (const u of row) {
+        const key = leaf(u)
+        if (key) byKey.set(key, [...(byKey.get(key) ?? []), u])
+      }
+      const next: Unit[] = []
+      for (const u of row) {
+        const key = leaf(u)
+        const run = key ? byKey.get(key)! : undefined
+        if (!run || run.length < STACK_MIN_RUN) {
+          next.push(u)
+          continue
+        }
+        if (run[0] !== u) continue
+        // Birth order; people without dates in the order they were added.
+        const person = (id: PersonId): Person => g.people[birthRank.get(id)!]!
+        const ids = run
+          .map((x) => x.members[0]!)
+          .sort(
+            (a, b) =>
+              compareFuzzyDates(person(a).birth?.date, person(b).birth?.date) ||
+              (person(a).createdAt < person(b).createdAt
+                ? -1
+                : person(a).createdAt > person(b).createdAt
+                  ? 1
+                  : birthRank.get(a)! - birthRank.get(b)!)
+          )
+        const columns = Math.ceil(ids.length / STACK_MAX)
+        let start = 0
+        for (let c = 0; c < columns; c++) {
+          const size = Math.floor(ids.length / columns) + (c < ids.length % columns ? 1 : 0)
+          const members = ids.slice(start, start + size)
+          start += size
+          const col: Unit = {
+            members,
+            gen: r,
+            order: 0,
+            x: 0,
+            width: STACK_INDENT + o.nodeWidth,
+            stack: true
+          }
+          for (const m of members) unitOf.set(m, col)
+          next.push(col)
+        }
+        changed = true
+      }
+      rows[r] = next
+      next.forEach((u, k) => (u.order = k))
+    }
+    if (changed) units.splice(0, units.length, ...rows.flat())
+  }
+
   // Coordinates: start packed, then minimise Σ (child − parent)² over all parent → child links
   // row by row (block coordinate descent, each row solved exactly by isotonic regression).
   // Neighbours from different families get `familyGap`, siblings and partners stay close.
@@ -762,15 +855,23 @@ function layoutComponent(
             need += gapBetween(kidUnits[i - 1]!, kidUnits[i]!)
           if (right - left < need) return
           for (const { unit, member } of g.kids) {
-            const off = memberOffset(unit, member)
+            const off = dropOffset(unit, member)
             if (right < Infinity) hi.set(unit, Math.min(hi.get(unit) ?? Infinity, right - off))
             if (left > -Infinity) lo.set(unit, Math.max(lo.get(unit) ?? -Infinity, left - off))
           }
         })
       }
     }
+    if (frame) {
+      for (const u of row) {
+        lo.set(u, Math.max(lo.get(u) ?? -Infinity, frame.left + u.width / 2))
+        hi.set(u, Math.min(hi.get(u) ?? Infinity, frame.right - u.width / 2))
+      }
+    }
     return [row.map((u) => lo.get(u)), row.map((u) => hi.get(u))]
   }
+  /** Once set, every row stays within the span of the widest row (see below). */
+  let frame: { left: number; right: number } | undefined
   const relax = (row: Unit[], up: boolean, down: boolean): void => {
     if (!row.length) return
     const targets: number[] = []
@@ -781,9 +882,10 @@ function layoutComponent(
       weights.push(d ? d[1] : 0.01)
     }
     const gaps = row.map((u, i) => (i === 0 ? 0 : gapBetween(row[i - 1]!, u)))
-    const xs = splitRows.has(row[0]!.gen)
-      ? placeRowBounded(targets, gaps, weights, ...boundsFor(row))
-      : placeRow(targets, gaps, weights)
+    const xs =
+      frame || splitRows.has(row[0]!.gen)
+        ? placeRowBounded(targets, gaps, weights, ...boundsFor(row))
+        : placeRow(targets, gaps, weights)
     row.forEach((u, i) => (u.x = xs[i]!))
   }
   for (let iter = 0; iter < 40; iter++) {
@@ -795,19 +897,46 @@ function layoutComponent(
     const first = Math.min(...splitRows)
     for (let r = first; r <= maxGen; r++) relax(rows[r]!, true, true)
   }
+  // Compactness (with compact siblings): the row that needs the most space sets the frame;
+  // narrower rows that stick out of it (a couple centred above a child at the end of a full row)
+  // are pulled in. The tree is then as wide as its widest row.
+  if (stackable && rows.length > 1) {
+    const packed = (row: Unit[]): number =>
+      row.reduce((sum, u, i) => sum + (i ? gapBetween(row[i - 1]!, u) : 0), 0) +
+      (row.length ? (row[0]!.width + row[row.length - 1]!.width) / 2 : 0)
+    const widest = rows.reduce((a, b) => (packed(b) > packed(a) ? b : a))
+    const left = widest[0]!.x - widest[0]!.width / 2
+    const right = widest[widest.length - 1]!.x + widest[widest.length - 1]!.width / 2
+    const sticksOut = rows.some(
+      (row) =>
+        row.length &&
+        (row[0]!.x - row[0]!.width / 2 < left - o.siblingGap ||
+          row[row.length - 1]!.x + row[row.length - 1]!.width / 2 > right + o.siblingGap)
+    )
+    if (sticksOut) {
+      frame = { left, right }
+      for (let iter = 0; iter < 6; iter++) {
+        for (let r = 0; r <= maxGen; r++) if (rows[r] !== widest) relax(rows[r]!, true, true)
+        for (let r = maxGen; r >= 0; r--) if (rows[r] !== widest) relax(rows[r]!, true, true)
+      }
+    }
+  }
 
   const centers = new Map<PersonId, number>()
+  const stacks = new Map<PersonId, { index: number; count: number }>()
   let minX = Infinity
   let maxX = -Infinity
   for (const u of units) {
-    for (const m of u.members) {
+    if (u.stack) minX = Math.min(minX, u.x - u.width / 2)
+    u.members.forEach((m, index) => {
       const c = center(m)
       centers.set(m, c)
+      if (u.stack) stacks.set(m, { index, count: u.members.length })
       minX = Math.min(minX, c - o.nodeWidth / 2)
       maxX = Math.max(maxX, c + o.nodeWidth / 2)
-    }
+    })
   }
-  return { centers, gen, minX, maxX, maxGen }
+  return { centers, gen, stacks, minX, maxX, maxGen }
 }
 
 /** Computes positions for every visible person and routes the connecting lines. */
@@ -833,7 +962,15 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
   const pos = new Map<PersonId, LayoutNode>()
   let offsetX = 0
   for (const comp of comps) {
-    const c = layoutComponent(g, comp, o, options.focusId)
+    const c = layoutComponent(
+      g,
+      comp,
+      o,
+      options.focusId,
+      options.compactSiblings
+        ? (id) => !(full.children.get(id) ?? []).length && id !== tree.meta.rootPersonId
+        : undefined
+    )
     const shift = offsetX - c.minX
     for (const id of comp) {
       const generation = c.gen.get(id)!
@@ -845,7 +982,8 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
         height: o.nodeHeight,
         generation,
         hasHiddenChildren: (full.children.get(id) ?? []).some((r) => !ids.has(r.childId)),
-        hasChildren: (full.children.get(id) ?? []).length > 0
+        hasChildren: (full.children.get(id) ?? []).length > 0,
+        ...(c.stacks.has(id) ? { stack: c.stacks.get(id)! } : {})
       }
       nodes.push(node)
       pos.set(id, node)
@@ -952,7 +1090,8 @@ function routeEdges(
         .map((p) => p.id)
         .sort()
         .join('+')
-      const top = centerX(child)
+      // A card in a hanging column is reached by the column's trunk, left of the cards.
+      const top = child.stack ? child.x - STACK_INDENT / 2 : centerX(child)
       const line: ChildLine = { links: ls, parents: ps, child, sx, couple: !!r, hops: [] }
       const from = l.generation
       if (from === child.generation - 1) {
@@ -1079,9 +1218,19 @@ function routeEdges(
   const fit = Math.max(1, Math.floor((o.generationGap - 2 * LANE_MARGIN) / LANE_STEP) + 1)
   const gapOf = (row: number): number =>
     o.generationGap + Math.max(0, lanes[row]! - fit) * LANE_STEP
+  // A row with hanging columns is as tall as its tallest column.
+  const stackStep = o.nodeHeight + STACK_GAP
+  const rowHeight = new Array<number>(maxGen + 1).fill(o.nodeHeight)
+  for (const n of nodes) {
+    if (n.stack)
+      rowHeight[n.generation] = Math.max(
+        rowHeight[n.generation]!,
+        o.nodeHeight + (n.stack.count - 1) * stackStep
+      )
+  }
   const rowY: number[] = [0]
-  for (let r = 1; r <= maxGen; r++) rowY.push(rowY[r - 1]! + o.nodeHeight + gapOf(r))
-  for (const n of nodes) n.y = rowY[n.generation]!
+  for (let r = 1; r <= maxGen; r++) rowY.push(rowY[r - 1]! + rowHeight[r - 1]! + gapOf(r))
+  for (const n of nodes) n.y = rowY[n.generation]! + (n.stack?.index ?? 0) * stackStep
   const laneY = (h: Hop): number => {
     const mid = rowY[h.row]! - gapOf(h.row) / 2
     return mid + ((h.lane ?? 0) - (lanes[h.row]! - 1) / 2) * LANE_STEP
@@ -1136,10 +1285,20 @@ function routeEdges(
       parents.length === 2 && parents[1]!.x < parents[0]!.x ? [parents[1]!] : [parents[0]!]
     const sy = line.couple ? l.y + o.nodeHeight / 2 : l.y + l.height
     const top = { x: centerX(child), y: child.y }
+    // Into a hanging column: down the trunk, then a short branch into the card's side.
+    const trunk = child.stack ? child.x - STACK_INDENT / 2 : undefined
+    const end = (y: number): Point[] =>
+      trunk === undefined
+        ? [{ x: top.x, y }, top]
+        : [
+            { x: trunk, y },
+            { x: trunk, y: child.y + o.nodeHeight / 2 },
+            { x: child.x, y: child.y + o.nodeHeight / 2 }
+          ]
     let points: Point[]
     if (line.hops.length === 1) {
       const y = laneY(line.hops[0]!)
-      points = [{ x: line.sx, y: sy }, { x: line.sx, y }, { x: top.x, y }, top]
+      points = [{ x: line.sx, y: sy }, { x: line.sx, y }, ...end(y)]
     } else if (line.hops.length === 2) {
       const y1 = laneY(line.hops[0]!)
       const y2 = laneY(line.hops[1]!)
@@ -1149,8 +1308,7 @@ function routeEdges(
         { x: line.sx, y: y1 },
         { x: via, y: y1 },
         { x: via, y: y2 },
-        { x: top.x, y: y2 },
-        top
+        ...end(y2)
       ]
     } else {
       // Malformed data (a parent on or below the child's row): a plain line.

@@ -27,6 +27,14 @@ describe('settings', () => {
     expect(sanitizeSettings({ style: 7 }, d, isLang).style).toBe('modern')
   })
 
+  it('compacts siblings by default and keeps a valid choice (#115)', () => {
+    const d = defaultSettings('en')
+    expect(d.compactSiblings).toBe(true)
+    expect(sanitizeSettings({ compactSiblings: false }, d, isLang).compactSiblings).toBe(false)
+    expect(sanitizeSettings({ compactSiblings: 'no' }, d, isLang).compactSiblings).toBe(true)
+    expect(sanitizeSettings({}, d, isLang).compactSiblings).toBe(true)
+  })
+
   it('keeps the seen tours as a short list of names', () => {
     const d = defaultSettings('en')
     expect(d.tours).toEqual([])

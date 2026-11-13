@@ -66,6 +66,18 @@ order the relationships started:
 
 <Screenshot name="remarriage" alt="Piotr Kowalski between his first wife Magdalena Nowicka and his second wife Katarzyna Kowalska, each couple's children below them" />
 
+## 3½. Compact siblings {#compact-siblings}
+
+With `compactSiblings` (the app's default, setting **Siblings without families in columns**), three
+or more siblings of one family who have no visible partner and no children in the tree – not the
+root or focus person – become **hanging columns**: balanced columns of up to four cards
+(`STACK_MAX`), oldest first down the columns (undated people in the order they were added),
+placed where the first of them stood. A column is one unit `STACK_INDENT + nodeWidth` wide; its
+cards sit `STACK_GAP` apart and `LayoutNode.stack` gives each card's place. A row with columns is
+as tall as its tallest column, and the rows below move down. With the option the widest row also
+sets a **frame**: rows that stick out of its span by more than `siblingGap` are pulled in, so the
+tree is as wide as its widest row.
+
 ## 4. Order
 
 Units in each row are ordered with **barycentre sweeps**: going down and up the rows several times,
@@ -121,6 +133,8 @@ Disconnected groups are laid out side by side with `componentGap` between them.
   between them otherwise, so they never read as one line. With one
   lane the line sits halfway between the rows. A gap that needs more lanes than fit grows by
   10 px per extra lane, and the rows below move down.
+- A child in a **hanging column** is reached by a trunk running down beside the column, with a short
+  branch into the side of each card.
 - A **link over several rows** (only when the data forces it, see step 2) goes across in the first
   gap, down a free channel between the cards of the rows in between, then across to the child.
 - Every edge lists `people`: both partners, or the parents and the child.
@@ -155,19 +169,20 @@ It prints the metrics and writes an SVG and a PNG to a temp directory (`--out` t
 
 ## Options
 
-| Option          | Default | Meaning                                           |
-| --------------- | ------- | ------------------------------------------------- |
-| `mode`          | family  | `family`, `ancestors`, `descendants`, `hourglass` |
-| `focusId`       | –       | Person the non-family modes start from            |
-| `depth`         | ∞       | Generations to walk in the non-family modes       |
-| `collapsed`     | ∅       | People whose descendants are hidden               |
-| `nodeWidth`     | 188     | Card width                                        |
-| `nodeHeight`    | 68      | Card height                                       |
-| `partnerGap`    | 28      | Gap between partners                              |
-| `siblingGap`    | 36      | Gap between neighbours that share a parent        |
-| `familyGap`     | 90      | Gap between different families (2.5 × siblingGap) |
-| `generationGap` | 84      | Vertical gap between rows                         |
-| `componentGap`  | 120     | Gap between disconnected groups                   |
+| Option            | Default | Meaning                                                            |
+| ----------------- | ------- | ------------------------------------------------------------------ |
+| `mode`            | family  | `family`, `ancestors`, `descendants`, `hourglass`                  |
+| `focusId`         | –       | Person the non-family modes start from                             |
+| `depth`           | ∞       | Generations to walk in the non-family modes                        |
+| `collapsed`       | ∅       | People whose descendants are hidden                                |
+| `nodeWidth`       | 188     | Card width                                                         |
+| `nodeHeight`      | 68      | Card height                                                        |
+| `partnerGap`      | 28      | Gap between partners                                               |
+| `siblingGap`      | 36      | Gap between neighbours that share a parent                         |
+| `familyGap`       | 90      | Gap between different families (2.5 × siblingGap)                  |
+| `generationGap`   | 84      | Vertical gap between rows                                          |
+| `componentGap`    | 120     | Gap between disconnected groups                                    |
+| `compactSiblings` | false   | Hanging columns of siblings without families (the app turns it on) |
 
 The canvas passes its own sizes: 220 × 64 cards for **comfortable** and 172 × 48 for **compact**
 density, with smaller gaps for compact cards (`SIZES` in `TreeCanvas.tsx`; exports use the same

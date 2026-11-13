@@ -208,6 +208,12 @@ export function buildMenu(): void {
           checked: settings.showMinimap,
           click: () => updateSettings({ showMinimap: !getSettings().showMinimap })
         },
+        {
+          label: t('settings.compactSiblings'),
+          type: 'checkbox',
+          checked: settings.compactSiblings,
+          click: () => updateSettings({ compactSiblings: !getSettings().compactSiblings })
+        },
         item('statistics', t('stats.title'), 'view:statistics'),
         item('relationship', t('kinship.menu'), 'view:relationship'),
         {

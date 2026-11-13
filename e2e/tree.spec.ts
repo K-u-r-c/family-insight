@@ -204,3 +204,42 @@ test('selecting or hovering a person highlights exactly their lines', async () =
   await expect.poll(async () => (await state('piotr')).activeCount).toBe(selected.mine)
   await closeApp(app)
 })
+
+test('siblings without families hang in a column; the setting switches it off (#115)', async () => {
+  const { app, page } = await launch()
+  await page.getByRole('button', { name: 'New family tree' }).click()
+  await page.getByRole('button', { name: 'Create' }).click()
+  await page.getByLabel('Given names').fill('Maria')
+  await page.getByLabel('Given names').press('Enter')
+  for (const child of ['Ola', 'Piotr', 'Zosia']) {
+    await page.getByRole('button', { name: 'Child', exact: true }).click()
+    await page.getByLabel('Given names').fill(child)
+    await page.getByLabel('Given names').press('Enter')
+    await page.getByTitle('Go to Maria').click()
+  }
+  const canvas = page.getByRole('application', { name: 'Family tree' })
+  const box = async (name: string): Promise<{ x: number; y: number }> =>
+    (await canvas.getByRole('button', { name: new RegExp(`^${name}`) }).boundingBox())!
+  // One column in the order they were added: the same x, one card below the other.
+  const column = async (): Promise<boolean> => {
+    const [a, b, c] = [await box('Ola'), await box('Piotr'), await box('Zosia')]
+    return a.x === b.x && b.x === c.x && a.y < b.y && b.y < c.y
+  }
+  await expect.poll(column).toBe(true)
+
+  // ↓ moves down the column.
+  await canvas.getByRole('button', { name: /^Ola/ }).click()
+  await canvas.focus()
+  await page.keyboard.press('ArrowDown')
+  await expect(page.getByRole('heading', { name: 'Piotr' })).toBeVisible()
+
+  // Switched off: one row again.
+  await page.getByRole('button', { name: 'Settings' }).click()
+  await page.getByRole('menuitemradio', { name: 'Siblings without families in columns' }).click()
+  const row = async (): Promise<boolean> => {
+    const [a, b] = [await box('Ola'), await box('Piotr')]
+    return a.y === b.y && a.x !== b.x
+  }
+  await expect.poll(row).toBe(true)
+  await closeApp(app)
+})

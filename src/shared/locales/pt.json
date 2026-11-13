@@ -35,7 +35,8 @@
       "compact": "Compacto"
     },
     "onlinePlaceLookup": "Pesquisar locais na internet",
-    "onlineMaps": "Carregar mapas da internet"
+    "onlineMaps": "Carregar mapas da internet",
+    "compactSiblings": "Irmãos sem família em colunas"
   },
   "theme": {
     "system": "Sistema",

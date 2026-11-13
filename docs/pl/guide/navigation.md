@@ -40,21 +40,33 @@ osoby, która ma dzieci, i kliknij mały przycisk **−** pod nią, aby ukryć w
 
 Zwinięte gałęzie są zapisywane w pliku razem z [trybem widoku](./view-modes).
 
+## Rodzeństwo w kolumnach {#columns}
+
+Rodzeństwo pradziadków często samo zajmuje cały rząd. Aby drzewo pozostało wąskie, troje lub więcej
+rodzeństwa bez partnera i bez dzieci w drzewie wisi w kolumnach po maksymalnie cztery karty pod
+linią swojej rodziny, od najstarszego; obok każdej kolumny biegnie linia:
+
+<Screenshot name="compact-siblings" alt="Jan i Maria Kowalscy z synem Piotrem i jego żoną obok oraz czworgiem pozostałych dzieci w jednej kolumnie pod linią rodziny" />
+
+Rodzeństwo z własną rodziną zostaje w rzędzie obok partnera. Aby znów pokazać wszystkich w jednym
+rzędzie, wyłącz **Rodzeństwo bez rodzin w kolumnach** w [Ustawieniach](./settings) lub w menu
+**Widok**.
+
 ## Klawiaturą {#keyboard}
 
 Kliknij drzewo (albo naciskaj <kbd>Tab</kbd>, aż pojawi się odnośnik **Przejdź do drzewa**,
 i naciśnij <kbd>Enter</kbd>), a potem:
 
-| Klawisz                     | Działanie                          |
-| --------------------------- | ---------------------------------- |
-| <kbd>↑</kbd>                | przejdź do rodzica                 |
-| <kbd>↓</kbd>                | przejdź do dziecka                 |
-| <kbd>←</kbd> / <kbd>→</kbd> | przejdź do partnera lub rodzeństwa |
-| <kbd>Enter</kbd>            | edytuj wybraną osobę               |
-| <kbd>F</kbd>                | dopasuj całe drzewo                |
-| <kbd>+</kbd> / <kbd>−</kbd> | powiększ / pomniejsz               |
-| <kbd>0</kbd>                | powiększenie 100%                  |
-| <kbd>Esc</kbd>              | odznacz osobę                      |
+| Klawisz                     | Działanie                                                 |
+| --------------------------- | --------------------------------------------------------- |
+| <kbd>↑</kbd>                | przejdź do rodzica                                        |
+| <kbd>↓</kbd>                | przejdź do dziecka; w kolumnie rodzeństwa: następna karta |
+| <kbd>←</kbd> / <kbd>→</kbd> | przejdź do partnera lub rodzeństwa                        |
+| <kbd>Enter</kbd>            | edytuj wybraną osobę                                      |
+| <kbd>F</kbd>                | dopasuj całe drzewo                                       |
+| <kbd>+</kbd> / <kbd>−</kbd> | powiększ / pomniejsz                                      |
+| <kbd>0</kbd>                | powiększenie 100%                                         |
+| <kbd>Esc</kbd>              | odznacz osobę                                             |
 
 Pierwsze naciśnięcie strzałki wybiera [osobę główną](./view-modes#root-person) (albo pierwszą
 osobę). Wszystkie skróty znajdziesz w [Skrótach klawiszowych](./shortcuts).

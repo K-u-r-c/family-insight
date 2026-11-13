@@ -49,6 +49,8 @@ export interface Settings {
   windowBounds?: WindowBounds
   csvDelimiter: CsvDelimiter
   density: CardDensity
+  /** Siblings without partners or children hang in columns in the tree (#115). */
+  compactSiblings: boolean
   showMinimap: boolean
   autosave: boolean
   backups: boolean
@@ -88,6 +90,7 @@ export function defaultSettings(language: string): Settings {
     recentFiles: [],
     csvDelimiter: csvDelimiterOf(headerLanguage(language)),
     density: 'comfortable',
+    compactSiblings: true,
     showMinimap: true,
     autosave: true,
     backups: true,
@@ -149,6 +152,7 @@ export function sanitizeSettings(
   if (APP_STYLES.includes(src.style as AppStyle)) out.style = src.style as AppStyle
   if (src.csvDelimiter === ',' || src.csvDelimiter === ';') out.csvDelimiter = src.csvDelimiter
   if (src.density === 'comfortable' || src.density === 'compact') out.density = src.density
+  if (typeof src.compactSiblings === 'boolean') out.compactSiblings = src.compactSiblings
   if (typeof src.showMinimap === 'boolean') out.showMinimap = src.showMinimap
   if (typeof src.autosave === 'boolean') out.autosave = src.autosave
   if (typeof src.backups === 'boolean') out.backups = src.backups

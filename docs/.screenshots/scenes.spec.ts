@@ -807,6 +807,44 @@ scene('second-parent', async (s) => {
   return { clip: box.locator('xpath=ancestor::section[1]'), pad: 8 }
 })
 
+scene('compact-siblings', async (s) => {
+  const { page, t } = s
+  // Jan and Maria with five children: Piotr married, the other four hang in a column.
+  await page.getByRole('button', { name: t('welcome.newTree') }).click()
+  await dialog(s).getByRole('textbox').fill(s.t('tree.untitled'))
+  await dialog(s)
+    .getByRole('button', { name: t('welcome.create') })
+    .click()
+  await page.getByLabel(t('person.givenNames')).waitFor()
+  await fillPerson(s, { given: 'Maria', surname: 'Kowalska', sex: 'female', born: '1932' })
+  await addRelative(s, 'partner')
+  await fillPerson(s, { given: 'Jan', surname: 'Kowalski', born: '1930' })
+  const children: [string, string, 'female' | undefined, string][] = [
+    ['Piotr', 'Kowalski', undefined, '1955'],
+    ['Anna', 'Kowalska', 'female', '1957'],
+    ['Zofia', 'Kowalska', 'female', '1960'],
+    ['Tomasz', 'Kowalski', undefined, '1962'],
+    ['Helena', 'Kowalska', 'female', '1966']
+  ]
+  const goTo = (name: string): Locator =>
+    panel(s).getByTitle(s.t('relations.goTo', { name })).first()
+  await goTo('Maria Kowalska').click()
+  for (const [given, surname, sex, born] of children) {
+    await addRelative(s, 'child')
+    await fillPerson(s, { given, surname, sex, born })
+    await goTo('Maria Kowalska').click()
+  }
+  await goTo('Piotr Kowalski').click()
+  await addRelative(s, 'partner')
+  await fillPerson(s, { given: 'Barbara', surname: 'Kowalska', sex: 'female', born: '1958' })
+  await page.getByRole('button', { name: t('workspace.hideSidebar') }).click()
+  if (await panel(s).isVisible()) await closePanel(s)
+  await page.waitForTimeout(500)
+  await page.getByRole('button', { name: t('tree.fit') }).click()
+  await page.waitForTimeout(900)
+  await parkMouse(s)
+})
+
 scene('partnership-dialog', async (s) => {
   await openSample(s)
   await select(s, 'Piotr Kowalski')

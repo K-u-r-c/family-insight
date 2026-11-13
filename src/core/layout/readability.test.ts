@@ -243,7 +243,8 @@ describe('half-siblings (#113)', () => {
 
 describe('the reported 78-person tree (#112 fixture)', () => {
   const tree = collateralFixture()
-  const layout = (): Layout => layoutFamily(tree, { ...SIZES, focusId: 'me' })
+  const layout = (): Layout =>
+    layoutFamily(tree, { ...SIZES, focusId: 'me', compactSiblings: true })
 
   it('has the shape of the report', () => {
     expect(Object.keys(tree.persons)).toHaveLength(78)
@@ -271,11 +272,17 @@ describe('the reported 78-person tree (#112 fixture)', () => {
     expect(m.closeParallels.filter(touches)).toEqual([])
   })
 
-  it.fails('#115: the tree is compact enough to read when fitted to the window', () => {
+  it('#115: the tree is compact enough to read when fitted to the window', () => {
     const m = layoutMetrics(tree, layout())
     expect(m.width).toBeLessThanOrEqual(BASELINE.width * 0.55)
     expect(fitZoom(layout(), CANVAS_1440)).toBeGreaterThanOrEqual(0.25)
-    expect(m.longestHorizontal).toBeLessThanOrEqual(BASELINE.longestHorizontal * 0.5)
+  })
+
+  // The longest line left after #115 is a direct-line link (grandfather ← his parents): #117.
+  it.fails('#115/#117: no horizontal line longer than half the baseline', () => {
+    expect(layoutMetrics(tree, layout()).longestHorizontal).toBeLessThanOrEqual(
+      BASELINE.longestHorizontal * 0.5
+    )
   })
 
   it.todo('#116: neighbours from different families and branches keep their gaps')
@@ -292,5 +299,94 @@ describe('the reported 78-person tree (#112 fixture)', () => {
 
   it('never draws a line through a card', () => {
     expect(layoutMetrics(tree, layout()).throughCards).toEqual([])
+  })
+})
+
+describe('compact siblings (#115)', () => {
+  const COMPACT = { ...SIZES, compactSiblings: true }
+  /** Parents with `n` children who have no partners or children; the first one is the root. */
+  const family = (n: number, more?: (b: TreeBuilder) => void): FamilyTree => {
+    const b = new TreeBuilder().person('f', 'F', 'male').person('m', 'M', 'female').couple('f', 'm')
+    for (let i = 0; i < n; i++) {
+      const id = `c${i}`
+      b.person(id, id, 'unknown', { birth: { date: { value: `${1950 + i}`, qualifier: 'exact' } } })
+      b.child('f', id).child('m', id)
+    }
+    more?.(b)
+    return b.build()
+  }
+  const columns = (l: Layout): string[][] => {
+    const byX = new Map<number, LayoutNode[]>()
+    for (const n of l.nodes.filter((x) => x.stack)) byX.set(n.x, [...(byX.get(n.x) ?? []), n])
+    return [...byX.entries()]
+      .sort((a, b) => a[0] - b[0])
+      .map(([, ns]) => ns.sort((a, b) => a.y - b.y).map((n) => n.id))
+  }
+  const overlaps = (l: Layout): string[] => {
+    const out: string[] = []
+    for (const a of l.nodes)
+      for (const b of l.nodes)
+        if (
+          a.id < b.id &&
+          a.x < b.x + b.width &&
+          b.x < a.x + a.width &&
+          a.y < b.y + b.height &&
+          b.y < a.y + a.height
+        )
+          out.push(`${a.id}/${b.id}`)
+    return out
+  }
+
+  it('hangs three or more such siblings in balanced columns of up to four, oldest first', () => {
+    expect(columns(layoutFamily(family(2), COMPACT))).toEqual([])
+    expect(columns(layoutFamily(family(3), COMPACT))).toEqual([['c0', 'c1', 'c2']])
+    expect(columns(layoutFamily(family(5), COMPACT))).toEqual([
+      ['c0', 'c1', 'c2'],
+      ['c3', 'c4']
+    ])
+    expect(columns(layoutFamily(family(9), COMPACT)).map((c) => c.length)).toEqual([3, 3, 3])
+  })
+
+  it('keeps siblings with families, the root and collapsed branches out of columns', () => {
+    const t = family(4)
+    const tree = { ...t, meta: { ...t.meta, rootPersonId: 'c1' } }
+    expect(columns(layoutFamily(tree, COMPACT))).toEqual([['c0', 'c2', 'c3']])
+    // A collapsed sibling with hidden children keeps its place (its expand button shows).
+    const withChild = family(4, (b) => b.person('k', 'K').child('c0', 'k'))
+    const collapsed = layoutFamily(withChild, { ...COMPACT, collapsed: new Set(['c0']) })
+    expect(collapsed.nodes.find((n) => n.id === 'c0')!.stack).toBeUndefined()
+    expect(columns(collapsed)).toEqual([['c1', 'c2', 'c3']])
+  })
+
+  it('draws a trunk beside the column and never overlaps cards or lines', () => {
+    for (const tree of [family(6), collateralFixture(), twoFamiliesFixture()]) {
+      const l = layoutFamily(tree, COMPACT)
+      expect(overlaps(l)).toEqual([])
+      const m = layoutMetrics(tree, l)
+      expect(m.throughCards).toEqual([])
+    }
+    const l = layoutFamily(family(3), COMPACT)
+    const c1 = l.nodes.find((n) => n.id === 'c1')!
+    const line = l.edges.find((e) => e.target === 'c1')!
+    expect(line.points.at(-1)).toEqual({ x: c1.x, y: c1.y + c1.height / 2 })
+    expect(line.points.at(-2)!.x).toBeLessThan(c1.x)
+  })
+
+  it('makes a row with columns taller and moves the rows below', () => {
+    const tree = family(4, (b) =>
+      b.person('w', 'W').couple('c0', 'w').person('g', 'G').child('c0', 'g').child('w', 'g')
+    )
+    const l = layoutFamily(tree, COMPACT)
+    const g = l.nodes.find((n) => n.id === 'g')!
+    const lowest = Math.max(...l.nodes.filter((n) => n.stack).map((n) => n.y + n.height))
+    expect(g.y).toBeGreaterThan(lowest)
+  })
+
+  it('leaves the layout unchanged when off', () => {
+    for (const tree of [collateralFixture(), twoFamiliesFixture(), remarriageFixture()]) {
+      const l = layoutFamily(tree, SIZES)
+      expect(l.nodes.some((n) => n.stack)).toBe(false)
+      expect(l.nodes.map((n) => [n.id, n.x, n.y])).toMatchSnapshot()
+    }
   })
 })

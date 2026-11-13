@@ -50,10 +50,11 @@ export function layoutOptions(): Parameters<typeof layoutFamily>[1] | null {
   const tree = useDocument.getState().tree
   if (!tree) return null
   const { mode, depth, collapsed } = useTreeView.getState()
-  const { density, style } = useSettings.getState().settings
+  const { density, style, compactSiblings } = useSettings.getState().settings
   const focusId = tree.meta.rootPersonId ?? useDocument.getState().selectedPersonId ?? undefined
   return {
     ...cardSizes(style, density),
+    compactSiblings,
     mode,
     depth,
     collapsed,
@@ -65,6 +66,7 @@ export function useLayout(): Layout | null {
   const tree = useDocument((s) => s.tree)
   const density = useSettings((s) => s.settings.density)
   const style = useSettings((s) => s.settings.style)
+  const compactSiblings = useSettings((s) => s.settings.compactSiblings)
   const mode = useTreeView((s) => s.mode)
   const depth = useTreeView((s) => s.depth)
   const collapsed = useTreeView((s) => s.collapsed)
@@ -75,13 +77,14 @@ export function useLayout(): Layout | null {
       tree
         ? layoutFamily(tree, {
             ...cardSizes(style, density),
+            compactSiblings,
             mode,
             depth,
             collapsed,
             focusId: mode === 'family' ? tree.meta.rootPersonId : (focusId ?? undefined)
           })
         : null,
-    [tree, density, style, mode, depth, collapsed, focusId]
+    [tree, density, style, compactSiblings, mode, depth, collapsed, focusId]
   )
 }
 

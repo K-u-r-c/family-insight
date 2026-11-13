@@ -18,6 +18,7 @@ const USAGE = `Usage: npm run layout:preview -- <file.finsight | fixture:collate
   --density comfortable|compact (default comfortable)
   --mode family|ancestors|descendants|hourglass (default family)
   --out <dir>                   output directory (default: a temp directory)
+  --no-compact                  one long row of siblings (no hanging columns, as the setting off)
   --anonymous                   draw ids instead of names in the images
   --list                        also list every crossing and every pair of close lines`
 
@@ -60,7 +61,7 @@ export async function main(args: string[]): Promise<number> {
   let file: string | undefined
   for (let i = 0; i < args.length; i++) {
     const a = args[i]!
-    if (a === '--anonymous' || a === '--list') flags.add(a)
+    if (a === '--anonymous' || a === '--list' || a === '--no-compact') flags.add(a)
     else if (a.startsWith('--')) opts.set(a.slice(2), args[++i] ?? '')
     else file = a
   }
@@ -80,7 +81,8 @@ export async function main(args: string[]): Promise<number> {
     ...cardSizes(style, density),
     mode,
     focusId: root,
-    depth: tree.meta.view?.depth
+    depth: tree.meta.view?.depth,
+    compactSiblings: !flags.has('--no-compact')
   })
   const m = layoutMetrics(tree, layout)
   const rows: [string, string | number][] = [

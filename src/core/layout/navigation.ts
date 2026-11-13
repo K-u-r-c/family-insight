@@ -8,6 +8,7 @@ const centerX = (n: LayoutNode): number => n.x + n.width / 2
 /**
  * Keyboard navigation between relatives on the canvas: ↑ parent, ↓ child, ←/→ the nearest
  * person on the same row (partners and siblings). Picks the candidate closest horizontally.
+ * In a hanging column of siblings, ↑/↓ move within the column first.
  */
 export function navigate(
   tree: FamilyTree,
@@ -29,6 +30,13 @@ export function navigate(
     }
     return best?.id ?? null
   }
+  if (current.stack && (direction === 'up' || direction === 'down')) {
+    const index = current.stack.index + (direction === 'up' ? -1 : 1)
+    const mate = layout.nodes.find(
+      (n) => n.x === current.x && n.generation === current.generation && n.stack?.index === index
+    )
+    if (mate) return mate.id
+  }
   const rels = Object.values(tree.relationships)
   if (direction === 'up') {
     return closest(
@@ -47,7 +55,15 @@ export function navigate(
     )
   }
   const sameRow = layout.nodes.filter(
-    (n) => n.y === current.y && (direction === 'left' ? n.x < current.x : n.x > current.x)
+    (n) =>
+      n.generation === current.generation &&
+      (direction === 'left' ? n.x < current.x : n.x > current.x)
   )
-  return closest(sameRow)
+  // The nearest column first, then the card at the nearest height in it.
+  const nearestX = closest(sameRow)
+  if (!nearestX) return null
+  const x = nodes.get(nearestX)!.x
+  const inColumn = sameRow.filter((n) => n.x === x)
+  return inColumn.reduce((a, b) => (Math.abs(b.y - current.y) < Math.abs(a.y - current.y) ? b : a))
+    .id
 }
