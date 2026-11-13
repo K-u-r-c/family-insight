@@ -334,7 +334,8 @@
     "gedcom-ancestry-cycle": "{{name}} wäre Vorfahre von sich selbst; die Verbindung, die den Kreis schließt, wurde weggelassen.",
     "gedcom-too-many-biological-parents": "{{name}} hat mehr als zwei leibliche Eltern.",
     "gedcom-self-relationship": "Eine Beziehung einer Person zu sich selbst wurde übersprungen.",
-    "gedcom-duplicate-relationship": "Eine doppelte Beziehung wurde übersprungen."
+    "gedcom-duplicate-relationship": "Eine doppelte Beziehung wurde übersprungen.",
+    "single-parent-with-partner": "{{name}} hat nur einen Elternteil ({{parent}}), obwohl dieser einen Partner hat ({{partner}})."
   },
   "relations": {
     "parents": "Eltern",
@@ -396,7 +397,17 @@
       "death": "Tod eines Partners",
       "other": "Anders"
     },
-    "until": "bis {{date}}"
+    "until": "bis {{date}}",
+    "secondParent": {
+      "missing_one": "{{count}} Kind von {{name}} hat keinen zweiten Elternteil.",
+      "missing_other": "{{count}} Kinder von {{name}} haben keinen zweiten Elternteil.",
+      "action": "{{name}} als Elternteil hinzufügen",
+      "otherParent": "Anderer Elternteil",
+      "done_one": "{{count}} Kind mit {{name}} verbunden",
+      "done_other": "{{count}} Kinder mit {{name}} verbunden",
+      "command": "Zweiten Elternteil hinzufügen",
+      "toastAction": "Als Elternteil hinzufügen"
+    }
   },
   "errors": {
     "model": {

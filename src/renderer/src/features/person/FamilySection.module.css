@@ -94,3 +94,25 @@
   font-size: var(--text-sm);
   color: var(--color-text-subtle);
 }
+
+.suggestion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+  padding: var(--space-3);
+  margin: var(--space-1) 0 var(--space-2);
+  background: var(--color-warning-soft);
+  border-radius: var(--radius-md);
+}
+
+.suggestionText {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.suggestionList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}

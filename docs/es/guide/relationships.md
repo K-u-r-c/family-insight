@@ -58,6 +58,20 @@ Los hermanos que solo comparten un progenitor se marcan como **medio hermano/a**
 familia. Cuando añade un hijo a alguien con varias parejas, Family Insight le pregunta quién es el
 otro progenitor ([Añadir personas](./people)).
 
+## Hijos añadidos antes que la pareja {#second-parent}
+
+Si añades hijos a alguien y solo después su pareja, los hijos quedan vinculados a un único
+progenitor y el árbol los dibuja como una familia aparte. Family Insight lo detecta: justo después de
+añadir la pareja, un mensaje ofrece convertirla también en su progenitor, y la sección **Hijos** de
+ambos miembros de la pareja muestra qué hijos no tienen segundo progenitor:
+
+<Screenshot name="second-parent" alt="La sección Hijos de Jan Kowalski: dos hijos de Maria Kowalska no tienen segundo progenitor, ambos marcados, con el botón Añadir a Jan Kowalski como progenitor" />
+
+Desmarca a los hijos que no sean de la pareja (por ejemplo, medio hermanos) y pulsa **Añadir a …
+como progenitor**. Todos los vínculos se añaden en un solo paso, así que un **Deshacer** los quita de
+nuevo. No se proponen los hijos nacidos antes del inicio de la relación: la pareja probablemente es
+padrastro o madrastra; añádela como progenitor desde la página del hijo.
+
 ## Quitar una relación
 
 Abra el menú **⋯** junto al familiar y elija **Quitar relación**:

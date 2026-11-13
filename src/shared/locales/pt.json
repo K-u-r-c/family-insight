@@ -343,7 +343,8 @@
     "gedcom-ancestry-cycle": "{{name}} seria o seu próprio ascendente; a ligação que fechava o ciclo foi omitida.",
     "gedcom-too-many-biological-parents": "{{name}} tem mais de dois pais biológicos.",
     "gedcom-self-relationship": "Uma relação de uma pessoa consigo mesma foi ignorada.",
-    "gedcom-duplicate-relationship": "Uma relação duplicada foi ignorada."
+    "gedcom-duplicate-relationship": "Uma relação duplicada foi ignorada.",
+    "single-parent-with-partner": "{{name}} só tem um progenitor ({{parent}}), que tem parceiro ({{partner}})."
   },
   "relations": {
     "parents": "Pais",
@@ -405,7 +406,19 @@
       "death": "Falecimento de um dos parceiros",
       "other": "Outro"
     },
-    "until": "até {{date}}"
+    "until": "até {{date}}",
+    "secondParent": {
+      "missing_one": "{{count}} filho de {{name}} não tem segundo progenitor.",
+      "missing_many": "{{count}} filhos de {{name}} não têm segundo progenitor.",
+      "missing_other": "{{count}} filhos de {{name}} não têm segundo progenitor.",
+      "action": "Adicionar {{name}} como progenitor",
+      "otherParent": "Outro progenitor",
+      "done_one": "{{count}} filho ligado a {{name}}",
+      "done_many": "{{count}} filhos ligados a {{name}}",
+      "done_other": "{{count}} filhos ligados a {{name}}",
+      "command": "Adicionar segundo progenitor",
+      "toastAction": "Adicionar como progenitor"
+    }
   },
   "errors": {
     "model": {

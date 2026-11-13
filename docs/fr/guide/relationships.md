@@ -56,6 +56,20 @@ Les frères et sœurs qui n’ont qu’un parent en commun sont marqués **demi-
 de la famille. Quand vous ajoutez un enfant à une personne qui a plusieurs conjoints,
 Family Insight vous demande qui est l’autre parent ([Ajouter des personnes](./people)).
 
+## Enfants saisis avant le partenaire {#second-parent}
+
+Si vous ajoutez des enfants à quelqu’un et seulement plus tard son partenaire, les enfants ne sont
+liés qu’à un parent et l’arbre les dessine comme une famille à part. Family Insight le remarque : juste
+après l’ajout du partenaire, un message propose d’en faire aussi leur parent, et la section
+**Enfants** des deux partenaires indique quels enfants n’ont pas de second parent :
+
+<Screenshot name="second-parent" alt="La section Enfants de Jan Kowalski : deux enfants de Maria Kowalska n’ont pas de second parent, tous deux cochés, avec le bouton Ajouter Jan Kowalski comme parent" />
+
+Décochez les enfants qui ne sont pas ceux du partenaire (un demi-frère par exemple) et cliquez sur
+**Ajouter … comme parent**. Tous les liens sont ajoutés en une étape : un seul **Annuler** les
+retire. Les enfants nés avant le début de l’union ne sont pas proposés – le partenaire est alors
+sans doute un beau-parent ; ajoutez-le comme parent depuis la page de l’enfant.
+
 ## Retirer une relation
 
 Ouvrez le menu **⋯** à côté du proche et choisissez **Retirer la relation** :

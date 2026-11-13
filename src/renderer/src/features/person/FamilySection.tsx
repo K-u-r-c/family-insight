@@ -1,5 +1,5 @@
 import { useId, useMemo, useState } from 'react'
-import { BookMarked, Link2, MoreHorizontal, Plus } from 'lucide-react'
+import { BookMarked, Link2, MoreHorizontal, Plus, UserPlus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import {
   displayName,
@@ -19,12 +19,19 @@ import type {
 } from '@core/model/types'
 import { compareFuzzyDates } from '@core/date/fuzzyDate'
 import {
+  childrenWithoutSecondParent,
+  secondParentSuggestions,
+  type SecondParentSuggestion
+} from '@core/model/parentage'
+import {
   anchorBelow,
   Button,
+  Checkbox,
   IconButton,
   Menu,
   type MenuAnchor,
-  type MenuEntry
+  type MenuEntry,
+  Select
 } from '@renderer/components/ui'
 import { useFormat } from '@renderer/i18n/format'
 import { updateRelationshipCommand } from '@renderer/store/commands'
@@ -34,6 +41,7 @@ import { PartnershipDialog } from './PartnershipDialog'
 import { PersonPickerDialog } from './PersonPickerDialog'
 import {
   addNewRelative,
+  addSecondParent,
   linkExistingRelative,
   removeRelationshipWithUndo,
   runCommand,
@@ -106,6 +114,7 @@ interface GroupProps {
   onRowMenu?: (row: Row, anchor: MenuAnchor) => void
   onLink: (role: Role) => void
   note?: string
+  children?: React.ReactNode
 }
 
 function Group({
@@ -116,7 +125,8 @@ function Group({
   person,
   onRowMenu,
   onLink,
-  note
+  note,
+  children
 }: GroupProps): React.JSX.Element {
   const { t } = useTranslation()
   return (
@@ -141,6 +151,7 @@ function Group({
           ))}
         </ul>
       )}
+      {children}
       <div className={styles.actions} data-tour={linkRole === 'parent' ? 'add-parent' : undefined}>
         {actions.map((a) => (
           <Button
@@ -158,6 +169,71 @@ function Group({
       </div>
       {note && <p className={styles.note}>{note}</p>}
     </section>
+  )
+}
+
+/**
+ * Children of one parent that have no second parent although the parent has a partner (#114):
+ * tick the ones that belong to the partner too and link them in one step.
+ */
+function SecondParentBox({
+  suggestion
+}: {
+  suggestion: SecondParentSuggestion
+}): React.JSX.Element | null {
+  const { t } = useTranslation()
+  const tree = useDocument((s) => s.tree)!
+  const [candidate, setCandidate] = useState(suggestion.candidates[0]!)
+  const [unticked, setUnticked] = useState<ReadonlySet<PersonId>>(new Set())
+  const eligible = useMemo(
+    () => childrenWithoutSecondParent(tree, suggestion.parentId, candidate),
+    [tree, suggestion.parentId, candidate]
+  )
+  if (!eligible.length) return null
+  const name = (id: PersonId): string =>
+    (tree.persons[id] && displayName(tree.persons[id])) || t('person.unnamed')
+  const chosen = eligible.filter((id) => !unticked.has(id))
+  const text = t('relations.secondParent.missing', {
+    count: eligible.length,
+    name: name(suggestion.parentId)
+  })
+  return (
+    <div className={styles.suggestion} role="group" aria-label={text}>
+      <p className={styles.suggestionText}>{text}</p>
+      {suggestion.candidates.length > 1 && (
+        <Select
+          label={t('relations.secondParent.otherParent')}
+          value={candidate}
+          options={suggestion.candidates.map((id) => ({ value: id, label: name(id) }))}
+          onChange={setCandidate}
+        />
+      )}
+      <div className={styles.suggestionList}>
+        {eligible.map((id) => (
+          <Checkbox
+            key={id}
+            checked={!unticked.has(id)}
+            label={name(id)}
+            onChange={(on) =>
+              setUnticked((prev) => {
+                const next = new Set(prev)
+                if (on) next.delete(id)
+                else next.add(id)
+                return next
+              })
+            }
+          />
+        ))}
+      </div>
+      <Button
+        size="sm"
+        icon={UserPlus}
+        disabled={!chosen.length}
+        onClick={() => addSecondParent(candidate, chosen)}
+      >
+        {t('relations.secondParent.action', { name: name(candidate) })}
+      </Button>
+    </div>
   )
 }
 
@@ -215,7 +291,8 @@ export function FamilySection({ person }: { person: Person }): React.JSX.Element
     const bioParents = parents.filter(
       (p) => (p.link as ParentChildRelationship).kind === 'biological'
     )
-    return { parents, partners, children, siblings, bioParents }
+    const suggestions = secondParentSuggestions(tree, person.id)
+    return { parents, partners, children, siblings, bioParents, suggestions }
   }, [tree, person.id, t, format])
 
   const exclude = useMemo(() => {
@@ -320,7 +397,14 @@ export function FamilySection({ person }: { person: Person }): React.JSX.Element
         onLink={setPicker}
         onRowMenu={parentMenu}
         actions={[{ role: 'child', label: t('relations.add.child') }]}
-      />
+      >
+        {data.suggestions.map((sg) => (
+          <SecondParentBox
+            key={`${person.id}:${sg.parentId}:${sg.candidates.join('+')}`}
+            suggestion={sg}
+          />
+        ))}
+      </Group>
       <Group
         title={t('relations.siblings')}
         rows={data.siblings}

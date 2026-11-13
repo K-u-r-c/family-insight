@@ -827,6 +827,24 @@
     "ru-light": [1280, 800],
     "ru-dark": [1280, 800]
   },
+  "second-parent": {
+    "pl-light": [354, 250],
+    "pl-dark": [354, 250],
+    "de-light": [354, 250],
+    "de-dark": [354, 250],
+    "fr-light": [354, 250],
+    "fr-dark": [354, 250],
+    "es-light": [354, 250],
+    "es-dark": [354, 250],
+    "it-light": [354, 250],
+    "it-dark": [354, 250],
+    "pt-light": [354, 250],
+    "pt-dark": [354, 250],
+    "ru-light": [354, 232],
+    "ru-dark": [354, 232],
+    "en-light": [354, 232],
+    "en-dark": [354, 232]
+  },
   "settings-menu": {
     "en-light": [219, 796],
     "en-dark": [219, 796],

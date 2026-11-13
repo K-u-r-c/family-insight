@@ -344,11 +344,20 @@ export function allowWindowClose(): void {
   closeAllowed = true
 }
 
+/** The user asked to quit (Cmd+Q, the menu): resume quitting once the window may close. */
+let quitting = false
+
 export function guardWindowClose(window: BrowserWindow): void {
+  app.removeListener('before-quit', markQuitting)
+  app.on('before-quit', markQuitting)
   let allowed = false
+  /** Whether the pending close request came from quitting (not from closing the window). */
+  let quitOnClose = false
   window.on('close', (event) => {
     if (allowed || closeAllowed || window.webContents.isCrashed()) return
     event.preventDefault()
+    quitOnClose = quitting
+    quitting = false
     window.webContents.send(IpcChannel.WindowCloseRequest)
   })
   ipcMain.removeHandler(IpcChannel.WindowClose)
@@ -357,5 +366,11 @@ export function guardWindowClose(window: BrowserWindow): void {
     if (!target) return
     allowed = true
     target.close()
+    // The vetoed close cancelled the quit; on macOS closing the last window does not quit.
+    if (quitOnClose) app.quit()
   })
+}
+
+function markQuitting(): void {
+  quitting = true
 }

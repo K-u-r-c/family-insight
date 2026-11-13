@@ -1,6 +1,7 @@
-import type { Issue } from '../issues'
+import { hasErrors, type Issue } from '../issues'
+import { childrenWithoutSecondParent } from './parentage'
 import { citationTargets, getCitations } from './sources'
-import { displayName } from './tree'
+import { displayName, getPartnerships, otherPartner } from './tree'
 import type { FamilyTree, PersonId } from './types'
 
 /**
@@ -117,6 +118,23 @@ export function validateTree(tree: FamilyTree): Issue[] {
         code: 'dangling-repository',
         params: { id: source.repositoryId }
       })
+    }
+  }
+
+  // A child linked to one parent only, while that parent has exactly one partner (#114).
+  if (!hasErrors(issues)) {
+    for (const id of Object.keys(tree.persons)) {
+      const partnerships = getPartnerships(tree, id)
+      if (partnerships.length !== 1) continue
+      const partner = otherPartner(partnerships[0]!, id)
+      for (const child of childrenWithoutSecondParent(tree, id, partner)) {
+        issues.push({
+          severity: 'warning',
+          code: 'single-parent-with-partner',
+          personId: child,
+          params: { name: name(child), parent: name(id), partner: name(partner) }
+        })
+      }
     }
   }
 

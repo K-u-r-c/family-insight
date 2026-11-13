@@ -334,7 +334,8 @@
     "gedcom-ancestry-cycle": "{{name}} would be their own ancestor; the link closing the circle was left out.",
     "gedcom-too-many-biological-parents": "{{name}} has more than two birth parents.",
     "gedcom-self-relationship": "A relationship of a person with themselves was skipped.",
-    "gedcom-duplicate-relationship": "A duplicate relationship was skipped."
+    "gedcom-duplicate-relationship": "A duplicate relationship was skipped.",
+    "single-parent-with-partner": "{{name}} has only one parent ({{parent}}), who has a partner ({{partner}})."
   },
   "relations": {
     "parents": "Parents",
@@ -396,7 +397,17 @@
       "death": "Death of a partner",
       "other": "Other"
     },
-    "until": "until {{date}}"
+    "until": "until {{date}}",
+    "secondParent": {
+      "missing_one": "{{count}} child of {{name}} has no second parent.",
+      "missing_other": "{{count}} children of {{name}} have no second parent.",
+      "action": "Add {{name}} as parent",
+      "otherParent": "Other parent",
+      "done_one": "Linked {{count}} child to {{name}}",
+      "done_other": "Linked {{count}} children to {{name}}",
+      "command": "Add second parent",
+      "toastAction": "Add as parent"
+    }
   },
   "errors": {
     "model": {

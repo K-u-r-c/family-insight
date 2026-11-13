@@ -352,7 +352,8 @@
     "gedcom-ancestry-cycle": "{{name}} byłby własnym przodkiem; powiązanie zamykające krąg pominięto.",
     "gedcom-too-many-biological-parents": "{{name}} ma więcej niż dwoje rodziców biologicznych.",
     "gedcom-self-relationship": "Pominięto relację osoby z samą sobą.",
-    "gedcom-duplicate-relationship": "Pominięto powtórzoną relację."
+    "gedcom-duplicate-relationship": "Pominięto powtórzoną relację.",
+    "single-parent-with-partner": "{{name}} ma tylko jednego rodzica ({{parent}}), choć ten rodzic ma partnera: {{partner}}."
   },
   "relations": {
     "parents": "Rodzice",
@@ -414,7 +415,21 @@
       "death": "Śmierć partnera",
       "other": "Inaczej"
     },
-    "until": "do {{date}}"
+    "until": "do {{date}}",
+    "secondParent": {
+      "missing_one": "{{count}} dziecko osoby {{name}} nie ma drugiego rodzica.",
+      "missing_few": "{{count}} dzieci osoby {{name}} nie ma drugiego rodzica.",
+      "missing_many": "{{count}} dzieci osoby {{name}} nie ma drugiego rodzica.",
+      "missing_other": "{{count}} dziecka osoby {{name}} nie ma drugiego rodzica.",
+      "action": "Dodaj jako rodzica: {{name}}",
+      "otherParent": "Drugi rodzic",
+      "done_one": "Połączono z: {{name}} – {{count}} dziecko",
+      "done_few": "Połączono z: {{name}} – {{count}} dzieci",
+      "done_many": "Połączono z: {{name}} – {{count}} dzieci",
+      "done_other": "Połączono z: {{name}} – {{count}} dziecka",
+      "command": "Dodaj drugiego rodzica",
+      "toastAction": "Dodaj jako rodzica"
+    }
   },
   "errors": {
     "model": {

@@ -343,7 +343,8 @@
     "gedcom-ancestry-cycle": "{{name}} deviendrait son propre ancêtre ; le lien qui fermait la boucle a été écarté.",
     "gedcom-too-many-biological-parents": "{{name}} a plus de deux parents biologiques.",
     "gedcom-self-relationship": "Une relation d’une personne avec elle-même a été ignorée.",
-    "gedcom-duplicate-relationship": "Une relation en double a été ignorée."
+    "gedcom-duplicate-relationship": "Une relation en double a été ignorée.",
+    "single-parent-with-partner": "{{name}} n’a qu’un parent ({{parent}}), qui a un partenaire ({{partner}})."
   },
   "relations": {
     "parents": "Parents",
@@ -405,7 +406,19 @@
       "death": "Décès d’un conjoint",
       "other": "Autre"
     },
-    "until": "jusqu’au {{date}}"
+    "until": "jusqu’au {{date}}",
+    "secondParent": {
+      "missing_one": "{{count}} enfant de {{name}} n’a pas de second parent.",
+      "missing_many": "{{count}} enfants de {{name}} n’ont pas de second parent.",
+      "missing_other": "{{count}} enfants de {{name}} n’ont pas de second parent.",
+      "action": "Ajouter {{name}} comme parent",
+      "otherParent": "Autre parent",
+      "done_one": "{{count}} enfant lié à {{name}}",
+      "done_many": "{{count}} enfants liés à {{name}}",
+      "done_other": "{{count}} enfants liés à {{name}}",
+      "command": "Ajouter le second parent",
+      "toastAction": "Ajouter comme parent"
+    }
   },
   "errors": {
     "model": {

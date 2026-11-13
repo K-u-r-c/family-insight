@@ -1,4 +1,5 @@
 import { isModelError } from '@core/model/errors'
+import { childrenWithoutSecondParent } from '@core/model/parentage'
 import {
   displayName,
   getParentLinks,
@@ -8,7 +9,7 @@ import {
 } from '@core/model/tree'
 import type { FamilyTree, ParentChildKind, Person, PersonId, Sex } from '@core/model/types'
 import { masculineSurname } from '@core/text'
-import { choose, toast } from '@renderer/components/ui'
+import { choose, dismissToast, toast } from '@renderer/components/ui'
 import i18n from '@renderer/i18n'
 import {
   addParentChildCommand,
@@ -117,7 +118,7 @@ export async function addNewRelative(person: Person, role: Role): Promise<Person
     if (otherParentId === undefined) return undefined
   }
 
-  return runCommand(
+  const added = runCommand(
     composeCommands(`relations.add.${role}`, (initial, run) => {
       if (role === 'father' || role === 'mother' || role === 'parent') {
         const parent = run(
@@ -157,6 +158,61 @@ export async function addNewRelative(person: Person, role: Role): Promise<Person
       return undefined
     })
   )
+  if (added && role === 'partner') offerSecondParent(person.id, added)
+  return added
+}
+
+/** Open "no second parent" offers, closed once the children are linked another way. */
+const offers = new Set<number>()
+
+/** Makes `partnerId` the (biological) parent of `childIds` too, in one undoable step. */
+export function addSecondParent(partnerId: PersonId, childIds: PersonId[]): void {
+  if (!childIds.length) return
+  for (const id of offers) dismissToast(id)
+  offers.clear()
+  const done = runCommand(
+    composeCommands('relations.secondParent.command', (_tree, run) => {
+      for (const id of childIds) run(addParentChildCommand(partnerId, id))
+      return true
+    })
+  )
+  const partner = useDocument.getState().tree?.persons[partnerId]
+  if (done && partner)
+    toast({
+      message: t('relations.secondParent.done', {
+        count: childIds.length,
+        name: displayName(partner) || t('person.unnamed')
+      }),
+      tone: 'success'
+    })
+}
+
+/**
+ * After `a` and `b` became partners: offers (in a toast, without blocking the editor) to make each
+ * of them the parent of the other's children that have no second parent.
+ */
+function offerSecondParent(a: PersonId, b: PersonId): void {
+  const tree = useDocument.getState().tree
+  if (!tree) return
+  for (const [parent, partner] of [
+    [a, b],
+    [b, a]
+  ] as const) {
+    const kids = childrenWithoutSecondParent(tree, parent, partner)
+    if (!kids.length) continue
+    const name = displayName(tree.persons[parent]!) || t('person.unnamed')
+    // The new partner has no name yet, so the action does not name them.
+    offers.add(
+      toast({
+        message: t('relations.secondParent.missing', { count: kids.length, name }),
+        duration: 10000,
+        action: {
+          label: t('relations.secondParent.toastAction'),
+          onClick: () => addSecondParent(partner, kids)
+        }
+      })
+    )
+  }
 }
 
 /** Links an existing person as a relative of `person` (one undoable step). */
@@ -195,8 +251,10 @@ export async function linkExistingRelative(
       return true
     })
   )
-  if (linked)
+  if (linked) {
     toast({ message: t('relations.linked', { name: displayName(other) }), tone: 'success' })
+    if (role === 'partner') offerSecondParent(person.id, other.id)
+  }
 }
 
 /** Removes a relationship with an Undo toast. */

@@ -352,7 +352,8 @@
     "gedcom-ancestry-cycle": "{{name}} оказался(-ась) бы собственным предком; связь, замыкающая круг, пропущена.",
     "gedcom-too-many-biological-parents": "У человека {{name}} больше двух биологических родителей.",
     "gedcom-self-relationship": "Пропущена связь человека с самим собой.",
-    "gedcom-duplicate-relationship": "Пропущена повторяющаяся связь."
+    "gedcom-duplicate-relationship": "Пропущена повторяющаяся связь.",
+    "single-parent-with-partner": "{{name}}: только один родитель ({{parent}}), у которого есть партнёр ({{partner}})."
   },
   "relations": {
     "parents": "Родители",
@@ -414,7 +415,21 @@
       "death": "Смерть партнёра",
       "other": "Другое"
     },
-    "until": "до {{date}}"
+    "until": "до {{date}}",
+    "secondParent": {
+      "missing_one": "{{name}}: {{count}} ребёнок без второго родителя.",
+      "missing_few": "{{name}}: {{count}} ребёнка без второго родителя.",
+      "missing_many": "{{name}}: {{count}} детей без второго родителя.",
+      "missing_other": "{{name}}: {{count}} ребёнка без второго родителя.",
+      "action": "Добавить родителем: {{name}}",
+      "otherParent": "Второй родитель",
+      "done_one": "Связано с {{name}}: {{count}} ребёнок",
+      "done_few": "Связано с {{name}}: {{count}} ребёнка",
+      "done_many": "Связано с {{name}}: {{count}} детей",
+      "done_other": "Связано с {{name}}: {{count}} ребёнка",
+      "command": "Добавить второго родителя",
+      "toastAction": "Добавить родителем"
+    }
   },
   "errors": {
     "model": {

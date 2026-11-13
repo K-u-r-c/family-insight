@@ -72,3 +72,49 @@ test('a new father of a woman gets the masculine surname and opens for editing',
   await expect(page.getByText('A person can have at most two biological parents')).toBeHidden()
   await closeApp(app)
 })
+
+test('a new partner can become the parent of children entered before them (#114)', async () => {
+  const { app, page } = await launch()
+  await page.getByRole('button', { name: 'New family tree' }).click()
+  await page.getByRole('button', { name: 'Create' }).click()
+  await page.getByLabel('Given names').fill('Maria')
+  await page.getByLabel('Given names').press('Enter')
+
+  // Two children while Maria has no partner: they get her as their only parent.
+  for (const child of ['Ola', 'Piotr']) {
+    await page.getByRole('button', { name: 'Child', exact: true }).click()
+    await page.getByLabel('Given names').fill(child)
+    await page.getByLabel('Given names').press('Enter')
+    await page.getByTitle('Go to Maria').click()
+  }
+  await page.getByRole('button', { name: 'Partner', exact: true }).click()
+  await page.getByLabel('Given names').fill('Jan')
+  await page.getByLabel('Given names').press('Enter')
+
+  // Jan's panel offers both children, ticked.
+  const box = page.getByRole('group', { name: '2 children of Maria have no second parent.' })
+  await expect(box).toBeVisible()
+  await expect(box.getByRole('checkbox', { name: 'Ola' })).toBeChecked()
+  await expect(box.getByRole('checkbox', { name: 'Piotr' })).toBeChecked()
+  await box.getByRole('button', { name: 'Add Jan as parent' }).click()
+  await expect(page.getByText('Linked 2 children to Jan')).toBeVisible()
+  await expect(box).toBeHidden()
+
+  // One family: the couple's line to each child (3 people), no line from Maria alone – the only
+  // line between two people is the partner line.
+  const lines = page.locator('path[data-people]')
+  await expect(lines).toHaveCount(3)
+  const people = await lines.evaluateAll((els) => els.map((e) => e.getAttribute('data-people')!))
+  expect(people.map((p) => p.split(' ').length).sort()).toEqual([2, 3, 3])
+  await page.getByTitle('Go to Ola').click()
+  await expect(page.getByTitle('Go to Jan')).toBeVisible()
+  await expect(page.getByTitle('Go to Maria')).toBeVisible()
+
+  // One undo step removes both links.
+  await page.getByRole('button', { name: 'Undo' }).click()
+  await expect(page.getByTitle('Go to Jan')).toBeHidden()
+  await page.getByTitle('Go to Maria').click()
+  await page.getByTitle('Go to Piotr').click()
+  await expect(page.getByTitle('Go to Jan')).toBeHidden()
+  await closeApp(app)
+})

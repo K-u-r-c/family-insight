@@ -56,6 +56,20 @@ Os irmãos que têm só um dos pais em comum aparecem como **meio-irmão(ã)** n
 Quando você adiciona um filho a alguém com vários parceiros, o Family Insight pergunta quem é o
 outro pai ou a outra mãe ([Adicionar pessoas](./people)).
 
+## Filhos registados antes do parceiro {#second-parent}
+
+Se adicionar filhos a alguém e só depois o parceiro, os filhos ficam ligados a um único
+progenitor e a árvore desenha-os como uma família à parte. O Family Insight repara nisso: logo depois
+de adicionar o parceiro, uma mensagem propõe torná-lo também progenitor, e a secção **Filhos** de
+ambos os parceiros mostra que filhos não têm segundo progenitor:
+
+<Screenshot name="second-parent" alt="A secção Filhos de Jan Kowalski: dois filhos de Maria Kowalska não têm segundo progenitor, ambos marcados, com o botão Adicionar Jan Kowalski como progenitor" />
+
+Desmarque os filhos que não são do parceiro (por exemplo, um meio-irmão) e clique em **Adicionar …
+como progenitor**. Todas as ligações são adicionadas num só passo, por isso um **Anular** remove-as
+de novo. Os filhos nascidos antes do início da relação não são propostos – o parceiro é então
+provavelmente padrasto ou madrasta; adicione-o como progenitor na página do filho.
+
 ## Remover uma relação
 
 Abra o menu **⋯** ao lado do parente e escolha **Remover relação**:

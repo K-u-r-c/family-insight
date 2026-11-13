@@ -781,6 +781,32 @@ scene('remarriage', async (s) => {
   await parkMouse(s)
 })
 
+scene('second-parent', async (s) => {
+  const { page, t } = s
+  // Two children entered before the partner: Jan's Children section offers to link them.
+  await page.getByRole('button', { name: t('welcome.newTree') }).click()
+  await dialog(s).getByRole('textbox').fill(s.t('tree.untitled'))
+  await dialog(s)
+    .getByRole('button', { name: t('welcome.create') })
+    .click()
+  await page.getByLabel(t('person.givenNames')).waitFor()
+  await fillPerson(s, { given: 'Maria', surname: 'Kowalska', sex: 'female', born: '1962' })
+  await addRelative(s, 'child')
+  await fillPerson(s, { given: 'Anna', surname: 'Kowalska', sex: 'female', born: '1990' })
+  await select(s, 'Maria Kowalska')
+  await addRelative(s, 'child')
+  await fillPerson(s, { given: 'Piotr', surname: 'Kowalski', born: '1993' })
+  await select(s, 'Maria Kowalska')
+  await addRelative(s, 'partner')
+  await fillPerson(s, { given: 'Jan', surname: 'Kowalski', born: '1960' })
+  const box = panel(s).getByRole('group', {
+    name: s.t('relations.secondParent.missing', { count: 2, name: 'Maria Kowalska' })
+  })
+  await box.waitFor()
+  await parkMouse(s)
+  return { clip: box.locator('xpath=ancestor::section[1]'), pad: 8 }
+})
+
 scene('partnership-dialog', async (s) => {
   await openSample(s)
   await select(s, 'Piotr Kowalski')

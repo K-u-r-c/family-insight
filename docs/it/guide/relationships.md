@@ -53,6 +53,20 @@ I fratelli che hanno in comune un solo genitore sono indicati come **fratellastr
 nell'elenco della famiglia. Quando aggiungi un figlio a una persona con più partner, Family Insight
 ti chiede chi è l'altro genitore ([Aggiungere persone](./people)).
 
+## Figli inseriti prima del partner {#second-parent}
+
+Se aggiungi dei figli a qualcuno e solo dopo il suo partner, i figli sono collegati a un solo
+genitore e l’albero li disegna come una famiglia a parte. Family Insight se ne accorge: subito dopo
+l’aggiunta del partner un messaggio propone di renderlo anche loro genitore, e la sezione **Figli**
+di entrambi i partner mostra quali figli non hanno un secondo genitore:
+
+<Screenshot name="second-parent" alt="La sezione Figli di Jan Kowalski: due figli di Maria Kowalska non hanno un secondo genitore, entrambi spuntati, con il pulsante Aggiungi Jan Kowalski come genitore" />
+
+Togli la spunta ai figli che non sono del partner (per esempio un fratellastro) e fai clic su
+**Aggiungi … come genitore**. Tutti i collegamenti vengono aggiunti in un solo passo, quindi un solo
+**Annulla** li rimuove. I figli nati prima dell’inizio dell’unione non vengono proposti: il partner
+è probabilmente un patrigno o una matrigna; aggiungilo come genitore dalla pagina del figlio.
+
 ## Rimuovere una relazione
 
 Apri il menu **⋯** accanto al parente e scegli **Rimuovi relazione**:

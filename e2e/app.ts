@@ -81,6 +81,14 @@ export function tempDir(): string {
 /** Closes the app, answering "Don't save" if it asks about unsaved changes. */
 export async function closeApp(app: ElectronApplication): Promise<void> {
   await mockDialogs(app, { message: 1 })
+  // On macOS the app keeps running when its last window closes, so `close()` alone would wait
+  // forever: quit it the way the user would (Cmd+Q), then close.
+  if (process.platform === 'darwin') {
+    const exited = new Promise<void>((resolve) => app.once('close', () => resolve()))
+    await app.evaluate(({ app: electronApp }) => electronApp.quit()).catch(() => {})
+    await exited
+    return
+  }
   await app.close()
 }
 

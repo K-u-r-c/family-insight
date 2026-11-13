@@ -56,6 +56,21 @@ Geschwister, die nur einen Elternteil gemeinsam haben, sind in der Familienliste
 **Halbgeschwister** gekennzeichnet. Wenn Sie jemandem mit mehreren Partnerschaften ein Kind
 hinzufügen, fragt Family Insight, wer der andere Elternteil ist ([Personen hinzufügen](./people)).
 
+## Kinder, die vor dem Partner eingetragen wurden {#second-parent}
+
+Wenn Sie jemandem Kinder hinzufügen und erst später den Partner, sind die Kinder nur mit einem
+Elternteil verbunden, und der Baum zeigt sie als eigene Familie. Family Insight bemerkt das: Gleich
+nach dem Hinzufügen des Partners bietet eine Meldung an, ihn ebenfalls zum Elternteil zu machen, und
+der Abschnitt **Kinder** beider Partner zeigt, welche Kinder keinen zweiten Elternteil haben:
+
+<Screenshot name="second-parent" alt="Der Abschnitt Kinder von Jan Kowalski: zwei Kinder von Maria Kowalska haben keinen zweiten Elternteil, beide angehakt, mit der Schaltfläche Jan Kowalski als Elternteil hinzufügen" />
+
+Entfernen Sie den Haken bei Kindern, die nicht vom Partner sind (etwa Halbgeschwister), und klicken
+Sie auf **… als Elternteil hinzufügen**. Alle Verbindungen entstehen in einem Schritt, ein
+**Rückgängig** entfernt sie wieder. Kinder, die vor Beginn der Partnerschaft geboren wurden, werden
+nicht angeboten – der Partner ist dann wohl ein Stiefelternteil; fügen Sie ihn auf der Seite des
+Kindes als Elternteil hinzu.
+
 ## Eine Beziehung entfernen
 
 Öffnen Sie das Menü **⋯** neben der verwandten Person und wählen Sie **Beziehung entfernen**:

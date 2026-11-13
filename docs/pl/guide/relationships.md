@@ -53,6 +53,20 @@ Rodzeństwo, które ma tylko jednego wspólnego rodzica, jest oznaczone na liśc
 **rodzeństwo przyrodnie**. Gdy dodajesz dziecko osobie z kilkoma partnerami, Family Insight pyta,
 kto jest drugim rodzicem ([Dodawanie osób](./people)).
 
+## Dzieci dodane przed partnerem {#second-parent}
+
+Jeśli dodasz komuś dzieci, a dopiero później partnera, dzieci są połączone tylko z jednym rodzicem
+i drzewo rysuje je jako osobną rodzinę. Family Insight to zauważa: zaraz po dodaniu partnera
+komunikat proponuje, by został także ich rodzicem, a sekcja **Dzieci** obojga partnerów pokazuje,
+które dzieci nie mają drugiego rodzica:
+
+<Screenshot name="second-parent" alt="Sekcja Dzieci Jana Kowalskiego: dwoje dzieci Marii Kowalskiej nie ma drugiego rodzica, oba zaznaczone, z przyciskiem Dodaj jako rodzica: Jan Kowalski" />
+
+Odznacz dziecko, które nie jest dzieckiem partnera (na przykład przyrodnie rodzeństwo), i kliknij
+**Dodaj jako rodzica**. Wszystkie połączenia powstają w jednym kroku, więc jedno **Cofnij** usuwa je
+z powrotem. Dzieci urodzone przed początkiem związku nie są proponowane – partner jest wtedy
+zapewne rodzicem przybranym; dodaj go jako rodzica na stronie dziecka.
+
 ## Usuwanie relacji
 
 Otwórz menu **⋯** przy krewnym i wybierz **Usuń relację**:

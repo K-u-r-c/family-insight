@@ -53,6 +53,20 @@ Siblings who share only one parent are marked **half-sibling** in the family lis
 a child to someone with several partners, Family Insight asks who the other parent is
 ([Adding people](./people)).
 
+## Children entered before the partner {#second-parent}
+
+If you add children to someone and only later add their partner, the children are linked to one
+parent only, and the tree draws them as a separate family. Family Insight notices this: right after
+you add the partner, a message offers to make the partner their parent too, and the **Children**
+section of both partners shows which children have no second parent:
+
+<Screenshot name="second-parent" alt="The Children section of Jan Kowalski: two children of Maria Kowalska have no second parent, both ticked, with the button Add Jan Kowalski as parent" />
+
+Untick any child who is not the partner's (for example a half-sibling) and click **Add … as
+parent**. All links are added in one step, so one **Undo** removes them again. Children born before
+the partnership started are not offered – the partner is probably a step-parent; add them as a
+parent from the child's own page.
+
 ## Removing a relationship
 
 Open the **⋯** menu next to the relative and choose **Remove relationship**:

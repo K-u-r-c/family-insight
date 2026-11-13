@@ -343,7 +343,8 @@
     "gedcom-ancestry-cycle": "{{name}} sarebbe tra i propri antenati; il collegamento che chiude il cerchio è stato escluso.",
     "gedcom-too-many-biological-parents": "{{name}} ha più di due genitori biologici.",
     "gedcom-self-relationship": "Una relazione di una persona con sé stessa è stata saltata.",
-    "gedcom-duplicate-relationship": "Una relazione duplicata è stata saltata."
+    "gedcom-duplicate-relationship": "Una relazione duplicata è stata saltata.",
+    "single-parent-with-partner": "{{name}} ha un solo genitore ({{parent}}), che ha un partner ({{partner}})."
   },
   "relations": {
     "parents": "Genitori",
@@ -405,7 +406,19 @@
       "death": "Morte di un partner",
       "other": "Altro"
     },
-    "until": "fino al {{date}}"
+    "until": "fino al {{date}}",
+    "secondParent": {
+      "missing_one": "{{count}} figlio di {{name}} non ha un secondo genitore.",
+      "missing_many": "{{count}} figli di {{name}} non hanno un secondo genitore.",
+      "missing_other": "{{count}} figli di {{name}} non hanno un secondo genitore.",
+      "action": "Aggiungi {{name}} come genitore",
+      "otherParent": "Altro genitore",
+      "done_one": "{{count}} figlio collegato a {{name}}",
+      "done_many": "{{count}} figli collegati a {{name}}",
+      "done_other": "{{count}} figli collegati a {{name}}",
+      "command": "Aggiungi secondo genitore",
+      "toastAction": "Aggiungi come genitore"
+    }
   },
   "errors": {
     "model": {

@@ -117,6 +117,31 @@ for (const theme of ['light', 'dark'] as const) {
   })
 }
 
+for (const [theme, style] of [
+  ['light', 'modern'],
+  ['dark', 'modern'],
+  ['light', 'tapestry'],
+  ['dark', 'tapestry']
+] as const) {
+  test(`no serious accessibility violations in the second-parent offer (${style}, ${theme})`, async () => {
+    const { app, page } = await launch({ theme, style })
+    await page.getByRole('button', { name: 'New family tree' }).click()
+    await page.getByRole('button', { name: 'Create' }).click()
+    await page.getByLabel('Given names').fill('Maria')
+    await page.getByLabel('Given names').press('Enter')
+    await page.getByRole('button', { name: 'Child', exact: true }).click()
+    await page.getByLabel('Given names').fill('Ola')
+    await page.getByLabel('Given names').press('Enter')
+    await page.getByTitle('Go to Maria').click()
+    await page.getByRole('button', { name: 'Partner', exact: true }).click()
+    await page.getByLabel('Given names').fill('Jan')
+    await page.getByLabel('Given names').press('Enter')
+    await expect(page.getByRole('group', { name: /has no second parent/ })).toBeVisible()
+    expect(await seriousViolations(page)).toEqual([])
+    await closeApp(app)
+  })
+}
+
 test('keyboard: shortcut help, skip link and screen reader announcements', async () => {
   const file = join(tempDir(), 'kowalscy.finsight')
   copyFileSync(join(__dirname, 'fixtures', 'kowalscy.finsight'), file)
