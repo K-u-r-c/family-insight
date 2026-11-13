@@ -66,11 +66,20 @@ describe('Geocoder', () => {
   })
 
   it('sends at most one request per interval', async () => {
-    const g = geocoder()
+    // Measured when each request is sent: arrival times at the test server jitter with the
+    // connection set-up (the first request can take longer to arrive than the next).
+    const sent: number[] = []
+    const g = geocoder({
+      fetch: (input, init) => {
+        sent.push(Date.now())
+        return globalThis.fetch(input, init)
+      }
+    })
     await Promise.all(['A', 'B', 'C'].map((q) => g.search(q, 'en')))
     expect(requests).toHaveLength(3)
-    const gaps = requests.slice(1).map((r, i) => r.at - requests[i]!.at)
-    for (const gap of gaps) expect(gap).toBeGreaterThanOrEqual(190)
+    expect(sent).toHaveLength(3)
+    const gaps = sent.slice(1).map((t, i) => t - sent[i]!)
+    for (const gap of gaps) expect(gap).toBeGreaterThanOrEqual(195)
   })
 
   it('can be cancelled while waiting its turn', async () => {
