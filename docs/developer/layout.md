@@ -78,6 +78,12 @@ as tall as its tallest column, and the rows below move down. With the option the
 sets a **frame**: rows that stick out of its span by more than `siblingGap` are pulled in, so the
 tree is as wide as its widest row.
 
+**Direct line (#117).** Links between the root (or focus) person and their ancestors pull three
+times as hard in the coordinate step, so the home person's line stays short. With compact siblings,
+a child without partner or children whose line would still cross the direct line – which cannot
+be avoided while the child stands in its own row, between the two arms of the direct line – hangs
+below the gap between its parents instead (`LayoutNode.hang`); the layout runs again without it.
+
 ## 4. Order
 
 Units in each row are ordered with **barycentre sweeps**: going down and up the rows several times,

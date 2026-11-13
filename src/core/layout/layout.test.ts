@@ -178,6 +178,18 @@ describe('layoutFamily', () => {
     assertNoOverlap(l)
     expect(ms).toBeLessThan(process.env.CI ? 1000 : 200)
   })
+
+  it('lays out 1000 people quickly in the app mode (compact siblings, direct line)', () => {
+    const base = randomTree(1000, 42)
+    const root = Object.keys(base.persons).at(-40)!
+    const tree = { ...base, meta: { ...base.meta, rootPersonId: root } }
+    const start = performance.now()
+    const l = layoutFamily(tree, { compactSiblings: true, focusId: root })
+    const ms = performance.now() - start
+    expect(l.nodes).toHaveLength(1000)
+    assertNoOverlap(l)
+    expect(ms).toBeLessThan(process.env.CI ? 1500 : 300)
+  })
 })
 
 describe('view modes', () => {

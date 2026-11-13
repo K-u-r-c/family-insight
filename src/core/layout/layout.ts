@@ -8,6 +8,7 @@ import type {
   PersonId,
   TreeViewMode
 } from '../model/types'
+import { layoutMetrics } from './metrics'
 import { rankGraph, type RankEdge } from './ranking'
 
 /**
@@ -73,6 +74,8 @@ export interface LayoutNode {
   hasChildren: boolean
   /** Place in a hanging column of siblings (`compactSiblings`): 0 is the top card. */
   stack?: { index: number; count: number }
+  /** Hangs below the gap between its parents, in their row (#117): 0 is the top card. */
+  hang?: { index: number; count: number }
 }
 
 export interface LayoutEdge {
@@ -492,13 +495,22 @@ interface ComponentLayout {
   maxGen: number
 }
 
+interface ComponentExtras {
+  focusId?: PersonId
+  /** People who may hang in a column (compact siblings); none when not set. */
+  stackable?: (id: PersonId) => boolean
+  /** The root person and their ancestors: links between them pull harder (#117). */
+  direct?: ReadonlySet<PersonId>
+}
+
+/** How much harder a direct-line link pulls than any other link. */
+const DIRECT_WEIGHT = 3
+
 function layoutComponent(
   g: Graph,
   comp: PersonId[],
   o: Sizes,
-  focusId?: PersonId,
-  /** People who may hang in a column (compact siblings); none when not set. */
-  stackable?: (id: PersonId) => boolean
+  { focusId, stackable, direct }: ComponentExtras = {}
 ): ComponentLayout {
   const gen = assignGenerations(g, comp)
   const unitList = buildUnits(g, comp, gen)
@@ -829,15 +841,17 @@ function layoutComponent(
       if (up) {
         for (const r of g.parents.get(m) ?? []) {
           if (gen.get(r.parentId)! >= u.gen) continue
-          sum += center(r.parentId) - offset
-          count++
+          const w = direct?.has(m) && direct.has(r.parentId) ? DIRECT_WEIGHT : 1
+          sum += w * (center(r.parentId) - offset)
+          count += w
         }
       }
       if (down) {
         for (const r of g.children.get(m) ?? []) {
           if (gen.get(r.childId)! <= u.gen) continue
-          sum += center(r.childId) - offset
-          count++
+          const w = direct?.has(m) && direct.has(r.childId) ? DIRECT_WEIGHT : 1
+          sum += w * (center(r.childId) - offset)
+          count += w
         }
       }
     }
@@ -1006,25 +1020,36 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
     return fa - fb || b.length - a.length
   })
 
-  const nodes: LayoutNode[] = []
-  const pos = new Map<PersonId, LayoutNode>()
-  let offsetX = 0
-  for (const comp of comps) {
-    const c = layoutComponent(
-      g,
-      comp,
-      o,
-      options.focusId,
-      options.compactSiblings
-        ? (id) => !(full.children.get(id) ?? []).length && id !== tree.meta.rootPersonId
-        : undefined
-    )
-    const shift = offsetX - c.minX
-    for (const id of comp) {
-      const generation = c.gen.get(id)!
-      const node: LayoutNode = {
+  // The direct line (#117): the focus or root person and their ancestors.
+  const root = options.focusId ?? tree.meta.rootPersonId
+  const direct = new Set<PersonId>()
+  if (root && ids.has(root)) {
+    const stack = [root]
+    while (stack.length) {
+      const id = stack.pop()!
+      if (direct.has(id)) continue
+      direct.add(id)
+      for (const r of g.parents.get(id) ?? []) stack.push(r.parentId)
+    }
+  }
+  const stackable = options.compactSiblings
+    ? (id: PersonId): boolean =>
+        !(full.children.get(id) ?? []).length && id !== tree.meta.rootPersonId
+    : undefined
+
+  const place = (hung: ReadonlySet<PersonId>): Layout => {
+    // Hung children (#117) are left out of the layout and placed below their parents.
+    const gl = hung.size ? buildGraph(tree, new Set([...ids].filter((id) => !hung.has(id)))) : g
+    const nodes: LayoutNode[] = []
+    const pos = new Map<PersonId, LayoutNode>()
+    let offsetX = 0
+    for (const all of comps) {
+      const comp = all.filter((id) => !hung.has(id))
+      const c = layoutComponent(gl, comp, o, { focusId: options.focusId, stackable, direct })
+      const shift = offsetX - c.minX
+      const node = (id: PersonId, center: number, generation: number): LayoutNode => ({
         id,
-        x: Math.round(c.centers.get(id)! + shift - o.nodeWidth / 2),
+        x: Math.round(center + shift - o.nodeWidth / 2),
         y: 0,
         width: o.nodeWidth,
         height: o.nodeHeight,
@@ -1032,17 +1057,76 @@ export function layoutFamily(tree: FamilyTree, options: LayoutOptions = {}): Lay
         hasHiddenChildren: (full.children.get(id) ?? []).some((r) => !ids.has(r.childId)),
         hasChildren: (full.children.get(id) ?? []).length > 0,
         ...(c.stacks.has(id) ? { stack: c.stacks.get(id)! } : {})
+      })
+      for (const id of comp) {
+        const n = node(id, c.centers.get(id)!, c.gen.get(id)!)
+        nodes.push(n)
+        pos.set(id, n)
       }
-      nodes.push(node)
-      pos.set(id, node)
+      // Below the gap between the parents, right of a short trunk, oldest first.
+      const byStem = new Map<string, PersonId[]>()
+      for (const id of all.filter((x) => hung.has(x))) {
+        const key = (g.parents.get(id) ?? [])
+          .map((r) => r.parentId)
+          .sort()
+          .join('+')
+        byStem.set(key, [...(byStem.get(key) ?? []), id])
+      }
+      for (const [key, kids] of byStem) {
+        const parents = key.split('+')
+        const stem = parents.reduce((sum, p) => sum + c.centers.get(p)!, 0) / parents.length
+        kids.sort((a, b) => byBirthThenId(tree.persons[a]!, tree.persons[b]!))
+        kids.forEach((id, index) => {
+          const n = node(id, stem + STACK_INDENT / 2 + o.nodeWidth / 2, c.gen.get(parents[0]!)! + 1)
+          n.hang = { index, count: kids.length }
+          nodes.push(n)
+          pos.set(id, n)
+        })
+      }
+      offsetX += c.maxX - c.minX + o.componentGap
     }
-    offsetX += c.maxX - c.minX + o.componentGap
+    nodes.sort((a, b) => (a.id < b.id ? -1 : 1))
+    const edges = routeEdges(tree, g, nodes, pos, o)
+    const maxY = Math.max(...nodes.map((n) => n.y + n.height))
+    const width = Math.max(...nodes.map((n) => n.x + n.width)) - Math.min(...nodes.map((n) => n.x))
+    return { nodes, edges, width, height: maxY }
   }
-  nodes.sort((a, b) => (a.id < b.id ? -1 : 1))
-  const edges = routeEdges(tree, g, nodes, pos, o)
-  const maxY = Math.max(...nodes.map((n) => n.y + n.height))
-  const width = Math.max(...nodes.map((n) => n.x + n.width)) - Math.min(...nodes.map((n) => n.x))
-  return { nodes, edges, width, height: maxY }
+
+  let layout = place(new Set())
+  if (!options.compactSiblings || !direct.size) return layout
+  // A child without a family of their own whose line would cross the direct line hangs below
+  // their parents instead (a crossing there cannot be avoided with the child on its own row).
+  const hung = new Set<PersonId>()
+  for (let pass = 0; pass < 3; pass++) {
+    const pos = new Map(layout.nodes.map((n) => [n.id, n]))
+    const before = hung.size
+    for (const c of layoutMetrics(tree, layout, { rootId: root }).directCrossings) {
+      for (const id of c.split(' @ ')[0]!.split(' × ')) {
+        const e = layout.edges.find((x) => x.id === id)
+        if (!e || e.type !== 'child' || direct.has(e.target) || hung.has(e.target)) continue
+        const child = e.target
+        const parents = (g.parents.get(child) ?? []).map((r) => pos.get(r.parentId))
+        const [a, b] = parents
+        const adjacentCouple =
+          parents.length === 2 &&
+          a &&
+          b &&
+          a.y === b.y &&
+          Math.abs(a.x - b.x) <= o.nodeWidth + o.partnerGap + 1 &&
+          (g.partners.get(a.id) ?? []).some((r) => partnerOf(r, a.id) === b.id)
+        if (
+          adjacentCouple &&
+          stackable!(child) &&
+          !(g.partners.get(child) ?? []).length &&
+          child !== options.focusId
+        )
+          hung.add(child)
+      }
+    }
+    if (hung.size === before) break
+    layout = place(hung)
+  }
+  return layout
 }
 
 /** Vertical distance between lanes, and the clearance between the outer lanes and the cards. */
@@ -1076,7 +1160,9 @@ function routeEdges(
 ): LayoutEdge[] {
   const maxGen = Math.max(...nodes.map((n) => n.generation))
   const rowCards: LayoutNode[][] = Array.from({ length: maxGen + 1 }, () => [])
-  for (const n of nodes) rowCards[n.generation]!.push(n)
+  // A hung child stands in its parents' row.
+  const rowOf = (n: LayoutNode): number => (n.hang ? n.generation - 1 : n.generation)
+  for (const n of nodes) rowCards[rowOf(n)]!.push(n)
   for (const row of rowCards) row.sort((a, b) => a.x - b.x)
   const centerX = (n: LayoutNode): number => n.x + n.width / 2
 
@@ -1131,6 +1217,18 @@ function routeEdges(
       : links.map((r, i) => [[r], [parents[i]!]])
     for (const [ls, ps] of groups) {
       const [l, r] = ps.length === 2 && ps[1]!.x < ps[0]!.x ? [ps[1]!, ps[0]!] : [ps[0]!, ps[1]]
+      if (child.hang && r) {
+        // Straight down from the gap between the parents (no lane).
+        lines.push({
+          links: ls,
+          parents: ps,
+          child,
+          sx: (l.x + l.width + r.x) / 2,
+          couple: true,
+          hops: []
+        })
+        continue
+      }
       const sx = r ? (l.x + l.width + r.x) / 2 : centerX(l)
       const key = ps
         .map((p) => p.id)
@@ -1274,10 +1372,19 @@ function routeEdges(
         rowHeight[n.generation]!,
         o.nodeHeight + (n.stack.count - 1) * stackStep
       )
+    if (n.hang)
+      rowHeight[n.generation - 1] = Math.max(
+        rowHeight[n.generation - 1]!,
+        o.nodeHeight + n.hang.count * stackStep
+      )
   }
   const rowY: number[] = [0]
   for (let r = 1; r <= maxGen; r++) rowY.push(rowY[r - 1]! + rowHeight[r - 1]! + gapOf(r))
-  for (const n of nodes) n.y = rowY[n.generation]! + (n.stack?.index ?? 0) * stackStep
+  for (const n of nodes) {
+    n.y = n.hang
+      ? rowY[n.generation - 1]! + (n.hang.index + 1) * stackStep
+      : rowY[n.generation]! + (n.stack?.index ?? 0) * stackStep
+  }
   const laneY = (h: Hop): number => {
     const mid = rowY[h.row]! - gapOf(h.row) / 2
     return mid + ((h.lane ?? 0) - (lanes[h.row]! - 1) / 2) * LANE_STEP
@@ -1343,7 +1450,14 @@ function routeEdges(
             { x: child.x, y: child.y + o.nodeHeight / 2 }
           ]
     let points: Point[]
-    if (line.hops.length === 1) {
+    if (child.hang) {
+      const mid = child.y + o.nodeHeight / 2
+      points = [
+        { x: line.sx, y: sy },
+        { x: line.sx, y: mid },
+        { x: child.x, y: mid }
+      ]
+    } else if (line.hops.length === 1) {
       const y = laneY(line.hops[0]!)
       points = [{ x: line.sx, y: sy }, { x: line.sx, y }, ...end(y)]
     } else if (line.hops.length === 2) {

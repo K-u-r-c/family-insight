@@ -44,12 +44,12 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   ],
   [
     "aF",
-    2388,
+    2205,
     0,
   ],
   [
     "aM",
-    2140,
+    1957,
     0,
   ],
   [
@@ -74,12 +74,12 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   ],
   [
     "bF",
-    628,
+    772,
     0,
   ],
   [
     "bM",
-    380,
+    524,
     0,
   ],
   [
@@ -124,7 +124,7 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   ],
   [
     "cF",
-    4539,
+    4746,
     0,
   ],
   [
@@ -189,22 +189,22 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   ],
   [
     "dF",
-    6742,
+    6542,
     0,
   ],
   [
     "dM",
-    6494,
+    6294,
     0,
   ],
   [
     "father",
-    2241,
+    2447,
     420,
   ],
   [
     "gf",
-    3206,
+    3265,
     280,
   ],
   [
@@ -229,12 +229,12 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   ],
   [
     "gm",
-    2958,
+    3017,
     280,
   ],
   [
     "gmBrother",
-    1851,
+    2365,
     280,
   ],
   [
@@ -249,147 +249,147 @@ exports[`compact siblings (#115) > leaves the layout unchanged when off 1`] = `
   ],
   [
     "mF",
-    1411,
+    1925,
     280,
   ],
   [
     "mM",
-    1163,
+    1677,
     280,
   ],
   [
     "me",
-    1919,
+    2126,
     560,
   ],
   [
     "mother",
-    1993,
+    2199,
     420,
   ],
   [
     "pc1",
-    4367,
+    4457,
     420,
   ],
   [
     "pc1Child1",
-    4423,
+    4630,
     560,
   ],
   [
     "pc1Child2",
-    4675,
+    4882,
     560,
   ],
   [
     "pc1Wife",
-    4615,
+    4705,
     420,
   ],
   [
     "pc2",
-    4867,
+    4957,
     420,
   ],
   [
     "pc2Child1",
-    5027,
+    5234,
     560,
   ],
   [
     "pc2Wife",
-    5115,
+    5205,
     420,
   ],
   [
     "pc3",
-    5367,
+    5457,
     420,
   ],
   [
     "pc3Child1",
-    5491,
+    5586,
     560,
   ],
   [
     "pc3Wife",
-    5615,
+    5705,
     420,
   ],
   [
     "pc4",
-    5867,
+    5957,
     420,
   ],
   [
     "pc4Wife",
-    6115,
+    6205,
     420,
   ],
   [
     "sister",
-    2171,
+    2378,
     560,
   ],
   [
     "uncle1",
-    2741,
+    2947,
     420,
   ],
   [
     "uncle1Child1",
-    2523,
+    2730,
     560,
   ],
   [
     "uncle1Wife",
-    2493,
+    2699,
     420,
   ],
   [
     "uncle2",
-    3241,
+    3447,
     420,
   ],
   [
     "uncle2Child1",
-    2875,
+    3082,
     560,
   ],
   [
     "uncle2Child2",
-    3127,
+    3334,
     560,
   ],
   [
     "uncle2Wife",
-    2993,
+    3199,
     420,
   ],
   [
     "uncle3",
-    3499,
+    3699,
     420,
   ],
   [
     "uncle3Child1",
-    3479,
+    3686,
     560,
   ],
   [
     "uncle3Child2",
-    3731,
+    3938,
     560,
   ],
   [
     "uncle3Child3",
-    3983,
+    4190,
     560,
   ],
   [
     "uncle3Wife",
-    3747,
+    3947,
     420,
   ],
 ]
