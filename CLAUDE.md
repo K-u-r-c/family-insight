@@ -29,12 +29,10 @@ Electron + React + TypeScript family tree app (eight UI languages). Read `docs/d
 
 ## Working through the backlog
 
-Done: #1–#33 (v1.0.0), #38–#51 (documentation site, v1.0.1), #52–#81 (v1.1.0, v1.2.0) and
-#100–#103 (v1.2.1) and #104–#111 (v1.3.0).
-**Current scope: #112–#119** – milestone v1.3.1 (readable Family view: no overlapping or crossing
-lines, clear gaps between branches, compact width, the home person's direct line first, release
-v1.3.1), strictly in issue-number order. Update the user guide in all 8 languages,
-but regenerate screenshots only for new or directly affected scenes
+Done: #1–#33 (v1.0.0), #38–#51 (documentation site, v1.0.1), #52–#81 (v1.1.0, v1.2.0),
+#100–#103 (v1.2.1), #104–#111 (v1.3.0) and #112–#119 (v1.3.1, readable Family view).
+**Current scope:** none open – the next milestone is chosen by the maintainer. Update the user
+guide in all 8 languages, but regenerate screenshots only for new or directly affected scenes
 (`npm run docs:screenshots -- -g <scene>`), never a full regeneration.
 Out of scope: the mobile apps (#82–#98, in the Backlog milestone – planned for the future), #36
 (paid code signing) and #99 (store publishing, deferred); #34, #35 and #37 are superseded by the

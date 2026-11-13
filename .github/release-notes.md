@@ -1,24 +1,25 @@
-## Family Insight 1.3.0 🌳
+## Family Insight 1.3.1 🌳
 
 A beautiful, simple family tree editor for Windows, macOS and Linux — in eight languages.
 Piękny i prosty program do tworzenia drzewa genealogicznego — w ośmiu językach.
 
-**New in 1.3 / Nowości:**
+**New in 1.3.1 – a readable family tree / czytelne drzewo:**
 
-- **Tapestry style** – the whole app like an old family tapestry: parchment and ink, or dark green
-  and gold; people in framed medallions joined by gold thread, the family name in a framed title
-  (**Settings → Style** or **View → Style**) / **styl Gobelin** – program jak stary rodowy gobelin:
-  pergamin i atrament albo ciemna zieleń i złoto, osoby w medalionach połączone złotą nicią
-- **Print it on parchment** – images, PDFs and prints in either style / **wydruki i obrazy w stylu
-  Gobelin**
-- **Guided tour** – on the first start the app builds your first tree with you, step by step;
-  **Help → Show guided tour** any time / **przewodnik** – przy pierwszym uruchomieniu program krok
-  po kroku buduje z Tobą pierwsze drzewo
-- **Tips** – a short tip the first time you open the map, the relationship calculator, sources,
-  statistics … / **wskazówki** przy pierwszym otwarciu funkcji
+- **Siblings in columns** – brothers and sisters without a family of their own hang in columns
+  under their family line, so a large tree stays narrow (**Settings → Siblings without families in
+  columns**) / **rodzeństwo w kolumnach** – bracia i siostry bez własnych rodzin wiszą w kolumnach
+  pod linią rodziny, więc duże drzewo pozostaje wąskie
+- **No crossing lines** – half-siblings get separate lines, nothing crosses your own line, and
+  parallel lines stay apart / **linie się nie krzyżują** – przyrodnie rodzeństwo ma osobne linie,
+  nic nie przecina Twojej linii prostej, a równoległe linie nie zlewają się
+- **Clear gaps between branches** and **dots where lines branch** / **wyraźne odstępy między
+  gałęziami** i **kropki w miejscach rozgałęzień**
+- **Add the partner as the other parent** of children entered earlier, in one step / **dodaj
+  partnera jako drugiego rodzica** dzieci wpisanych wcześniej, jednym kliknięciem
+- **Cmd+Q on macOS** quits the app again / **Cmd+Q na macOS** znów zamyka program
 
-> **Compatibility / zgodność:** 1.3 uses the same file format as 1.1 and 1.2 – trees open in all
-> of them. / 1.3 używa tego samego formatu plików co 1.1 i 1.2.
+> **Compatibility / zgodność:** 1.3.1 uses the same file format as 1.1–1.3 – trees open in all of
+> them. / 1.3.1 używa tego samego formatu plików co 1.1–1.3.
 
 📖 **Documentation / dokumentacja:** <https://k-u-r-c.github.io/family-insight/>
 

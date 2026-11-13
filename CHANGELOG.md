@@ -6,6 +6,31 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-11-14
+
+### Added
+
+- **Siblings in columns**: three or more brothers and sisters who have no partner and no children in
+  the tree hang in columns of up to four cards under their family line instead of one long row, so
+  a tree full of great-uncles and great-aunts stays narrow and fits the window readably. Switch it
+  off in **Settings → Siblings without families in columns** or in the **View** menu.
+- **Add the partner as the other parent**: children entered before their parent's partner are
+  linked to one parent only. Right after adding the partner a message offers to link them, and the
+  **Children** section of both partners shows them, ticked, with **Add … as parent** – one undo step.
+- **Dots where lines branch**: a small dot (a knot in Tapestry) marks where a family's lines split,
+  so you can tell which line a child hangs from.
+
+### Fixed
+
+- **No crossing lines**: children of one parent and of the couple (half-siblings) get separate
+  lines that never overlap, and a child without a family of their own whose line would cross the
+  home person's own line – their parents, grandparents and so on – hangs just below their parents
+  instead; where a crossing still cannot be avoided the line jumps over with a small gap.
+- **Clear gaps between branches**: cousins and more distant branches stand further apart than
+  brothers and sisters, scaled to the card size, and two families' lines never end close together.
+- **Lines further apart**: parallel lines of different families are at least 16 px apart.
+- **Cmd+Q on macOS** quits the app again (it only closed the window).
+
 ## [1.3.0] - 2026-10-31
 
 ### Added
@@ -167,7 +192,8 @@ First public release.
   Intel, ad-hoc signed), Linux (AppImage, deb with `.finsight` file association); app icon.
 - Documentation: README and user guide in English and Polish, CSV and file format specs.
 
-[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/K-u-r-c/family-insight/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/K-u-r-c/family-insight/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/K-u-r-c/family-insight/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/K-u-r-c/family-insight/compare/v1.1.0...v1.2.0
