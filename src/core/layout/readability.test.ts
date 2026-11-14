@@ -4,7 +4,7 @@ import type { FamilyTree } from '../model/types'
 import { remarriageFixture, TreeBuilder } from '../test/fixtures'
 import { collateralFixture, twoFamiliesFixture } from './fixtures'
 import { layoutFamily, type Layout, type LayoutEdge, type LayoutNode } from './layout'
-import { CANVAS_1440, fitZoom, layoutMetrics } from './metrics'
+import { ancestorsOf, CANVAS_1440, fitZoom, layoutMetrics, segmentsOf } from './metrics'
 
 /** Canvas sizes for Modern, comfortable cards (`SIZES` in TreeCanvas.tsx). */
 const SIZES = { nodeWidth: 220, nodeHeight: 64, partnerGap: 28, siblingGap: 32, generationGap: 76 }
@@ -366,15 +366,38 @@ describe('the reported 78-person tree (#112 fixture)', () => {
     expect(fitZoom(layout(), CANVAS_1440)).toBeGreaterThanOrEqual(0.25)
   })
 
-  // The longest line is a direct-line link (grandfather ← his parents). Its length is set by the
-  // widest row, which is packed to the frame (#115): the half-baseline budget (1 169 px) is out
-  // of reach without new crossings, so the reached bound is recorded instead (#117).
-  it('#117: direct-line links stay short where the rows allow it', () => {
+  it('#115/#117: no horizontal line longer than half the baseline', () => {
     const m = layoutMetrics(tree, layout())
-    expect(m.directMaxRun).toBeLessThanOrEqual(1450)
-    expect(m.longestHorizontal).toBeLessThanOrEqual(BASELINE.longestHorizontal * 0.62)
+    expect(m.longestHorizontal).toBeLessThanOrEqual(BASELINE.longestHorizontal * 0.5)
+    expect(m.directMaxRun).toBeLessThanOrEqual(BASELINE.longestHorizontal * 0.5)
     // Total line length grows by at most 10 % against #116 (29 572 px).
     expect(m.totalChildLength).toBeLessThanOrEqual(29572 * 1.1)
+  })
+
+  // Direct-line links run at most 1.5 card widths sideways where the rows allow it. Three cannot:
+  // the father's place is fixed by the widest row (packed to the frame, #115) and the
+  // great-grandparents' drop points by the next widest, so the grandparents – between the two –
+  // keep the longest of {grandfather ← parents, father ← grandparents} at its minimum (~1 150 px).
+  it('#117: direct-line links stay within 1.5 cards wherever the rows allow it', () => {
+    const l = layout()
+    const anc = ancestorsOf(tree, 'me')
+    const runs = l.edges
+      .filter(
+        (e) =>
+          e.type === 'child' &&
+          (e.target === 'me' || anc.has(e.target)) &&
+          e.people.slice(0, -1).every((p) => anc.has(p))
+      )
+      .map((e) => ({
+        to: e.target,
+        run: segmentsOf(e).reduce((sum, x) => sum + Math.abs(x.x2 - x.x1), 0)
+      }))
+    const long = runs.filter((r) => r.run > 1.5 * SIZES.nodeWidth).map((r) => r.to)
+    expect(long.sort()).toEqual(['father', 'gf', 'gm'])
+    const gf = runs.find((r) => r.to === 'gf')!.run
+    const father = runs.find((r) => r.to === 'father')!.run
+    // Balanced at the minimum of the longer one.
+    expect(Math.abs(gf - father)).toBeLessThan(60)
   })
 
   it('#117: a child without a family whose line would cross the direct line hangs below the parents', () => {
