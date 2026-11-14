@@ -30,7 +30,7 @@ Electron + React + TypeScript family tree app (eight UI languages). Read `docs/d
 ## Working through the backlog
 
 Done: #1–#33 (v1.0.0), #38–#51 (documentation site, v1.0.1), #52–#81 (v1.1.0, v1.2.0),
-#100–#103 (v1.2.1), #104–#111 (v1.3.0) and #112–#119 (v1.3.1, readable Family view).
+#100–#103 (v1.2.1), #104–#111 (v1.3.0) and #112–#119 (v1.3.1 and v1.3.2, readable Family view).
 **Current scope:** none open – the next milestone is chosen by the maintainer. Update the user
 guide in all 8 languages, but regenerate screenshots only for new or directly affected scenes
 (`npm run docs:screenshots -- -g <scene>`), never a full regeneration.

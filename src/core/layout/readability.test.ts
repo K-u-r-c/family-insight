@@ -400,6 +400,46 @@ describe('the reported 78-person tree (#112 fixture)', () => {
     expect(Math.abs(gf - father)).toBeLessThan(60)
   })
 
+  // Why three links cannot be within 1.5 cards, for any order of the families (#117): the
+  // grandparents are a couple (their centres 1 card + partner gap apart), and of each
+  // great-grandparent couple one family's other children stand between the two drop points (a
+  // sibling group split around the couple would cross lines). Even the narrowest choice – B's
+  // four siblings in one column, and C's or D's married sibling plus two columns – puts the
+  // drop points ≥ D apart, so the longer of the grandparents' links is ≥ (D − 248) / 2.
+  it('#117: the grandparents’ longer link has an order-independent lower bound above 1.5 cards', () => {
+    const w = SIZES.nodeWidth
+    const column = 24 + w // a hanging column: trunk indent + card
+    const couple = 2 * w + SIZES.partnerGap
+    const half = SIZES.partnerGap / 2
+    const between =
+      half +
+      w +
+      SIZES.siblingGap +
+      column + // gmMother, then B's one column
+      w + // branch gap (B | C, nodeWidth)
+      2 * column +
+      SIZES.siblingGap +
+      couple +
+      SIZES.siblingGap + // C's others (narrowest of C, D)
+      w +
+      half // gfMother up to the partner gap
+    const bound = (between - (w + SIZES.partnerGap)) / 2
+    expect(bound).toBeGreaterThan(1.5 * w)
+    // The layout's longer grandparent link respects the bound and is within 35 % of it.
+    const l = layout()
+    const anc = ancestorsOf(tree, 'me')
+    const run = (to: string): number =>
+      segmentsOf(
+        l.edges.find(
+          (e) =>
+            e.type === 'child' && e.target === to && e.people.slice(0, -1).every((p) => anc.has(p))
+        )!
+      ).reduce((sum, x) => sum + Math.abs(x.x2 - x.x1), 0)
+    const longer = Math.max(run('gm'), run('gf'))
+    expect(longer).toBeGreaterThanOrEqual(bound)
+    expect(longer).toBeLessThanOrEqual(bound * 1.35)
+  })
+
   it('#117: a child without a family whose line would cross the direct line hangs below the parents', () => {
     const l = layout()
     const son = l.nodes.find((n) => n.id === 'c5Son')!
