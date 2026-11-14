@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-11-14
+
+### Fixed
+
+- **Your own line stays short**: the couples on the home person's line – parents, grandparents and
+  so on – stand between their own parents' families, so none of those lines runs far sideways.
+
 ## [1.3.1] - 2026-11-14
 
 ### Added
@@ -192,7 +199,8 @@ First public release.
   Intel, ad-hoc signed), Linux (AppImage, deb with `.finsight` file association); app icon.
 - Documentation: README and user guide in English and Polish, CSV and file format specs.
 
-[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/K-u-r-c/family-insight/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/K-u-r-c/family-insight/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/K-u-r-c/family-insight/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/K-u-r-c/family-insight/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/K-u-r-c/family-insight/compare/v1.2.0...v1.2.1

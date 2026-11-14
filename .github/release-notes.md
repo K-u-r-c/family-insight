@@ -1,9 +1,9 @@
-## Family Insight 1.3.1 🌳
+## Family Insight 1.3.2 🌳
 
 A beautiful, simple family tree editor for Windows, macOS and Linux — in eight languages.
 Piękny i prosty program do tworzenia drzewa genealogicznego — w ośmiu językach.
 
-**New in 1.3.1 – a readable family tree / czytelne drzewo:**
+**New in 1.3.1 and 1.3.2 – a readable family tree / czytelne drzewo:**
 
 - **Siblings in columns** – brothers and sisters without a family of their own hang in columns
   under their family line, so a large tree stays narrow (**Settings → Siblings without families in
@@ -16,10 +16,12 @@ Piękny i prosty program do tworzenia drzewa genealogicznego — w ośmiu język
   gałęziami** i **kropki w miejscach rozgałęzień**
 - **Add the partner as the other parent** of children entered earlier, in one step / **dodaj
   partnera jako drugiego rodzica** dzieci wpisanych wcześniej, jednym kliknięciem
+- **Your own line stays short** (1.3.2) – your parents', grandparents' … lines no longer run far
+  sideways / **Twoja linia prosta jest krótka** – linie rodziców, dziadków … nie biegną daleko w bok
 - **Cmd+Q on macOS** quits the app again / **Cmd+Q na macOS** znów zamyka program
 
-> **Compatibility / zgodność:** 1.3.1 uses the same file format as 1.1–1.3 – trees open in all of
-> them. / 1.3.1 używa tego samego formatu plików co 1.1–1.3.
+> **Compatibility / zgodność:** 1.3.2 uses the same file format as 1.1–1.3 – trees open in all of
+> them. / 1.3.2 używa tego samego formatu plików co 1.1–1.3.
 
 📖 **Documentation / dokumentacja:** <https://k-u-r-c.github.io/family-insight/>
 
